@@ -38,8 +38,8 @@ const WEEKS = [
   ['mate-116', 'mate-113', 'chem-014'], // 24 entropy · defects · spectroscopy
   ['chem-101', 'math-018', 'chem-016'], // 25 Gibbs energy · using integrals · functional groups
   ['mate-201', 'math-020', 'mate-301'], // 26 diffusion · partial derivatives · polymers
-  ['mate-117', 'math-021', 'mate-118'], // 27 phase rule · statistics · band theory
-  ['mate-202', 'math-022', 'mate-401'], // 28 phase diagrams · probability · semiconductors
+  ['mate-117', 'math-022', 'mate-118'], // 27 phase rule · probability · band theory
+  ['mate-202', 'math-021', 'mate-401'], // 28 phase diagrams · statistics · semiconductors
   ['mate-119', 'math-019', 'math-023'], // 29 nucleation · series · regression
   ['mate-203', 'math-024', 'mate-302'], // 30 heat treatment · hypothesis tests · ceramics
   ['math-025', 'eng-003', 'chem-017'], // 31 differential equations · data tools · environment

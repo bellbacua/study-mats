@@ -6,8 +6,9 @@ import chem1 from './chem1';
 import chem2 from './chem2';
 import mate1 from './mate1';
 import mate2 from './mate2';
+import math2 from './math2';
 
-const ALL = [...math1, ...physics, ...chem1, ...chem2, ...mate1, ...mate2];
+const ALL = [...math1, ...physics, ...chem1, ...chem2, ...mate1, ...mate2, ...math2];
 
 export const UM_LESSONS = ALL.map((c) => c.lesson);
 export const UM_READINGS = Object.fromEntries(ALL.map((c) => [c.lesson.id, c.readings]));
