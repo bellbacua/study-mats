@@ -1,8 +1,9 @@
 // All UM-aligned classes (Year 1 and Year 2 prep), split into the shapes the
 // rest of the app expects.
 import math1 from './math1';
+import physics from './physics';
 
-const ALL = [...math1];
+const ALL = [...math1, ...physics];
 
 export const UM_LESSONS = ALL.map((c) => c.lesson);
 export const UM_READINGS = Object.fromEntries(ALL.map((c) => [c.lesson.id, c.readings]));
