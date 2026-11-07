@@ -32,10 +32,10 @@ const WEEKS = [
   ['chem-010', 'math-101', 'phys-009'], // 18 acids & pH · derivatives · rotation
   ['chem-011', 'math-014', 'mate-114'], // 19 redox · derivative rules · hardness testing
   ['phys-010', 'chem-012', 'math-015'], // 20 springs · titration · optimisation
-  ['phys-011', 'mate-113', 'chem-005'], // 21 waves · defects · orbitals
+  ['phys-011', 'mate-115', 'chem-005'], // 21 waves · microscopes · orbitals
   ['math-102', 'phys-012', 'mate-112'], // 22 integrals · heat · X-ray diffraction
   ['phys-013', 'math-017', 'chem-015'], // 23 light & lenses · integration methods · organic chemistry
-  ['mate-116', 'mate-115', 'chem-014'], // 24 entropy · microscopes · spectroscopy
+  ['mate-116', 'mate-113', 'chem-014'], // 24 entropy · defects · spectroscopy
   ['chem-101', 'math-018', 'chem-016'], // 25 Gibbs energy · using integrals · functional groups
   ['mate-201', 'math-020', 'mate-301'], // 26 diffusion · partial derivatives · polymers
   ['mate-117', 'math-021', 'mate-118'], // 27 phase rule · statistics · band theory

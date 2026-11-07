@@ -449,7 +449,7 @@ export default [
     ],
     labs: [
       online('NOAA Global Monitoring Laboratory', 'https://gml.noaa.gov/ccgg/trends/', 'Look up this month’s CO₂ at Mauna Loa and compare it with the same month 10 years ago.'),
-      home('For one week, sort your household’s rubbish into paper, plastics (by recycling code), metals, glass and food waste. Weigh or count each pile.'),
+      home('For one week, sort your household’s rubbish into paper, plastics (by recycling number), metals, glass and food waste. Weigh or count each pile.'),
     ],
     quiz: [
       ['Who began measuring CO₂ on Mauna Loa in 1958?', ['Charles David Keeling', 'Rachel Carson', 'Svante Arrhenius', 'Mario Molina'], 'His record is the Keeling curve.'],
