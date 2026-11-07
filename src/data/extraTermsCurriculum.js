@@ -1237,7 +1237,7 @@ function degreeOfPolymerization(numberAvgMolWeight_Mn, repeatUnitMass_m) {
       },
       {
         title: '2. Why High-Density Polyethylene (HDPE) is Stiffer than Low-Density (LDPE)',
-        formula: '\\text{Unbranched Linear Chains (HDPE)} \\implies \\text{Pack into 90\\% Crystalline Lamellae} \\implies \\text{Higher Density & Stiffness}',
+        formula: '\\text{Unbranched Linear Chains (HDPE)} \\implies \\text{Pack into 90\\% Crystalline Lamellae} \\implies \\text{Higher Density \\& Stiffness}',
         explanation:
           'LDPE (grocery bags) has bulky side branches that prevent chains from packing neatly (only ~50% crystalline, soft). HDPE (milk jugs, hard hats, water pipes) has straight unbranched chains that fold tightly together with strong Van der Waals attraction!',
       },
