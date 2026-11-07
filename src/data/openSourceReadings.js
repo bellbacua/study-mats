@@ -27,7 +27,7 @@ This exact geometric rotation insight is also how Imaginary and Complex Numbers 
       inAppExcerpt: `Key OpenStax Checkpoints for Engineering Students:
 1. Absolute Value |x| is simply the distance of x from 0 on the number line (always ≥ 0).
 2. When adding two numbers with DIFFERENT signs, such as (−18) + (+11): ask which arrow is longer. Since |−18| > |+11|, the negative arrow wins by 18 − 11 = 7, so the result is −7.
-3. Watch the Unary Minus vs. Grouping Parentheses:
+3. Watch a Leading Minus Sign vs. Grouping Parentheses:
    • −2⁴ = −(2 × 2 × 2 × 2) = −16
    • (−2)⁴ = (−2)(−2)(−2)(−2) = +16
 In engineering formulas (like thermal radiation T⁴ or bending moment −wL²/8), misreading −x² as (−x)² is the #1 sign error on exams!`,
@@ -273,13 +273,13 @@ Mastering Lesson Math 004 today means you have already conquered 70% of the alge
       url: 'https://openstax.org/books/chemistry-atoms-first-2e/pages/7-introduction',
       whyRead:
         'Walks step-by-step through balancing chemical equations, limiting reactants, and percent yield in industrial processes.',
-      inAppExcerpt: `Understanding "Limiting Reactants" Using a Computer Assembly Analogy:
-Suppose each gaming PC requires 1 Motherboard and 2 sticks of RAM:
-  1 MB + 2 RAM → 1 PC
-If your warehouse has 50 Motherboards and 60 sticks of RAM, how many PCs can you build?
-• 50 Motherboards could build 50 PCs.
-• 60 RAM sticks (at 2 per PC) can only build 60 ÷ 2 = 30 PCs!
-You run out of RAM at 30 PCs! In Chemistry, the RAM is called the LIMITING REACTANT, and the 20 leftover Motherboards are the EXCESS REACTANT. In Materials synthesis (like reacting Titanium with Carbon to make TiC ceramic armor), calculating the limiting reactant ensures no unreacted brittle impurities remain in your material!`,
+      inAppExcerpt: `Understanding "Limiting Reactants" With Sandwiches:
+Suppose each sandwich needs 1 slice of cheese and 2 slices of bread:
+  1 cheese + 2 bread → 1 sandwich
+If your kitchen has 50 slices of cheese and 60 slices of bread, how many sandwiches can you make?
+• 50 cheese slices could make 50 sandwiches.
+• 60 bread slices (at 2 per sandwich) can only make 60 ÷ 2 = 30 sandwiches!
+You run out of bread at 30 sandwiches! In Chemistry, the bread is called the LIMITING REACTANT, and the 20 leftover cheese slices are the EXCESS REACTANT. In Materials synthesis (like reacting Titanium with Carbon to make TiC ceramic armor), calculating the limiting reactant ensures no unreacted brittle impurities remain in your material!`,
     },
   ],
 
@@ -555,7 +555,7 @@ Continuous carbon-fiber composites are strongly ANISOTROPIC (direction-dependent
       url: 'https://www.doitpoms.ac.uk/tlplib/semiconductors/index.php',
       whyRead:
         'Bridges solid-state physics directly to diodes, solar photovoltaics, LEDs, and CMOS transistors.',
-      inAppExcerpt: `How Your CS Logic Gates Are Built Inside a Silicon Wafer:
+      inAppExcerpt: `How Computer Chips Are Built Inside a Silicon Wafer:
 Starting from ultra-pure "Electronic Grade Silicon" (99.9999999% pure — "Nine Nines", only 1 impurity atom per billion!), photolithography masks selectively implant Boron (p-well) and Phosphorus/Arsenic (n+ source/drain) ions, separated by a 1–2 nm gate oxide insulator (SiO₂ / HfO₂) to form billions of complementary NMOS + PMOS (CMOS) transistors!`,
     },
   ],

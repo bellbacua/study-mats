@@ -180,7 +180,7 @@ export const EXTRA_LESSONS = [
       protagonist: 'Han Dynasty Engineers & Carl Friedrich Gauss',
       hook: 'Did you know Chinese engineers used Matrix Row-Elimination 2,000 years before European mathematicians?',
       narrative: [
-        'In Chapter 8 ("Fangcheng" / Rectangular Arrays) of the ancient Chinese text "The Nine Chapters on the Mathematical Art" (c. 200 BC), engineers arranged coefficients of 3-unknown grain problems into a grid of counting rods on a table and subtracted rows to eliminate variables—the exact algorithm we now call Gaussian Elimination!',
+        'In Chapter 8 ("Fangcheng" / Rectangular Arrays) of the ancient Chinese text "The Nine Chapters on the Mathematical Art" (c. 200 BC), engineers arranged coefficients of 3-unknown grain problems into a grid of counting rods on a table and subtracted rows to eliminate unknowns—the exact method we now call Gaussian Elimination!',
         'In 1809, Carl Friedrich Gauss used this same systematic elimination to calculate the orbit of the asteroid Ceres from a handful of telescope observations.',
         'In Materials Engineering, whenever you blend two scrap alloys in an electric arc furnace to hit both a target total weight AND a target Nickel percentage, you are solving a 2×2 system of linear equations!',
       ],
@@ -1418,7 +1418,7 @@ function fractureStressMPa(K_Ic, Y, crackLengthMeters) {
     daySlot: 'Module 23',
     track: 'mate',
     title: 'Electronic Materials: Band Theory, Bandgap (E_g) & Semiconductor Doping',
-    subtitle: 'Where your CS degree meets Materials Engineering: how Phosphorus & Boron turn Silicon into logic gates, LEDs, and solar cells',
+    subtitle: 'How a pinch of Phosphorus or Boron turns Silicon into computer chips, LEDs, and solar cells',
     standardMins: 50,
     overtimeMins: 15,
     xpReward: 290,
@@ -1434,11 +1434,11 @@ function fractureStressMPa(K_Ic, Y, crackLengthMeters) {
       protagonist: 'John Bardeen, Walter Brattain & Shuji Nakamura',
       hook: 'How did replacing 1 out of every 1,000,000 Silicon atoms with Boron or Phosphorus create the entire Digital Age?',
       narrative: [
-        'In 1947 at Bell Labs, physicists John Bardeen and Walter Brattain were trying to replace fragile, power-hungry glass vacuum tubes with a solid crystal amplifier. By placing gold contacts on a doped Germanium crystal, they invented the Transistor—the physical building block of every `0` and `1` you ever programmed in Computer Science!',
+        'In 1947 at Bell Labs, physicists John Bardeen and Walter Brattain were trying to replace fragile, power-hungry glass vacuum tubes with a solid crystal amplifier. By placing gold contacts on a doped Germanium crystal, they invented the Transistor—the tiny switch inside every computer chip, phone and calculator!',
         'Better yet, the Bandgap E_g of a semiconductor directly determines the color of light it emits (in an LED) or absorbs (in a solar cell): Photon Energy E = h·f = (1,240 eV·nm) / λ. Red & Green LEDs existed since the 1960s, but nobody could grow defect-free Gallium Nitride (GaN, E_g = 3.4 eV) for a Blue LED until Materials Engineer Shuji Nakamura solved the crystal growth in the 1990s—enabling white LED lighting and smartphone screens!',
       ],
       takeaway:
-        'As a CS graduate who also understands Semiconductor Materials Engineering, you bridge both halves of computing: from valence electrons (CHEM 001) and diamond crystal lattices (MATE 102) all the way up to CPUs and software!',
+        'Every phone, laptop, LED and solar panel is built on what you just learned: valence electrons (CHEM 001), the diamond crystal lattice of silicon (MATE 102), and a tiny, deliberate dose of impurity atoms.',
     },
     csBridge: {
       concept: 'Hardware-to-Software Stack: From Silicon Valence Bandgap (`1.11 eV`) to CMOS Logic Gates',
@@ -1551,7 +1551,7 @@ function maxAbsorbedWavelengthNm(bandgap_eV) {
       narrative: [
         'In 1824, the British Royal Navy asked chemist Sir Humphry Davy why the copper sheeting on their wooden warships was rapidly corroding in seawater. Davy realized corrosion was an electrical circuit! By bolting small blocks of Iron or Zinc ("protector blocks") onto the Copper, the Zinc preferentially gave up electrons and dissolved while the Copper remained completely untouched—the birth of Cathodic Protection!',
         'Davy’s assistant, Michael Faraday, then discovered Faraday’s Law of Electrolysis: the exact mass of metal corroded (or electroplated) is directly proportional to the electrical charge Q = I · t divided by the Faraday constant F = 96,485 Coulombs/mol of electrons.',
-        'Finally, in the 1990s at Cambridge, Prof. Michael Ashby created the famous Ashby Property Charts (plotting Young’s Modulus E vs. Density ρ on log-log axes from Math 008!), giving Materials Engineers a rigorous quantitative algorithm to pick the best material out of 160,000+ options.',
+        'Finally, in the 1990s at Cambridge, Prof. Michael Ashby created the famous Ashby Property Charts (plotting Young’s Modulus E vs. Density ρ on log-log axes from Math 008!), giving Materials Engineers a rigorous, step-by-step method to pick the best material out of 160,000+ options.',
       ],
       takeaway:
         'Look back at your journey from Module 01: you started with (−3)×(−2) = +6 and "What is a proton?", and you are now solving 4th-Year Electrochemistry and Ashby Optimization problems!',

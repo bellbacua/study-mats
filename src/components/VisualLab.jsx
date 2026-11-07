@@ -75,6 +75,9 @@ export default function VisualLab({ lesson, isMissionDone, onCompleteMission }) 
         {type === 'crystal_lattice_3d' && (
           <CrystalLattice3DLab onComplete={onCompleteMission} isMissionDone={isMissionDone} />
         )}
+        {type === 'cartesian_slope_wave' && (
+          <CartesianSlopeWaveLab onComplete={onCompleteMission} isMissionDone={isMissionDone} />
+        )}
         <AdvancedVisualLabs type={type} onComplete={onCompleteMission} />
       </div>
     </section>

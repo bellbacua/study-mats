@@ -1,4 +1,4 @@
-import { EXTRA_TERMS, EXTRA_LESSONS } from './extraTermsCurriculum';
+import { EXTRA_TERMS, EXTRA_LESSONS } from './extraTermsCurriculum.js';
 
 export const CURRICULUM_TERMS = [
   {
@@ -39,7 +39,7 @@ export const LESSONS = [
     overtimeDigest: [
       'Numbers are not just "counts of apples"—they are directed transformations (arrows) along a line.',
       'Multiplying by a negative number (−1) literally means "rotate the arrow 180° around zero." Do it twice (−1 × −1), and you rotate 360° back to positive (+1).',
-      'Order of Operations (PEMDAS) is just operator precedence in a compiler: Grouping () → Exponents ^ → Multiply/Divide (left-to-right) → Add/Subtract (left-to-right).',
+      'Order of Operations (PEMDAS) is an agreed rule so everyone gets the same answer: Grouping () → Exponents ^ → Multiply/Divide (left-to-right) → Add/Subtract (left-to-right).',
     ],
     history: {
       era: '628 AD • Ujjain, India & Silk Road Trade',
@@ -90,7 +90,7 @@ const finalResult  = 12 - step3_mulDiv;   // 12 - 8 = 4`,
         title: '3. The Trap in PEMDAS: Multiplication/Division & Addition/Subtraction are TIES',
         formula: '24 \\div 4 \\times 2 = (24 \\div 4) \\times 2 = 6 \\times 2 = 12 \\quad (\\text{NOT } 24 \\div 8 = 3!)',
         explanation:
-          'Many high schoolers think M comes strictly before D, and A strictly before S. False! Multiplication and Division have EQUAL priority (evaluate left-to-right, just like in Python/C++). Addition and Subtraction also have EQUAL priority (left-to-right).',
+          'Many high schoolers think M comes strictly before D, and A strictly before S. False! Multiplication and Division have EQUAL priority (evaluate left-to-right). Addition and Subtraction also have EQUAL priority (left-to-right).',
       },
     ],
     gate: {
@@ -109,7 +109,7 @@ const finalResult  = 12 - step3_mulDiv;   // 12 - 8 = 4`,
           question: 'Beware the exponent sign trap! What is  −3² + (−3)² ?',
           options: ['0', '−18', '+18', '−6'],
           correctIndex: 0,
-          hint1: 'In standard math notation, exponents bind tighter than unary negation! So −3² means −(3 × 3), whereas (−3)² means (−3) × (−3).',
+          hint1: 'In standard math notation, exponents are done before a leading minus sign! So −3² means −(3 × 3), whereas (−3)² means (−3) × (−3).',
           hint2: '−(3²) = −9, and (−3)² = +9. Now add them together.',
           explanation: 'Exponents happen before the minus sign unless parentheses group the minus sign: −3² = −(3×3) = −9, while (−3)² = (−3)(−3) = +9. Their sum is −9 + 9 = 0.',
         },
@@ -155,7 +155,7 @@ const finalResult  = 12 - step3_mulDiv;   // 12 - 8 = 4`,
     umCourseLink: 'Prep for UM Chemistry for Engineers & MatE 101 (Atomic Structure)',
     overtimeDigest: [
       'Every material in the universe is built from atoms: a tiny, ultra-heavy nucleus (Protons [+1] + Neutrons [0]) surrounded by a vast cloud of Electrons [−1].',
-      'The number of Protons (Atomic Number, Z) is the atom’s immutable Primary Key—6 protons is ALWAYS Carbon, 14 is ALWAYS Silicon, 29 is ALWAYS Copper.',
+      'The number of Protons (Atomic Number, Z) is the atom’s permanent ID number—6 protons is ALWAYS Carbon, 14 is ALWAYS Silicon, 29 is ALWAYS Copper.',
       'Chemical and material behavior comes almost entirely from VALENCE ELECTRONS (the electrons in the outermost shell). Atoms want a full outer shell (usually 8 electrons, the Octet Rule).',
     ],
     history: {
@@ -209,7 +209,7 @@ const finalResult  = 12 - step3_mulDiv;   // 12 - 8 = 4`,
         title: '3. Why Valence Electrons Rule Materials Engineering',
         formula: '\\text{Valence } e^-: \\quad 1\\text{–}3 \\to \\text{Metals (give } e^-) \\quad | \\quad 4 \\to \\text{Semiconductors} \\quad | \\quad 5\\text{–}7 \\to \\text{Nonmetals (take/share } e^-)',
         explanation:
-          'Atoms strive for a stable outer shell of 8 electrons (or 2 for the very first shell). Metals like Aluminum (3 valence e⁻) happily donate their loose outer electrons, creating a "sea of electrons" that conducts electricity. Silicon (4 valence e⁻) shares electrons with 4 neighbors, making it the heart of every CPU!',
+          'Atoms strive for a stable outer shell of 8 electrons (or 2 for the very first shell). Metals like Aluminum (3 valence e⁻) happily donate their loose outer electrons, creating a "sea of electrons" that conducts electricity. Silicon (4 valence e⁻) shares electrons with 4 neighbors, making it the heart of every computer chip and solar cell!',
       },
     ],
     gate: {
@@ -528,21 +528,21 @@ const density_kg_m3 = density_g_cm3 * g_to_kg * cm3_to_m3; // 4500 kg/m³`,
     prereqIds: ['chem-002'],
     umCourseLink: 'Direct foundation for all UM Engineering Math, Statics & Thermodynamics equations',
     overtimeDigest: [
-      'Algebra was NOT invented to torture students with letters—it was invented so you can write a single general algorithm once instead of re-solving 1,000 arithmetic word problems by trial and error.',
+      'Algebra was NOT invented to torture students with letters—it was invented so you can write one general method once instead of re-solving 1,000 arithmetic word problems by trial and error.',
       'The Arabic word "Al-Jabr" literally means "restoration" (moving a negative/broken debt to the other side of an equation to make it positive and whole).',
       'To isolate x, just run PEMDAS in reverse (SADMEP): undo Addition/Subtraction first, then undo Multiplication/Division.',
     ],
     history: {
       era: '820 AD • The House of Wisdom, Baghdad',
       protagonist: 'Muhammad ibn Musa al-Khwarizmi (Father of Both "Algorithm" and "Algebra")',
-      hook: 'Did you know the exact same scholar gave Computer Science the word "Algorithm" and Mathematics the word "Algebra"?',
+      hook: 'How did one book written in 9th-century Baghdad give us both the word "algebra" and the word "algorithm"?',
       narrative: [
-        'As a CS graduate, you owe your entire career to one man in 9th-century Baghdad: Al-Khwarizmi. When his Latinized name ("Algoritmi") was attached to step-by-step calculation procedures, it became the English word "Algorithm."',
+        'Two everyday words come from one man in 9th-century Baghdad: Al-Khwarizmi. When his Latinized name ("Algoritmi") was attached to step-by-step calculation procedures, it became the English word "Algorithm."',
         'In 820 AD, Caliph al-Ma’mun asked Al-Khwarizmi to write a practical manual to help merchants, surveyors, and judges solve land-division and inheritance disputes. Before him, people solved problems by guessing numbers and adjusting them. Al-Khwarizmi wrote "Kitab al-Jabr wal-Muqabala" (The Compendious Book on Calculation by Completion/Restoration and Balancing).',
         'He named the unknown quantity "shay\'" (Arabic for "the thing"). When Spanish translators in Toledo translated "shay\'" into Old Spanish "xay", they abbreviated it to its first letter: "x"! And "Al-Jabr" (restoring a subtracted quantity by adding it to both sides of the scale) became the word "Algebra."',
       ],
       takeaway:
-        'You already do Algebra every day when you write a function in code! Solving an equation for x is just inverting a function to find which input `x` produced a known output `y`.',
+        'You already use algebra whenever you work backwards: “3 coffees and a 4-peso cookie cost 19 pesos, so each coffee was 5.” Solving for x just means undoing the steps to recover the unknown.',
     },
     csBridge: {
       concept: 'Referential Transparency & Inverse Function Unwrapping',
@@ -901,7 +901,7 @@ function netAtomicForce(r, r0) {
     prereqIds: ['math-004'],
     umCourseLink: 'Core of UM Chemistry for Engineers & Metallurgical Extraction Calculations',
     overtimeDigest: [
-      'A "Mole" (mol) is just a counting word like "Dozen" (12) or "Byte" (8 bits)—specifically, 1 mole = 6.022 × 10²³ particles (Avogadro’s Number).',
+      'A "Mole" (mol) is just a counting word like "Dozen" (12) or "Ream" (500 sheets of paper)—specifically, 1 mole = 6.022 × 10²³ particles (Avogadro’s Number).',
       'Why that weird number? Because it was chosen so that the atomic mass on the Periodic Table in amu equals the exact mass of 1 mole in GRAMS! (1 Carbon atom = 12 amu → 1 mole of Carbon = 12 grams).',
       'Chemical equations must obey Conservation of Atoms: you balance equations by adjusting front coefficients (never subscripts!) so every element has equal counts on left and right.',
     ],
@@ -912,7 +912,7 @@ function netAtomicForce(r, r0) {
       narrative: [
         'For centuries, alchemists thought burning metal created matter out of nothing because rusted iron weighs MORE than pure iron. In the 1770s, Antoine and Marie-Anne Lavoisier sealed iron in glass flasks, weighed everything before and after heating, and proved the Law of Conservation of Mass: the extra weight came from Oxygen gas in the air bonding onto the iron!',
         'In 1811, the Italian physicist Amedeo Avogadro realized you don’t need to see individual atoms to count them in equal ratios—just like a bank teller doesn’t count 10,000 coins one by one if they know 1 coin weighs 5 grams (they just weigh out 50,000 grams!).',
-        'That "hardware-to-software bridge" is the Mole (6.022 × 10²³). It translates the microscopic atomic masses on the Periodic Table directly into grams you can weigh on a digital scale in the UM Chemistry Lab.',
+        'That bridge between the invisible world of atoms and the kitchen-scale world of grams is the Mole (6.022 × 10²³). It translates the microscopic atomic masses on the Periodic Table directly into grams you can weigh on a digital scale in the UM Chemistry Lab.',
       ],
       takeaway:
         'Whenever a recipe in Materials Engineering says "react 4 moles of Iron with 3 moles of O₂", you convert Moles → Grams using the Periodic Table’s Molar Mass (g/mol)!',

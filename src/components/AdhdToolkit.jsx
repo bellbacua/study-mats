@@ -1,6 +1,12 @@
 import React, { useState, useEffect } from 'react';
 
-export default function AdhdToolkit({ overtimeMode, onToggleOvertime }) {
+export default function AdhdToolkit({
+  overtimeMode,
+  onToggleOvertime,
+  brainDump: propBrainDump,
+  onChangeBrainDump,
+  storageStatus,
+}) {
   // Pomodoro Timer State
   const [secondsLeft, setSecondsLeft] = useState(overtimeMode ? 15 * 60 : 25 * 60);
   const [isRunning, setIsRunning] = useState(false);
@@ -17,17 +23,32 @@ export default function AdhdToolkit({ overtimeMode, onToggleOvertime }) {
   const [calcExpr, setCalcExpr] = useState('(-3) * (-4) + 18 / 3');
   const [calcOut, setCalcOut] = useState('18');
 
-  // Persistent Brain Dump Notes
-  const [brainDump, setBrainDump] = useState(() => {
-    return (
-      localStorage.getItem('um_mate_brain_dump') ||
-      '• Why does Al₂O₃ need 2 Al and 3 O? (+6 and -6 = 0)\n• Ask UM Registrar about GE subject crediting from CS degree'
-    );
+  // Local fallback brain dump notes if not controlled
+  const [localBrainDump, setLocalBrainDump] = useState(() => {
+    try {
+      return (
+        localStorage.getItem('um_mate_brain_dump') ||
+        '• Why does Al₂O₃ need 2 Al and 3 O? (+6 and -6 = 0)\n• Ask UM Registrar about GE subject crediting from CS degree'
+      );
+    } catch {
+      return '• Why does Al₂O₃ need 2 Al and 3 O? (+6 and -6 = 0)\n• Ask UM Registrar about GE subject crediting from CS degree';
+    }
   });
 
-  useEffect(() => {
-    localStorage.setItem('um_mate_brain_dump', brainDump);
-  }, [brainDump]);
+  const activeBrainDump = propBrainDump !== undefined ? propBrainDump : localBrainDump;
+
+  const handleNotesChange = (val) => {
+    if (onChangeBrainDump) {
+      onChangeBrainDump(val);
+    } else {
+      setLocalBrainDump(val);
+      try {
+        localStorage.setItem('um_mate_brain_dump', val);
+      } catch {
+        // ignore
+      }
+    }
+  };
 
   useEffect(() => {
     if (!isRunning) return undefined;
@@ -218,15 +239,28 @@ export default function AdhdToolkit({ overtimeMode, onToggleOvertime }) {
       <div className="toolkit-card">
         <div className="toolkit-card-header">
           <span className="toolkit-eyebrow">ADHD BRAIN-DUMP PARKING LOT</span>
-          <span className="saved-indicator">Auto-Saved</span>
+          <span
+            className="saved-indicator"
+            title={
+              storageStatus?.mode === 'sqlite'
+                ? 'Persisted to SQLite database (data/study_mats.db)'
+                : 'Saved in local storage'
+            }
+          >
+            {storageStatus?.mode === 'sqlite'
+              ? storageStatus.state === 'saving'
+                ? 'SQLite Saving...'
+                : 'SQLite Saved'
+              : 'Auto-Saved'}
+          </span>
         </div>
         <p className="toolkit-desc">
           Random thought popped up mid-lesson? Park it here so your focus stays locked on class:
         </p>
         <textarea
           rows={4}
-          value={brainDump}
-          onChange={(e) => setBrainDump(e.target.value)}
+          value={activeBrainDump}
+          onChange={(e) => handleNotesChange(e.target.value)}
           className="brain-dump-textarea"
           placeholder="Park stray thoughts, questions, or reminders here..."
         />
