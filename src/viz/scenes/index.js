@@ -11,6 +11,7 @@ import * as um_physics from './um_physics';
 import * as um_chem1 from './um_chem1';
 import * as um_chem2 from './um_chem2';
 import * as um_mate1 from './um_mate1';
+import * as um_mate2 from './um_mate2';
 
 // The "try this" challenge for each scene, and how we know it's done.
 const MISSIONS = {
@@ -87,7 +88,7 @@ const MISSIONS = {
 
 // visualLab.type in the curriculum → scene definition
 export const SCENES = {};
-for (const [type, def] of Object.entries({ ...foundations, ...chemistry, ...calculus, ...materials, ...origins, ...matter, ...physics, ...language, ...um_math1, ...um_physics, ...um_chem1, ...um_chem2, ...um_mate1 })) {
+for (const [type, def] of Object.entries({ ...foundations, ...chemistry, ...calculus, ...materials, ...origins, ...matter, ...physics, ...language, ...um_math1, ...um_physics, ...um_chem1, ...um_chem2, ...um_mate1, ...um_mate2 })) {
   if (typeof def !== 'object' || !def.setup) continue;
   SCENES[type] = { ...def, ...MISSIONS[type] };
 }
