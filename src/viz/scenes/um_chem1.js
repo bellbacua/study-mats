@@ -82,7 +82,7 @@ export const gas_piston = {
     const hitsP = kit.line([[0, 0], [0, 0]], { color: C.yellow, width: 6, opacity: 0, create: false });
     const gas = swarm(kit, 60, C.blue, 0.08);
     const P = kit.plane({ x: [0, 4.5, 1], y: [0, 1000, 200], sx: 1.2, sy: 0.0062, origin: [2.0, -3.2], xLabel: 'V\\,(\\text{L})', yLabel: 'P\\,(\\text{kPa})', yEvery: 200 });
-    const iso = kit.curve((v) => 0, [0.6, 4.5], { plane: P, color: C.blue, width: 2.5, opacity: 0.8, clipY: [0, 1000] });
+    const iso = kit.curve(() => 0, [0.6, 4.5], { plane: P, color: C.blue, width: 2.5, opacity: 0.8, clipY: [0, 1000] });
     const dot = kit.dot([0, 0], { r: 0.12, color: C.yellow });
     const lab = kit.label('', [4.6, 3.6], { size: 16, color: C.blue });
     let fl = 0;
