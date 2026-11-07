@@ -22,7 +22,7 @@ const WEEKS = [
   ['chem-004', 'math-003', 'phys-004'], //  8 periodic table · algebra · Newton
   ['chem-001', 'math-005', 'phys-005'], //  9 the atom · graphs · energy
   ['chem-006', 'math-009', 'mate-100'], // 10 gas laws · functions · bonding
-  ['geo-002', 'chem-005', 'mate-102'], // 11 trigonometry · orbitals · crystals
+  ['geo-002', 'chem-013', 'mate-102'], // 11 trigonometry · gravimetric analysis · crystals
   ['math-006', 'mate-110', 'eng-002'], // 12 quadratics · families of materials · CAD
   ['math-010', 'phys-101', 'num-009'], // 13 radians & waves · stress & strain · complex numbers
   ['math-011', 'chem-007', 'phys-006'], // 14 vectors · solutions · electricity
@@ -32,7 +32,7 @@ const WEEKS = [
   ['chem-010', 'math-101', 'phys-009'], // 18 acids & pH · derivatives · rotation
   ['chem-011', 'math-014', 'mate-114'], // 19 redox · derivative rules · hardness testing
   ['phys-010', 'chem-012', 'math-015'], // 20 springs · titration · optimisation
-  ['phys-011', 'mate-113', 'chem-013'], // 21 waves · defects · gravimetric analysis
+  ['phys-011', 'mate-113', 'chem-005'], // 21 waves · defects · orbitals
   ['math-102', 'phys-012', 'mate-112'], // 22 integrals · heat · X-ray diffraction
   ['phys-013', 'math-017', 'chem-015'], // 23 light & lenses · integration methods · organic chemistry
   ['mate-116', 'mate-115', 'chem-014'], // 24 entropy · microscopes · spectroscopy
