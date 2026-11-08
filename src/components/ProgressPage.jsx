@@ -35,7 +35,7 @@ export default function ProgressPage({ progress, nextUp, onOpen, onPrintWeek }) 
   useReveal([offset]);
   const { current, longest } = useMemo(() => streaks(progress.days), [progress.days]);
   const totalMin = Object.values(progress.days).reduce((a, d) => a + (d.minutes || 0), 0);
-  const done = Object.keys(progress.passed).length;
+  const done = LESSONS.filter((l) => progress.passed[l.id]).length;
 
   const month = new Date();
   month.setDate(1);

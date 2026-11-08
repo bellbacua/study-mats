@@ -4,7 +4,7 @@ import { useReveal } from '../state/useReveal';
 const shortName = (p) => p.split('(')[0].trim();
 
 export default function Roadmap({ progress, nextUp, onOpen, status, dueNow = 0, onReview, spec }) {
-  const done = Object.keys(progress.passed).length;
+  const done = LESSONS.filter((l) => progress.passed[l.id]).length;
   useReveal([done]);
   return (
     <div className="roadmap">

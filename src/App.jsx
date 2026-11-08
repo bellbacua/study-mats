@@ -27,7 +27,7 @@ export default function App() {
   const lesson = active;
   const idx = Math.max(0, LESSONS.findIndex((l) => l.id === active.id));
   const nextUp = LESSONS.find((l) => !state.passed[l.id]) || null;
-  const done = Object.keys(state.passed).length;
+  const done = LESSONS.filter((l) => state.passed[l.id]).length;
   const streak = streaks(state.days).current;
   const dueNow = dueCards(state.passed, state.review).length;
 
@@ -75,7 +75,7 @@ export default function App() {
             Review{dueNow > 0 && <span className="nav-badge">{dueNow}</span>}
           </button>
           <button type="button" className={view === 'spec' ? 'on' : ''} onClick={() => setView('spec')}>
-            Specializations
+            Tracks
           </button>
           <button type="button" className={view === 'timeline' ? 'on' : ''} onClick={() => setView('timeline')}>
             Timeline

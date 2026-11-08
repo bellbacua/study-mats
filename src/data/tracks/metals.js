@@ -1,4 +1,397 @@
-// Classes of the metals specialization (see meta.js). Written with mk() like the UM classes.
-import { mk } from '../um/make';
+// Classes of the Metals and Metallurgy specialization (see meta.js). Written with mk() like the UM classes.
+import { mk, home, online, doitpoms } from '../um/make';
 
-export default [];
+export default [
+  mk({
+    id: 'met-001',
+    code: 'MET 101',
+    track: 'mate',
+    um: ['MATE 303'],
+    title: 'Iron and Steel: From Ore to Oxygen Blow',
+    subtitle: 'Darby’s coke, Bessemer’s blast and the basic oxygen furnace',
+    digest: [
+      'Iron ore is iron oxide. A blast furnace strips the oxygen away with carbon monoxide made from burning coke: Fe₂O₃ + 3 CO → 2 Fe + 3 CO₂.',
+      'The iron that comes out (pig iron or hot metal) holds about 4.5% carbon, which makes it brittle. Steel has less than about 2%, most of it under 0.5%.',
+      'In a basic oxygen furnace, pure oxygen blown onto the hot metal burns the extra carbon to CO gas in about 15 to 20 minutes.',
+    ],
+    era: '1709 Darby’s coke → 1856 Bessemer → 1952 oxygen steelmaking → today',
+    who: 'Abraham Darby, Henry Bessemer & the engineers of Linz',
+    hook: 'A ship of iron ore docks at the port. How many tonnes of ore do you need for one tonne of iron, and where does all that oxygen go?',
+    story: [
+      'For thousands of years iron was smelted with charcoal, and whole forests disappeared into furnaces. In 1709, at Coalbrookdale in England, Abraham Darby used coke (coal baked to drive off its tar) instead. Coke is strong enough to hold up a tall column of ore, so furnaces could grow much bigger.',
+      'The iron from a blast furnace is full of carbon and cracks if you hammer it. Turning it into tough steel took days of stirring by hand. In 1856 Henry Bessemer blew air through molten iron, and the carbon burned away in about 20 minutes, with the burning itself keeping the metal hot. Cheap steel built the railways and bridges of the next century.',
+      'Air is mostly nitrogen, which makes steel brittle. In 1952 and 1953, steelworks at Linz and Donawitz in Austria blew pure oxygen onto the metal from above instead. This basic oxygen process now makes about 70% of the world’s steel. Most of the rest comes from electric arc furnaces that melt scrap, which is also how most steel in the Philippines is made today.',
+    ],
+    takeaway: 'Ironmaking takes oxygen away from the ore with carbon; steelmaking then takes most of the carbon away with oxygen.',
+    viz: 'bof_blow',
+    vizTitle: 'Blowing Oxygen Through Hot Metal',
+    vizHow: 'Set the oxygen flow and watch the carbon in the bath fall. It falls in a straight line at first, then slows down once little carbon is left. Stop the blow at the steel grade you want.',
+    steps: [
+      ['Take the oxygen out', '\\text{Fe}_2\\text{O}_3 + 3\\,\\text{CO} \\to 2\\,\\text{Fe} + 3\\,\\text{CO}_2', 'Each formula unit of hematite gives two iron atoms. By mass, hematite is 70% iron.'],
+      ['How much ore?', 'm_{\\text{ore}} = \\frac{m_{\\text{Fe}}}{0.70 \\times \\text{grade}}', 'Ore that is 90% hematite gives 0.9 × 0.70 = 0.63 t of iron per tonne, so 1.59 t of ore per tonne of iron.'],
+      ['Burn off the carbon', '\\text{C} + \\tfrac{1}{2}\\,\\text{O}_2 \\to \\text{CO}', 'Taking 100 t of hot metal from 4.5% to 0.1% carbon removes 4.4 t of carbon.'],
+    ],
+    drills: [
+      ['Hematite is about 70% iron by mass. How much pure Fe₂O₃ gives 7 t of iron?', ['10 t', '7 t', '4.9 t', '14 t'], 'Iron = 0.70 × hematite.', '7 / 0.70.', '10 t.'],
+      ['Why is iron straight from the blast furnace brittle?', ['It holds about 4.5% carbon', 'It holds too little carbon', 'It is still an oxide', 'It is too pure'], 'Compare it with steel.', 'Steel has under about 2% carbon.', 'The high carbon forms hard, brittle iron carbide.'],
+      ['Why did oxygen replace air for blowing steel?', ['Air’s nitrogen made the steel brittle', 'Oxygen is cheaper than air', 'Air cannot burn carbon', 'Oxygen cools the bath'], 'What else is in air?', 'About 78% nitrogen.', 'Nitrogen dissolved in the steel and made it brittle.'],
+    ],
+    boss: [
+      'The Short Blow',
+      'A 150 t heat of hot metal at 4.4% carbon must reach 0.05% carbon. The operator stops the oxygen when the carbon reads 0.3%, to save time. What has gone wrong?',
+      ['The steel still has six times too much carbon, so it will be harder and less tough than ordered', 'Nothing, 0.3% is close enough', 'The steel now has too little carbon', 'The iron has turned back into oxide'],
+      'Compare 0.3% with 0.05%.',
+      'Carbon controls strength and toughness. At 0.3% the steel is a medium-carbon grade, not the soft deep-drawing grade (0.05%) that was ordered. The last stage of the blow is the slowest, but it cannot be skipped.',
+    ],
+    read: [
+      ['wiki', 'Blast furnace', 'How the furnace column works.', 'A blast furnace is a type of metallurgical furnace used for smelting to produce industrial metals, generally pig iron.'],
+      ['wiki', 'Basic oxygen steelmaking', 'The process that makes most of the world’s steel.', 'Basic oxygen steelmaking is a method of primary steelmaking in which carbon-rich molten pig iron is made into steel.'],
+    ],
+    labs: [
+      home('Look at a steel nail, a cast-iron pan and a stainless spoon. Which one would bend, which would crack? Write down your guess, then check what carbon content each usually has.'),
+      online('World Steel Association: steel facts', 'https://worldsteel.org/about-steel/steel-facts/', 'Find how much steel the world makes in a year and what share is made from scrap.'),
+    ],
+    quiz: [
+      ['Who first smelted iron with coke, at Coalbrookdale in 1709?', ['Abraham Darby', 'Henry Bessemer', 'Henry Cort', 'Andrew Carnegie'], 'Coke let furnaces grow much taller.'],
+      ['Where was the basic oxygen process first used (1952)?', ['Linz, Austria', 'Sheffield, England', 'Pittsburgh, USA', 'Iligan, Philippines'], 'It is also called the LD process, for Linz and Donawitz.'],
+    ],
+    gloss: [
+      ['Coke', 'Coal baked without air to drive off its tar; a strong, nearly pure carbon fuel for blast furnaces.', []],
+      ['Pig iron', 'The iron from a blast furnace, holding about 4–4.5% carbon.', ['hot metal']],
+      ['Basic oxygen furnace', 'A vessel where pure oxygen is blown onto molten iron to burn off carbon and make steel.', ['BOF', 'oxygen steelmaking']],
+      ['Slag', 'The glassy layer of oxides that floats on molten metal and carries away impurities.', []],
+    ],
+    events: [
+      [1709, 'Darby smelts iron with coke', 'Coalbrookdale, England.'],
+      [1856, 'Bessemer’s converter', 'Cheap steel by blowing air through iron.'],
+      [1952, 'First basic oxygen steelworks', 'Linz, Austria.'],
+    ],
+  }),
+
+  mk({
+    id: 'met-002',
+    code: 'MET 102',
+    track: 'mate',
+    um: ['MATE 303'],
+    title: 'Winning Nickel: Ellingham Diagrams and Laterite Ore',
+    subtitle: 'Which metals carbon can free, and how Mindanao’s red earth becomes nickel',
+    digest: [
+      'A metal oxide can be reduced by anything whose oxide is more stable. An Ellingham diagram plots ΔG° for each oxidation reaction against temperature; a lower line wins.',
+      'Carbon is special: its line for 2C + O₂ → 2CO slopes down, so the hotter it gets, the more oxides carbon can reduce.',
+      'Philippine nickel is laterite: weathered red soil with only about 1–2% nickel. Plants in Palawan and Surigao dissolve it in hot sulfuric acid under pressure (HPAL) instead of smelting it.',
+    ],
+    era: '1890 Mond’s nickel carbonyl → 1944 Ellingham → 2005 Coral Bay HPAL → today',
+    who: 'Harold Ellingham, Ludwig Mond & the Philippine nickel miners',
+    hook: 'You can make iron by heating its ore with coal. Why can you not do the same with aluminium or silicon at the same temperature?',
+    story: [
+      'In 1890 Ludwig Mond found that nickel joins with carbon monoxide gas at about 50 °C to make a vapour, nickel carbonyl, and lets go of it again at about 200 °C. Nickel could be carried away as a gas and laid down almost perfectly pure. The Mond process still refines nickel today.',
+      'In 1944 Harold Ellingham, a chemist in London, drew the standard Gibbs energy of forming many oxides on one chart against temperature. Each line is nearly straight because ΔG° = ΔH° − TΔS°. With a ruler you could read which element can pull oxygen away from which, and how hot the furnace must be.',
+      'The Philippines is one of the world’s biggest producers of nickel ore, mined mostly in Surigao, Dinagat and Palawan. The ore is laterite, too poor to smelt cheaply. Since 2005 the Coral Bay plant in Bataraza, Palawan, and since 2013 the Taganito plant in Claver, Surigao del Norte, have leached it with sulfuric acid at about 250 °C under pressure, recovering nickel and cobalt for batteries and stainless steel.',
+    ],
+    takeaway: 'Read the Ellingham diagram: the reducer’s line must lie below the oxide’s line at the furnace temperature.',
+    viz: 'ellingham',
+    vizTitle: 'An Ellingham Diagram',
+    vizHow: 'Each line is ΔG° for burning a substance with one mole of O₂. Move the temperature and see which oxides carbon (the dashed line) can reduce: those whose lines lie above it.',
+    steps: [
+      ['A straight line in T', '\\Delta G^\\circ = \\Delta H^\\circ - T\\,\\Delta S^\\circ', 'Burning a metal uses up O₂ gas, so ΔS° is negative and the line rises with temperature.'],
+      ['Carbon’s line falls', '2\\text{C} + \\text{O}_2 \\to 2\\text{CO}: \\; \\Delta S^\\circ > 0', 'One mole of gas becomes two, so ΔS° is positive and the line slopes down.'],
+      ['Where they cross', 'T^* = \\frac{\\Delta H_1 - \\Delta H_2}{\\Delta S_1 - \\Delta S_2}', 'Above the crossing temperature carbon can reduce the oxide.'],
+    ],
+    drills: [
+      ['At 1000 K, ΔG° for 2Ni + O₂ → 2NiO is −307 kJ and for 2C + O₂ → 2CO is −400 kJ. Can carbon reduce NiO?', ['Yes, carbon’s line is lower', 'No, nickel’s line is lower', 'Only below 300 K', 'It cannot be told'], 'The lower line wins.', '−400 is below −307.', 'Yes: NiO + C → Ni + CO has ΔG° = (−400 + 307)/2 < 0.'],
+      ['Why does the line for 2C + O₂ → 2CO slope downward?', ['The reaction makes more gas than it uses, so ΔS° > 0', 'Carbon melts', 'ΔH° is positive', 'Oxygen is a solid'], 'Count moles of gas on each side.', 'One mole of O₂ becomes two of CO.', 'ΔS° > 0, so −TΔS° makes ΔG° more negative as T rises.'],
+      ['Laterite holds 1.5% nickel. How many tonnes of ore hold 1 t of nickel?', ['About 67 t', 'About 15 t', 'About 150 t', 'About 1.5 t'], '1.5% means 0.015 t per tonne.', '1 / 0.015.', 'About 67 t.'],
+    ],
+    boss: [
+      'The Stubborn Oxide',
+      'A plant wants to reduce silica (SiO₂) to silicon with carbon. Si + O₂ → SiO₂ has ΔG° ≈ −911 + 0.180T kJ and 2C + O₂ → 2CO has ΔG° ≈ −221 − 0.179T kJ. At 1500 K, which is true?',
+      ['Carbon cannot reduce silica yet; it needs about 1920 K or more', 'Carbon reduces silica easily at 1500 K', 'Carbon can never reduce silica', 'Silica reduces carbon'],
+      'Find where the lines cross.',
+      'Setting −911 + 0.180T = −221 − 0.179T gives T ≈ 1922 K. At 1500 K silica’s line (−641 kJ) is still below carbon’s (−490 kJ). Real silicon furnaces run electric arcs at around 2000 °C.',
+    ],
+    read: [
+      ['wiki', 'Ellingham diagram', 'How to read the chart.', 'An Ellingham diagram is a graph showing the temperature dependence of the stability of compounds.'],
+      ['wiki', 'Laterite', 'What the red Philippine nickel ore is.', 'Laterite is a soil type rich in iron and aluminium and is considered to have formed in hot and wet tropical areas.'],
+    ],
+    labs: [
+      doitpoms('Open the DoITPoMS library entry "Ellingham diagrams" and use its interactive chart to find the temperature at which carbon reduces ZnO.'),
+      home('Leave a steel nail and a piece of aluminium foil in salty water for a week. Which one shows its oxide? Think about why aluminium, whose oxide is much more stable, still looks fine.'),
+    ],
+    quiz: [
+      ['Who drew the chart of oxide stability against temperature in 1944?', ['Harold Ellingham', 'Ludwig Mond', 'Josiah Willard Gibbs', 'Henry Bessemer'], 'The chart carries his name.'],
+      ['What did Ludwig Mond discover in 1890?', ['Nickel carbonyl, a gas that lets nickel be refined', 'The blast furnace', 'Stainless steel', 'Aluminium smelting'], 'Ni + 4 CO forms a vapour.'],
+    ],
+    gloss: [
+      ['Ellingham diagram', 'A chart of ΔG° for forming oxides against temperature; a lower line means a more stable oxide.', ['Ellingham']],
+      ['Reduction (metallurgy)', 'Taking oxygen away from a metal oxide to free the metal.', ['reducing agent', 'reduce the oxide']],
+      ['Laterite ore', 'Deeply weathered tropical soil holding a few percent nickel or other metals.', ['laterite', 'lateritic']],
+      ['HPAL', 'High-pressure acid leaching: dissolving nickel and cobalt from laterite in sulfuric acid at about 250 °C.', ['high-pressure acid leaching']],
+    ],
+    events: [
+      [1890, 'Mond’s nickel carbonyl process', 'Nickel refined as a gas.'],
+      [1944, 'Ellingham’s diagram', 'Oxide stability on one chart.'],
+      [2005, 'Coral Bay HPAL plant, Palawan', 'Nickel and cobalt from Philippine laterite.'],
+    ],
+  }),
+
+  mk({
+    id: 'met-003',
+    code: 'MET 103',
+    track: 'mate',
+    um: ['MATE 303'],
+    title: 'Alloy Design: Solid Solutions and Size Rules',
+    subtitle: 'Hume-Rothery’s rules, Monel metal and why a few odd atoms make metal stronger',
+    digest: [
+      'In a solid solution the added atoms (the solute) sit on the same crystal as the main metal. They can replace host atoms (substitutional) or squeeze between them (interstitial).',
+      'Hume-Rothery’s rules: wide solubility needs atom sizes within about 15%, the same crystal structure, similar electronegativity and similar valence.',
+      'Odd-sized atoms strain the lattice around them and get in the way of moving dislocations. Strength rises roughly with the square root of the solute fraction.',
+    ],
+    era: '1905 Monel metal → 1926 Hume-Rothery’s rules → 1960s strengthening theory → today',
+    who: 'William Hume-Rothery & Robert Crooks Stanley',
+    hook: 'Copper and nickel mix in any proportion, like water and alcohol. Copper and tin do not. What decides it?',
+    story: [
+      'In 1905 Robert Crooks Stanley of the International Nickel Company smelted an ore from Ontario that held both copper and nickel, and simply kept them together. The result, about two parts nickel to one of copper, was named Monel. It resists seawater so well that it is still used for ship propellers, pumps and valves.',
+      'In 1926 William Hume-Rothery, a young metallurgist at Oxford who had lost his hearing to illness during the First World War, studied which metals dissolve in silver and copper. He found that if two kinds of atom differ in size by more than about 15%, very little of one dissolves in the other. Further work added rules about crystal structure, electronegativity and valence.',
+      'Engineers now use these rules to design alloys: brass (copper and zinc), cupronickel coins, and the carbon in steel, which sits in the small holes between iron atoms.',
+    ],
+    takeaway: 'Atoms of similar size and type mix freely; the misfit of each solute atom is also what makes the alloy stronger.',
+    viz: 'solid_solution',
+    vizTitle: 'Odd Atoms in a Copper Crystal',
+    vizHow: 'Pick a solute and how much of it to add. Bigger misfit strains the lattice more and raises strength faster, but past the size limit the solute will not stay dissolved.',
+    steps: [
+      ['Size misfit', '\\delta = \\frac{r_{\\text{solute}} - r_{\\text{host}}}{r_{\\text{host}}} \\times 100\\%', 'Nickel in copper: (0.125 − 0.128)/0.128 = −2.3%. Well inside the 15% rule.'],
+      ['The 15% rule', '|\\delta| < 15\\% \\Rightarrow \\text{wide solubility possible}', 'Tin in copper: (0.151 − 0.128)/0.128 = +18%. Only a little tin dissolves.'],
+      ['Strength from solutes', '\\Delta\\sigma \\approx K\\sqrt{c}', 'Doubling the strengthening needs four times as much solute.'],
+    ],
+    drills: [
+      ['Zinc radius 0.133 nm, copper 0.128 nm. Size misfit?', ['+3.9%', '−3.9%', '+0.5%', '+39%'], '(r_solute − r_host)/r_host.', '0.005/0.128.', '+3.9%.'],
+      ['Which pair can form a solid solution over the whole range?', ['Copper and nickel', 'Copper and tin', 'Iron and lead', 'Aluminium and tin'], 'Same structure, close size.', 'Both are FCC, 2% apart.', 'Copper and nickel.'],
+      ['If Δσ = K√c, how much more solute gives three times the strengthening?', ['9 times', '3 times', '6 times', '√3 times'], 'Solve 3 = √(c₂/c₁).', 'Square both sides.', '9 times.'],
+    ],
+    boss: [
+      'The Big Atom',
+      'A designer wants to strengthen aluminium (radius 0.143 nm) by dissolving 5% of lead (radius 0.175 nm) in it. What will Hume-Rothery’s rules predict?',
+      ['Almost no lead will dissolve: the misfit is about 22%, over the 15% limit', 'It will dissolve easily and make the alloy very strong', 'It will dissolve because both are metals', 'It will turn the aluminium into lead'],
+      'Work out (0.175 − 0.143)/0.143.',
+      'The misfit is +22%. Lead and aluminium barely mix even when molten-hot; the lead gathers in separate drops instead. (Lead is in fact added to some free-machining alloys for exactly that reason.)',
+    ],
+    read: [
+      ['wiki', 'Hume-Rothery rules', 'The four rules in one place.', 'Hume-Rothery rules are a set of basic rules that describe the conditions under which an element could dissolve in a metal, forming a solid solution.'],
+      ['wiki', 'Solid solution strengthening', 'How solute atoms pin dislocations.', 'Solid solution strengthening is a type of alloying that can be used to improve the strength of a pure metal.'],
+    ],
+    labs: [
+      doitpoms('Open the DoITPoMS entry "Solid solutions" and try the substitutional and interstitial pictures.'),
+      home('Philippine 1-peso and 5-peso coins are nickel-plated steel; older 25-centavo coins were brass. Look at old coins and guess which alloys they are from their colour.'),
+    ],
+    quiz: [
+      ['Who stated the 15% atomic-size rule for solid solutions (1926)?', ['William Hume-Rothery', 'Robert Crooks Stanley', 'Alfred Wilm', 'Harold Ellingham'], 'An Oxford metallurgist.'],
+      ['Monel metal is mostly which two metals?', ['Nickel and copper', 'Iron and chromium', 'Copper and zinc', 'Aluminium and copper'], 'Smelted together from a Canadian ore.'],
+    ],
+    gloss: [
+      ['Solid solution', 'A crystal holding two or more kinds of atom mixed on one lattice.', ['solid solutions']],
+      ['Substitutional solute', 'A solute atom that takes the place of a host atom.', ['substitutional']],
+      ['Interstitial solute', 'A small solute atom (such as C, N or H) that sits in the gaps between host atoms.', ['interstitial']],
+      ['Hume-Rothery rules', 'Size within 15%, same crystal structure, similar electronegativity and valence: the conditions for wide solubility.', []],
+    ],
+    events: [
+      [1905, 'Monel metal', 'Nickel and copper kept together.'],
+      [1926, 'Hume-Rothery’s size rule', 'Atoms more than 15% apart barely mix.'],
+    ],
+  }),
+
+  mk({
+    id: 'met-004',
+    code: 'MET 104',
+    track: 'mate',
+    um: ['MATE 308'],
+    title: 'Precipitation Hardening: Wilm’s Weekend',
+    subtitle: 'Duralumin, Zeppelins and why aluminium gets stronger while it rests',
+    digest: [
+      'Some alloys can dissolve more of a second element when hot than when cold. Quenching traps the extra atoms in solution; gentle heating (ageing) then lets them cluster into tiny particles.',
+      'Fine particles block moving dislocations. The alloy reaches peak hardness when particles are many and small; ageing too long lets them grow and spread out (overageing), and it softens.',
+      'Hotter ageing reaches its peak sooner but at a lower hardness. The time to peak follows an Arrhenius law, t ∝ exp(Q/RT).',
+    ],
+    era: '1906 Wilm’s discovery → 1909 Duralumin → 1938 Guinier–Preston zones → today',
+    who: 'Alfred Wilm, André Guinier & George Preston',
+    hook: 'You quench an aluminium alloy, test it, and go home for the weekend. On Monday the same piece is much harder. Nothing touched it. What happened?',
+    story: [
+      'In 1906 Alfred Wilm, working near Berlin on stronger metals for cartridge cases, quenched an aluminium alloy with copper and a little magnesium. Its hardness was disappointing. Tested again after a weekend, it had become much harder. Nothing could be seen under the microscope, but the effect was real and repeatable.',
+      'The alloy was sold from 1909 as Duralumin and framed the Zeppelin airships of the First World War and then the first all-metal aircraft. In 1919 American metallurgists suggested that tiny particles must be forming inside the metal. In 1938 André Guinier in France and George Preston in Britain, both using X-rays, found the copper atoms gathering into flat clusters only a few atoms thick: Guinier–Preston zones.',
+      'Today precipitation-hardened aluminium alloys such as 2024 and 7075 make aircraft wings and fuselages, and the same idea strengthens nickel superalloys and many stainless steels.',
+    ],
+    takeaway: 'Dissolve, quench, then age: the right time and temperature give the finest particles and the hardest alloy.',
+    viz: 'ageing_curve',
+    vizTitle: 'Ageing Curves for an Aluminium Alloy',
+    vizHow: 'Pick the ageing temperature and slide the time (on a log scale). Watch the hardness climb to a peak and then fall as the particles coarsen.',
+    steps: [
+      ['Solution treat and quench', 'T_{\\text{solvus}} < T_{\\text{solution}} < T_{\\text{solidus}}', 'Heat into the single-phase region so all copper dissolves, then quench to trap it.'],
+      ['Age to the peak', 't_{\\text{peak}} = A\\,e^{Q/RT}', 'With Q = 130 kJ/mol, ageing at 190 °C instead of 160 °C reaches the peak about 10 times sooner.'],
+      ['Particles block dislocations', '\\Delta\\tau \\approx \\frac{G\\,b}{L}', 'Orowan: the closer the particles (smaller L), the more stress a dislocation needs to bow between them.'],
+    ],
+    drills: [
+      ['What is the right order of steps for precipitation hardening?', ['Solution treat, quench, age', 'Age, quench, solution treat', 'Quench, solution treat, age', 'Cold work, age, quench'], 'First dissolve everything.', 'Then trap it, then let it cluster.', 'Solution treat, quench, age.'],
+      ['Ageing at a higher temperature usually…', ['Reaches the peak sooner but at lower hardness', 'Takes longer and gives higher hardness', 'Makes no difference', 'Melts the particles'], 'Diffusion is faster when hot.', 'But particles also grow bigger.', 'Sooner, but lower.'],
+      ['Orowan: halving the particle spacing L changes the extra strength by…', ['×2', '×½', '×4', 'No change'], 'Δτ ∝ 1/L.', '1/(L/2) = 2/L.', 'It doubles.'],
+    ],
+    boss: [
+      'The Forgotten Oven',
+      'A batch of 7075 aluminium brackets should be aged 24 h at 120 °C. A worker leaves them at 120 °C for two weeks. What happens to their strength?',
+      ['It drops: the particles overage, growing larger and farther apart', 'It doubles', 'It stays exactly at peak', 'The brackets return to the quenched state'],
+      'Look at the right side of the ageing curve.',
+      'Past the peak, big particles grow at the expense of small ones (coarsening). Spacing L rises and Orowan strength falls. Overaged parts are softer, though some aerospace tempers overage on purpose for better corrosion resistance.',
+    ],
+    read: [
+      ['wiki', 'Precipitation hardening', 'The full process and its alloys.', 'Precipitation hardening, also called age hardening or particle hardening, is a heat treatment technique used to increase the yield strength of malleable materials.'],
+      ['wiki', 'Duralumin', 'Wilm’s alloy and the Zeppelins.', 'Duralumin is a trade name for one of the earliest types of age-hardenable aluminium alloys.'],
+    ],
+    labs: [
+      doitpoms('Open the DoITPoMS entry "Precipitation hardening" (or the aluminium alloys micrographs) and find where the peak-aged structure is shown.'),
+      online('MatWeb', 'https://www.matweb.com/', 'Look up aluminium 6061 in the T4 (naturally aged) and T6 (peak aged) tempers and compare their yield strengths.'),
+    ],
+    quiz: [
+      ['Who discovered age hardening of aluminium alloys in 1906?', ['Alfred Wilm', 'André Guinier', 'Charles Martin Hall', 'Paul Héroult'], 'He found it after a weekend.'],
+      ['What were Guinier–Preston zones (1938)?', ['Tiny flat clusters of copper atoms inside aluminium', 'Cracks in Zeppelin frames', 'A kind of furnace', 'Regions of melted metal'], 'Found with X-rays.'],
+    ],
+    gloss: [
+      ['Precipitation hardening', 'Strengthening an alloy by forming fine particles inside it with a solution treatment, quench and ageing.', ['age hardening', 'ageing']],
+      ['Overageing', 'Ageing past the peak, so particles grow and spread out and the alloy softens.', ['overaged']],
+      ['Guinier–Preston zones', 'The first tiny clusters of solute atoms that form when a quenched alloy ages.', ['GP zones']],
+      ['Orowan bowing', 'A dislocation bending between particles; the stress needed rises as particle spacing shrinks.', ['Orowan']],
+    ],
+    events: [
+      [1906, 'Wilm finds age hardening', 'Aluminium hardens over a weekend.'],
+      [1909, 'Duralumin goes on sale', 'Later framed the Zeppelins.'],
+      [1938, 'Guinier–Preston zones seen', 'With X-rays, in France and Britain.'],
+    ],
+  }),
+
+  mk({
+    id: 'met-005',
+    code: 'MET 105',
+    track: 'mate',
+    um: ['MATE 308'],
+    title: 'Grain Size, Cold Work and Recrystallisation',
+    subtitle: 'Hall and Petch, and why a blacksmith heats the metal again',
+    digest: [
+      'Every grain boundary is a wall that slipping dislocations must stop at. Smaller grains mean more walls: σy = σ₀ + k/√d (the Hall–Petch relation).',
+      'Bending or rolling metal cold multiplies dislocations until they tangle. The metal gets stronger but less ductile (work hardening).',
+      'Heating cold-worked metal to about 0.4 of its melting point (in kelvin) grows new, clean grains (recrystallisation). It softens again, and the grain size can be set by the time and temperature.',
+    ],
+    era: '1951 Hall → 1953 Petch → 1960s controlled rolling → today',
+    who: 'E. O. Hall & Norman Petch',
+    hook: 'A paper clip bent back and forth gets stiff, then snaps. A blacksmith reheats the iron before it cracks. What is the heat doing?',
+    story: [
+      'Blacksmiths knew for thousands of years that hammering cold iron makes it hard and brittle, and that heating it in the fire makes it soft again. What was happening inside could only be explained after dislocations were understood in the 1930s.',
+      'In 1951 E. O. Hall at Sheffield and in 1953 Norman Petch, then at Leeds, measured how the yield strength of iron and steel depends on grain size. Both found that strength rises with one over the square root of the grain diameter. The rule now carries both their names.',
+      'From the 1960s steelmakers learned to roll steel at carefully chosen temperatures so that it recrystallises into very fine grains. This controlled rolling makes the high-strength steels in pipelines, ships and bridges, which are strong and tough at once. Grain refinement is the only common way to raise both.',
+    ],
+    takeaway: 'Make grains smaller to gain strength and toughness together; cold work buys strength with ductility, and recrystallisation pays it back.',
+    viz: 'hall_petch',
+    vizTitle: 'Smaller Grains, Stronger Steel',
+    vizHow: 'Slide the grain size and watch the number of grains in the square change. The plot shows yield strength against 1/√d, which turns the Hall–Petch curve into a straight line.',
+    steps: [
+      ['Hall–Petch', '\\sigma_y = \\sigma_0 + \\frac{k}{\\sqrt{d}}', 'For mild steel σ₀ ≈ 70 MPa and k ≈ 0.74 MPa·m^½. Grains of 25 µm give 70 + 0.74/√(25×10⁻⁶) = 218 MPa.'],
+      ['Cold work', '\\%\\text{CW} = \\frac{A_0 - A_d}{A_0} \\times 100', 'Drawing a 10 mm wire down to 8 mm is (100 − 64)/100 = 36% cold work.'],
+      ['Recrystallisation temperature', 'T_{\\text{rx}} \\approx 0.4\\,T_m \\;(\\text{in K})', 'Copper melts at 1358 K, so it recrystallises from about 543 K (270 °C).'],
+    ],
+    drills: [
+      ['With σ₀ = 70 MPa and k = 0.74 MPa·m^½, what is σy for d = 100 µm?', ['144 MPa', '70 MPa', '218 MPa', '814 MPa'], '√(100×10⁻⁶) = 0.01 m^½.', '0.74/0.01 = 74.', '70 + 74 = 144 MPa.'],
+      ['How must d change to double the k/√d term?', ['Shrink to a quarter', 'Halve', 'Double', 'Quadruple'], '1/√d doubles when √d halves.', '√d halves when d is divided by 4.', 'A quarter of the size.'],
+      ['Lead melts at 600 K. Is it work-hardened by bending at room temperature (295 K)?', ['No, 295 K is about 0.5 Tm, so it recrystallises as you bend it', 'Yes, strongly', 'Only if it is very pure', 'It melts'], '0.4 × 600 = 240 K.', 'Room temperature is above that.', 'Lead stays soft: it recrystallises at room temperature.'],
+    ],
+    boss: [
+      'The Coarse Weld',
+      'A pipeline steel is made with 5 µm grains. Near a weld the steel was held hot for a long time and the grains grew to 80 µm. With σ₀ = 70 MPa and k = 0.74 MPa·m^½, how much yield strength was lost?',
+      ['About 250 MPa (from about 401 to about 153 MPa)', 'Nothing', 'About 20 MPa', 'It became stronger'],
+      'Work out k/√d for both sizes.',
+      '0.74/√(5×10⁻⁶) = 331 MPa and 0.74/√(80×10⁻⁶) = 83 MPa. So σy falls from 401 to 153 MPa, a loss of about 248 MPa. Toughness drops too, which is why welding procedures limit the heat input.',
+    ],
+    read: [
+      ['wiki', 'Grain boundary strengthening', 'The Hall–Petch relation.', 'In materials science, grain-boundary strengthening (or Hall–Petch strengthening) is a method of strengthening materials by changing their average crystallite (grain) size.'],
+      ['wiki', 'Recrystallization (metallurgy)', 'How new grains form.', 'In materials science, recrystallization is a process by which deformed grains are replaced by a new set of defect-free grains.'],
+    ],
+    labs: [
+      home('Bend a paper clip back and forth, counting the bends until it breaks. Do the same with a second clip, but heat its middle in a candle flame for a minute halfway through (with pliers, outdoors). Does it last longer?'),
+      doitpoms('Open the DoITPoMS entry "Recrystallisation" or "Work hardening" and watch the micrographs as the metal anneals.'),
+    ],
+    quiz: [
+      ['Which two researchers gave their names to the grain-size strength rule (1951, 1953)?', ['Hall and Petch', 'Hume-Rothery and Stanley', 'Guinier and Preston', 'Bessemer and Darby'], 'σy = σ₀ + k/√d.'],
+      ['What does controlled rolling of steel aim for?', ['Very fine recrystallised grains', 'Very coarse grains', 'Melting the surface', 'Removing all carbon'], 'Strength and toughness together.'],
+    ],
+    gloss: [
+      ['Hall–Petch relation', 'Yield strength rises with 1/√(grain size): σy = σ₀ + k/√d.', ['Hall-Petch', 'Hall–Petch']],
+      ['Work hardening', 'Strengthening by plastic deformation at low temperature, as dislocations multiply and tangle.', ['cold work', 'strain hardening']],
+      ['Recrystallisation', 'Growth of new, strain-free grains when cold-worked metal is heated.', ['recrystallise', 'recrystallization']],
+      ['Annealing', 'Heating and slow cooling to soften a metal and relieve stress.', ['anneal']],
+    ],
+    events: [
+      [1951, 'Hall’s grain-size law', 'Sheffield.'],
+      [1953, 'Petch confirms it for iron', 'The Hall–Petch relation.'],
+    ],
+  }),
+
+  mk({
+    id: 'met-006',
+    code: 'MET 106',
+    track: 'mate',
+    um: ['MATE 308'],
+    title: 'Stainless Steels and Superalloys',
+    subtitle: 'Brearley’s rustless knife, PREN, and turbine blades that run hotter than they melt',
+    digest: [
+      'Steel with at least about 10.5% chromium grows a chromium oxide film only a few nanometres thick that heals itself when scratched. That passive film is what makes steel stainless.',
+      'Molybdenum and nitrogen add resistance to pitting in salt water. PREN = %Cr + 3.3 %Mo + 16 %N ranks grades; about 40 or more is needed for seawater.',
+      'Nickel superalloys keep their strength near 1000 °C thanks to γ′ particles. Cast as single crystals, with cooling holes and a ceramic coating, jet turbine blades work in gas hotter than their own melting point.',
+    ],
+    era: '1913 Brearley’s stainless → 1941 Nimonic 80 → 1980s single-crystal blades → today',
+    who: 'Harry Brearley & the jet engine metallurgists',
+    hook: 'A steel spoon in the sink never rusts, but a steel nail rusts in a day. They are both mostly iron. What is different?',
+    story: [
+      'In 1913 Harry Brearley in Sheffield was testing steels for rifle barrels. He noticed that a sample with about 12.8% chromium did not etch in the acid he used to reveal its grains, and did not rust in the scrap pile. He saw a better use for it than guns: cutlery. Sheffield knives made of "rustless steel" went on sale within a few years.',
+      'The jet engine needed something else: metal that stays strong when red hot. In 1941 Nimonic 80, a nickel–chromium alloy hardened by tiny particles of Ni₃(Al,Ti), went into Frank Whittle’s engines. Later alloys added cobalt, tungsten and rhenium.',
+      'Grain boundaries are where hot metal creeps first, so engineers removed them. From the 1980s, turbine blades have been cast as single crystals. With air cooling and a ceramic thermal-barrier coating, they now work in gas well above 1400 °C, while the metal itself melts at about 1350 °C.',
+    ],
+    takeaway: 'Chromium makes steel stainless by forming a self-healing oxide; nickel alloys with fine γ′ particles and no grain boundaries stay strong when red hot.',
+    viz: 'stainless_pren',
+    vizTitle: 'How Much Chromium Makes Steel Stainless?',
+    vizHow: 'Slide the chromium and molybdenum content. The plot shows how fast the steel corrodes in damp air; the readout gives its PREN and where it can be used.',
+    steps: [
+      ['The passive film', '\\%\\text{Cr} \\ge 10.5 \\Rightarrow \\text{continuous Cr}_2\\text{O}_3 \\text{ film}', 'Below this the oxide forms in patches and rust gets through the gaps.'],
+      ['Ranking pitting resistance', '\\text{PREN} = \\%\\text{Cr} + 3.3\\,\\%\\text{Mo} + 16\\,\\%\\text{N}', 'Grade 316 (17 Cr, 2.1 Mo, 0.05 N): 17 + 6.9 + 0.8 = 24.7.'],
+      ['Running hotter than the melting point', 'T_{\\text{metal}} = T_{\\text{gas}} - \\Delta T_{\\text{coating}} - \\Delta T_{\\text{cooling}}', 'Gas at 1500 °C, 150 °C dropped across the coating and 300 °C by cooling air: metal at 1050 °C.'],
+    ],
+    drills: [
+      ['Duplex 2205 has 22% Cr, 3.1% Mo, 0.17% N. PREN?', ['About 35', 'About 25', 'About 22', 'About 45'], 'Cr + 3.3 Mo + 16 N.', '22 + 10.2 + 2.7.', '34.9, about 35.'],
+      ['Which grade is the minimum for seawater (PREN about 40 or more)?', ['Super-duplex (25 Cr, 3.5 Mo, 0.25 N)', 'Grade 304 (18 Cr)', 'Grade 316 (17 Cr, 2.1 Mo)', 'Grade 430 (17 Cr)'], 'Work out each PREN.', '25 + 11.6 + 4 = 40.6.', 'Super-duplex.'],
+      ['Why are turbine blades cast as single crystals?', ['There are no grain boundaries for creep to start at', 'Single crystals are cheaper', 'They melt at a lower temperature', 'They are lighter'], 'Where does creep happen first at high temperature?', 'Along grain boundaries.', 'No boundaries means much better creep life.'],
+    ],
+    boss: [
+      'The Seaside Railing',
+      'A resort in Boracay wants stainless railings by the beach. The supplier offers grade 304 (18% Cr, no Mo, 0.05% N, PREN ≈ 19) because it is cheaper. After a year the railings show brown spots. What should have been used?',
+      ['A molybdenum grade such as 316 or better, cleaned often, or duplex steel for the worst spots', 'Plain carbon steel, painted once', 'Grade 304 with thicker walls', 'Any steel with more carbon'],
+      'Salt spray causes pitting; what fights pitting?',
+      'Chloride breaks the passive film in small pits. Molybdenum raises PREN: 316 reaches about 25 and duplex 2205 about 35. Thicker 304 has the same surface chemistry and still pits. In practice 316 near the sea needs regular washing, and duplex grades are safer.',
+    ],
+    read: [
+      ['wiki', 'Stainless steel', 'Grades, passive film and uses.', 'Stainless steel, also known as inox, corrosion-resistant steel, or rustless steel, is an iron-based alloy that contains chromium, making it resistant to rust and corrosion.'],
+      ['wiki', 'Superalloy', 'Nickel alloys for jet engines.', 'A superalloy, or high-performance alloy, is an alloy with the ability to operate at a high fraction of its melting point.'],
+    ],
+    labs: [
+      home('Put a stainless spoon and a steel nail in salty water for a week. Then scratch the spoon with a coin and put it back. Does the scratch rust? Explain it with the self-healing film.'),
+      online('MatWeb', 'https://www.matweb.com/', 'Look up the compositions of 304, 316 and 2205 stainless steels and work out the PREN of each.'),
+    ],
+    quiz: [
+      ['Who found rust-resistant chromium steel in Sheffield in 1913?', ['Harry Brearley', 'Henry Bessemer', 'Robert Mushet', 'Frank Whittle'], 'He first thought of cutlery.'],
+      ['What hardens nickel superalloys like Nimonic 80?', ['Tiny Ni₃(Al,Ti) particles called γ′', 'Carbon in solution', 'Cold work only', 'A chromium film'], 'Precipitation hardening at high temperature.'],
+    ],
+    gloss: [
+      ['Passive film', 'A very thin, self-healing oxide layer that protects a metal such as stainless steel.', ['passivity', 'passive layer']],
+      ['PREN', 'Pitting resistance equivalent number: %Cr + 3.3 %Mo + 16 %N.', ['pitting resistance equivalent']],
+      ['Superalloy', 'An alloy (usually nickel based) that stays strong near its melting point.', ['superalloys']],
+      ['Single-crystal blade', 'A turbine blade cast as one grain, with no grain boundaries.', ['single crystal']],
+    ],
+    events: [
+      [1913, 'Brearley’s stainless steel', 'Sheffield.'],
+      [1941, 'Nimonic 80 for the jet engine', 'Nickel superalloy.'],
+    ],
+  }),
+];
