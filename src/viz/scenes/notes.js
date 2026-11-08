@@ -99,4 +99,34 @@ export const NOTES = {
     [{ text: 'zoom in: between 7 and 8 hundredths', at: [-1.6, -0.5], to: [3.4, 1.4] }],
     [{ text: 'zoom again: exactly 5 thousandths', at: [3.2, -2.6], to: [-0.1, -0.9], color: C.gold }],
   ],
+  irrational_sqrt2: [
+    [{ text: 'the diagonal d: d² = 1² + 1² = 2', at: [0.8, 1.2], to: [-4.0, -0.2] }],
+    [{ text: 'swing it down: √2 is a real point on the line', at: [3.4, 0.6], to: [-0.4, -2.1] }],
+    [{ text: 'fractions crowd in from both sides, but none lands exactly on √2', at: [3.6, 0.2], to: [-0.4, -2.0], color: C.green }],
+  ],
+  exponent_growth_scaler: [
+    [{ text: 'the square inside is 10 times smaller: 10⁻¹ m', at: [4.2, 1.6], to: [0.15, 0.0] }],
+    [{ text: 'each step inward divides by 10: the exponent drops by 1', at: [4.2, 1.6], to: [0.15, 0.0] }],
+    [{ text: '10⁻¹⁰ m: the size of one atom', at: [4.4, 1.6], to: [1.4, 1.3] }],
+  ],
+  number_sets: [
+    [{ text: '7 is in ℕ, so it is in every box around ℕ too', at: [3.4, -3.7], to: [-2.6, -0.3] }],
+    [{ text: '−3: outside ℕ, but inside ℤ', at: [3.4, -3.7], to: [-0.9, -1.0] }],
+    [{ text: '√2: inside ℝ, but outside ℚ', at: [5.4, -3.4], to: [3.0, 1.0], color: C.gold }],
+  ],
+  mole_stoichiometry_reactor: [
+    [{ text: 'count each kind of atom on both sides: they do not match', at: [3.2, -0.6], to: [0.6, -1.9], color: C.red }],
+    [{ text: 'oxygen now matches: 6 on each side', at: [3.0, -0.6], to: [1.4, -2.9], color: C.green }],
+    [{ text: '4 iron atoms in, 4 out: balanced', at: [3.0, -0.6], to: [1.4, -1.9], color: C.green }],
+  ],
+  pythagoras_squares: [
+    [{ text: 'a square built on each side of the triangle', at: [-5.6, -2.6], to: [-2.6, -0.4] }],
+    [{ text: '9 + 16 small squares fill exactly 25', at: [-5.4, -2.8], to: [2.4, 2.2] }],
+    [{ text: 'c² = 2, so c = √2: not a fraction', at: [-5.2, -2.8], to: [1.8, 2.6] }],
+  ],
+  algebra_balance_beam: [
+    [{ text: 'guess x = 3: this side weighs only 13, so it rises', at: [-4.2, 2.6], to: [-5.6, -0.5] }],
+    [{ text: 'take 4 off both pans: still level', at: [0.0, 2.4], to: [4.0, -1.2] }],
+    [{ text: 'one box balances one of three equal groups: x = 5', at: [0.0, 2.4], to: [-6.3, -1.6], color: C.green }],
+  ],
 };

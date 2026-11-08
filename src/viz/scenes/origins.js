@@ -755,8 +755,9 @@ export const pythagoras_squares = {
       const a = p.a;
       const b = p.b;
       const s = Math.min(15 / (a + 2 * b), 8.4 / (2 * a + b));
-      const cx = ((a + b) / 2 - b) * s;
-      const cy = ((b + a) / 2 - a) * s;
+      // centre the whole figure (it spans x −b…a+b and y −a…a+b)
+      const cx = (a / 2) * s;
+      const cy = (b / 2) * s;
       const W = (x, y) => [x * s - cx - 0.0, y * s - cy];
       const O = W(0, 0);
       const A = W(a, 0);

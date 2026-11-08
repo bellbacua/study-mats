@@ -554,7 +554,8 @@ export const algebra_balance_beam = {
     return (_p, t, _time, dt) => {
       const e = 1 - Math.exp(-dt * 3);
       const left = t.a * (t.step >= 1 ? (t.c - t.b) / t.a : t.guess) + t.b;
-      const target = clamp((left - t.c) * 0.03, -0.3, 0.3);
+      // the heavier pan sinks
+      const target = clamp((t.c - left) * 0.03, -0.3, 0.3);
       tilt += (target - tilt) * e;
       lift += ((t.step >= 1 ? 1 : 0) - lift) * e;
       split += ((t.step >= 2 ? 1 : 0) - split) * e;
