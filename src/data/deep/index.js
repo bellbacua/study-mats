@@ -4,7 +4,8 @@ import { NUMBERS } from './numbers';
 import { ALGEBRA } from './algebra';
 import { PHYSICS1 } from './physics1';
 import { CHEM1 } from './chem1';
+import { CHEM2 } from './chem2';
 
 // Classes that have been split into parts (the "Learn it" section).
 // The Calculus 1 classes are the pilot.
-export const DEEP = { ...CALC1, ...CALC2, ...NUMBERS, ...ALGEBRA, ...PHYSICS1, ...CHEM1 };
+export const DEEP = { ...CALC1, ...CALC2, ...NUMBERS, ...ALGEBRA, ...PHYSICS1, ...CHEM1, ...CHEM2 };
