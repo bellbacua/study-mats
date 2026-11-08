@@ -508,4 +508,39 @@ export const NOTES = {
       { text: 'longer path → steeper line', at: [5.4, -1.8], to: [1.4, -1.5], color: C.gold },
     ],
   ],
+  gibbs_free_energy_lab: [
+    [{ text: 'ΔG above zero: it will not go by itself', at: [-2.6, 2.2], to: [-4.5, 0.4], color: C.red }],
+    [{ text: '−TΔS grows with T, so the line falls', at: [2.4, 1.6], to: [0.5, -0.6] }],
+    [
+      { text: 'crosses zero at T = ΔH/ΔS = 500 K', at: [-3.2, 2.4], to: [-3.25, 0.1], color: C.gold },
+      { text: 'below zero: it runs by itself', at: [1.6, -2.6], to: [1.2, -0.9], color: C.green },
+    ],
+  ],
+  diffusion_dislocation_lab: [
+    [
+      { text: 'random jumps, but more go inward than out', at: [2.0, -2.2], to: [-4.5, -2.2] },
+      { text: 'carbon thins out with depth', at: [2.4, 2.6], to: [-5.0, 2.0] },
+    ],
+    [{ text: '4× the time → only 2× deeper', at: [2.4, 2.6], to: [-2.9, 1.8], color: C.gold }],
+    [{ text: '+150 °C: deeper than hours of waiting', at: [4.2, 2.8], to: [1.0, 2.0], color: C.red }],
+  ],
+  phase_rule_water: [
+    [{ text: 'one phase: nudge T or P and it stays liquid → F = 2', at: [-0.8, -0.8], to: [2.5, 1.3] }],
+    [{ text: 'on the line: at this pressure it boils at only one temperature → F = 1', at: [-1.2, -0.8], to: [4.5, 1.3], color: C.gold }],
+    [{ text: 'triple point: ice, water and vapour together → F = 0', at: [-0.8, -0.8], to: [1.9, -1.7], color: C.gold }],
+  ],
+  dice_frequencies: [
+    [
+      { text: 'after 10 rolls the bars jump around', at: [-3.0, 3.6] },
+      { text: 'the share of 7s swings wildly', at: [4.6, 2.6], to: [2.2, 3.0], color: C.pink },
+    ],
+    [
+      { text: 'thousands of rolls: each bar settles on its true chance', at: [-3.6, 3.6] },
+      { text: '7: 6 ways out of 36', at: [-1.0, 2.4], to: [-3.7, 0.6], color: C.gold },
+    ],
+    [
+      { text: 'one die: flat at 1/6', at: [-4.2, 3.6], to: [-4.2, 1.0], color: C.gold },
+      { text: 'law of large numbers: it settles', at: [4.6, 2.4], to: [5.0, -1.1], color: C.pink },
+    ],
+  ],
 };
