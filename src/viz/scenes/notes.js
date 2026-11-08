@@ -1277,4 +1277,24 @@ export const NOTES = {
     [{ text: 'η = 0.5: one jump to the bottom', at: [2.6, 1.6], to: [0.0, -3.4], color: C.yellow }],
     [{ text: 'overshoots back and forth, but closes in', at: [-0.8, 1.4], to: [2.4, -2.0], color: C.yellow }],
   ],
+  neuron_line: [
+    [{ text: 'only (1, 1) is on the firing side', at: [5.6, 2.2], to: [2.6, 2.3], color: C.yellow }],
+    [{ text: 'OR: three corners fire', at: [5.6, -1.0], to: [2.6, -2.3], color: C.yellow }],
+    [{ text: 'XOR: no straight line gets all four', at: [5.4, 0.6], to: [2.6, 2.3], color: C.red }],
+  ],
+  next_word: [
+    [{ text: 'the likely words take most of the chance', at: [4.0, 2.4], to: [0.6, 3.0], color: C.red }],
+    [{ text: 'low T: nearly always “red”', at: [4.6, 1.2], to: [4.5, 2.75], color: C.red }],
+    [{ text: 'high T: odd words like “blue” get a real chance', at: [2.6, -1.4], to: [-3.4, -2.05], color: C.teal }],
+  ],
+  compute_trend: [
+    [{ text: 'Moore’s pace: far below the real models', at: [0.8, 0.4], to: [3.0, -1.4], color: C.blue }],
+    [{ text: 'doubling every 6 months comes close', at: [-3.0, 1.8], to: [-1.5, -0.55], color: C.blue }],
+    [{ text: 'about 100 million-fold in a decade', at: [-3.4, 2.6], to: [2.3, 1.75], color: C.blue }],
+  ],
+  pin_factory: [
+    [{ text: 'one worker, all 18 steps: about 20 a day', at: [-4.0, 0.0], to: [-7.0, 1.7], color: C.blue }],
+    [{ text: 'six steps each: far quicker', at: [-4.0, 0.0], to: [-5.9, 1.7], color: C.blue }],
+    [{ text: '48,000, not 200', at: [6.6, 0.6], to: [4.4, 1.6], color: C.green }],
+  ],
 };

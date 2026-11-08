@@ -39,7 +39,7 @@ export const pin_factory = {
     kit.label('\\text{alone}', [...P.toW(0.5, 1)].map((v, i) => (i ? v - 0.35 : v + 0.7)), { size: 13 });
     kit.label('\\text{shared}', [...P.toW(1.5, 1)].map((v, i) => (i ? v - 0.35 : v + 0.7)), { size: 13 });
     kit.line([P.toW(0, Math.log10(40000)), P.toW(2.2, Math.log10(40000))], { color: C.green, width: 1.5, dashed: true });
-    kit.label('\\text{40,000}', [...P.toW(2.2, Math.log10(40000))].map((v, i) => (i ? v + 0.25 : v + 0.4)), { size: 12, color: C.green });
+    kit.label('\\text{goal: 40,000}', [...P.toW(2.2, Math.log10(40000))].map((v, i) => (i ? v + 0.25 : v + 0.4)), { size: 12, color: C.green });
     const people = range(0, 9, 10).map((i) => kit.dot([-7 + (i % 5) * 1.1, 1.8 - Math.floor(i / 5) * 1.3], { r: 0.28, color: C.blue }));
     const tags = range(0, 9, 10).map((i) => kit.label('', [-7 + (i % 5) * 1.1, 1.25 - Math.floor(i / 5) * 1.3], { size: 11, tex: false }));
     kit.label('\\text{the workshop: each dot is a worker}', [-4.8, 3.3], { size: 13 });
