@@ -754,4 +754,33 @@ export const NOTES = {
     [{ text: 'below −0.62 V: immunity, bare iron is stable', at: [-1.0, -1.6], to: [-2.8, -2.9], color: C.green }],
     [{ text: 'concrete, pH 12.5: passive, an oxide film seals the steel', at: [-2.6, 2.6], to: [0.8, -0.3], color: C.blue }],
   ],
+  gyroscope: [
+    [
+      { text: 'gravity pulls the wheel down…', at: [-5.4, -1.8], to: [-4.1, 0.1], color: C.green },
+      { text: '…yet the axle swings sideways round the post', at: [1.8, 1.6], to: [-1.2, 0.9], color: C.gold },
+    ],
+    [{ text: '3× the spin → it swings round 3× more slowly', at: [1.8, 1.6], to: [-1.2, 0.9], color: C.gold }],
+    [{ text: 'shorter arm: half the torque, half the swing speed', at: [1.8, 1.6], to: [-2.6, 0.6], color: C.gold }],
+  ],
+  kirchhoff_circuit: [
+    [{ text: 'junction at 6.55 V, above 6 V: current is pushed back into this battery (charging it)', at: [5.8, 0.0], to: [2.6, -0.6], color: C.pink }],
+    [{ text: 'both batteries push in: 1.6 A down the middle', at: [-4.2, -1.2], to: [-1.4, -0.6], color: C.green }],
+    [{ text: 'what flows in flows out: I₁ + I₃ = I₂', at: [-4.2, -1.2], to: [-1.5, 2.3], color: C.gold }],
+  ],
+  confidence_intervals: [
+    [
+      { text: 'each line: one lab’s 95% interval from 5 specimens', at: [5.6, 1.4] },
+      { text: 'this one misses the true value', at: [5.4, -1.4], to: [4.0, -2.6], color: C.red },
+    ],
+    [
+      { text: '30 specimens: about ±11 MPa', at: [4.6, 1.0] },
+      { text: 'still 1 in 20 misses: that is what 95% means', at: [3.4, -2.2], to: [-1.4, -2.9], color: C.red },
+    ],
+    [{ text: '99%: more certainty costs wider intervals', at: [4.6, 1.0] }],
+  ],
+  sn_curve: [
+    [{ text: '±500 MPa: breaks after about 15,000 cycles', at: [4.8, 2.6], to: [3.2, 0.1], color: C.gold }],
+    [{ text: 'below the endurance limit the steel curve goes flat → it lasts forever', at: [4.6, 2.6], to: [5.6, -0.4], color: C.blue }],
+    [{ text: 'aluminium has no floor: it fails eventually, after ~6 million cycles', at: [4.6, 2.6], to: [5.3, -2.0], color: C.gold }],
+  ],
 };
