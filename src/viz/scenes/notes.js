@@ -1083,4 +1083,32 @@ export const NOTES = {
     [{ text: 'wide gap: most photons pass through', at: [3.6, 1.2], to: [-2.0, 0.6], color: C.grey }],
     [{ text: 'GaAs: close to the best compromise', at: [-4.6, 1.8], to: [-2.05, 2.7], color: C.teal }],
   ],
+  fuel_cell_curve: [
+    [{ text: 'already below 1.23 V: the activation loss', at: [-2.4, 1.6], to: [-6.0, 1.85], color: C.red }],
+    [{ text: 'a straight drop: the membrane’s resistance', at: [3.0, 1.6], to: [0.8, -0.05], color: C.yellow }],
+    [{ text: 'gas can’t arrive fast enough: a cliff', at: [2.2, -2.2], to: [5.4, -1.3], color: C.purple }],
+    [{ text: 'thinner membrane: more volts at high current', at: [3.6, 1.6], to: [1.1, 0.4], color: C.yellow }],
+  ],
+  thermoelectric_zt: [
+    [
+      { text: 'the most any heat engine could get: 25%', at: [2.8, 0.2], to: [-0.4, -1.0], color: C.green },
+      { text: 'this material: about 5%', at: [3.0, -1.6], to: [-0.45, -3.0], color: C.yellow },
+    ],
+    [{ text: 'about 8%, against 40% for Carnot', at: [3.0, -1.6], to: [0.7, -2.7], color: C.yellow }],
+    [{ text: 'silicon–germanium at 1000 K: about 12%', at: [3.4, -0.6], to: [6.5, -2.3], color: C.yellow }],
+    [{ text: 'ZT = 3: about 15%, near small engines', at: [2.6, -3.0], to: [0.65, -2.15], color: C.yellow }],
+  ],
+  geothermal_flash: [
+    [{ text: 'only 12% steam; silica well under its limit', at: [1.6, -2.6], to: [5.7, -1.45], color: C.yellow }],
+    [{ text: 'more steam, silica still dissolved', at: [1.2, -2.4], to: [3.4, -0.5], color: C.yellow }],
+    [
+      { text: 'over the line: silica scale forms', at: [4.0, -1.2], to: [1.3, 1.35], color: C.red },
+      { text: 'scale lining the pipe', at: [-2.6, -2.8], to: [-5.5, -2.4], color: C.white },
+    ],
+  ],
+  socrates_definition: [
+    [{ text: 'too narrow: real courage left outside it', at: [3.8, -2.3], to: [3.6, -0.35], color: C.red }],
+    [{ text: 'too broad: the gambler and the fool get in', at: [-4.4, -2.6], to: [-3.6, 0.4], color: C.red }],
+    [{ text: 'the doctor gets in too: still unsolved', at: [-4.4, -2.6], to: [-3.6, 1.3], color: C.red }],
+  ],
 };
