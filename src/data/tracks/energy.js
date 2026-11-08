@@ -1,4 +1,398 @@
-// Classes of the energy specialization (see meta.js). Written with mk() like the UM classes.
-import { mk } from '../um/make';
+// Classes of the Energy Materials specialization (see meta.js). Written with mk() like the UM classes.
+import { mk, home, online, phet } from '../um/make';
 
-export default [];
+export default [
+  mk({
+    id: 'enrg-001',
+    code: 'ENR 101',
+    track: 'mate',
+    um: ['MATE 308'],
+    title: 'Energy in a Kilogram',
+    subtitle: 'Fuels, batteries, flywheels and dams compared by specific energy',
+    digest: [
+      'Specific energy is the energy stored per kilogram. Petrol holds about 46 MJ/kg, a lithium-ion battery about 0.9 MJ/kg (250 Wh/kg), water held 100 m up a dam only about 1 kJ/kg.',
+      'Units: 1 kWh = 3.6 MJ. Batteries are usually quoted in Wh/kg, fuels in MJ/kg.',
+      'What you can actually use also depends on efficiency: an engine turns about 25–35% of its fuel into motion, an electric motor about 90% of its battery’s energy.',
+    ],
+    era: '1847 Joule’s mechanical equivalent → 1859 Planté’s lead-acid battery → 1991 lithium-ion → today',
+    who: 'James Prescott Joule & Gaston Planté',
+    hook: 'A jeepney carries 60 litres of diesel. How heavy a battery would it need to go as far?',
+    story: [
+      'In the 1840s James Prescott Joule, a brewer’s son in Manchester, stirred water with paddles driven by falling weights and measured the tiny rise in temperature. He showed that a fixed amount of work always makes the same amount of heat: energy is one thing that changes form. That let engineers compare coal, food, falling water and electricity on one scale.',
+      'In 1859 Gaston Planté in Paris rolled two lead sheets with a cloth between them in sulfuric acid and made the first rechargeable battery. Lead-acid batteries still start most cars, but they store only about 35 Wh per kilogram.',
+      'Lithium-ion cells, sold from 1991, store about seven times more. Even so, diesel holds about 50 times more energy per kilogram than the best battery. Electric vehicles win anyway because their motors waste far less of it.',
+    ],
+    takeaway: 'Compare stores by energy per kilogram, then multiply by how efficiently each is turned into useful work.',
+    viz: 'energy_density',
+    vizTitle: 'How Much Mass to Store the Same Energy?',
+    vizHow: 'Pick how much useful energy you need. The bars show how many kilograms each store would need, counting the efficiency of turning it into motion. The scale is logarithmic: each step is ten times more.',
+    steps: [
+      ['Specific energy', 'e = \\frac{E}{m}\\quad (\\text{J/kg or Wh/kg})', 'Li-ion at 250 Wh/kg: 250 × 3600 = 0.9 MJ/kg.'],
+      ['Mass for a job', 'm = \\frac{E_{\\text{useful}}}{e \\times \\eta}', '20 kWh of useful work from diesel (46 MJ/kg, 30%): 72 MJ / (46 × 0.30) = 5.2 kg.'],
+      ['Gravity storage', 'e = g\\,h', 'Water 100 m up: 9.81 × 100 = 981 J/kg.'],
+    ],
+    drills: [
+      ['How many MJ are in 1 kWh?', ['3.6', '1', '1000', '0.36'], '1 W for 1 s is 1 J.', '1000 W × 3600 s.', '3.6 MJ.'],
+      ['A 50 kWh battery pack at 160 Wh/kg (with its casing) weighs about…', ['313 kg', '31 kg', '3.1 t', '8 kg'], 'm = E/e.', '50 000 / 160.', '313 kg.'],
+      ['Why can an electric car match a petrol car’s range with a much heavier energy store?', ['Its motor turns about 90% of the energy into motion, the engine about 30%', 'Batteries hold more energy per kg', 'Electric cars are always lighter', 'Petrol evaporates'], 'Compare efficiencies.', '0.9 vs 0.3.', 'Three times less energy is wasted.'],
+    ],
+    boss: [
+      'The Electric Jeepney',
+      'A diesel jeepney burns 60 L (about 50 kg) of diesel (45 MJ/kg) on its route at 30% efficiency. An electric version would use Li-ion packs at 160 Wh/kg (with casing) and 85% from battery to wheels. Roughly how much battery?',
+      ['About 1.4 t of battery', 'About 50 kg', 'About 140 kg', 'About 14 t'],
+      'Useful work first, then the battery energy, then the mass.',
+      'Useful work = 50 × 45 × 0.30 = 675 MJ = 187.5 kWh. Battery energy = 187.5/0.85 = 221 kWh. Mass = 221 000/160 = 1380 kg, about 1.4 t. That is why e-jeepneys charge between trips instead of carrying a full day’s energy.',
+    ],
+    read: [
+      ['wiki', 'Energy density', 'Tables of energy per mass and per volume.', 'In physics, energy density is the quotient between the amount of energy stored in a given system or contained in a given region of space and the volume of the system or region considered.'],
+      ['wiki', 'Lead–acid battery', 'Planté’s battery.', 'The lead–acid battery is a type of rechargeable battery first invented in 1859 by French physicist Gaston Planté.'],
+    ],
+    labs: [
+      home('Find the label on a power bank (mAh and V, or Wh) and weigh it on a kitchen scale. Work out its Wh/kg and compare it with 250 Wh/kg for the cells alone.'),
+      phet('energy-forms-and-changes', 'Energy Forms and Changes', 'Follow energy from fuel to heat to motion and see where it is lost.'),
+    ],
+    quiz: [
+      ['Who showed in the 1840s that a fixed amount of work always makes the same amount of heat?', ['James Prescott Joule', 'Gaston Planté', 'Alessandro Volta', 'James Watt'], 'The unit of energy is named after him.'],
+      ['Who made the first rechargeable battery (lead-acid) in 1859?', ['Gaston Planté', 'Alessandro Volta', 'Thomas Edison', 'John Goodenough'], 'Lead sheets in sulfuric acid.'],
+    ],
+    gloss: [
+      ['Specific energy', 'Energy stored per unit mass, in J/kg or Wh/kg.', ['gravimetric energy density', 'energy per kilogram']],
+      ['Energy density', 'Energy stored per unit volume, in J/L or Wh/L.', ['volumetric energy density']],
+      ['Kilowatt-hour', 'The energy of 1 kW for one hour: 3.6 MJ.', ['kWh']],
+    ],
+    events: [
+      [1847, 'Joule’s mechanical equivalent of heat', 'Work and heat on one scale.'],
+      [1859, 'Planté’s lead-acid battery', 'The first rechargeable battery.'],
+    ],
+  }),
+
+  mk({
+    id: 'enrg-002',
+    code: 'ENR 102',
+    track: 'mate',
+    um: ['MATE 308'],
+    title: 'Battery Electrodes: Capacity From Chemistry',
+    subtitle: 'Faraday’s law, mAh per gram and the lithium-ion Nobel Prize',
+    digest: [
+      'Each lithium ion that moves carries one electron’s charge. Faraday’s law turns grams of electrode into charge: q = nF/(3.6 M) mAh/g, with F = 96 485 C/mol.',
+      'Graphite (LiC₆) can hold 372 mAh/g; LiCoO₂ about 274 in theory but only about 140 in practice; silicon over 3500, but it swells by about 300% when full.',
+      'Cell energy = voltage × capacity. The two electrodes act like resistors in series for mass: 1/q_cell = 1/q_anode + 1/q_cathode.',
+    ],
+    era: '1834 Faraday’s laws → 1980 Goodenough’s LiCoO₂ → 1991 Sony’s Li-ion → 2019 Nobel Prize',
+    who: 'Michael Faraday, John Goodenough, Akira Yoshino & Stanley Whittingham',
+    hook: 'Your phone battery is labelled 5000 mAh. Where does that number come from, and could a better material double it?',
+    story: [
+      'In 1834 Michael Faraday showed that the mass of substance changed at an electrode is exactly proportional to the charge passed. That law lets you predict, before making anything, how much charge a gram of electrode material can store.',
+      'In the 1970s Stanley Whittingham at Exxon built a battery with lithium slipping in and out of titanium disulfide. In 1980 John Goodenough at Oxford (with Koichi Mizushima) found that lithium cobalt oxide gives about 4 V, double the voltage. In 1985 Akira Yoshino in Japan paired it with a carbon anode instead of reactive lithium metal, making it safe. Sony sold the first lithium-ion cells in 1991.',
+      'The three shared the 2019 Nobel Prize in Chemistry. Goodenough was 97, the oldest Nobel laureate ever. Today’s research is on silicon anodes, cheaper iron phosphate (LFP) and nickel-rich cathodes, and nickel from Philippine mines is part of that supply chain.',
+    ],
+    takeaway: 'Faraday’s law gives the most charge a material can hold; voltage times capacity gives the energy; the weaker electrode limits the cell.',
+    viz: 'electrode_capacity',
+    vizTitle: 'Pairing Electrodes',
+    vizHow: 'Pick a cathode and an anode. The bars show each electrode’s capacity; the readout combines them into a cell and gives the energy per kilogram of electrode material.',
+    steps: [
+      ['Faraday’s law for capacity', 'q = \\frac{n F}{3.6\\,M}\\ \\text{mAh/g}', 'Graphite LiC₆ (M = 72.06 g per mole of Li sites): 96 485/(3.6 × 72.06) = 372 mAh/g.'],
+      ['Combining electrodes', '\\frac{1}{q_{\\text{cell}}} = \\frac{1}{q_a} + \\frac{1}{q_c}', 'Graphite 360 with LiCoO₂ 140: 1/(1/360 + 1/140) = 101 mAh/g of electrodes.'],
+      ['Energy', 'e = V \\times q', '3.8 V × 101 mAh/g = 384 Wh/kg of electrode material (a full cell, with casing and electrolyte, is about half that).'],
+    ],
+    drills: [
+      ['How many coulombs are in 1 mAh?', ['3.6 C', '1 C', '1000 C', '0.36 C'], '1 mA for 3600 s.', '0.001 × 3600.', '3.6 C.'],
+      ['Why does a better anode alone not double the cell capacity?', ['The cathode, with its lower capacity, still limits the cell', 'Anodes store no charge', 'Voltage drops to zero', 'Lithium runs out of electrons'], 'Look at 1/q_cell = 1/q_a + 1/q_c.', 'The smaller term dominates.', 'The weaker electrode limits it.'],
+      ['Silicon holds about 10 times more lithium per gram than graphite. Its big problem?', ['It swells about 300% and cracks as it fills', 'It does not conduct at all', 'It is radioactive', 'It is too heavy'], 'Where do the extra atoms go?', 'Into the silicon lattice, which expands.', 'Swelling and cracking.'],
+    ],
+    boss: [
+      'The Doubled Anode',
+      'A start-up claims that swapping graphite (360 mAh/g) for a silicon blend (1000 mAh/g) will "nearly triple" battery capacity. The cathode stays NMC at 180 mAh/g. What does the electrode maths say?',
+      ['Capacity per gram of electrodes rises only about 28%, from 120 to 153 mAh/g', 'It nearly triples', 'It drops', 'It doubles'],
+      'Combine each anode with the cathode.',
+      'Graphite: 1/(1/360 + 1/180) = 120 mAh/g. Silicon blend: 1/(1/1000 + 1/180) = 153 mAh/g. A 28% gain is still big news, but the cathode now limits the cell. That is why cathode research matters as much as anodes.',
+    ],
+    read: [
+      ['wiki', 'Lithium-ion battery', 'Chemistry, history and materials.', 'A lithium-ion or Li-ion battery is a type of rechargeable battery that uses the reversible intercalation of Li⁺ ions into electronically conducting solids to store energy.'],
+      ['wiki', 'Faraday’s laws of electrolysis', 'Charge and mass.', 'Faraday’s laws of electrolysis are quantitative relationships based on the electrochemical research published by Michael Faraday in 1833.'],
+    ],
+    labs: [
+      online('Battery University', 'https://batteryuniversity.com/', 'Read the article on lithium-ion types and list the capacity (mAh/g) and voltage of LCO, NMC and LFP.'),
+      home('Read the mAh and voltage on your phone battery or power bank. Convert to Wh (mAh × V / 1000) and to coulombs (mAh × 3.6).'),
+    ],
+    quiz: [
+      ['Who first used lithium cobalt oxide as a battery cathode (1980)?', ['John Goodenough', 'Akira Yoshino', 'Stanley Whittingham', 'Gaston Planté'], 'At Oxford, with Koichi Mizushima.'],
+      ['Which company sold the first lithium-ion cells, in 1991?', ['Sony', 'Panasonic', 'Tesla', 'Samsung'], 'For camcorders.'],
+    ],
+    gloss: [
+      ['Specific capacity', 'Charge stored per gram of electrode material, in mAh/g.', ['mAh/g', 'theoretical capacity']],
+      ['Faraday constant', 'The charge of one mole of electrons: 96 485 C/mol.', ['F']],
+      ['Intercalation', 'Ions slipping in between the layers of a host crystal without destroying it.', ['intercalate']],
+      ['Cathode (battery)', 'The positive electrode during discharge, such as LiCoO₂ or LiFePO₄.', []],
+      ['Anode (battery)', 'The negative electrode during discharge, such as graphite.', []],
+    ],
+    events: [
+      [1834, 'Faraday’s laws of electrolysis', 'Charge and mass.'],
+      [1980, 'Goodenough’s LiCoO₂ cathode', 'A 4 V lithium battery.'],
+      [1991, 'First lithium-ion cells sold', 'Sony.'],
+    ],
+  }),
+
+  mk({
+    id: 'enrg-003',
+    code: 'ENR 103',
+    track: 'mate',
+    um: ['MATE 405'],
+    title: 'Solar Cells: Choosing the Band Gap',
+    subtitle: 'Becquerel’s glowing electrode, the 1954 silicon cell and the Shockley–Queisser limit',
+    digest: [
+      'A solar cell is a p–n junction that light hits. A photon with energy above the band gap frees an electron–hole pair; the junction’s field pushes them apart and they flow as current.',
+      'Photons below the gap pass straight through. Photons above it give only the gap energy; the extra is lost as heat. The best single gap for sunlight is about 1.1–1.4 eV.',
+      'Panel output: P = η × G × A, where G ≈ 1000 W/m² in full sun. Typical silicon panels reach η ≈ 20–23%.',
+    ],
+    era: '1839 Becquerel → 1954 Bell Labs silicon cell → 1961 Shockley–Queisser → 2009 perovskites',
+    who: 'Edmond Becquerel, Daryl Chapin, Calvin Fuller, Gerald Pearson, William Shockley & Hans Queisser',
+    hook: 'Sunlight brings about 1000 W to each square metre at noon. Why can no ordinary solar panel turn even half of it into electricity?',
+    story: [
+      'In 1839 the 19-year-old Edmond Becquerel, working in his father’s Paris lab, found that light falling on an electrode in acid made a small current. It was the first photovoltaic effect, but nobody could do much with it for over a century.',
+      'In 1954 Daryl Chapin, Calvin Fuller and Gerald Pearson at Bell Labs made a silicon p–n junction cell that turned 6% of sunlight into electricity. Newspapers called it the start of a new era. Its first big use was in space, on the Vanguard 1 satellite in 1958.',
+      'In 1961 William Shockley and Hans Queisser calculated the most a single junction could ever reach: about 33%, because of the photons it cannot catch and the energy it must waste. Silicon cells today reach about 27% in the lab. Perovskite cells, first reported by Tsutomu Miyasaka’s group in 2009, are cheap to make and are now layered on top of silicon to beat the single-junction limit. The Philippines is building some of Southeast Asia’s largest solar farms.',
+    ],
+    takeaway: 'The band gap decides which photons a cell catches and how much of each it keeps; about 1.1–1.4 eV is the best compromise for sunlight.',
+    viz: 'solar_bandgap',
+    vizTitle: 'Sunlight and the Band Gap',
+    vizHow: 'Slide the band gap. Photons to the left of the line pass through unused; those to the right are caught, but each gives only the gap energy. The readout gives the best possible share of sunlight turned into electricity, using a simple model of sunlight (it gives about 30% at best, where measured sunlight gives about 33%).',
+    steps: [
+      ['Which photons count', 'E_{\\text{photon}} \\ge E_g', 'Silicon (1.12 eV) catches light with wavelengths below 1240/1.12 = 1107 nm.'],
+      ['Panel power', 'P = \\eta\\,G\\,A', 'A 2 m² panel at 21% in full sun (1000 W/m²): 420 W.'],
+      ['Fill factor', 'P_{\\max} = FF \\times V_{oc} \\times I_{sc}', 'V_oc = 0.68 V, I_sc = 10 A, FF = 0.8: 5.4 W per cell.'],
+    ],
+    drills: [
+      ['A photon has less energy than the band gap. What happens?', ['It passes through without making current', 'It makes extra current', 'It is reflected as a stronger photon', 'It melts the cell'], 'Can it lift an electron across the gap?', 'No, too little energy.', 'It passes through unused.'],
+      ['Why does a very small band gap (0.5 eV) give a poor cell?', ['Each caught photon gives only 0.5 eV, so most of its energy is lost as heat', 'It catches no photons', 'It cannot be doped', 'It reflects all light'], 'Each photon gives E_g of useful energy.', 'Sunlight photons average well above 1 eV.', 'Most energy is wasted as heat.'],
+      ['A 1.6 m² panel at 20% in 1000 W/m² sunlight gives…', ['320 W', '1600 W', '200 W', '32 W'], 'P = ηGA.', '0.20 × 1000 × 1.6.', '320 W.'],
+    ],
+    boss: [
+      'The Cloudy Afternoon',
+      'A school in Davao installs 10 kW of panels (rated at 1000 W/m²). On a hazy afternoon the light is 400 W/m² and the panels are hot, losing 10% to heat. Roughly what do they produce?',
+      ['About 3.6 kW', '10 kW', 'About 4 kW', 'About 1 kW'],
+      'Scale by light, then by the heat loss.',
+      '10 × 0.4 = 4 kW, then × 0.9 = 3.6 kW. Panel output follows sunlight closely, and hot silicon loses about 0.4% per °C above 25 °C, so tropical panels need good airflow.',
+    ],
+    read: [
+      ['wiki', 'Shockley–Queisser limit', 'Why one junction tops out near 33%.', 'In physics, the radiative efficiency limit (also known as the detailed balance limit, Shockley–Queisser limit, Shockley Queisser Efficiency Limit or SQ Limit) is the maximum theoretical efficiency of a solar cell using a single p–n junction to collect power from the cell.'],
+      ['wiki', 'Solar cell', 'How cells are built.', 'A solar cell, also known as a photovoltaic cell (PV cell), is an electronic device that converts the energy of light directly into electricity by means of the photovoltaic effect.'],
+    ],
+    labs: [
+      online('PVWatts calculator (NREL)', 'https://pvwatts.nrel.gov/', 'Enter a Philippine city and a 5 kW system. How many kWh per year does it predict?'),
+      home('Cover a small solar garden light’s panel halfway with your hand at noon and at 4 pm. Note how bright the light is at night each time.'),
+    ],
+    quiz: [
+      ['Who first saw the photovoltaic effect, in 1839?', ['Edmond Becquerel', 'Albert Einstein', 'Heinrich Hertz', 'Gerald Pearson'], 'Aged 19, in Paris.'],
+      ['What efficiency did the 1954 Bell Labs silicon cell reach?', ['About 6%', 'About 30%', 'About 0.1%', 'About 60%'], 'Chapin, Fuller and Pearson.'],
+    ],
+    gloss: [
+      ['Photovoltaic effect', 'Light making a voltage and current directly in a material.', ['photovoltaic', 'PV']],
+      ['Shockley–Queisser limit', 'The highest efficiency of a single-junction solar cell, about 33% in sunlight.', ['SQ limit', 'detailed balance limit']],
+      ['Fill factor', 'How "square" a cell’s I–V curve is: P_max/(V_oc × I_sc).', ['FF']],
+      ['Perovskite solar cell', 'A cell using a cheap, solution-made crystal with the perovskite structure.', ['perovskite']],
+    ],
+    events: [
+      [1839, 'Becquerel’s photovoltaic effect', 'Paris.'],
+      [1954, 'First practical silicon solar cell', 'Bell Labs, 6%.'],
+      [1961, 'Shockley–Queisser limit', 'About 33% for one junction.'],
+    ],
+  }),
+
+  mk({
+    id: 'enrg-004',
+    code: 'ENR 104',
+    track: 'mate',
+    um: ['MATE 405'],
+    title: 'Fuel Cells and Hydrogen',
+    subtitle: 'Grove’s gas battery, Apollo’s water supply and the 1.23 V limit',
+    digest: [
+      'A fuel cell runs electrolysis backwards: hydrogen and oxygen combine on catalyst-coated electrodes and give electricity and water. The most voltage one cell can give is E = −ΔG/nF = 1.23 V.',
+      'Under load the voltage drops: activation losses at the electrodes, resistance of the membrane, and running short of gas at high current. Real cells work near 0.6–0.8 V.',
+      'Hydrogen is light but bulky: 1 kg holds about 33 kWh (lower heating value) but takes 11 m³ at room pressure, so it is compressed to 700 bar or used close to where it is made.',
+    ],
+    era: '1839 Grove’s gas battery → 1959 Bacon’s 5 kW cell → 1960s Apollo → today',
+    who: 'William Grove & Francis Thomas Bacon',
+    hook: 'A fuel cell car’s only exhaust is water. Why aren’t all cars fuel-cell cars yet?',
+    story: [
+      'In 1839 William Grove, a Welsh lawyer and scientist, put platinum strips in sulfuric acid, one in hydrogen and one in oxygen, and got a current. Chaining 50 of his "gas batteries" gave a usable voltage. But platinum was costly and coal-fired electricity soon became cheap, so the idea slept.',
+      'Francis Thomas Bacon, an engineer in Cambridge, worked on it for decades and in 1959 demonstrated a 5 kW alkaline fuel cell that could power a welding machine. NASA licensed the design, and alkaline fuel cells powered the Apollo spacecraft, the astronauts drinking the water they made.',
+      'Modern cars and buses use proton-exchange-membrane (PEM) cells: a thin polymer membrane that lets only protons through, with platinum nanoparticles on carbon as the catalyst. The main materials problems are using less platinum, making membranes last, and making hydrogen cleanly from water rather than from natural gas.',
+    ],
+    takeaway: 'Thermodynamics caps a hydrogen cell at 1.23 V; materials decide how close to that you get at useful current.',
+    viz: 'fuel_cell_curve',
+    vizTitle: 'A Fuel Cell Under Load',
+    vizHow: 'Slide the current drawn from the cell. Watch the voltage fall from 1.23 V as each loss grows, and find the current that gives the most power.',
+    steps: [
+      ['The ideal voltage', 'E^\\circ = \\frac{-\\Delta G^\\circ}{nF} = \\frac{237\\,100}{2 \\times 96\\,485} = 1.229\\ \\text{V}', 'Two electrons move for each H₂.'],
+      ['Real voltage', 'V = E - \\eta_{\\text{act}} - iR - \\eta_{\\text{conc}}', 'At 1 A/cm² a good PEM cell gives about 0.65 V.'],
+      ['Efficiency', '\\eta \\approx \\frac{V}{1.48\\ \\text{V}}', '1.48 V is the voltage that would match all the heat of burning hydrogen (ΔH). At 0.7 V: 47%.'],
+    ],
+    drills: [
+      ['Why can’t a hydrogen cell give more than 1.23 V?', ['That is the Gibbs energy per electron of the reaction', 'The membrane limits it', 'Platinum melts above it', 'Water boils above it'], 'E = −ΔG/nF.', '237 kJ for 2 electrons.', 'Thermodynamics sets it.'],
+      ['A cell runs at 0.74 V. Its efficiency (on ΔH) is about…', ['50%', '74%', '100%', '25%'], 'Divide by 1.48 V.', '0.74/1.48.', '50%.'],
+      ['How many cells in series give about 48 V at 0.7 V each?', ['About 69', '7', '48', '480'], 'Divide.', '48/0.7.', 'About 69 cells.'],
+    ],
+    boss: [
+      'The Grey Hydrogen',
+      'A city bus company is offered hydrogen buses. The hydrogen would be made from natural gas, releasing about 10 kg of CO₂ per kg of H₂. A bus uses about 8 kg of H₂ per 100 km. A diesel bus emits about 130 kg of CO₂ per 100 km. What should the engineer say?',
+      ['The hydrogen buses would still emit about 80 kg per 100 km at the source; the real gain needs hydrogen made with clean electricity', 'Hydrogen buses emit nothing at all', 'Hydrogen buses emit more than diesel', 'CO₂ does not matter for buses'],
+      'Count the CO₂ at the hydrogen plant.',
+      '8 kg × 10 = 80 kg of CO₂ per 100 km, against 130 for diesel: better, but not clean. Hydrogen from electrolysis with geothermal or solar power cuts this close to zero, which is where materials for cheaper electrolysers come in.',
+    ],
+    read: [
+      ['wiki', 'Fuel cell', 'Types and history.', 'A fuel cell is an electrochemical cell that converts the chemical energy of a fuel (often hydrogen) and an oxidizing agent (often oxygen) into electricity through a pair of redox reactions.'],
+      ['wiki', 'Proton-exchange membrane fuel cell', 'The cells in cars.', 'Proton-exchange membrane fuel cells (PEMFC), also known as polymer electrolyte membrane (PEM) fuel cells, are a type of fuel cell being developed mainly for transport applications.'],
+    ],
+    labs: [
+      home('Do the classic electrolysis: two pencil leads in salty water connected to a 9 V battery. Bubbles form at both. Which lead gives about twice as many bubbles, and why?'),
+      online('US DOE Hydrogen Program', 'https://www.energy.gov/eere/fuelcells/fuel-cells', 'Read how a PEM fuel cell works and list the materials in each layer.'),
+    ],
+    quiz: [
+      ['Who made the first fuel cell ("gas battery") in 1839?', ['William Grove', 'Francis Bacon', 'Michael Faraday', 'Humphry Davy'], 'A Welsh lawyer and scientist.'],
+      ['Which spacecraft used Bacon-type alkaline fuel cells?', ['Apollo', 'Sputnik', 'Voyager', 'Vanguard 1'], 'The crews drank the water.'],
+    ],
+    gloss: [
+      ['Fuel cell', 'A device that turns a fuel and oxygen directly into electricity without burning.', ['fuel cells']],
+      ['PEM', 'Proton-exchange membrane: a polymer film that lets only protons through.', ['proton-exchange membrane', 'PEMFC']],
+      ['Polarisation curve', 'A fuel cell’s voltage plotted against current density.', ['polarization curve']],
+      ['Electrolyser', 'A cell that uses electricity to split water into hydrogen and oxygen.', ['electrolyzer']],
+    ],
+    events: [
+      [1839, 'Grove’s gas battery', 'The first fuel cell.'],
+      [1959, 'Bacon’s 5 kW fuel cell', 'Later used on Apollo.'],
+    ],
+  }),
+
+  mk({
+    id: 'enrg-005',
+    code: 'ENR 105',
+    track: 'mate',
+    um: ['MATE 405'],
+    title: 'Thermoelectrics: Power From Heat',
+    subtitle: 'Seebeck’s compass, Peltier’s cooling and the power source of Voyager',
+    digest: [
+      'A temperature difference across a material pushes its charge carriers from the hot end to the cold end, making a voltage: V = S·ΔT. S, the Seebeck coefficient, is a few µV/K in metals and 100–250 µV/K in good thermoelectric semiconductors.',
+      'Run it backwards (the Peltier effect) and a current pumps heat, as in small drink coolers.',
+      'The figure of merit ZT = S²σT/κ wants high voltage and conductivity but low thermal conductivity. Today’s best materials reach ZT ≈ 1–2, giving efficiencies of a few to about 10%.',
+    ],
+    era: '1821 Seebeck → 1834 Peltier → 1950s bismuth telluride → 1977 Voyager',
+    who: 'Thomas Seebeck, Jean Peltier & Abram Ioffe',
+    hook: 'The Voyager probes have been sending data from beyond the Sun’s influence for over 45 years, too far for solar panels. What powers them?',
+    story: [
+      'In 1821 Thomas Seebeck joined two different metals in a loop and heated one junction. A compass needle nearby swung. He thought heat made magnetism, but in fact the heat made a current, and the current moved the needle.',
+      'In 1834 Jean Peltier found the reverse: current through a junction of two metals heats or cools it depending on direction. Metals gave tiny effects. In the 1950s Abram Ioffe in Leningrad pointed out that semiconductors would be far better, and H. Julian Goldsmid in Britain made bismuth telluride coolers that are still the standard.',
+      'Voyager 1 and 2, launched in 1977, carry radioisotope thermoelectric generators: plutonium-238 keeps one side hot and space keeps the other cold, and silicon–germanium thermoelectrics turn the difference into a few hundred watts. They are still running, slowly fading as the plutonium decays.',
+    ],
+    takeaway: 'Thermoelectrics turn a temperature difference directly into voltage; ZT measures how good a material is, and low thermal conductivity is the hard part.',
+    viz: 'thermoelectric_zt',
+    vizTitle: 'How Efficient Can a Thermoelectric Be?',
+    vizHow: 'Set the hot-side temperature and the material’s ZT. The plot compares its best efficiency with the Carnot limit for the same temperatures.',
+    steps: [
+      ['Seebeck voltage', 'V = S\\,\\Delta T', 'Bi₂Te₃ with S = 200 µV/K across 100 K gives 0.02 V per leg, so devices chain hundreds of legs.'],
+      ['Figure of merit', 'ZT = \\frac{S^2 \\sigma T}{\\kappa}', 'S = 200 µV/K, σ = 10⁵ S/m, κ = 1.5 W/(m·K), T = 300 K: ZT = 0.8.'],
+      ['Best efficiency', '\\eta_{\\max} = \\frac{\\Delta T}{T_h}\\cdot\\frac{\\sqrt{1+ZT} - 1}{\\sqrt{1+ZT} + T_c/T_h}', 'The first factor is Carnot; the second is how much of Carnot the material gets.'],
+    ],
+    drills: [
+      ['S = 150 µV/K, ΔT = 200 K. Voltage of one leg?', ['30 mV', '30 V', '0.75 mV', '150 mV'], 'V = SΔT.', '150×10⁻⁶ × 200.', '0.03 V = 30 mV.'],
+      ['Which change raises ZT?', ['Lower thermal conductivity κ', 'Lower electrical conductivity σ', 'Lower Seebeck coefficient S', 'Higher κ'], 'κ is in the denominator.', 'Less heat leaking through.', 'Lower κ.'],
+      ['Why are metals poor thermoelectrics?', ['Their Seebeck coefficients are tiny and they conduct heat well', 'They do not conduct electricity', 'They melt too easily', 'They are too heavy'], 'Compare S for metals and semiconductors.', 'A few µV/K versus hundreds.', 'Tiny S and high κ.'],
+    ],
+    boss: [
+      'The Car Exhaust Generator',
+      'An engineer wants to recover waste heat from a truck exhaust at 500 K into air at 300 K, using a material with ZT = 1. The truck’s engine wastes about 60 kW as exhaust heat. Roughly how much electricity can be recovered?',
+      ['About 5 kW at best (η ≈ 8%), less in practice', 'All 60 kW', 'About 24 kW (Carnot 40%)', 'Nothing at all'],
+      'Find Carnot, then the ZT factor.',
+      'Carnot = 200/500 = 40%. With ZT = 1: (√2 − 1)/(√2 + 0.6) = 0.206, so η ≈ 8.2%, about 4.9 kW. Real systems lose more to imperfect heat exchange, which is why exhaust generators have stayed in prototypes.',
+    ],
+    read: [
+      ['wiki', 'Thermoelectric effect', 'Seebeck, Peltier and Thomson effects.', 'The thermoelectric effect is the direct conversion of temperature differences to electric voltage and vice versa via a thermocouple.'],
+      ['wiki', 'Radioisotope thermoelectric generator', 'How Voyager is powered.', 'A radioisotope thermoelectric generator (RTG, RITEG), sometimes referred to as a radioisotope power system (RPS), is a type of nuclear battery that uses an array of thermocouples to convert the heat released by the decay of a suitable radioactive material into electricity by the Seebeck effect.'],
+    ],
+    labs: [
+      home('A thermocouple thermometer (as in an oven or multimeter probe) uses the Seebeck effect. If you have a multimeter with one, dip the tip in warm and then cold water and watch the reading change.'),
+      online('NASA Voyager mission status', 'https://science.nasa.gov/mission/voyager/', 'Find how much power the Voyager RTGs gave at launch and how much now.'),
+    ],
+    quiz: [
+      ['Who found in 1821 that heating a junction of two metals deflects a compass?', ['Thomas Seebeck', 'Jean Peltier', 'Hans Christian Ørsted', 'André-Marie Ampère'], 'The Seebeck effect.'],
+      ['What powers the Voyager probes?', ['Radioisotope thermoelectric generators', 'Solar panels', 'Fuel cells', 'Lithium-ion batteries'], 'Plutonium heat and thermoelectrics.'],
+    ],
+    gloss: [
+      ['Seebeck effect', 'A temperature difference across a conductor producing a voltage.', ['Seebeck coefficient', 'thermopower']],
+      ['Peltier effect', 'A current through a junction pumping heat from one side to the other.', ['Peltier cooler']],
+      ['ZT', 'The thermoelectric figure of merit, S²σT/κ.', ['figure of merit']],
+      ['RTG', 'Radioisotope thermoelectric generator: radioactive heat turned into electricity by thermoelectrics.', ['radioisotope thermoelectric generator']],
+    ],
+    events: [
+      [1821, 'Seebeck effect', 'Heat makes a current.'],
+      [1834, 'Peltier effect', 'Current pumps heat.'],
+      [1977, 'Voyager launched with RTGs', 'Still running decades later.'],
+    ],
+  }),
+
+  mk({
+    id: 'enrg-006',
+    code: 'ENR 106',
+    track: 'mate',
+    um: ['MATE 308'],
+    title: 'Geothermal Plant Materials',
+    subtitle: 'Larderello’s light bulbs, Philippine steam and the silica that clogs the pipes',
+    digest: [
+      'A geothermal well brings up hot water at 250–300 °C under pressure. In a separator part of it flashes to steam, which drives a turbine. The flash fraction comes from an energy balance: x = (h_res − h_f)/h_fg.',
+      'The water left behind is richer in dissolved silica. If it is cooled too far, silica comes out of solution as scale that chokes pipes and reinjection wells.',
+      'Brines can be acidic and carry H₂S and CO₂, so materials range from carbon steel with a corrosion allowance to stainless steel and titanium in the worst spots.',
+    ],
+    era: '1904 Larderello → 1913 first geothermal plant → 1979 Tiwi and Makban → today',
+    who: 'Prince Piero Ginori Conti & the Philippine geothermal engineers',
+    hook: 'The Philippines is one of the top three geothermal power producers in the world. What does a pipe have to survive to carry that steam?',
+    story: [
+      'In 1904 Prince Piero Ginori Conti hooked a small dynamo to a steam vent at Larderello in Tuscany and lit four light bulbs. By 1913 a 250 kW plant there was feeding the railways. The steam was so corrosive that early engineers had to use it to heat clean water, and run the turbines on that.',
+      'In the 1970s oil crisis the Philippines turned to its volcanoes. The Tiwi (Albay) and Makiling-Banahaw (Laguna) fields started in 1979, followed by the big Tongonan field in Leyte and fields in Negros and Mindanao (Mount Apo). Geothermal now supplies a large share of the country’s electricity.',
+      'The materials problems are local and hard: silica scaling in pipes and wells, acidic fluids in parts of some fields, and hydrogen sulfide that cracks high-strength steels. Engineers choose separator pressures to stay below silica saturation, inject acid or inhibitors, and use titanium and duplex stainless steel where carbon steel would not last.',
+    ],
+    takeaway: 'Flash more steam and you get more power but richer, cooler brine that scales; geothermal design is a balance between energy and materials.',
+    viz: 'geothermal_flash',
+    vizTitle: 'Flash More Steam or Avoid Scale?',
+    vizHow: 'Set the separator temperature. Lower means more steam (more power) but less, cooler and more concentrated brine. Watch the silica saturation ratio: above 1, silica scale forms.',
+    steps: [
+      ['Flash fraction', 'x = \\frac{h_{\\text{res}} - h_f(T_s)}{h_{fg}(T_s)}', 'Water from a 250 °C reservoir (h = 1086 kJ/kg) flashed at 160 °C: (1086 − 676)/2082 = 0.197.'],
+      ['Silica in the brine', 'C = \\frac{C_0}{1 - x}', 'Starting at 487 mg/kg: 487/0.803 = 607 mg/kg.'],
+      ['Saturation ratio', '\\text{SSI} = \\frac{C}{S(T)},\\quad \\log_{10} S = 4.52 - \\frac{731}{T}', 'At 160 °C (433 K) up to 680 mg/kg of amorphous silica can stay dissolved, so SSI = 0.89: no scale yet.'],
+    ],
+    drills: [
+      ['Lowering the separator temperature…', ['Gives more steam but more concentrated brine', 'Gives less steam and cleaner brine', 'Changes nothing', 'Stops the silica dissolving'], 'Look at the flash fraction formula.', 'h_f falls, so x rises.', 'More steam, saltier brine.'],
+      ['SSI = 1.3 means…', ['The brine holds more silica than it can keep dissolved, so scale can form', 'The brine is safe', 'The steam is wet', 'The pipe is stainless'], 'SSI = C/S.', 'Above 1 means oversaturated.', 'Scaling risk.'],
+      ['Why are some geothermal heat exchangers made of titanium?', ['It resists hot, acidic, chloride-rich brine far better than steel', 'It is the cheapest metal', 'It conducts heat best', 'It is magnetic'], 'What attacks steel in brine?', 'Chloride and acid.', 'Titanium’s oxide film survives them.'],
+    ],
+    boss: [
+      'The Greedy Separator',
+      'To raise output, an operator drops the separator from 170 °C to 120 °C. Within months the reinjection line and well lose most of their flow. What happened, and what is the materials-aware fix?',
+      ['The cooler, more concentrated brine passed silica saturation and scale filled the line; keep SSI below about 1, or treat the brine (acid or inhibitor) before lowering the temperature', 'The steam was too dry', 'The pipe was too thick', 'The turbine was too small'],
+      'Work out SSI at 120 °C.',
+      'At 120 °C, x ≈ 0.264, silica rises to about 662 mg/kg and solubility falls to about 458: SSI ≈ 1.45. Amorphous silica deposits fast. Plants either stay above the saturation point or dose the brine to slow the scaling.',
+    ],
+    read: [
+      ['wiki', 'Geothermal power in the Philippines', 'The country’s fields and plants.', 'Geothermal power in the Philippines contributes significantly to the country’s electricity needs.'],
+      ['wiki', 'Geothermal power', 'Flash, dry-steam and binary plants.', 'Geothermal power is electrical power generated from geothermal energy.'],
+    ],
+    labs: [
+      home('Boil a pot of salty water down by half and look at the rim and bottom. The crust is "scale": dissolved solids left behind when water leaves. The same happens with silica in geothermal pipes.'),
+      online('Department of Energy (Philippines): geothermal', 'https://www.doe.gov.ph/', 'Find the installed geothermal capacity of the Philippines and the names of three geothermal fields.'),
+    ],
+    quiz: [
+      ['Where were the first geothermal light bulbs lit, in 1904?', ['Larderello, Italy', 'Tiwi, Albay', 'The Geysers, California', 'Wairakei, New Zealand'], 'Prince Piero Ginori Conti.'],
+      ['Which two Philippine geothermal fields began producing power in 1979?', ['Tiwi and Makiling-Banahaw', 'Tongonan and Palinpinon', 'Mount Apo and Bacman', 'Maibarara and Leyte'], 'In Albay and Laguna.'],
+    ],
+    gloss: [
+      ['Flash steam', 'Steam formed when hot pressurised water drops in pressure.', ['flashing', 'flash fraction']],
+      ['Silica scaling', 'Deposition of silica from geothermal brine as it cools and concentrates.', ['silica scale', 'scaling']],
+      ['Saturation ratio', 'Dissolved amount divided by the amount that can stay dissolved; above 1 means deposits can form.', ['SSI']],
+      ['Reinjection', 'Pumping used geothermal brine back underground.', ['reinjection well']],
+    ],
+    events: [
+      [1904, 'Geothermal light bulbs at Larderello', 'Italy.'],
+      [1913, 'First geothermal power plant', 'Larderello, 250 kW.'],
+      [1979, 'Tiwi and Makban start up', 'Philippine geothermal power begins.'],
+    ],
+  }),
+];
