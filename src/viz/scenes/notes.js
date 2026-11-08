@@ -696,4 +696,39 @@ export const NOTES = {
     [{ text: 'past 26.6° the pull wins, and it slides', at: [4.6, 2.8], to: [5.4, -0.9], color: C.red }],
     [{ text: 'oily steel (μₛ = 0.1) slides from just 5.7°', at: [-2.6, 2.0], to: [-4.0, -1.6], color: C.red }],
   ],
+  weld_haz: [
+    [
+      { text: 'melted: the fusion zone', at: [-3.0, 3.0], to: [-6.0, 0.4], color: C.red },
+      { text: 'heated past 727 °C: the heat-affected zone', at: [-2.6, -2.2], to: [-5.0, -1.1], color: C.gold },
+    ],
+    [{ text: 'low heat: thin zones, but the cold plate quenches it in about 1 s → brittle', at: [-2.6, -2.2], to: [-4.6, -0.4], color: C.red }],
+    [{ text: 'high heat: wide zones and slow cooling (about 13 s)', at: [-0.8, -2.6], to: [-2.6, -1.6], color: C.gold }],
+  ],
+  cashflow_compare: [
+    [
+      { text: 'A starts cheaper, but its fuel bills add up faster', at: [-3.6, 2.6], to: [-2.8, 1.0], color: C.red },
+      { text: 'by year 10, B is about ₱340,000 cheaper', at: [-3.4, -0.6], to: [-0.9, 1.3], color: C.blue },
+    ],
+    [
+      { text: 'at 25%, future savings are worth little today: cheap A wins', at: [-3.6, -0.8], to: [-0.9, 0.0], color: C.red },
+      { text: 'each bar: one year’s fuel bill in today’s money', at: [5.0, 3.2], to: [1.4, 1.2] },
+    ],
+    [{ text: 'about 16%: the totals end level (break-even)', at: [-3.6, -0.8], to: [-0.95, 0.7], color: C.gold }],
+  ],
+  factorial_cube: [
+    [
+      { text: 'top face (long time) against bottom face (short time)', at: [-3.4, 3.6], to: [-3.8, 2.0] },
+      { text: 'effect of time: −4.6 HRC', at: [5.0, -2.2], to: [4.4, -0.6], color: C.gold },
+    ],
+    [{ text: 'temperature: right face against left → −8 HRC, the biggest', at: [5.6, -2.6], to: [3.4, -2.0], color: C.red }],
+    [{ text: 'interaction AB: invisible if you change one thing at a time', at: [5.0, -2.4], to: [6.6, -0.6], color: C.gold }],
+  ],
+  section_inertia: [
+    [
+      { text: 'flat: all the metal within 5 mm of the centre', at: [-4.4, -1.6], to: [-4.4, -0.3] },
+      { text: 'so it sags a lot', at: [6.4, 1.4], to: [4.6, 1.3], color: C.red },
+    ],
+    [{ text: 'on edge: metal reaches 20 mm out → 16× stiffer (distance counts squared)', at: [-1.8, -2.4], to: [-4.6, 1.8], color: C.gold }],
+    [{ text: 'I-beam: metal in flanges far from the centre → 28× the flat bar', at: [-1.6, -2.6], to: [-4.6, 2.0], color: C.gold }],
+  ],
 };
