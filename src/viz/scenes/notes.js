@@ -543,4 +543,36 @@ export const NOTES = {
       { text: 'law of large numbers: it settles', at: [4.6, 2.4], to: [5.0, -1.1], color: C.pink },
     ],
   ],
+  band_formation: [
+    [{ text: 'one atom: sharp levels with a big gap between', at: [1.0, 2.8], to: [3.0, -1.0], color: C.red }],
+    [
+      { text: '40 atoms: each level spreads into a band', at: [-4.2, -1.6], to: [-1.8, -2.4] },
+      { text: 'the gap shrinks to about 1.1 eV', at: [5.6, 1.8], to: [3.2, -0.6], color: C.red },
+    ],
+    [{ text: 'half full: empty levels just above the electrons → it conducts', at: [-4.2, -1.6], to: [-1.0, -0.4], color: C.gold }],
+  ],
+  phase_diagram_lever_lab: [
+    [{ text: 'pick a composition and a temperature: here, all liquid', at: [-0.6, 3.6], to: [-3.3, 2.8] }],
+    [{ text: 'inside the lens: liquid and solid α together', at: [1.6, -0.4], to: [-3.3, 0.2] }],
+    [
+      { text: 'tie line: its ends give each phase’s composition', at: [1.6, -0.6], to: [-2.6, -0.1], color: C.gold },
+      { text: 'each share = the OPPOSITE arm ÷ the whole line', at: [5.6, 0.9], to: [5.6, 2.8] },
+    ],
+  ],
+  galton_board: [
+    [
+      { text: 'at each pin: left or right, at random', at: [-4.2, 2.6], to: [-0.6, 2.2] },
+      { text: 'the middle is reached by the most paths', at: [4.6, -1.2], to: [0.6, -2.0], color: C.gold },
+    ],
+    [{ text: '12 rows: the pile becomes a bell curve', at: [4.6, -1.2], to: [1.4, -1.6], color: C.gold }],
+    [{ text: '68% land within one standard deviation of the middle', at: [4.8, -1.2], to: [0.9, -2.6], color: C.gold }],
+  ],
+  semiconductor_bandgap_lab: [
+    [
+      { text: 'to conduct, an electron must jump the gap', at: [-1.0, 3.0], to: [3.5, -0.9] },
+      { text: 'at room temperature only a few make it', at: [-4.6, 1.8], to: [-2.6, 0.2] },
+    ],
+    [{ text: 'phosphorus: spare electrons sitting just below the conduction band', at: [-1.0, 2.6], to: [-1.6, -1.0], color: C.green }],
+    [{ text: 'falling back across the gap gives light: 2.75 eV → blue', at: [5.2, -3.2], to: [5.8, 0.3], color: C.blue }],
+  ],
 };
