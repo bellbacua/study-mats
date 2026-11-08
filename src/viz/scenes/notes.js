@@ -1208,4 +1208,24 @@ export const NOTES = {
     [{ text: 'half full after about 15 hours', at: [4.4, -2.0], to: [1.85, -0.25], color: C.gold }],
     [{ text: 'food runs out: growth stops at 10 g/L', at: [3.6, 1.4], to: [5.5, 3.4], color: C.gold }],
   ],
+  pcr_cycles: [
+    [{ text: 'each cycle doubles: 32 after 5', at: [3.6, -1.6], to: [1.0, -2.75], color: C.blue }],
+    [{ text: 'a billion after 30 cycles', at: [2.6, -1.0], to: [5.5, 0.85], color: C.green }],
+    [{ text: '90% efficient: 3 more cycles needed', at: [2.6, -1.0], to: [6.1, 0.95], color: C.blue }],
+  ],
+  column_peaks: [
+    [{ text: 'peaks overlap: you can’t collect one alone', at: [-0.4, 0.6], to: [-4.45, -1.2], color: C.red }],
+    [{ text: 'a clean gap: baseline separation', at: [2.6, 0.6], to: [-0.85, -2.8], color: C.green }],
+    [{ text: 'even cleaner, but twice as long', at: [0.6, 0.6], to: [6.1, -2.0], color: C.white }],
+  ],
+  scaffold_decay: [
+    [{ text: 'scaffold mostly gone; tissue only half grown', at: [3.6, -1.4], to: [-0.7, -2.25], color: C.white }],
+    [{ text: 'one hands over to the other, in step', at: [3.6, -1.4], to: [-0.7, 0.0], color: C.pink }],
+    [{ text: 'a year on, a third still in the way', at: [3.4, -2.2], to: [7.2, -1.05], color: C.white }],
+  ],
+  binary_adder: [
+    [{ text: 'carries ripple to the left', at: [4.6, 3.4], to: [1.6, 2.75], color: C.gold }],
+    [{ text: 'no column has two 1s: no carries', at: [4.6, 3.4], to: [1.6, 2.75], color: C.gold }],
+    [{ text: 'needs a fifth bit: overflow', at: [-5.6, -2.6], to: [-3.2, -1.6], color: C.red }],
+  ],
 };
