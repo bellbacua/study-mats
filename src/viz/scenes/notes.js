@@ -951,4 +951,30 @@ export const NOTES = {
       { text: 'big plant: cheapest per tonne', at: [4.4, 1.4], to: [7.3, -1.6], color: C.green },
     ],
   ],
+  print_layers: [
+    [{ text: 'each thick layer leaves a big step', at: [0.4, 2.9], to: [4.0, 1.65], color: C.teal }],
+    [{ text: 'thinner layers: smaller steps, 3× the time', at: [0.4, 2.9], to: [3.75, 2.0], color: C.teal }],
+    [{ text: 'almost smooth, but 4 hours', at: [0.4, 2.9], to: [3.6, 2.25], color: C.teal }],
+  ],
+  startup_runway: [
+    [
+      { text: 'the cash runs out in month 17', at: [1.8, -0.9], to: [-1.75, -1.6], color: C.red },
+      { text: 'sales would cover costs only here: too late', at: [-2.4, 2.2], to: [1.3, 0.15], color: C.yellow },
+    ],
+    [{ text: 'lowest point: ₱1.4 M still left', at: [-2.0, -2.6], to: [-2.1, -1.0], color: C.green }],
+    [{ text: 'twice the money lasts until break-even', at: [-0.4, -2.6], to: [1.3, -0.25], color: C.green }],
+  ],
+  battery_cycle: [
+    [
+      { text: 'electrons run the outside circuit', at: [0.4, 3.5], to: [-3.5, 3.8], color: C.blue },
+      { text: 'most lithium (yellow) is in the graphite', at: [-4.2, -3.5], to: [-5.9, -0.6], color: C.yellow },
+    ],
+    [{ text: 'now most lithium sits in the oxide', at: [-2.4, -3.5], to: [-1.4, -0.6], color: C.yellow }],
+    [{ text: 'heavy draw: below the cut-off, phone off', at: [5.0, -2.6], to: [3.45, -1.1], color: C.red }],
+  ],
+  thesis_ttest: [
+    [{ text: 'the error bars overlap: can’t tell yet', at: [-4.0, 3.0], to: [-3.6, 0.85], color: C.white }],
+    [{ text: 'more bricks: shorter bars, a clear gap', at: [-4.0, 3.0], to: [-1.05, 0.9], color: C.yellow }],
+    [{ text: 'a big gain shows even with 5 bricks', at: [-4.6, 3.0], to: [-2.0, 1.75], color: C.yellow }],
+  ],
 };
