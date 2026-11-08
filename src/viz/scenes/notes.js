@@ -1000,4 +1000,27 @@ export const NOTES = {
     [{ text: 'tin: few atoms, big strengthening', at: [4.8, 2.6], to: [2.4, 0.7], color: C.purple }],
     [{ text: 'extra tin forms a brittle second phase (grey)', at: [-1.0, 3.95], to: [-2.2, 1.6], color: C.grey }],
   ],
+  ageing_curve: [
+    [{ text: 'soft at first: atoms only starting to cluster', at: [0.8, -2.6], to: [-2.9, -1.9], color: C.yellow }],
+    [{ text: 'peak: the finest, most numerous particles', at: [-3.4, 3.4], to: [-0.1, 2.1], color: C.yellow }],
+    [{ text: 'overaged: particles coarsen, it softens', at: [3.4, -0.6], to: [5.9, -2.7], color: C.yellow }],
+    [{ text: 'hotter: the peak comes sooner, but lower', at: [-0.4, 3.3], to: [-4.0, 1.25], color: C.red }],
+  ],
+  hall_petch: [
+    [{ text: 'each grain wall blocks slip', at: [-1.4, 3.4], to: [-3.6, 1.0], color: C.gold }],
+    [{ text: 'few walls: weaker', at: [5.0, -2.2], to: [1.5, -2.25], color: C.yellow }],
+    [{ text: 'fine grains: 400 MPa, on the same line', at: [-0.3, 1.3], to: [4.4, 0.5], color: C.yellow }],
+  ],
+  stainless_pren: [
+    [{ text: 'too little Cr: oxide in patches, rust gets through', at: [-2.4, 1.2], to: [-5.65, 2.25], color: C.red }],
+    [{ text: 'past 10.5%: one continuous film, 10× slower', at: [-0.8, 1.2], to: [-3.85, -2.2], color: C.green }],
+    [{ text: 'PREN 25: fine for washed coastal air', at: [1.2, -1.2], to: [3.2, -0.1], color: C.teal }],
+    [{ text: 'PREN 41: fit for seawater', at: [1.2, -1.0], to: [3.2, 2.2], color: C.green }],
+  ],
+  resistivity_temp: [
+    [{ text: 'electrons (blue) bounce off the shaking atoms', at: [-4.0, 3.2], to: [-4.5, 1.5], color: C.blue }],
+    [{ text: 'hotter: more shaking, +70% resistance', at: [3.4, -0.8], to: [4.7, -2.8], color: C.gold }],
+    [{ text: 'impurities add a fixed extra', at: [-4.0, 3.2], to: [-4.35, 0.85], color: C.red }],
+    [{ text: 'iron: about 6× copper', at: [4.6, -1.8], to: [2.05, -1.35], color: C.red }],
+  ],
 };
