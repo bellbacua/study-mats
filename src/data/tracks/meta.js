@@ -128,6 +128,25 @@ SIDES.push({
   ],
 });
 
+SIDES.push({
+  id: 'econ',
+  title: 'Economics',
+  icon: '📈',
+  blurb: 'From Adam Smith’s pin factory to supply and demand, trade, inflation, Keynes, game theory and why nickel prices swing. How markets and money work.',
+  why: 'Every material is bought and sold. Plant budgets, metal prices and the choice between two designs are economic questions as much as technical ones.',
+  classes: [
+    { id: 'econ-001' }, // Smith: division of labour
+    { id: 'econ-002' }, // supply and demand
+    { id: 'econ-003' }, // Ricardo: comparative advantage
+    { id: 'econ-004' }, // marginal thinking and diminishing returns
+    { id: 'econ-005' }, // money and inflation
+    { id: 'econ-006' }, // Keynes and the multiplier
+    { id: 'econ-007' }, // game theory
+    { id: 'econ-008' }, // behavioural economics
+    { id: 'econ-009' }, // commodity cycles and nickel
+  ],
+});
+
 // Shown on the program page as "coming next".
 export const SIDES_LATER = [
   { title: 'Chemical Engineering Basics', icon: '⚗️', blurb: 'Mass and energy balances, reactors and separations: the plant side of materials.' },
@@ -135,7 +154,6 @@ export const SIDES_LATER = [
   { title: 'Geology and Mining', icon: '⛏', blurb: 'Where ores come from and how they are found and dug, with Philippine nickel and copper.' },
   { title: 'Computational Materials', icon: '🖥', blurb: 'Predicting a material before it is made: atoms on a computer and databases of compounds.' },
   { title: 'Biomedical Materials', icon: '🦴', blurb: 'Implants, stents and artificial joints: materials the body has to live with.' },
-  { title: 'Economics', icon: '📈', blurb: 'Markets, costs and trade: why nickel prices swing and how engineers weigh money.' },
   { title: 'History of Technology', icon: '🏛', blurb: 'From bronze to silicon: how materials shaped empires and everyday life.' },
   { title: 'Design and Drawing', icon: '✏️', blurb: 'Sketching, perspective and how products are designed for people.' },
 ];

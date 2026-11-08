@@ -3,7 +3,7 @@ import { TIMELINE, ERAS, formatYear } from '../data/timeline';
 import { ALL_LESSONS as LESSONS, SUBJECTS, whereLabel } from '../data/path';
 import { useReveal } from '../state/useReveal';
 
-const SUBJECT_KEYS = ['math', 'chem', 'phys', 'mate', 'philo', 'bio', 'comp'];
+const SUBJECT_KEYS = ['math', 'chem', 'phys', 'mate', 'philo', 'bio', 'comp', 'econ'];
 
 export default function Timeline({ progress, onOpen }) {
   const [on, setOn] = useState(() => new Set(SUBJECT_KEYS));

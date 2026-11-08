@@ -3158,6 +3158,13 @@ input[type='range'] {
 .class-card.subj-comp {
   --subj: #8fa8ff;
 }
+.track-econ {
+  color: #e8c26a;
+}
+.subj-econ,
+.class-card.subj-econ {
+  --subj: #e8c26a;
+}
 .class-card.ge-card {
   border-style: dashed;
 }
