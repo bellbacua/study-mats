@@ -1037,7 +1037,7 @@ const numAtoms  = molesOfFe * 6.022e23;  // 1.2044e24 Iron atoms!`,
       hook: 'How did staying in bed until 11 AM watching a fly crawl on a tiled ceiling create modern computer graphics and engineering plots?',
       narrative: [
         'For 2,000 years, Euclid’s Geometry (shapes, circles, triangles) and Al-Khwarizmi’s Algebra (equations, symbols) lived in completely separate worlds. Geometric proofs had no coordinates, and algebraic equations had no pictures.',
-        'René Descartes had frail health as a youth and was granted permission by his Jesuit schoolmasters to stay in bed until late morning—a habit he kept his whole life. According to historical accounts, while lying in bed watching a fly buzz around the corner of his room, he realized he could describe the fly’s exact position at any instant using just its perpendicular distances from the walls (x, y, z)!',
+        'René Descartes had frail health as a youth and was granted permission by his Jesuit schoolmasters to stay in bed until late morning—a habit he kept his whole life. A popular story says that while lying in bed watching a fly buzz around the corner of his room, he realized he could describe the fly’s exact position at any instant using just its perpendicular distances from the walls (x, y, z)!',
         'Suddenly, every algebraic equation became a visible curve, and every geometric shape became an equation. When you look at a Stress-Strain curve in Materials Engineering, the slope (m) of that straight line IS Young’s Modulus of Elasticity (E)!',
       ],
       takeaway:

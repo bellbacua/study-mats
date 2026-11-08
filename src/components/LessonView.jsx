@@ -6,6 +6,7 @@ import { useReveal } from '../state/useReveal';
 import Practice from './Practice';
 import { READINGS as LESSON_READINGS, UM_COURSES, whereLabel } from '../data/path';
 import { LABS } from '../data/labs';
+import { LEGENDS } from '../data/legends';
 import { DEEP } from '../data/deep';
 import LearnIt, { Predict } from './LearnIt';
 
@@ -145,9 +146,17 @@ export default function LessonView({ lesson, index, total, progress, actions, pr
           <Pictures sources={lessonSources(lesson)} />
           <div className="narrative">
             {h.narrative.map((p, i) => (
-              <p key={i} data-reveal>
-                <Cited text={p} />
-              </p>
+              <div key={i} data-reveal>
+                <p>
+                  <Cited text={p} />
+                </p>
+                {LEGENDS[lesson.id]?.[i] && (
+                  <details className="legend-tag">
+                    <summary title="This story may not have happened as told">Legend? What we actually know</summary>
+                    <span>{LEGENDS[lesson.id][i]}</span>
+                  </details>
+                )}
+              </div>
             ))}
           </div>
           <aside className="takeaway" data-reveal>

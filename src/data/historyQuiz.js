@@ -37,7 +37,7 @@ export const HISTORY_QUIZ = {
   ],
   'phys-002': [
     q('How did Archimedes test whether King Hiero’s crown was pure gold?', ['By measuring the water it displaced to find its density', 'By melting a small piece of it', 'By scratching it on a touchstone', 'By weighing it on a lever against a coin'], 'A silver-mixed crown of the same mass is bigger, so it pushes aside more water.'),
-    q('Archimedes boasted “Give me a place to stand and I will move the Earth.” Which law was he talking about?', ['The law of the lever', 'Buoyancy', 'Conservation of energy', 'Gravity'], 'With a long enough lever, a small force can balance an enormous weight.'),
+    q('Archimedes is quoted as saying “Give me a place to stand and I will move the Earth.” Which law was he talking about?', ['The law of the lever', 'Buoyancy', 'Conservation of energy', 'Gravity'], 'With a long enough lever, a small force can balance an enormous weight.'),
   ],
   'num-006': [
     q('What did Euclid prove about prime numbers around 300 BC?', ['There are infinitely many of them', 'They are all odd', 'There are exactly 25 below 100 and no more', 'They can be listed with a formula'], 'Multiply any finite list of primes and add 1: the result reveals a prime missing from the list.'),

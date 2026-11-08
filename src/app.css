@@ -3423,3 +3423,37 @@ sup.cite a {
   font-size: 1.2rem;
   cursor: pointer;
 }
+
+/* "Legend?" tag on a story paragraph that may not have happened as told */
+.legend-tag {
+  margin: -4px 0 14px;
+}
+.legend-tag summary {
+  display: inline-block;
+  cursor: pointer;
+  list-style: none;
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  padding: 1px 8px;
+  border-radius: 999px;
+  border: 1px solid var(--gold);
+  color: var(--gold);
+  vertical-align: 2px;
+}
+.legend-tag summary::-webkit-details-marker {
+  display: none;
+}
+.legend-tag[open] summary {
+  background: var(--gold);
+  color: #0d1117;
+}
+.legend-tag > span {
+  display: block;
+  margin-top: 8px;
+  padding: 8px 12px;
+  border-left: 3px solid var(--gold);
+  background: rgba(240, 172, 95, 0.08);
+  border-radius: 0 8px 8px 0;
+  font-size: 0.9em;
+}
