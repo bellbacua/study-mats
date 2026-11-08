@@ -28,7 +28,8 @@ const tex = (id, where, t) => {
 };
 const words = (id, where, v) => {
   if (typeof v === 'string') {
-    if (CS.test(v)) bad(id, `${where} uses programming wording: "${v.slice(0, 80)}"`);
+    // A few ordinary phrases that happen to contain a flagged word.
+    if (CS.test(v.replace(/genetic code|codons? table|code of ethics/gi, ''))) bad(id, `${where} uses programming wording: "${v.slice(0, 80)}"`);
     if (/claude/i.test(v)) bad(id, `${where} names the assistant`);
   } else if (Array.isArray(v)) v.forEach((x, i) => words(id, `${where}[${i}]`, x));
   else if (v && typeof v === 'object') for (const [k, x] of Object.entries(v)) words(id, `${where}.${k}`, x);

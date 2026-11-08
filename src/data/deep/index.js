@@ -14,7 +14,8 @@ import { SPEC_METALS } from './spec_metals';
 import { SPEC_ELECTRONIC } from './spec_electronic';
 import { SPEC_ENERGY } from './spec_energy';
 import { SIDE_PHILO } from './side_philo';
+import { SIDE_BIO } from './side_bio';
 
 // Classes that have been split into parts (the "Learn it" section).
 // The Calculus 1 classes are the pilot.
-export const DEEP = { ...CALC1, ...CALC2, ...NUMBERS, ...ALGEBRA, ...PHYSICS1, ...CHEM1, ...CHEM2, ...MATE1, ...YEAR3A, ...YEAR3B, ...YEAR4A, ...YEAR4B, ...SPEC_METALS, ...SPEC_ELECTRONIC, ...SPEC_ENERGY, ...SIDE_PHILO };
+export const DEEP = { ...CALC1, ...CALC2, ...NUMBERS, ...ALGEBRA, ...PHYSICS1, ...CHEM1, ...CHEM2, ...MATE1, ...YEAR3A, ...YEAR3B, ...YEAR4A, ...YEAR4B, ...SPEC_METALS, ...SPEC_ELECTRONIC, ...SPEC_ENERGY, ...SIDE_PHILO, ...SIDE_BIO };
