@@ -148,8 +148,9 @@ export const arrhenius_log_linearizer = {
       const E = (p.Ea * 1000) / 8.314;
       const ks = Ts.map((T) => Math.exp(-E / T));
       const kmax = Math.exp(-E / 1500);
-      const lnMin = -E / 400;
-      const lnMax = -E / 1500;
+      // fixed scale for the straight-line view, so a bigger Ea really looks steeper
+      const lnMin = -(250000 / 8.314) / 400;
+      const lnMax = 0;
       const m = smooth(p.morph);
       const map = (T, k) => {
         const a = [X0 + (W * (T - 400)) / 1100, Y0 + H * (k / kmax)];

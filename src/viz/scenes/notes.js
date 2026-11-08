@@ -294,4 +294,42 @@ export const NOTES = {
     [{ text: '60°: higher, but lands in the same spot', at: [3.6, -1.0], to: [-1.2, -3.5], color: C.gold }],
     [{ text: '45°: the farthest landing for this speed', at: [3.4, -1.2], to: [-0.3, -3.5], color: C.gold }],
   ],
+  arrhenius_log_linearizer: [
+    [
+      { text: '500 → 1000 K: barely seems to move…', at: [-3.0, -1.4], to: [-2.2, -3.1], color: C.gold },
+      { text: '…then it explodes. Hard to read.', at: [-1.0, 1.6], to: [3.9, -1.0] },
+    ],
+    [{ text: 'ln k against 1/T: a straight line', at: [-1.6, -2.2], to: [-1.0, 1.4] }],
+    [{ text: 'bigger Ea → steeper line', at: [-1.6, -2.4], to: [-1.0, 0.4], color: C.green }],
+  ],
+  reaction_collisions: [
+    [
+      { text: 'blue A + red B → gold C, but only if they hit hard enough', at: [4.4, 1.4] },
+      { text: 'A gets used up', at: [3.6, -1.6], to: [1.3, 0.3] },
+    ],
+    [{ text: 'more crowded → more collisions → faster start', at: [4.4, 1.4], to: [1.1, 2.2] }],
+    [{ text: '30 K hotter → far more hits clear the energy bar', at: [4.4, 1.4], to: [1.2, -0.7], color: C.red }],
+  ],
+  compound_e: [
+    [
+      { text: 'paid once: 1 jumps to 2 at year end', at: [-4.6, -2.5], to: [-2.0, 0.4], color: C.gold },
+      { text: 'e ≈ 2.718: the ceiling', at: [-0.2, 1.6], to: [-1.6, 2.5], color: C.red },
+    ],
+    [{ text: 'monthly: interest earns interest, step by step', at: [-4.4, -2.6], to: [-4.6, 0.0], color: C.gold }],
+    [
+      { text: 'daily: nearly smooth, still under e', at: [-4.4, -2.6], to: [-4.4, 0.3], color: C.gold },
+      { text: 'eˣ: slope = height, everywhere', at: [3.0, 2.0], to: [6.2, 0.9], color: C.green },
+    ],
+  ],
+  equilibrium_flow: [
+    [
+      { text: 'blue A ⇄ gold B: changing both ways, all the time', at: [4.4, 1.6] },
+      { text: 'A falls, B rises… then both level off', at: [4.0, -1.4], to: [1.2, -0.2] },
+    ],
+    [
+      { text: 'particles still switch; only the totals stop changing', at: [4.4, 1.8] },
+      { text: 'K = 4: about 4 B for every 1 A', at: [4.4, -0.4], to: [1.0, -1.6], color: C.gold },
+    ],
+    [{ text: '+30 A upsets the balance, so more B forms', at: [4.4, 0.6], to: [1.1, -0.6], color: C.gold }],
+  ],
 };
