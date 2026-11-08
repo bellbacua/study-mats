@@ -1317,4 +1317,25 @@ export const NOTES = {
     [{ text: 'halved in about 7 years', at: [0.0, 1.4], to: [-3.3, 0.05], color: C.gold }],
     [{ text: 'about ₱4 left after 30 years', at: [3.4, -1.4], to: [6.2, -3.35], color: C.red }],
   ],
+  multiplier_rounds: [
+    [
+      { text: 'each round is half the last', at: [-1.6, 1.6], to: [-5.3, -0.35], color: C.teal },
+      { text: 'the total (drawn ÷ 5): ₱200', at: [3.6, 0.6], to: [6.6, -0.9], color: C.gold },
+    ],
+    [{ text: 'c = 0.8: slow to shrink, total ₱500', at: [2.6, 1.8], to: [6.7, 2.6], color: C.gold }],
+  ],
+  repeated_game: [
+    [{ text: 'defect on a cooperator: 5 instead of 3', at: [-2.4, -1.0], to: [-5.4, 1.1], color: C.red }],
+    [{ text: 'after one win, both stuck on 1 a round', at: [2.4, -1.2], to: [0.6, -0.4], color: C.red }],
+    [{ text: 'cheated once, then it defends itself', at: [-2.4, -1.4], to: [-5.6, 0.95], color: C.green }],
+  ],
+  prospect_value: [
+    [{ text: 'a ₱1000 gain: +437', at: [4.8, 3.7], to: [4.5, 2.6], color: C.green }],
+    [{ text: 'the same loss: −982, over twice as strong', at: [-2.2, -3.6], to: [-4.4, -2.3], color: C.red }],
+    [{ text: 'a ₱200 loss already hurts half as much', at: [-4.4, 1.6], to: [-1.0, 0.2], color: C.red }],
+  ],
+  cobweb: [
+    [{ text: 'output low, so the price is high', at: [1.6, 2.6], to: [-2.9, 2.35], color: C.yellow }],
+    [{ text: 'the swings shrink to the crossing', at: [2.0, 2.6], to: [-1.9, 1.7], color: C.white }],
+  ],
 };
