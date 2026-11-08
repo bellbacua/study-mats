@@ -298,7 +298,7 @@ export default [
     boss: [
       'Storing Steel Plates',
       'Steel plates are stacked on a ramp in a warehouse. Steel on steel has μₛ ≈ 0.74 dry, but only about 0.1 when oily. The ramp is at 10°. Will oily plates slide?',
-      ['Yes: tan 10° ≈ 0.18 is more than 0.1', 'No: tan 10° is less than 0.74', 'No: heavy plates never slide', 'Only if the stack is tall'],
+      ['Yes: tan 10° ≈ 0.18 is more than 0.1', 'No: tan 10° is less than 0.74', 'No: heavy plates never slide', 'Only if the pile is tall'],
       'Compare tan θ with μₛ for the oily case.',
       'tan 10° ≈ 0.176. Dry (0.74) they hold; oily (0.1) they slide. Plates should be cleaned or the ramp levelled.',
     ],
