@@ -370,4 +370,32 @@ export const NOTES = {
       { text: 'f peaks → f′ crosses zero', at: [4.4, 3.4], to: [1.6, 0.1], color: C.gold },
     ],
   ],
+  rolling_race: [
+    [
+      { text: 'same mass, same radius: only where the mass sits differs', at: [-4.2, -1.2] },
+      { text: 'ball wins: its mass sits near the middle, so less energy goes into spinning', at: [3.0, -1.0], to: [6.9, 1.2], color: C.green },
+    ],
+    [{ text: 'steeper: everyone is faster, the order stays the same', at: [0, -1.2] }],
+  ],
+  galvanic_cell: [
+    [{ text: 'zinc gives up electrons; they flow through the wire to the copper', at: [0, -0.8], to: [-2.0, 3.5] }],
+    [{ text: 'zinc still gives way first: it sacrifices itself to save the iron', at: [0, -0.8], to: [-3.8, 0.4] }],
+    [{ text: 'magnesium is far more eager: 2.71 V', at: [0, -0.8], to: [0, 3.0], color: C.green }],
+  ],
+  slope_tracer: [
+    [
+      { text: 'slope of the tangent here…', at: [5.6, 3.4], to: [2.8, 4.0], color: C.gold },
+      { text: '…plotted below: the slopes make the line 2x', at: [5.4, -1.2], to: [2.8, -1.0], color: C.green },
+    ],
+    [
+      { text: 'flat at the top → slope 0', at: [5.6, 3.2], to: [2.3, 2.6], color: C.gold },
+      { text: 'the slopes of sin x make cos x', at: [5.4, -1.2], to: [1.0, -2.0], color: C.green },
+    ],
+    [{ text: 'twice as fast → twice as steep: 2 cos 2x', at: [5.6, -0.8], to: [0.7, -1.7], color: C.green }],
+  ],
+  brinell_dent: [
+    [{ text: 'wide dent (about 5 mm) = soft: HB ≈ 130', at: [1.4, 3.9], to: [3.4, 1.8], color: C.gold }],
+    [{ text: 'hardened steel: small dent, HB ≈ 600', at: [1.4, 3.9], to: [4.2, 1.6], color: C.gold }],
+    [{ text: 'soft aluminium needs a lighter load (500 kgf) to leave a readable dent', at: [1.2, 3.8], to: [4.2, 1.6], color: C.gold }],
+  ],
 };
