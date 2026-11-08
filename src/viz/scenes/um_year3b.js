@@ -938,7 +938,9 @@ export const ac_power = {
     const P2 = kit.plane({ x: [0, 2, 0.5], y: [-2400, 4800, 1200], sx: 3.9, sy: 3.4 / 7200, origin: [-7.6, -2.0], axisAt: [0, 0], numbers: false, grid: false });
     kit.label('\\text{power} = v \\times i', [0.6, -0.3], { size: 12, color: C.pink, align: 'right' });
     const pw = kit.line([], { color: C.pink, width: 2.5, create: false });
-    const pfill = kit.fill([], { color: C.pink, opacity: 0.18 });
+    // one fill per hump: pink while power flows in, teal while it flows back
+    const lobes = Array.from({ length: 12 }, () => kit.fill([], { color: C.pink, opacity: 0.22 }));
+    const backL = kit.label('\\text{flows back}', [-1.6, -3.2], { size: 12, color: C.teal });
     const avg = kit.line([], { color: C.white, width: 2, dashed: true, create: false });
     const avgL = kit.label('', [0, 0], { size: 12, color: C.white, tex: false, align: 'left' });
     // power triangle
@@ -961,7 +963,25 @@ export const ac_power = {
       iw.set(range(0, 2, 160).map((x) => P1.toW(x, (Ip / 20) * Math.sin(2 * Math.PI * (x - sh) - ph))));
       const pts = range(0, 2, 200).map((x) => [x, 325.3 * Ip * Math.sin(2 * Math.PI * (x - sh)) * Math.sin(2 * Math.PI * (x - sh) - ph)]);
       pw.set(pts.map(([x, y]) => P2.toW(x, y)));
-      pfill.set([P2.toW(0, 0), ...pts.map(([x, y]) => P2.toW(x, y)), P2.toW(2, 0)]);
+      const segs = [];
+      let cur = [];
+      pts.forEach((q, i) => {
+        if (i && Math.sign(q[1]) !== Math.sign(pts[i - 1][1]) && cur.length) {
+          segs.push(cur);
+          cur = [];
+        }
+        cur.push(q);
+      });
+      segs.push(cur);
+      let anyBack = false;
+      lobes.forEach((f, i) => {
+        const sg = segs[i];
+        if (!sg || sg.length < 2) return f.set([]);
+        const neg = sg.reduce((a, q) => a + q[1], 0) < 0;
+        anyBack = anyBack || (neg && Math.min(...sg.map((q) => q[1])) < -150);
+        f.color(neg ? C.teal : C.pink).set([P2.toW(sg[0][0], 0), ...sg.map(([x, y]) => P2.toW(x, y)), P2.toW(sg[sg.length - 1][0], 0)]);
+      });
+      backL.visible(anyBack);
       const Pavg = 230 * p.I * Math.cos(ph);
       avg.set([P2.toW(0, Pavg), P2.toW(2, Pavg)]);
       avgL.set(`average ${big(Pavg)} W`).pos([P2.toW(2, 0)[0] + 0.1, P2.toW(0, Pavg)[1]]);
@@ -973,7 +993,9 @@ export const ac_power = {
       lP.pos([ox + Pw / 2, oy - 0.35]);
       lQ.pos([ox + Pw + 0.35, oy + Qw / 2]);
       lS.pos([ox + Pw / 2 - 0.35, oy + Qw / 2 + 0.3]);
-      lphi.pos([ox + 0.9 * Math.cos(ph / 2) + 0.15, oy + 0.9 * Math.sin(ph / 2)]);
+      lphi.pos([ox + 0.9 * Math.cos(ph / 2) + 0.15, oy + 0.9 * Math.sin(ph / 2)]).visible(p.phi > 4 && p.phi < 85);
+      lQ.visible(Qw > 0.4);
+      lS.visible(Pw > 0.4 && Qw > 0.4);
       void t;
     };
   },

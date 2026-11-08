@@ -812,4 +812,30 @@ export const NOTES = {
     [{ text: 'a 6-week foundation ties: now both paths are critical', at: [4.0, -3.0], to: [2.0, 0.2], color: C.red }],
     [{ text: '9-week foundation: the new critical path, finish moves to week 15', at: [3.6, -3.0], to: [3.0, 0.2], color: C.red }],
   ],
+  creep_curve: [
+    [
+      { text: 'steady creep: a slow, constant stretch', at: [-5.4, 1.2], to: [-4.2, 0.35], color: C.gold },
+      { text: 'then it speeds up and breaks', at: [-4.8, 3.2], to: [-2.0, 1.0], color: C.pink },
+    ],
+    [{ text: 'half the stress: life about 3,800× longer', at: [2.4, -0.9], to: [5.45, 0.25], color: C.yellow }],
+    [
+      { text: 'same point on the line: hotter trades for shorter', at: [2.4, -0.9], to: [5.45, 0.25], color: C.yellow },
+      { text: '100 °C hotter: life falls ~500×', at: [-4.0, -1.4], to: [0.0, -2.6], color: C.red },
+    ],
+  ],
+  ac_power: [
+    [{ text: 'power never dips below zero: all of it does work', at: [4.4, 0.9], to: [-1.0, 0.15], color: C.pink }],
+    [{ text: 'S (what the cables carry) is bigger than P (the useful part)', at: [4.4, 1.3], to: [4.1, -1.4], color: C.white }],
+    [{ text: 'all reactive: 2,300 VA carried, 0 W of work', at: [4.4, 1.6], to: [2.55, 0.4], color: C.teal }],
+  ],
+  glass_viscosity: [
+    [{ text: 'working range: shape it now', at: [4.3, 0.7], to: [4.25, -2.0], color: C.gold }],
+    [{ text: '310 °C cooler: about 4,000× thicker', at: [5.0, 1.6], to: [2.5, -0.4], color: C.yellow }],
+    [{ text: 'annealing point: hold here, then cool slowly', at: [4.6, 0.3], to: [1.45, 1.85], color: C.teal }],
+  ],
+  safety_factor: [
+    [{ text: 'the tails barely touch', at: [-0.8, -1.3], to: [-2.55, -3.1], color: C.green }],
+    [{ text: 'overlap: a weak part meets a big load', at: [0.4, -0.6], to: [-3.0, -3.0], color: C.red }],
+    [{ text: 'real loads 20% above the assumed ones', at: [-0.6, 2.6], to: [-3.3, 1.6], color: C.blue }],
+  ],
 };
