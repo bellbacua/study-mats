@@ -1158,4 +1158,27 @@ export const NOTES = {
     ],
     [{ text: 'the epicycle’s loop is the backwards bit', at: [2.6, 2.6], to: [-2.8, 2.3], color: C.red }],
   ],
+  ethics_matrix: [
+    [
+      { text: 'quiet approval: a big hidden harm', at: [1.6, -2.4], to: [-4.6, -2.0], color: C.red },
+      { text: 'open re-check: best overall', at: [0.0, 1.6], to: [0.0, 0.4], color: C.green },
+    ],
+    [{ text: 'count only money and the quiet option wins', at: [2.4, 2.6], to: [-3.2, 2.3], color: C.red }],
+    [{ text: 'duty: hiding a known risk is off the table', at: [2.6, 2.6], to: [-3.6, 1.6], color: C.grey }],
+  ],
+  cell_surface: [
+    [{ text: 'small cell: lots of surface for its inside', at: [-4.6, 2.6], to: [-4.3, 0.3], color: C.yellow }],
+    [{ text: 'ten times less surface per inside', at: [3.8, 0.6], to: [2.75, -2.8], color: C.teal }],
+    [{ text: 'the middle is far from the surface', at: [-4.4, -2.0], to: [-4.4, -0.6], color: C.white }],
+  ],
+  protein_chain: [
+    [{ text: '3 beads: 8000 possible chains', at: [1.6, -2.4], to: [-0.8, -3.2], color: C.blue }],
+    [{ text: '62 beads: as many as atoms in the universe', at: [1.0, 2.8], to: [4.2, 0.65], color: C.red }],
+    [{ text: 'far more chains than could ever be made', at: [3.6, -1.6], to: [7.5, 2.9], color: C.blue }],
+  ],
+  dna_pairs: [
+    [{ text: 'mostly A–T: melts at about 48 °C', at: [5.0, -2.25], to: [1.6, -3.5], color: C.gold }],
+    [{ text: 'half G–C: about 60 °C', at: [5.4, -2.25], to: [3.05, -3.5], color: C.gold }],
+    [{ text: 'all G–C, 3 bonds each: about 80 °C', at: [2.4, -2.25], to: [5.5, -3.5], color: C.red }],
+  ],
 };
