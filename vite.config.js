@@ -32,6 +32,11 @@ export default defineConfig({
         runtimeCaching: [
           { urlPattern: ({ url }) => url.pathname.startsWith('/api'), handler: 'NetworkOnly' },
           {
+            urlPattern: ({ url }) => url.hostname === 'upload.wikimedia.org' || url.pathname.startsWith('/api/rest_v1/page/summary'),
+            handler: 'CacheFirst',
+            options: { cacheName: 'pictures', expiration: { maxEntries: 600 }, cacheableResponse: { statuses: [0, 200] } },
+          },
+          {
             urlPattern: ({ url }) => url.origin.includes('fonts.g'),
             handler: 'StaleWhileRevalidate',
             options: { cacheName: 'fonts' },

@@ -1,6 +1,7 @@
 import { lazy, Suspense, useEffect, useState } from 'react';
 import MathFormula from './MathFormula';
 import Glossed from './Glossed';
+import Pictures from './Pictures';
 import { useReveal } from '../state/useReveal';
 import Practice from './Practice';
 import { READINGS as LESSON_READINGS, UM_COURSES, whereLabel } from '../data/path';
@@ -141,6 +142,7 @@ export default function LessonView({ lesson, index, total, progress, actions, pr
           </div>
           <h2 className="hook">{h.hook}</h2>
           <span className="importance good">📖 Good to know · the story behind it. Note who, when and why in one line.</span>
+          <Pictures sources={lessonSources(lesson)} />
           <div className="narrative">
             {h.narrative.map((p, i) => (
               <p key={i} data-reveal>
