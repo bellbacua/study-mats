@@ -1228,4 +1228,24 @@ export const NOTES = {
     [{ text: 'no column has two 1s: no carries', at: [4.6, 3.4], to: [1.6, 2.75], color: C.gold }],
     [{ text: 'needs a fifth bit: overflow', at: [-5.6, -2.6], to: [-3.2, -1.6], color: C.red }],
   ],
+  difference_engine: [
+    [{ text: 'each column is added into the one on its left', at: [5.6, 1.2], to: [3.0, 0.4], color: C.blue }],
+    [{ text: 'still prime, row after row', at: [5.8, 2.4], to: [-3.4, 0.75], color: C.white }],
+    [{ text: '1681 = 41 × 41: not prime', at: [5.8, 2.4], to: [-3.2, 0.75], color: C.red }],
+  ],
+  turing_machine: [
+    [{ text: 'reads 1: writes 0, moves left', at: [4.4, -1.0], to: [1.1, -0.6], color: C.yellow }],
+    [{ text: 'a 0 becomes 1, then halt: 1100 = 12', at: [4.0, -1.0], to: [0.1, -0.6], color: C.green }],
+    [{ text: 'five steps: 10000 = 16', at: [2.0, -1.4], to: [-2.4, -0.6], color: C.green }],
+  ],
+  entropy_coin: [
+    [{ text: 'fair coin: 1 full bit per toss', at: [4.6, 2.6], to: [0.15, 2.0], color: C.yellow }],
+    [{ text: '11% heads: about half a bit', at: [-0.8, -2.4], to: [-4.6, -1.1], color: C.yellow }],
+    [{ text: 'no surprise: 0 bits', at: [-3.4, -2.8], to: [-5.9, -3.4], color: C.yellow }],
+  ],
+  moores_law: [
+    [{ text: 'doubling every year: far too steep', at: [3.6, 3.6], to: [0.5, 3.6], color: C.blue }],
+    [{ text: 'every two years: right through the chips', at: [-3.6, 1.6], to: [-1.0, -1.45], color: C.blue }],
+    [{ text: 'the M1 is far above this line', at: [2.6, 3.4], to: [5.9, 2.4], color: C.gold }],
+  ],
 };
