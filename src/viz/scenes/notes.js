@@ -398,4 +398,36 @@ export const NOTES = {
     [{ text: 'hardened steel: small dent, HB ≈ 600', at: [1.4, 3.9], to: [4.2, 1.6], color: C.gold }],
     [{ text: 'soft aluminium needs a lighter load (500 kgf) to leave a readable dent', at: [1.2, 3.8], to: [4.2, 1.6], color: C.gold }],
   ],
+  spring_mass: [
+    [
+      { text: 'stretched further → pulled back harder', at: [-5.0, -2.6], to: [-4.1, 0.0], color: C.red },
+      { text: 'its height over time: a cosine wave', at: [2.0, 2.8], to: [5.6, 1.6], color: C.gold },
+    ],
+    [{ text: 'smaller swing, same rhythm: the period does not change', at: [2.0, 2.8], to: [5.4, 0.6], color: C.gold }],
+    [{ text: '4× the mass → twice as slow', at: [1.4, 2.8], to: [-3.8, 2.2], color: C.gold }],
+  ],
+  titration_curve: [
+    [{ text: 'adding base: at first the pH barely moves', at: [-0.4, 0.4], to: [1.5, -2.4] }],
+    [{ text: 'moles match: one drop jumps the pH from 4 to 10, and the flask turns pink', at: [-0.6, 0.6], to: [2.5, 0.0] }],
+    [
+      { text: 'weak acid: starts higher, rises gently', at: [-0.6, 1.6], to: [0.6, -1.0] },
+      { text: 'equivalence at pH 8.7: right where the indicator turns pink', at: [5.2, -1.0], to: [2.7, 0.7], color: C.green },
+    ],
+  ],
+  box_optimizer: [
+    [{ text: 'tiny cut: a flat tray, little volume', at: [-1.0, -2.4], to: [-3.6, -2.8] }],
+    [
+      { text: 'deep cut: tall but narrow', at: [-1.6, -2.4], to: [-5.2, -2.6] },
+      { text: 'past the peak, volume falls again', at: [6.0, 1.6], to: [5.5, -0.8], color: C.gold },
+    ],
+    [{ text: 'flat top: slope zero → the biggest box, ≈ 593 cm³', at: [5.8, 3.6], to: [3.5, 2.7], color: C.gold }],
+  ],
+  standing_wave: [
+    [{ text: 'middle = top + bottom, added point by point', at: [-3.6, -1.6], to: [-3.6, -0.2], color: C.gold }],
+    [{ text: 'a node: this point never moves', at: [1.8, -1.6], to: [0, -0.1], color: C.gold }],
+    [
+      { text: 'only whole numbers of half-waves fit', at: [0, 2.8], color: C.gold },
+      { text: 'fixed end', at: [-6.4, -2.2], to: [-7.0, -0.2] },
+    ],
+  ],
 };
