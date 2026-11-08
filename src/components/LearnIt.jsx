@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import MathFormula from './MathFormula';
 import Glossed from './Glossed';
+import { shuffled } from '../state/quiz';
 
 // ---- checking a typed answer -------------------------------------------------
 // Accepts numbers, fractions and simple sums like "1/6", "-2.5", "2e", "sqrt(2)",
@@ -289,9 +290,12 @@ function Problem({ item, k, onRight }) {
 }
 
 // ---- predict before the visual ----------------------------------------------
-export function Predict({ predict, children }) {
+export function Predict({ predict: raw, children }) {
   const [pick, setPick] = useState(null);
-  if (!predict) return children;
+  if (!raw) return children;
+  // Shuffle the options the same way every time, so the right one is not always in the same place.
+  const mixed = shuffled({ id: raw.q, options: raw.options, correctIndex: raw.answer });
+  const predict = { ...raw, options: mixed.options, answer: mixed.correctIndex };
   return (
     <>
       <div className="predict">
