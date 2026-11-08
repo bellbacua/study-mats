@@ -459,22 +459,26 @@ export const dimensional_pipeline = {
       const pipe = PIPELINES[t.example];
       const cards = [pipe.start(t.v), ...pipe.cards];
       const n = cards.length;
-      const total = n * W + (n - 1) * 0.8;
+      // a card is as wide as its longest line, so 1,000,000 cm³ fits
+      const widths = cards.map((c) => Math.max(W, 0.3 * Math.max(`${c.n}${c.nu}`.length, `${c.d || ''}${c.du || ''}`.length) + 1.0));
+      const lefts = widths.map((_, i) => widths.slice(0, i).reduce((a, w) => a + w + 0.8, 0));
+      const total = widths.reduce((a, w) => a + w, 0) + (n - 1) * 0.8;
       const x0 = -total / 2 - 1.6;
       const cancelled = new Set();
       if (t.stage >= 3) pipe.cancel.flat().forEach((k) => cancelled.add(k));
       slots.forEach((s, i) => {
         const card = cards[i];
         const a = card ? clamp(p.stage - (i === 0 ? -1 : i - 1), 0, 1) : 0;
-        const x = x0 + i * (W + 0.8) + (1 - smooth(a)) * 1.2;
+        const w = widths[i] ?? W;
+        const x = x0 + (lefts[i] ?? 0) + (1 - smooth(a)) * 1.2;
         const y = -0.7;
         const vis = !!card && a > 0.01;
         [s.frame, s.bar, s.nNum, s.nU, s.dNum, s.dU].forEach((o) => o.visible(vis));
         s.times.visible(vis && i > 0);
         if (!vis) return;
-        s.frame.set(x, y, W, H).opacity(0.08 * a);
-        s.bar.set([[x + 0.3, y + H / 2], [x + W - 0.3, y + H / 2]]).visible(!!card.d);
-        const cx = x + W / 2 + 0.1;
+        s.frame.set(x, y, w, H).opacity(0.08 * a);
+        s.bar.set([[x + 0.3, y + H / 2], [x + w - 0.3, y + H / 2]]).visible(!!card.d);
+        const cx = x + w / 2 + 0.1;
         s.nNum.set(card.n).pos([cx - 0.05, y + H * 0.75]).opacity(a);
         s.nU.set(card.nu).pos([cx + 0.05, y + H * 0.75]).opacity(a);
         s.dNum.set(card.d).pos([cx - 0.05, y + H * 0.25]).opacity(a).visible(!!card.d);
@@ -484,7 +488,7 @@ export const dimensional_pipeline = {
         s.times.pos([x - 0.4, y + H / 2]);
       });
       const done = t.stage >= 3;
-      const endX = x0 + n * (W + 0.8) - 0.4;
+      const endX = x0 + total + 0.4;
       eqSign.pos([endX, 0.5]).visible(done);
       result.set(pipe.result(t.v)).pos([endX + 0.45, 0.5]).visible(done);
     };

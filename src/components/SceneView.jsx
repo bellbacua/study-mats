@@ -36,6 +36,7 @@ export default function SceneView({ type, mission, beat, onGoal, goalDone }) {
       setTarget({ ...init, ...first.set });
       setCaption(first.say);
       setCur(0);
+      stage.current.setNotes(first.notes);
     }
     return () => {
       cancelAnimationFrame(raf);
@@ -53,6 +54,7 @@ export default function SceneView({ type, mission, beat, onGoal, goalDone }) {
       touched.current = true;
       setCaption('');
       setCur(-1);
+      stage.current?.setNotes([]);
     }
     stage.current?.setTarget(next);
     setTarget((prev) => ({ ...prev, ...next }));
@@ -75,6 +77,7 @@ export default function SceneView({ type, mission, beat, onGoal, goalDone }) {
       // always shows exactly what that step showed.
       const upTo = def.beats.slice(0, i + 1).reduce((acc, x) => ({ ...acc, ...x.set }), initialParams(def));
       apply(upTo, false);
+      stage.current?.setNotes(b.notes);
       setCaption(b.say);
       setCur(i);
       setPlaying(chain ? i : -1);

@@ -95,6 +95,50 @@ export class Stage {
     Object.assign(this.current, this.target);
   }
 
+  // Callouts for the step being narrated: a short note placed in the picture,
+  // with an arrow that grows toward the thing to look at. Each note is
+  // { text, at: [x, y], to?: [x, y], color? }. Old notes fade out, new ones
+  // fade in, so the eye is pulled to what this step is about.
+  setNotes(notes) {
+    this.notePool ||= [];
+    for (const n of this.notePool) n.want = 0;
+    (notes || []).forEach((n, i) => {
+      let slot = this.notePool[i];
+      if (!slot) {
+        slot = {
+          label: this.kit.label('', [0, 0], { cls: 'viz-note', tex: false }),
+          arrow: this.kit.arrow([0, 0], [0.01, 0], { color: C.yellow, width: 3, head: 0.28 }),
+          a: 0,
+        };
+        this.notePool.push(slot);
+      }
+      if (slot.text !== n.text || String(slot.at) !== String(n.at) || String(slot.to) !== String(n.to)) {
+        slot.a = 0; // a new note grows in again
+      }
+      Object.assign(slot, { text: n.text, at: n.at, to: n.to, color: n.color ?? C.yellow, want: 1 });
+      slot.label.set(n.text).pos(n.at).color(slot.color);
+      slot.arrow.color(slot.color);
+    });
+  }
+
+  tickNotes(dt) {
+    for (const n of this.notePool || []) {
+      n.a += ((n.want ?? 0) - n.a) * (1 - Math.exp(-dt * (n.want ? 4 : 8)));
+      const vis = n.a > 0.02;
+      n.label.visible(vis).opacity(Math.min(1, n.a * 1.2));
+      if (vis && n.to) {
+        // the arrow starts at the edge of the note and grows to its target
+        const from = n.at;
+        const d = [n.to[0] - from[0], n.to[1] - from[1], (n.to[2] ?? 0) - (from[2] ?? 0)];
+        const len = Math.hypot(...d) || 1;
+        const off = Math.min(0.55, len * 0.3);
+        const s = [from[0] + (d[0] / len) * off, from[1] + (d[1] / len) * off, (from[2] ?? 0) + (d[2] / len) * off];
+        const g = 0.15 + 0.85 * n.a;
+        n.arrow.visible(true).set(s, [s[0] + (n.to[0] - s[0]) * g, s[1] + (n.to[1] - s[1]) * g, s[2] + ((n.to[2] ?? 0) - s[2]) * g]);
+      } else n.arrow.visible(false);
+    }
+  }
+
   replayIntro() {
     this.intro = 0;
   }
@@ -143,6 +187,7 @@ export class Stage {
       this.introDone = this.intro >= 1;
     }
     this.update(this.current, this.target, this.time, dt);
+    this.tickNotes(dt);
     // 3D scenes open with a gentle camera dolly-in
     if (this.introCam && this.intro < 1) this.camera.position.lerp(this.introCam, 1 - Math.exp(-dt * 2.5));
     this.controls?.update();

@@ -403,8 +403,15 @@ export const area_multiplication = {
   ],
   beats: [
     { say: '4 × 3 is 4 columns of 3, or 3 rows of 4: the same 12 squares. That is why a × b = b × a.', set: { a: 4, b: 3, split: 0 } },
-    { say: 'Bigger: 13 × 12. Counting 156 squares is slow…', set: { a: 13, b: 12, split: 0 } },
-    { say: '…so split each side into tens and ones. Four easy pieces: 100 + 20 + 30 + 6 = 156. Every multiplication method you learned is this picture.', set: { a: 13, b: 12, split: 1 } },
+    { say: 'Bigger: 13 × 12. Counting 156 squares is slow…', set: { a: 13, b: 12, split: 0 }, notes: [{ text: '156 little squares to count', at: [-6.3, 1.5], to: [-3.2, 0.5] }] },
+    {
+      say: '…so split each side into tens and ones. Four easy pieces: 100 + 20 + 30 + 6 = 156. Every multiplication method you learned is this picture.',
+      set: { a: 13, b: 12, split: 1 },
+      notes: [
+        { text: 'tens × tens: the big easy block', at: [-6.2, 2.4], to: [-1.6, 0.2] },
+        { text: 'ones × ones: the small corner', at: [6.2, 3.0], to: [2.75, 2.35], color: C.gold },
+      ],
+    },
   ],
   readout: (t) => {
     // Egyptian doubling: write a as a sum of powers of two
