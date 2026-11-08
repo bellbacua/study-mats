@@ -110,6 +110,11 @@ export class Stage {
           arrow: this.kit.arrow([0, 0], [0.01, 0], { color: C.yellow, width: 3, head: 0.28 }),
           a: 0,
         };
+        // callout arrows always draw on top of the scene
+        slot.arrow.obj.traverse((o) => {
+          o.renderOrder = 50;
+          if (o.material) o.material.depthTest = false;
+        });
         this.notePool.push(slot);
       }
       if (slot.text !== n.text || String(slot.at) !== String(n.at) || String(slot.to) !== String(n.to)) {

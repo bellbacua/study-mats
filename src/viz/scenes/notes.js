@@ -902,4 +902,27 @@ export const NOTES = {
     [{ text: 'the thread starts to wave and burst', at: [-2.4, -0.4], to: [1.2, 1.5], color: C.red }],
     [{ text: 'mixing flattens the speed profile', at: [4.6, -2.0], to: [1.1, -2.1], color: C.yellow }],
   ],
+  shaft_torsion: [
+    [
+      { text: 'zero at the centre, largest at the rim', at: [-1.8, -2.8], to: [4.4, 0.5], color: C.pink },
+      { text: 'a straight line twists into a spiral', at: [-4.0, 3.0], to: [-3.0, 1.05], color: C.yellow },
+    ],
+    [{ text: 'the bored-out core carried very little', at: [-1.8, -2.8], to: [3.6, 0.0], color: C.white }],
+    [{ text: 'smaller shaft, twice the torque: 4× the stress', at: [-2.4, -2.8], to: [2.7, -0.7], color: C.pink }],
+  ],
+  fracture_surface: [
+    [{ text: 'the crack started here, at the keyway corner', at: [-1.6, -3.4], to: [-5.4, -2.3], color: C.red }],
+    [{ text: 'small final zone: the load was low', at: [1.8, 3.3], to: [-1.3, 2.4], color: C.gold }],
+    [{ text: 'river marks fan back to the origin', at: [-1.4, -3.4], to: [-4.6, -1.6], color: C.white }],
+  ],
+  sintering_density: [
+    [{ text: 'dark gaps = pores still open', at: [-1.6, -3.1], to: [-3.95, 0.12], color: C.white }],
+    [{ text: 'pores closed, and the part shrank inside its old outline', at: [0.4, -2.9], to: [-1.0, -1.6], color: C.gold }],
+    [{ text: 'ten minutes: still porous', at: [4.6, -0.6], to: [2.5, -0.05], color: C.yellow }],
+  ],
+  mohr_circle: [
+    [{ text: 'x-face: (80, 40) on the circle', at: [6.0, 2.7], to: [5.6, 1.25], color: C.blue }],
+    [{ text: 'on the axis: no shear, σ₁ = 100 MPa', at: [5.6, 2.6], to: [6.1, 0.3], color: C.red }],
+    [{ text: 'turned 45°: pure tension, 50 MPa', at: [-2.0, 3.0], to: [-4.0, 1.3], color: C.teal }],
+  ],
 };
