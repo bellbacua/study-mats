@@ -3135,3 +3135,165 @@ input[type='range'] {
 .brand {
   flex: none;
 }
+
+/* ---------- side topics (GE-style classes) ---------- */
+.track-philo {
+  color: #e59ac0;
+}
+.track-bio {
+  color: var(--teal);
+}
+.subj-philo,
+.class-card.subj-philo {
+  --subj: #e59ac0;
+}
+.subj-bio,
+.class-card.subj-bio {
+  --subj: var(--teal);
+}
+.class-card.ge-card {
+  border-style: dashed;
+}
+.class-card.ge-card:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+/* ---------- program page ---------- */
+.program-page > section {
+  margin-top: 34px;
+}
+.prog-section-head {
+  margin: 34px 0 14px;
+}
+.prog-section-head h2 {
+  font-size: 22px;
+  margin: 0 0 6px;
+}
+.prog-section-head p {
+  color: var(--muted);
+  margin: 0;
+  max-width: 75ch;
+}
+.prog-programs {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 12px;
+}
+.prog-program {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 16px;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  background: var(--surface);
+}
+.prog-program.on {
+  border-color: var(--blue);
+  box-shadow: inset 0 0 0 1px var(--blue);
+}
+.prog-program.later {
+  opacity: 0.6;
+}
+.prog-tag {
+  margin-top: auto;
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--blue);
+}
+.prog-program.later .prog-tag {
+  color: var(--muted);
+}
+.spec-card.side-card.later {
+  opacity: 0.6;
+}
+
+/* ---------- first-open welcome ---------- */
+.welcome {
+  min-height: 100vh;
+  display: grid;
+  place-items: center;
+  padding: 32px 16px;
+}
+.welcome-card {
+  width: min(760px, 100%);
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+.welcome-card h1 {
+  margin: 8px 0 0;
+  font-size: 34px;
+}
+.welcome-card h2 {
+  margin: 14px 0 0;
+  font-size: 18px;
+}
+.welcome-card > p {
+  color: var(--muted);
+  margin: 0;
+}
+.welcome-card > .btn {
+  align-self: flex-start;
+  margin-top: 12px;
+}
+.welcome-options {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 10px;
+}
+.welcome-option {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  text-align: left;
+  padding: 14px;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  background: var(--surface);
+  color: var(--text);
+}
+.welcome-option.on {
+  border-color: var(--blue);
+  box-shadow: inset 0 0 0 1px var(--blue);
+}
+.welcome-option:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+.problem-options {
+  margin: 8px 0 10px;
+}
+
+/* ---------- sources ---------- */
+.sources {
+  margin-top: 28px;
+  padding: 16px 18px;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  background: var(--surface);
+}
+.sources ol {
+  margin: 8px 0 0;
+  padding-left: 22px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  font-size: 14px;
+}
+.sources a {
+  color: var(--blue);
+}
+.sources li:target {
+  background: var(--surface-2);
+  border-radius: 6px;
+}
+sup.cite {
+  font-size: 0.68em;
+  margin-left: 1px;
+}
+sup.cite a {
+  color: var(--blue);
+  text-decoration: none;
+}

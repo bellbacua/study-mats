@@ -59,7 +59,10 @@ for (const [id, d] of Object.entries(DEEP)) {
     (pt.practice || []).forEach((q, k) => {
       problems++;
       if (!q.q || !q.hint || !q.solution) bad(id, `${w} problem ${k + 1} needs q, hint, solution`);
-      if (!(typeof q.a === 'number' && Number.isFinite(q.a)) && !['inf', '-inf', 'dne'].includes(q.a)) bad(id, `${w} problem ${k + 1}: a must be a number or inf/-inf/dne`);
+      if (q.options) {
+        if (!Array.isArray(q.options) || q.options.length < 2 || q.options.some((o) => !o) || new Set(q.options).size !== q.options.length)
+          bad(id, `${w} problem ${k + 1}: needs 2+ different options (the first is correct)`);
+      } else if (!(typeof q.a === 'number' && Number.isFinite(q.a)) && !['inf', '-inf', 'dne'].includes(q.a)) bad(id, `${w} problem ${k + 1}: a must be a number or inf/-inf/dne`);
       else if (!isRight(q, typeof q.a === 'number' ? String(q.a) : q.a)) bad(id, `${w} problem ${k + 1}: its own answer is not accepted`);
     });
   });

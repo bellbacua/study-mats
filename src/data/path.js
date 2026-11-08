@@ -8,7 +8,7 @@ import { PHYSICS_LESSONS, PHYSICS_READINGS } from './physicsLessons';
 import { LESSON_READINGS } from './openSourceReadings';
 import { LANGUAGE_LESSON, LANGUAGE_READINGS } from './languageLesson';
 import { UM_LESSONS, UM_READINGS, UM_COURSES } from './um';
-import { TRACKS, YEAR_ENDS } from './tracks';
+import { TRACKS, YEAR_ENDS, SIDES, SIDES_LATER, PROGRAMS } from './tracks';
 
 const DAYS = { 1: ['Mon'], 2: ['Mon', 'Thu'], 3: ['Mon', 'Wed', 'Fri'], 4: ['Mon', 'Tue', 'Thu', 'Fri'] };
 
@@ -123,6 +123,8 @@ export const SUBJECTS = {
   phys: 'Physics',
   mate: 'Materials',
   eng: 'Engineering',
+  philo: 'Philosophy',
+  bio: 'Biomolecular',
 };
 
 export { UM_COURSES };
@@ -157,22 +159,31 @@ export const CURRICULUM_TERMS = PLANNED.map((ids, w) => {
 export const READINGS = { ...LESSON_READINGS, ...ORIGIN_READINGS, ...PHYSICS_READINGS, ...LANGUAGE_READINGS, ...UM_READINGS };
 
 // ---- specializations ---------------------------------------------------------
-export { TRACKS, YEAR_ENDS };
+export { TRACKS, YEAR_ENDS, SIDES, SIDES_LATER, PROGRAMS };
 
 const weekOf = (l) => Number(String(l.termId || '').replace('week-', '')) || 0;
 
 // Track classes that have been written, in track order, with where they sit.
-export const TRACK_LESSONS = TRACKS.flatMap((t) => {
+// Side topics use the same shape, marked with side: true and no UM codes.
+export const TRACK_LESSONS = [...TRACKS, ...SIDES.map((t) => ({ ...t, side: true }))].flatMap((t) => {
   const written = t.classes.filter((c) => byId[c.id]);
-  return written.map((c, i) => ({ ...byId[c.id], um: byId[c.id].um || t.um, spec: t.id, specIndex: i, specCount: written.length, after: c.after }));
+  return written.map((c, i) => ({
+    ...byId[c.id],
+    um: t.side ? [] : byId[c.id].um || t.um,
+    spec: t.id,
+    side: Boolean(t.side),
+    specIndex: i,
+    specCount: written.length,
+    after: c.after,
+  }));
 });
 export const ALL_LESSONS = [...LESSONS, ...TRACK_LESSONS];
-const TRACK_BY_ID = Object.fromEntries(TRACKS.map((t) => [t.id, t]));
+const TRACK_BY_ID = Object.fromEntries([...TRACKS, ...SIDES].map((t) => [t.id, t]));
 export const trackOf = (l) => (l?.spec ? TRACK_BY_ID[l.spec] : null);
 export const trackLessons = (trackId) => TRACK_LESSONS.filter((l) => l.spec === trackId);
 
 // "Week 12" for a core class, "Metals track" for a specialization class.
-export const whereLabel = (l) => (l.spec ? `${TRACK_BY_ID[l.spec].title} track` : `Week ${weekOf(l)}`);
+export const whereLabel = (l) => (l.side ? TRACK_BY_ID[l.spec].title : l.spec ? `${TRACK_BY_ID[l.spec].title} track` : `Week ${weekOf(l)}`);
 
 // How far the core timetable is done, year by year, and how many tracks are open.
 export function yearProgress(passed) {
@@ -206,3 +217,29 @@ export function trackClassState(l, passed) {
   }
   return { open: true, done: false };
 }
+
+// ---- side topics on the roadmap -------------------------------------------------
+// A side topic is saved as the reading id "side:<id>@<week>": the week it was added.
+// Its classes then sit in the timetable like GE classes, one a week from that week
+// (two a week if there are not enough weeks left).
+const LAST_WEEK = CURRICULUM_TERMS.length;
+export function pickedSides(readings) {
+  return Object.keys(readings || {})
+    .map((k) => /^side:([a-z]+)@(\d+)$/.exec(k))
+    .filter((m) => m && readings[m[0]] && TRACK_BY_ID[m[1]])
+    .map((m) => ({ id: m[1], start: Number(m[2]), key: m[0], topic: TRACK_BY_ID[m[1]] }));
+}
+export function sideByWeek(readings) {
+  const out = {};
+  for (const p of pickedSides(readings)) {
+    const list = trackLessons(p.id);
+    const start = Math.min(Math.max(1, p.start), LAST_WEEK);
+    const per = Math.ceil(list.length / Math.max(1, LAST_WEEK - start + 1));
+    list.forEach((l, i) => {
+      const w = `week-${Math.min(LAST_WEEK, start + Math.floor(i / per))}`;
+      (out[w] ||= []).push(l);
+    });
+  }
+  return out;
+}
+export const weekNumber = weekOf;

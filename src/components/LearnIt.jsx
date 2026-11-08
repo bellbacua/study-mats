@@ -186,7 +186,12 @@ function Part({ p, n, count, done, onDone }) {
       <h3 className="part-h">
         Your turn <span className="notes-hint">· {got} of {total} right</span>
       </h3>
-      <p className="notes-hint">Type the answer. Fractions, π, e and √ work (for example 1/6, pi/4, 2e, sqrt(2)). Use “inf” for infinity and “dne” if it does not exist.</p>
+      {p.practice.some((it) => !it.options) && (
+        <p className="notes-hint">
+          {p.practice.some((it) => it.options) ? 'Pick an option, or type the answer where there is a box. ' : 'Type the answer. '}
+          Fractions, π, e and √ work (for example 1/6, pi/4, 2e, sqrt(2)). Use “inf” for infinity and “dne” if it does not exist.
+        </p>
+      )}
       {p.practice.map((item, k) => (
         <Problem key={k} item={item} k={k} onRight={() => setRight((r) => ({ ...r, [k]: true }))} />
       ))}
@@ -229,7 +234,65 @@ function Worked({ e, k }) {
   );
 }
 
+// A practice question answered by picking an option (the first one written is
+// correct; they are shuffled the same way every time).
+function ChoiceProblem({ item, k, onRight }) {
+  const mixed = shuffled({ id: item.q, options: item.options, correctIndex: 0 });
+  const [pick, setPick] = useState(null);
+  const [tries, setTries] = useState(0);
+  const [hint, setHint] = useState(false);
+  const right = pick === mixed.correctIndex;
+  const choose = (i) => {
+    if (right) return;
+    setPick(i);
+    setTries((t) => t + 1);
+    if (i === mixed.correctIndex) onRight();
+  };
+  return (
+    <div className={`problem ${right ? 'ok' : ''}`}>
+      <p>
+        <strong>{k + 1}.</strong> <Glossed text={item.q} />
+      </p>
+      <div className="options problem-options">
+        {mixed.options.map((o, i) => (
+          <button
+            key={i}
+            type="button"
+            className={`option ${pick === i ? (i === mixed.correctIndex ? 'right' : 'wrong') : ''}`}
+            disabled={right}
+            onClick={() => choose(i)}
+          >
+            {o}
+          </button>
+        ))}
+      </div>
+      {!hint && !right && (
+        <button type="button" className="btn ghost sm" onClick={() => setHint(true)}>
+          Hint
+        </button>
+      )}
+      {pick !== null && !right && <p className="problem-msg no">Not that one. {tries >= 2 ? 'Read the hint, then try again.' : 'Try again.'}</p>}
+      {hint && !right && (
+        <p className="problem-msg hint">
+          💡 <Glossed text={item.hint} />
+        </p>
+      )}
+      {(right || tries >= 3) && (
+        <p className={`problem-msg ${right ? 'ok' : ''}`}>
+          {right ? '✓ Right. ' : `Answer: ${item.options[0]}. `}
+          <Glossed text={item.solution} />
+        </p>
+      )}
+    </div>
+  );
+}
+
 function Problem({ item, k, onRight }) {
+  if (item.options) return <ChoiceProblem item={item} k={k} onRight={onRight} />;
+  return <TypedProblem item={item} k={k} onRight={onRight} />;
+}
+
+function TypedProblem({ item, k, onRight }) {
   const [val, setVal] = useState('');
   const [state, setState] = useState(null); // null | 'right' | 'wrong' | 'unread'
   const [tries, setTries] = useState(0);

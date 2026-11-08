@@ -1,9 +1,9 @@
-import { CURRICULUM_TERMS, LESSONS, SUBJECTS } from '../data/path';
+import { CURRICULUM_TERMS, LESSONS, SUBJECTS, trackClassState } from '../data/path';
 import { useReveal } from '../state/useReveal';
 
 const shortName = (p) => p.split('(')[0].trim();
 
-export default function Roadmap({ progress, nextUp, onOpen, status, dueNow = 0, onReview, spec }) {
+export default function Roadmap({ progress, nextUp, onOpen, status, dueNow = 0, onReview, spec, sideWeeks = {} }) {
   const done = LESSONS.filter((l) => progress.passed[l.id]).length;
   useReveal([done]);
   return (
@@ -90,6 +90,30 @@ export default function Roadmap({ progress, nextUp, onOpen, status, dueNow = 0, 
                         <span className="class-day">{l.day}</span>
                         <span className={`subject track-${l.track}`}>{SUBJECTS[l.track] || l.track}</span>
                         <span className="class-num">{isDone ? '✓' : isNext ? 'next' : `#${n}`}</span>
+                      </span>
+                      <span className="path-title">{l.title}</span>
+                      <span className="path-meta">
+                        {l.history.era.split('•')[0].split('→')[0].trim()} · {shortName(l.history.protagonist)}
+                      </span>
+                    </button>
+                  </li>
+                );
+              })}
+              {(sideWeeks[term.id] || []).map((l) => {
+                const st = trackClassState(l, progress.passed);
+                return (
+                  <li key={l.id} data-reveal>
+                    <button
+                      type="button"
+                      className={`class-card ge-card subj-${l.track} ${st.done ? 'done' : ''}`}
+                      disabled={!st.open}
+                      title={st.open ? '' : st.why}
+                      onClick={() => onOpen(l.id)}
+                    >
+                      <span className="class-top">
+                        <span className="class-day">GE</span>
+                        <span className={`subject track-${l.track}`}>{SUBJECTS[l.track] || l.track}</span>
+                        <span className="class-num">{st.done ? '✓' : st.open ? `${l.specIndex + 1}/${l.specCount}` : '🔒'}</span>
                       </span>
                       <span className="path-title">{l.title}</span>
                       <span className="path-meta">

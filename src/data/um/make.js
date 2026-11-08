@@ -99,6 +99,8 @@ export function mk(o) {
     umCourseLink: '',
     title: o.title,
     subtitle: o.subtitle,
+    // Sources for the story and numbers, cited in the text as [1], [2], ...
+    sources: (o.sources || []).map(([label, url, note = '']) => ({ label, url, note })),
     overtimeDigest: o.digest,
     history: { era: o.era, protagonist: o.who, hook: o.hook, narrative: o.story, takeaway: o.takeaway },
     visualLab: { type: o.viz, title: o.vizTitle, instructions: o.vizHow, missionPrompt: '', targetState: {} },

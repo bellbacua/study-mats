@@ -10,6 +10,54 @@ import LearnIt, { Predict } from './LearnIt';
 
 const SceneView = lazy(() => import('./SceneView'));
 
+// Every class lists where its story and numbers come from. Written sources
+// come first (cited in the text as [1], [2] ...), then the class readings.
+export function lessonSources(lesson) {
+  const own = lesson.sources || [];
+  const reads = (LESSON_READINGS[lesson.id] || []).filter((r) => r.url && !own.some((o) => o.url === r.url));
+  return [...own, ...reads.map((r) => ({ label: `${r.source}: ${r.title}`, url: r.url, note: r.whyRead || '' }))];
+}
+
+// Text with [n] citation marks turned into small links to the Sources list.
+function Cited({ text }) {
+  // "[1]", "[1, 2]" and "[1][2]" all become one superscript group.
+  const bits = String(text).split(/((?:\s?\[\d+(?:,\s*\d+)*\])+)/);
+  return bits.map((b, i) => {
+    if (i % 2 === 0) return <Glossed key={i} text={b} />;
+    const nums = [...b.matchAll(/\d+/g)].map((m) => m[0]);
+    return (
+      <sup key={i} className="cite">
+        {nums.map((n, j) => (
+          <a key={n + j} href={`#src-${n}`}>
+            {j ? ',' : ''}
+            {n}
+          </a>
+        ))}
+      </sup>
+    );
+  });
+}
+
+function Sources({ lesson }) {
+  const list = lessonSources(lesson);
+  if (!list.length) return null;
+  return (
+    <section className="sources" data-reveal>
+      <span className="eyebrow">Sources</span>
+      <ol>
+        {list.map((s, i) => (
+          <li key={i} id={`src-${i + 1}`}>
+            <a href={s.url} target="_blank" rel="noreferrer">
+              {s.label}
+            </a>
+            {s.note && <span className="notes-hint"> · {s.note}</span>}
+          </li>
+        ))}
+      </ol>
+    </section>
+  );
+}
+
 // Sends a prompt into this class's notes (NotesPanel listens for it).
 const addToNotes = (text) => window.dispatchEvent(new CustomEvent('notes:add', { detail: text }));
 const Pin = ({ text, label = 'Add to my notes' }) => (
@@ -96,7 +144,7 @@ export default function LessonView({ lesson, index, total, progress, actions, pr
           <div className="narrative">
             {h.narrative.map((p, i) => (
               <p key={i} data-reveal>
-                <Glossed text={p} />
+                <Cited text={p} />
               </p>
             ))}
           </div>
@@ -118,6 +166,7 @@ export default function LessonView({ lesson, index, total, progress, actions, pr
               ))}
             </ul>
           </div>
+          <Sources lesson={lesson} />
         </section>
       )}
 

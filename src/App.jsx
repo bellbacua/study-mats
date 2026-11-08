@@ -1,9 +1,11 @@
 import { useMemo, useState } from 'react';
-import { LESSONS, ALL_LESSONS, TRACKS, trackLessons, trackClassState, openSlots } from './data/path';
+import { LESSONS, ALL_LESSONS, TRACKS, PROGRAMS, trackLessons, trackClassState, openSlots, sideByWeek, weekNumber } from './data/path';
 import LessonView from './components/LessonView';
 import Roadmap from './components/Roadmap';
 import NotesPanel from './components/NotesPanel';
 import TopNav from './components/TopNav';
+import ProgramPage from './components/ProgramPage';
+import Welcome from './components/Welcome';
 import Timeline from './components/Timeline';
 import GlossaryPage from './components/GlossaryPage';
 import ExamsPage from './components/ExamsPage';
@@ -12,7 +14,6 @@ import Ambush from './components/Ambush';
 import StudyGuide from './components/StudyGuide';
 import NotesPage from './components/NotesPage';
 import ReviewPage from './components/ReviewPage';
-import SpecializationsPage from './components/SpecializationsPage';
 import { dueCards } from './state/review';
 import { useProgress } from './state/useProgress';
 
@@ -56,13 +57,13 @@ export default function App() {
 
   const saveMode = status.mode === 'sqlite' ? 'sqlite' : status.mode === 'offline' ? 'offline' : 'loading';
 
-  const lessonLabel = lesson.spec ? 'Track class' : `Lesson ${idx + 1}`;
+  const lessonLabel = lesson.side ? 'GE class' : lesson.spec ? 'Track class' : `Lesson ${idx + 1}`;
   const navItems = useMemo(
     () => [
       { id: 'roadmap', label: 'Roadmap' },
       { id: 'lesson', label: lessonLabel },
       { id: 'review', label: <>Review{dueNow > 0 && <span className="nav-badge">{dueNow}</span>}</> },
-      { id: 'spec', label: 'Tracks' },
+      { id: 'spec', label: 'Program' },
       { id: 'timeline', label: 'Timeline' },
       { id: 'glossary', label: 'Glossary' },
       { id: 'notes', label: 'My notes' },
@@ -72,6 +73,19 @@ export default function App() {
     [lessonLabel, dueNow],
   );
 
+  const startWeek = nextUp ? weekNumber(nextUp) : 1;
+  const sideWeeks = useMemo(() => sideByWeek(state.readings), [state.readings]);
+  const hasProgram = PROGRAMS.some((p) => state.readings[`program:${p.id}`]);
+
+  if (status.mode && status.mode !== 'loading' && !hasProgram)
+    return (
+      <Welcome
+        onDone={(program, sides) => {
+          actions.toggleReading(`program:${program}`);
+          for (const id of sides) actions.toggleReading(`side:${id}@${startWeek}`);
+        }}
+      />
+    );
   if (guideWeek) return <StudyGuide week={guideWeek} notes={state.notes} onClose={() => setGuideWeek(null)} />;
 
   return (
@@ -97,11 +111,17 @@ export default function App() {
 
       <main className="main">
         {view === 'roadmap' ? (
-          <Roadmap progress={state} nextUp={nextUp} onOpen={actions.open} status={saveMode} dueNow={dueNow} onReview={() => setView('review')} spec={spec} />
+          <Roadmap progress={state} nextUp={nextUp} onOpen={actions.open} status={saveMode} dueNow={dueNow} onReview={() => setView('review')} spec={spec} sideWeeks={sideWeeks} />
         ) : view === 'review' ? (
           <ReviewPage progress={state} actions={actions} />
         ) : view === 'spec' ? (
-          <SpecializationsPage progress={state} onOpen={actions.open} onToggle={(id) => actions.toggleReading(`spec:${id}`)} />
+          <ProgramPage
+            progress={state}
+            onOpen={actions.open}
+            onToggle={(id) => actions.toggleReading(`spec:${id}`)}
+            onToggleKey={(key) => actions.toggleReading(key)}
+            startWeek={startWeek}
+          />
         ) : view === 'timeline' ? (
           <Timeline progress={state} onOpen={actions.open} />
         ) : view === 'notes' ? (

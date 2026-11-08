@@ -54,7 +54,7 @@ export default function ProgressPage({ progress, nextUp, onOpen, onPrintWeek }) 
   const bySubject = Object.keys(SUBJECTS).map((k) => {
     const all = LESSONS.filter((l) => l.track === k);
     return { k, done: all.filter((l) => progress.passed[l.id]).length, total: all.length };
-  });
+  }).filter((r) => r.total > 0);
 
   return (
     <div className="progress-page">
