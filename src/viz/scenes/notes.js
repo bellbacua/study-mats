@@ -1052,4 +1052,35 @@ export const NOTES = {
     [{ text: 'barium titanate: about 2,000× air', at: [-3.6, 3.6], to: [-3.0, 0.9], color: C.yellow }],
     [{ text: 'too thin: the field beats breakdown', at: [-1.4, 3.3], to: [2.6, 1.6], color: C.red }],
   ],
+  hysteresis_loop: [
+    [{ text: 'field off, yet B stays at 1.3 T: remanence', at: [-4.0, 3.4], to: [-0.6, 2.6], color: C.white }],
+    [{ text: 'B reaches zero only at −900 kA/m', at: [-5.4, 1.2], to: [-2.7, 0.1], color: C.red }],
+    [{ text: 'soft iron: a thin loop, little energy lost', at: [-4.6, 1.6], to: [-1.0, 0.6], color: C.teal }],
+  ],
+  energy_density: [
+    [
+      { text: 'diesel: a quarter of a kilogram', at: [1.6, 2.6], to: [-1.25, 1.95], color: C.gold },
+      { text: 'water in a dam: over 4 tonnes', at: [4.6, -1.0], to: [3.6, -2.0], color: C.green },
+    ],
+    [{ text: 'lithium-ion: about 17× heavier than diesel', at: [4.6, 1.2], to: [1.75, 0.9], color: C.blue }],
+    [{ text: 'lead-acid: almost 7 tonnes', at: [5.6, -0.4], to: [3.9, -1.15], color: C.grey }],
+  ],
+  electrode_capacity: [
+    [{ text: 'the cathode is most of the weight', at: [-3.2, 3.2], to: [0.2, 0.3], color: C.red }],
+    [
+      { text: 'silicon anode: almost nothing', at: [-2.8, -3.9], to: [0.3, -3.1], color: C.blue },
+      { text: 'only about a third more energy', at: [5.0, 3.0], to: [5.5, 0.9], color: C.yellow },
+    ],
+    [{ text: 'better cathode + silicon blend', at: [5.0, 3.0], to: [5.5, 1.3], color: C.yellow }],
+    [{ text: 'LTO sits high: only a 1.85 V gap', at: [-3.4, -2.6], to: [-4.9, -0.75], color: C.blue }],
+  ],
+  solar_bandgap: [
+    [
+      { text: 'too little energy: passes straight through', at: [-3.4, 3.8], to: [-5.8, -1.5], color: C.grey },
+      { text: 'the extra above the gap is lost as heat', at: [3.6, 1.2], to: [1.0, 0.6], color: C.red },
+    ],
+    [{ text: 'tiny gap: catches all, keeps little', at: [3.6, 1.2], to: [-2.5, 1.5], color: C.red }],
+    [{ text: 'wide gap: most photons pass through', at: [3.6, 1.2], to: [-2.0, 0.6], color: C.grey }],
+    [{ text: 'GaAs: close to the best compromise', at: [-4.6, 1.8], to: [-2.05, 2.7], color: C.teal }],
+  ],
 };

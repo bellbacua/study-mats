@@ -46,8 +46,8 @@ export const energy_density = {
     const gap = 1.05;
     for (let d = lo; d <= hi; d++) {
       kit.line([[xOf(10 ** d), top + 0.55], [xOf(10 ** d), top - gap * 5 - 0.55]], { color: C.grid, width: 1, opacity: 0.7 });
-      const t = d === -1 ? '0.1' : d === 0 ? '1' : d === 1 ? '10' : d === 2 ? '100' : d === 3 ? '1 t' : d === 6 ? '1000 t' : `10^{${d}}`;
-      kit.label(d === 3 || d === 6 ? `\\text{${t}}` : t, [xOf(10 ** d), top - gap * 5 - 0.85], { size: 11 });
+      const t = d === -1 ? '0.1' : d === 0 ? '1' : d === 1 ? '10' : d === 2 ? '100' : `${['1', '10', '100', '1000', '10 000'][d - 3] ?? `10^{${d - 3}}`} t`;
+      kit.label(d >= 3 ? `\\text{${t}}` : t, [xOf(10 ** d), top - gap * 5 - 0.85], { size: 11 });
     }
     kit.label('\\text{mass needed (kg, each step ×10)}', [(x0 + x1) / 2, top - gap * 5 - 1.35], { size: 12, color: C.axis });
     const bars = STORES.map((s, i) => {
@@ -126,11 +126,11 @@ export const electrode_capacity = {
     // grams per Ah stacked bar
     const bx = -0.6;
     const by = -3.2;
-    const gs = 0.62;
+    const gs = 0.5;
     kit.line([[bx - 0.3, by], [bx + 3.2, by]], { color: C.axis, width: 2 });
-    kit.line([[bx - 0.3, by], [bx - 0.3, by + 11 * gs]], { color: C.axis, width: 2 });
-    for (let g = 0; g <= 10; g += 2) kit.label(`${g}`, [bx - 0.4, by + g * gs], { size: 11, align: 'right', tex: false });
-    kit.label('\\text{grams per amp-hour}', [bx - 0.3, by + 11 * gs + 0.3], { size: 11, color: C.axis });
+    kit.line([[bx - 0.3, by], [bx - 0.3, by + 13 * gs]], { color: C.axis, width: 2 });
+    for (let g = 0; g <= 12; g += 2) kit.label(`${g}`, [bx - 0.4, by + g * gs], { size: 11, align: 'right', tex: false });
+    kit.label('\\text{grams per amp-hour}', [bx - 0.3, by + 13 * gs + 0.3], { size: 11, color: C.axis });
     const cB = kit.rect(bx + 0.4, by, 2.2, 0.01, { color: C.red, opacity: 0.8, stroke: false });
     const aB = kit.rect(bx + 0.4, by, 2.2, 0.01, { color: C.blue, opacity: 0.8, stroke: false });
     const cG = kit.label('', [bx + 1.5, by], { size: 11, tex: false });
