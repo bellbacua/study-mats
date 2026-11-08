@@ -870,4 +870,36 @@ export const NOTES = {
     ],
     [{ text: 'fine-grained steel: still tough at −20 °C', at: [-0.6, 0.9], to: [4.25, 2.4], color: C.blue }],
   ],
+  column_buckling: [
+    [{ text: 'load below the curve: safe', at: [-1.0, -0.8], to: [2.5, -2.4], color: C.green }],
+    [{ text: 'now above the curve: it bows sideways', at: [5.0, 0.0], to: [4.7, -2.3], color: C.red }],
+    [{ text: 'fixed ends lift the curve 4×: safe again', at: [5.6, 0.9], to: [4.7, -2.35], color: C.green }],
+  ],
+  nano_surface: [
+    [{ text: 'yellow rim = surface atoms: only 8% at 20 nm', at: [-0.2, -3.5], to: [-2.2, -1.6], color: C.yellow }],
+    [
+      { text: 'a third of the atoms are on the surface', at: [0.0, 1.0], to: [2.75, 1.7], color: C.yellow },
+      { text: 'melts about 250 °C lower', at: [0.0, -1.7], to: [2.75, -1.47], color: C.red },
+    ],
+    [
+      { text: 'two thirds on the surface', at: [0.0, 3.0], to: [2.55, 2.6], color: C.yellow },
+      { text: 'melts far below gold’s 1,064 °C', at: [0.0, -2.9], to: [2.55, -2.4], color: C.red },
+    ],
+  ],
+  rolling_mill: [
+    [
+      { text: 'grains squashed flat', at: [1.0, 3.3], to: [0.0, 0.8], color: C.gold },
+      { text: 'yield strength up: 70 → 260 MPa', at: [3.6, 0.5], to: [5.2, -1.75], color: C.yellow },
+    ],
+    [{ text: 'ductility nearly gone', at: [4.4, 1.0], to: [6.85, -3.3], color: C.teal }],
+    [
+      { text: 'hot: new round grains form', at: [1.0, 3.3], to: [-0.5, 0.9], color: C.gold },
+      { text: 'stays soft', at: [4.6, 0.6], to: [6.8, -2.9], color: C.yellow },
+    ],
+  ],
+  reynolds_dye: [
+    [{ text: 'fastest in the middle, still at the walls', at: [4.8, -2.0], to: [1.75, -2.1], color: C.yellow }],
+    [{ text: 'the thread starts to wave and burst', at: [-2.4, -0.4], to: [1.2, 1.5], color: C.red }],
+    [{ text: 'mixing flattens the speed profile', at: [4.6, -2.0], to: [1.1, -2.1], color: C.yellow }],
+  ],
 };
