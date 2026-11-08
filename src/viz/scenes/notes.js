@@ -105,9 +105,9 @@ export const NOTES = {
     [{ text: 'fractions crowd in from both sides, but none lands exactly on √2', at: [3.6, 0.2], to: [-0.4, -2.0], color: C.green }],
   ],
   exponent_growth_scaler: [
-    [{ text: 'the square inside is 10 times smaller: 10⁻¹ m', at: [4.2, 1.6], to: [0.15, 0.0] }],
-    [{ text: 'each step inward divides by 10: the exponent drops by 1', at: [4.2, 1.6], to: [0.15, 0.0] }],
-    [{ text: '10⁻¹⁰ m: the size of one atom', at: [4.4, 1.6], to: [1.4, 1.3] }],
+    [{ text: 'each square is 10× smaller than the one around it', at: [-3.6, -4.0], to: [-3.6, -0.4] }],
+    [{ text: 'four steps down = divide by 10 four times', at: [-3.6, -4.0], to: [0.9, -0.2], color: C.gold }],
+    [{ text: 'ten steps down: one atom', at: [-3.6, -4.0], to: [-3.6, -3.1], color: C.gold }],
   ],
   number_sets: [
     [{ text: '7 is in ℕ, so it is in every box around ℕ too', at: [3.4, -3.7], to: [-2.6, -0.3] }],
@@ -492,6 +492,20 @@ export const NOTES = {
     [
       { text: 'grain boundary: two crystals at different tilts meet', at: [-3.6, -3.4], to: [-3.45, -1.6], color: C.red },
       { text: 'near melting: about 1 site in 2,000 is empty', at: [4.4, -1.6], to: [6.8, 3.2] },
+    ],
+  ],
+  beer_lambert: [
+    [
+      { text: 'about a third of the light is absorbed in the solution', at: [-0.6, 3.8], to: [-2.6, 2.7] },
+      { text: 'absorbance A rises in a straight line with concentration', at: [5.4, -1.8], to: [1.6, -2.6] },
+    ],
+    [
+      { text: 'double the concentration: A doubles…', at: [5.4, -1.8], to: [0.2, -2.9], color: C.gold },
+      { text: '…but only 11% gets through', at: [2.6, 3.6], to: [4.0, 2.1], color: C.red },
+    ],
+    [
+      { text: '2 cm cell: twice the path, like doubling the concentration', at: [1.6, 3.7], to: [-2.2, 2.6] },
+      { text: 'longer path → steeper line', at: [5.4, -1.8], to: [1.4, -1.5], color: C.gold },
     ],
   ],
 };

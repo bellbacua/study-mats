@@ -662,24 +662,54 @@ export const exponent_growth_scaler = {
     ['Rule', 'aᵐ · aⁿ = aᵐ⁺ⁿ, so each 10× step adds 1'],
   ],
   setup(kit) {
+    // left: nested squares, each 10× the one inside it, centred on the zoom
+    const cx = -3.6;
     const items = SCALES.map(([k, name], i) => ({
       k,
       r: kit.rect(0, 0, 1, 1, { fill: false, color: [C.blue, C.teal, C.green, C.yellow][i % 4], width: 2.5 }),
       l: kit.label(`10^{${k}}\\,\\text{m}`, [0, 0], { align: 'left', size: 15 }),
       nm: kit.label(name, [0, 0], { tex: false, align: 'left', cls: 'tick' }),
     }));
-    return (p) => {
+    // right: the ladder of exponents. Each rung down = divide by 10.
+    const LX = 1.4;
+    const ry = (k) => -3.9 + ((k + 10) * 7.8) / 13;
+    kit.line([[LX, ry(-10)], [LX, ry(3)]], { color: C.axis, width: 2 });
+    const rungs = SCALES.map(([k, name]) => {
+      kit.line([[LX - 0.12, ry(k)], [LX + 0.12, ry(k)]], { color: C.axis, width: 2 });
+      return {
+        k,
+        e: kit.label(`10^{${k}}`, [LX + 0.3, ry(k)], { align: 'left', size: 14, color: '#8b949e' }),
+        nm: kit.label(name, [LX + 1.5, ry(k)], { tex: false, align: 'left', cls: 'tick' }),
+      };
+    });
+    const bracket = kit.line([[0, 0], [0, 1]], { color: C.yellow, width: 4, create: false });
+    const steps = kit.label('', [0, 0], { align: 'right', size: 15, color: C.yellow });
+    const marker = kit.dot([LX, 0], { r: 0.14, color: C.yellow, z: 6 });
+    const eq = kit.label('', [cx, 4.1], { size: 22 });
+    return (p, t) => {
       items.forEach(({ k, r, l, nm }) => {
-        const side = 3 * 10 ** (k - p.n);
-        const on = side > 0.08 && side < 60;
+        const side = 6 * 10 ** (k - p.n);
+        const on = side > 0.08 && side < 7.6;
         r.visible(on);
-        l.visible(on && side > 0.6 && side < 18);
-        nm.visible(on && side > 0.6 && side < 18);
+        l.visible(on && side > 0.6 && side < 7.6);
+        nm.visible(on && side > 0.6 && side < 7.6);
         if (!on) return;
-        r.set(-side / 2, -side / 2, side, side);
-        l.pos([-side / 2 + 0.08, side / 2 - 0.25]);
-        nm.pos([-side / 2 + 0.08, side / 2 - 0.6]);
+        r.set(cx - side / 2, -side / 2, side, side);
+        l.pos([cx - side / 2 + 0.08, side / 2 - 0.25]);
+        nm.pos([cx - side / 2 + 0.08, side / 2 - 0.6]);
       });
+      rungs.forEach(({ k, e, nm }) => {
+        const here = k === t.n;
+        e.color(here ? C.yellow : k === 0 ? '#e6edf3' : '#8b949e');
+        nm.opacity(here ? 1 : 0.55);
+      });
+      marker.set([LX, ry(p.n)]);
+      // from 1 m to here: how many ×10 or ÷10 steps
+      const n = t.n;
+      bracket.visible(n !== 0).set([[LX - 0.35, ry(0)], [LX - 0.35, ry(p.n)]]);
+      steps.visible(n !== 0).set(n < 0 ? `${-n} \\times (\\div 10)` : `${n} \\times (\\times 10)`).pos([LX - 0.5, (ry(0) + ry(p.n)) / 2]);
+      const dec = n >= 0 ? `${10 ** n}` : `0.${'0'.repeat(-n - 1)}1`;
+      eq.set(`10^{${n}}\\,\\text{m} = ${dec}\\,\\text{m}`);
     };
   },
 };
