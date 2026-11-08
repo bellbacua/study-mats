@@ -1297,4 +1297,24 @@ export const NOTES = {
     [{ text: 'six steps each: far quicker', at: [-4.0, 0.0], to: [-5.9, 1.7], color: C.blue }],
     [{ text: '48,000, not 200', at: [6.6, 0.6], to: [4.4, 1.6], color: C.green }],
   ],
+  supply_demand: [
+    [{ text: 'they cross: price 60, 40 units sold', at: [1.4, -2.6], to: [-1.2, -0.4], color: C.white }],
+    [{ text: 'supply cut: dearer, and less is sold', at: [1.4, -2.6], to: [-2.35, 0.1], color: C.gold }],
+    [{ text: 'more demand: the price climbs to 80', at: [1.4, -2.6], to: [-1.1, 0.65], color: C.blue }],
+  ],
+  comparative_advantage: [
+    [{ text: 'no trade: the line to beat', at: [3.0, -0.6], to: [3.0, 0.95], color: C.white }],
+    [{ text: 'wine falls short of the line', at: [3.2, -1.0], to: [1.3, -1.25], color: C.red }],
+    [{ text: 'now cloth falls short: can both clear it?', at: [-3.6, 1.2], to: [-3.9, -1.2], color: C.gold }],
+  ],
+  marginal_product: [
+    [{ text: 'each extra worker adds ₱40 less', at: [1.4, 2.4], to: [-2.9, 1.5], color: C.green }],
+    [{ text: 'hire while the bar is above the wage', at: [3.4, 1.6], to: [1.8, -1.1], color: C.green }],
+    [{ text: 'the 11th adds ₱180 but costs ₱200', at: [3.6, 1.0], to: [2.6, -1.5], color: C.red }],
+  ],
+  inflation_erosion: [
+    [{ text: 'in 10 years ₱1000 buys what ₱744 does now', at: [2.4, 2.6], to: [-2.0, 1.65], color: C.gold }],
+    [{ text: 'halved in about 7 years', at: [0.0, 1.4], to: [-3.3, 0.05], color: C.gold }],
+    [{ text: 'about ₱4 left after 30 years', at: [3.4, -1.4], to: [6.2, -3.35], color: C.red }],
+  ],
 };
