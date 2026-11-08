@@ -129,4 +129,93 @@ export const NOTES = {
     [{ text: 'take 4 off both pans: still level', at: [0.0, 2.4], to: [4.0, -1.2] }],
     [{ text: 'one box balances one of three equal groups: x = 5', at: [0.0, 2.4], to: [-6.3, -1.6], color: C.green }],
   ],
+  newton_forces: [
+    [
+      { text: 'friction always pushes back', at: [-5.6, -3.4], to: [-3.6, -1.5], color: C.red },
+      { text: '200 − 98 = 102 N left over to speed it up', at: [3.0, 1.6], to: [-2.2, 0.6], color: C.green },
+    ],
+    [{ text: '98 forward, 98 back: net zero, so no speeding up', at: [1.0, 1.6], to: [-4.0, -0.8] }],
+    [{ text: 'twice the mass → half the acceleration', at: [3.2, 1.6], to: [-3.2, -0.6], color: C.gold }],
+  ],
+  cartesian_slope_wave: [
+    [{ text: 'every point here has y equal to x', at: [-4.4, 2.0], to: [2, 2] }],
+    [{ text: '1 across, 2 up: slope 2', at: [-5.0, -1.2], to: [-0.4, -1.2], color: C.green }],
+    [
+      { text: 'b = 2: where it crosses the up-down axis', at: [-4.8, 0.6], to: [-0.1, 1.9], color: C.red },
+      { text: 'negative slope: walks downhill', at: [4.6, -2.2], to: [3, 0.6], color: C.gold },
+    ],
+  ],
+  pendulum_energy: [
+    [
+      { text: 'blue + yellow always add to the same total', at: [1.2, 2.8], to: [4.8, 0.6] },
+      { text: 'lowest point = fastest', at: [-5.8, -3.4], to: [-1.0, -1.6], color: C.gold },
+    ],
+    [{ text: 'friction turns swing into heat', at: [1.2, 2.8], to: [6.8, 0.6], color: C.red }],
+    [{ text: 'the swing dies; the lost energy is all here as heat', at: [0.8, 3.0], to: [6.8, 1.6], color: C.red }],
+  ],
+  gas_piston: [
+    [
+      { text: 'each flash = one molecule pushing on the wall', at: [-4.8, 3.6], to: [-2.6, 1.0] },
+      { text: '≈ 100 kPa: ordinary air pressure', at: [5.4, 1.2], to: [5.0, -2.4], color: C.gold },
+    ],
+    [
+      { text: 'half the room → each wall hit twice as often', at: [-1.4, 2.6], to: [-5.2, 1.0] },
+      { text: 'half the volume → double the pressure', at: [5.4, 1.4], to: [3.5, -1.7], color: C.gold },
+    ],
+    [
+      { text: 'hotter = faster, harder hits', at: [-1.4, 2.6], to: [-5.2, 1.0], color: C.red },
+      { text: 'same volume, pressure doubled again', at: [5.4, 1.8], to: [3.5, -0.5], color: C.gold },
+    ],
+  ],
+  function_machine: [
+    [
+      { text: '1 goes in → 3 comes out', at: [-1.0, -2.4], to: [-4.6, -2.4], color: C.green },
+      { text: 'the pair (1, 3) becomes one dot', at: [0.6, 3.2], to: [4.4, 0.2], color: C.gold },
+    ],
+    [{ text: 'every input leaves a dot; the dots draw the line', at: [0.6, 3.2], to: [5.5, 1.5], color: C.gold }],
+    [
+      { text: '2 and −2 both give 4: that is allowed', at: [-0.4, 3.2], to: [2.2, 0.6], color: C.gold },
+      { text: 'never allowed: one input, two outputs', at: [-0.6, -3.6], color: C.red },
+    ],
+  ],
+  bonding_energy_well: [
+    [{ text: 'far apart: flat line, no push or pull', at: [5.4, 0.2], to: [1.2, -0.6] }],
+    [{ text: 'too close: the electron clouds shove back hard', at: [-1.4, 1.6], to: [-5.8, 0.4], color: C.red }],
+    [
+      { text: 'bottom of the well = bond length', at: [-1.2, -3.4], to: [-5.2, -2.2], color: C.gold },
+      { text: 'heat makes them rattle; the lopsided well lets the average spacing creep outward → expansion', at: [1.6, 1.4], to: [-4.7, 0.9] },
+    ],
+  ],
+  trig_unit_circle: [
+    [
+      { text: 'height = sin θ (½ at 30°)', at: [-1.0, 3.4], to: [-2.4, 0.7], color: C.red },
+      { text: 'sideways = cos θ', at: [-4.0, -3.4], to: [-3.4, -0.1], color: C.green },
+    ],
+    [{ text: 'at the top: sin = 1, cos = 0', at: [-0.8, 3.7], to: [-4.4, 2.5] }],
+    [{ text: 'your height, recorded angle by angle, draws the sine wave', at: [3.8, 3.4], to: [-0.2, 1.3], color: C.red }],
+  ],
+  gravimetric_steps: [
+    [{ text: 'the chloride is in there, dissolved and invisible', at: [1.4, 0.6], to: [-4.2, -1.4] }],
+    [{ text: 'Ag⁺ meets Cl⁻ → white AgCl solid that sinks', at: [1.4, 0.4], to: [-4.2, -2.8] }],
+    [{ text: 'heat and reweigh until the mass stops changing', at: [-3.6, 1.2], to: [0.8, -1.4], color: C.red }],
+  ],
+  quadratic_parabola_lab: [
+    [
+      { text: 'a root is where the curve hits the axis', at: [-4.8, -2.4], to: [-2.0, -0.1], color: C.red },
+      { text: 'the other root: x = 2', at: [4.6, -1.2], to: [2.1, -0.1], color: C.red },
+    ],
+    [{ text: '(x + 2)(x + 3) = 0 → x = −2 or −3', at: [3.6, -2.0], to: [-2.1, -0.1], color: C.red }],
+    [{ text: 'never touches the axis: no real roots', at: [3.8, -1.6], to: [-1.0, 0.9], color: C.red }],
+  ],
+  family_bars: [
+    [{ text: 'carbon fibre: a fifth the weight of steel', at: [3.8, -1.4], to: [-0.5, -1.0] }],
+    [
+      { text: 'polymers: hundreds of times floppier', at: [5.6, -1.7], to: [1.4, -2.6], color: C.green },
+      { text: 'each grid step here is ×10', at: [5.0, -3.3], to: [2.6, -4.0] },
+    ],
+    [
+      { text: 'ceramics: furnace-proof', at: [3.4, -0.4], to: [4.2, 2.3], color: C.gold },
+      { text: 'polymers soften just above boiling water', at: [3.2, -2.6], to: [-1.4, -1.8], color: C.green },
+    ],
+  ],
 };
