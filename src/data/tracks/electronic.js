@@ -1,4 +1,399 @@
-// Classes of the electronic specialization (see meta.js). Written with mk() like the UM classes.
-import { mk } from '../um/make';
+// Classes of the Electronic Materials specialization (see meta.js). Written with mk() like the UM classes.
+import { mk, home, online, phet } from '../um/make';
 
-export default [];
+export default [
+  mk({
+    id: 'elec-001',
+    code: 'ELE 101',
+    track: 'mate',
+    um: ['MATE 303'],
+    title: 'Conductors: Why Metals Carry Current',
+    subtitle: 'Drude’s electron gas, Matthiessen’s rule and the copper standard',
+    digest: [
+      'In a metal the outer electrons are shared by the whole crystal. An electric field pushes them along, but they keep bumping into vibrating atoms and impurities; resistivity measures how often.',
+      'Resistivity rises almost in a straight line with temperature, because hotter atoms vibrate more: ρ = ρ₀[1 + α(T − T₀)].',
+      'Matthiessen’s rule: the scattering from heat and from impurities simply add. That is why even 0.1% of the wrong element makes copper wire noticeably worse.',
+    ],
+    era: '1864 Matthiessen → 1900 Drude → 1913 copper standard (IACS) → today',
+    who: 'Augustus Matthiessen & Paul Drude',
+    hook: 'Copper wire costs much more than aluminium wire, but your house is wired with copper. Overhead power lines are aluminium. Why the difference?',
+    story: [
+      'In the 1860s, telegraph cables under the Atlantic failed partly because their copper was impure. Augustus Matthiessen in London measured the resistance of many metals and alloys and found, in 1864, that the effect of impurities and the effect of temperature simply add together.',
+      'In 1900 Paul Drude pictured the electrons in a metal as a gas of tiny balls drifting through a fixed lattice of atoms and bouncing off them. His simple model explained Ohm’s law: current is proportional to the field because the electrons lose their extra speed at every collision. Quantum theory later corrected the details, but his formula is still used.',
+      'In 1913 engineers agreed on a standard for annealed copper (IACS), and conductivity of wires is still quoted as a percentage of it. Aluminium conducts only about 61% as well, but it is so light that, for the same weight, it carries twice as much current. That decides power lines.',
+    ],
+    takeaway: 'Resistivity comes from electrons bouncing off vibrating atoms and impurities; the two effects add, and both can be controlled.',
+    viz: 'resistivity_temp',
+    vizTitle: 'Resistivity, Heat and Impurities',
+    vizHow: 'Pick a metal, add impurities and change the temperature. Watch the straight line shift up with impurities and tilt with the metal’s temperature coefficient.',
+    steps: [
+      ['Resistance from resistivity', 'R = \\frac{\\rho L}{A}', '100 m of copper wire with 2 mm² cross-section: 1.68×10⁻⁸ × 100 / 2×10⁻⁶ = 0.84 Ω.'],
+      ['Temperature', '\\rho(T) = \\rho_{20}\\,[1 + \\alpha\\,(T - 20)]', 'Copper at 80 °C: 1.68×10⁻⁸ × (1 + 0.00393 × 60) = 2.08×10⁻⁸ Ω·m.'],
+      ['Matthiessen’s rule', '\\rho = \\rho_{\\text{thermal}}(T) + \\rho_{\\text{impurity}}', 'Impurities add a fixed amount at every temperature.'],
+    ],
+    drills: [
+      ['If a wire is made twice as long, its resistance…', ['Doubles', 'Halves', 'Stays the same', 'Quadruples'], 'R = ρL/A.', 'R is proportional to L.', 'It doubles.'],
+      ['Why does a metal’s resistivity rise when it gets hotter?', ['The atoms vibrate more and scatter electrons more often', 'It loses electrons', 'The wire gets shorter', 'Impurities melt'], 'Think of what collides with electrons.', 'Hotter atoms move more.', 'More vibration, more collisions.'],
+      ['Aluminium has 61% of copper’s conductivity but 30% of its density. Per kilogram, which carries more current?', ['Aluminium, about twice as much', 'Copper, about twice as much', 'Both the same', 'Neither conducts'], 'Compare 0.61 with 0.30.', '0.61/0.30 = 2.', 'Aluminium: hence power lines.'],
+    ],
+    boss: [
+      'The Cheap Wire',
+      'A supplier offers copper wire at a low price. A test shows its resistivity is 1.85×10⁻⁸ Ω·m at 20 °C instead of 1.68×10⁻⁸. What does Matthiessen’s rule say?',
+      ['It holds impurities adding about 0.17×10⁻⁸ Ω·m, so it will run about 10% hotter at the same current', 'It is just a temperature error', 'It is better than pure copper', 'It must be aluminium'],
+      'Subtract pure copper’s value.',
+      'The extra 0.17×10⁻⁸ Ω·m comes from impurities (often recycled copper with iron or phosphorus). Heat in a wire is I²R, so about 10% more resistance means about 10% more heat: a fire risk in a crowded wiring duct.',
+    ],
+    read: [
+      ['wiki', 'Electrical resistivity and conductivity', 'Resistivity of common materials.', 'Electrical resistivity is a fundamental specific property of a material that measures its electrical resistance or how strongly it resists electric current.'],
+      ['wiki', 'Drude model', 'The electron-gas picture.', 'The Drude model of electrical conduction was proposed in 1900 by Paul Drude to explain the transport properties of electrons in materials (especially metals).'],
+    ],
+    labs: [
+      phet('resistance-in-a-wire', 'Resistance in a Wire', 'Change ρ, L and A and check R = ρL/A for three settings.'),
+      home('Look at the label on an extension cord. It gives the wire size (mm² or AWG) and the maximum current. Work out the resistance of 10 m of that copper wire.'),
+    ],
+    quiz: [
+      ['Who showed in 1864 that impurity and temperature effects on resistance add up?', ['Augustus Matthiessen', 'Paul Drude', 'Georg Ohm', 'Michael Faraday'], 'Matthiessen’s rule.'],
+      ['What did Paul Drude picture in 1900?', ['A gas of electrons drifting and colliding inside the metal', 'Electrons in fixed orbits', 'Atoms that carry the current', 'Current as a fluid with no particles'], 'The Drude model.'],
+    ],
+    gloss: [
+      ['Resistivity', 'How strongly a material resists current, in Ω·m; R = ρL/A.', ['ρ', 'electrical resistivity']],
+      ['Temperature coefficient of resistance', 'The fractional rise in resistivity per degree, α.', ['temperature coefficient']],
+      ['Matthiessen’s rule', 'Resistivity from heat and from impurities add together.', []],
+      ['IACS', 'International Annealed Copper Standard: conductivity quoted as a percentage of standard copper.', ['% IACS']],
+    ],
+    events: [
+      [1864, 'Matthiessen’s rule', 'Impurity and heat resistivities add.'],
+      [1900, 'Drude’s electron gas', 'A model of conduction in metals.'],
+    ],
+  }),
+
+  mk({
+    id: 'elec-002',
+    code: 'ELE 102',
+    track: 'mate',
+    um: ['MATE 303'],
+    title: 'Carriers and Doping: Tuning Silicon',
+    subtitle: 'Electrons, holes and the few atoms in a billion that make a chip work',
+    digest: [
+      'Pure silicon has very few free carriers at room temperature: about 10¹⁰ electrons per cm³, and as many holes. It barely conducts.',
+      'Add a donor (phosphorus, 5 outer electrons) and each one gives a free electron: n-type. Add an acceptor (boron, 3) and each one makes a hole: p-type. A few parts per million change the conductivity by a million times.',
+      'Electrons and holes balance by the mass-action law, n·p = nᵢ². Conductivity is σ = q(nμₙ + pμₚ).',
+    ],
+    era: '1940 Ohl’s p and n silicon → 1947 transistor → 1954 silicon transistor → today',
+    who: 'Russell Ohl, William Shockley & Gordon Teal',
+    hook: 'Silicon is the second most common element in the Earth’s crust, in every grain of sand. Why does a chip need it purer than almost anything else people make, and then deliberately dirty it again?',
+    story: [
+      'At Bell Labs in the late 1930s, Russell Ohl was purifying silicon for radar detectors. Some of his rods conducted current one way, some the other way. He traced it to traces of impurities: boron and aluminium in one, phosphorus in another. He called them p-type and n-type.',
+      'In December 1947 John Bardeen and Walter Brattain, in William Shockley’s group, made the first transistor from germanium. It worked because carefully chosen impurities controlled whether electrons or holes carried the current. Shockley wrote the theory of electrons and holes that every chip designer still learns.',
+      'Germanium leaked current when warm. In 1954 Gordon Teal at Texas Instruments showed the first silicon transistor, and silicon has ruled ever since. Doping is now controlled to a few atoms per billion, in fabs and in the many assembly and testing plants in Cebu, Laguna and Batangas.',
+    ],
+    takeaway: 'Doping sets the number of carriers; n·p = nᵢ² fixes the minority; σ = q(nμₙ + pμₚ) gives the conductivity.',
+    viz: 'doping_carriers',
+    vizTitle: 'Doping Silicon',
+    vizHow: 'Choose n-type or p-type and slide the doping level (on a log scale). The bars show electrons and holes per cm³; their product stays at nᵢ² = 10²⁰.',
+    steps: [
+      ['Majority carriers', 'n \\approx N_D \\;(\\text{n-type}),\\quad p \\approx N_A \\;(\\text{p-type})', 'Every donor gives one electron at room temperature.'],
+      ['Minority carriers', 'n\\,p = n_i^2 = (10^{10})^2 = 10^{20}\\ \\text{cm}^{-6}', 'With N_D = 10¹⁶ cm⁻³ the holes number only 10⁴ cm⁻³.'],
+      ['Conductivity', '\\sigma = q\\,(n\\mu_n + p\\mu_p)', 'N_D = 10¹⁶: σ = 1.602×10⁻¹⁹ × 10¹⁶ × 1400 = 2.24 S/cm.'],
+    ],
+    drills: [
+      ['Phosphorus has 5 outer electrons, silicon 4. Phosphorus-doped silicon is…', ['n-type', 'p-type', 'Intrinsic', 'An insulator'], 'One electron is left over.', 'Extra electrons are negative carriers.', 'n-type.'],
+      ['With N_A = 10¹⁷ cm⁻³ boron, how many electrons per cm³?', ['10³', '10¹⁷', '10¹⁰', '10²⁰'], 'n = nᵢ²/p.', '10²⁰/10¹⁷.', '10³ cm⁻³.'],
+      ['Why does doping change conductivity so much?', ['It multiplies the number of free carriers by millions', 'It changes the colour', 'It makes the atoms bigger', 'It removes all holes and electrons'], 'Compare 10¹⁰ with 10¹⁶.', 'A million times more carriers.', 'Carriers go from very few to very many.'],
+    ],
+    boss: [
+      'The Hot Chip',
+      'A silicon sensor is doped with 10¹⁴ cm⁻³ of phosphorus. At 300 K, nᵢ = 10¹⁰ cm⁻³. A designer wants to use it inside a car engine bay, where nᵢ rises to about 10¹⁴ cm⁻³. What goes wrong?',
+      ['The heat-made carriers become as many as the doped ones, so the doping no longer controls the behaviour', 'Nothing, the doping is fixed', 'The phosphorus evaporates', 'Silicon turns into a metal'],
+      'Compare nᵢ with N_D at each temperature.',
+      'At 300 K the doping wins by 10⁴ times. When nᵢ reaches about N_D, the silicon is acting intrinsic again and the device fails. Hot electronics use heavier doping or wide-gap materials such as silicon carbide.',
+    ],
+    read: [
+      ['wiki', 'Doping (semiconductor)', 'Donors, acceptors and levels.', 'In semiconductor production, doping is the intentional introduction of impurities into an intrinsic semiconductor for the purpose of modulating its electrical, optical and structural properties.'],
+      ['wiki', 'Electron hole', 'What a hole is.', 'In physics, chemistry, and electronic engineering, an electron hole is a quasiparticle denoting the lack of an electron at a position where one could exist in an atom or atomic lattice.'],
+    ],
+    labs: [
+      phet('semiconductor', 'Semiconductors', 'Add donor and acceptor dopants and watch where the electrons and holes go.'),
+      online('PV Lighthouse calculators', 'https://www.pvlighthouse.com.au/calculators', 'Use the mobility or resistivity calculator to find the resistivity of silicon doped with 10¹⁵ and 10¹⁸ cm⁻³ of phosphorus.'),
+    ],
+    quiz: [
+      ['Who found and named p-type and n-type silicon at Bell Labs around 1940?', ['Russell Ohl', 'Gordon Teal', 'John Bardeen', 'Jack Kilby'], 'He traced it to impurities.'],
+      ['Who showed the first silicon transistor in 1954?', ['Gordon Teal', 'William Shockley', 'Russell Ohl', 'Robert Noyce'], 'At Texas Instruments.'],
+    ],
+    gloss: [
+      ['Donor', 'A dopant atom with one more outer electron than the host; gives a free electron (n-type).', ['donors']],
+      ['Acceptor', 'A dopant atom with one fewer outer electron than the host; creates a hole (p-type).', ['acceptors']],
+      ['Hole', 'A missing electron in a bond, which moves like a positive charge.', ['holes']],
+      ['Mass-action law', 'In a semiconductor in equilibrium, n·p = nᵢ².', ['n·p = nᵢ²']],
+      ['Mobility', 'How fast a carrier drifts per unit field, in cm²/(V·s).', ['μ']],
+    ],
+    events: [
+      [1940, 'Ohl finds p–n silicon', 'Bell Labs.'],
+      [1954, 'First silicon transistor', 'Gordon Teal, Texas Instruments.'],
+    ],
+  }),
+
+  mk({
+    id: 'elec-003',
+    code: 'ELE 103',
+    track: 'mate',
+    um: ['MATE 405'],
+    title: 'The p–n Junction: Diodes, LEDs and Solar Cells',
+    subtitle: 'A one-way valve for current, made from two kinds of silicon',
+    digest: [
+      'Where p-type meets n-type, electrons and holes cross and cancel, leaving a thin region with no free carriers and a built-in voltage of about 0.6–0.8 V in silicon.',
+      'Forward bias lowers that barrier and current grows exponentially: I = I₀(e^{V/V_T} − 1), with V_T = kT/q ≈ 25.9 mV at 300 K. Reverse bias raises it and almost nothing flows.',
+      'In an LED the electrons and holes meet and give off light with energy close to the band gap: λ (nm) ≈ 1240 / E_g (eV).',
+    ],
+    era: '1940 Ohl’s junction → 1949 Shockley’s diode law → 1962 visible LED → 1993 blue LED',
+    who: 'Russell Ohl, William Shockley, Nick Holonyak & Shuji Nakamura',
+    hook: 'A diode lets current through one way and blocks it the other way, with no moving parts. How can two slices of silicon act like a valve?',
+    story: [
+      'On 23 February 1940 Russell Ohl shone a flashlight on a cracked silicon rod and a meter jumped to about half a volt. The crack separated a p-type end from an n-type end. He had found the p–n junction, and with it the first silicon solar cell.',
+      'In 1949 William Shockley worked out the theory: how the junction’s barrier blocks current one way and lets it grow exponentially the other way. His diode equation is used to design every rectifier, transistor and solar cell.',
+      'In 1962 Nick Holonyak at General Electric made the first visible (red) LED from gallium arsenide phosphide. Blue was much harder. In 1993 Shuji Nakamura at Nichia in Japan made a bright blue LED from gallium nitride, building on work by Isamu Akasaki and Hiroshi Amano. Blue plus a yellow phosphor gave white light, and all three shared the 2014 Nobel Prize.',
+    ],
+    takeaway: 'The junction is a barrier that voltage can raise or lower; current follows exponentially, and when carriers meet they can give light.',
+    viz: 'diode_iv',
+    vizTitle: 'A Diode’s Current and Voltage',
+    vizHow: 'Slide the voltage across the diode. Forward, the barrier shrinks and current shoots up past about 0.6 V; backward, almost nothing flows.',
+    steps: [
+      ['Shockley’s diode law', 'I = I_0\\left(e^{V/V_T} - 1\\right),\\quad V_T = \\frac{kT}{q}', 'At 300 K, V_T = 1.381×10⁻²³ × 300 / 1.602×10⁻¹⁹ = 25.9 mV.'],
+      ['60 mV per decade', 'V_2 - V_1 = V_T \\ln\\frac{I_2}{I_1}', 'Ten times the current needs only 25.9 × ln 10 = 59.6 mV more.'],
+      ['LED colour', '\\lambda\\,(\\text{nm}) \\approx \\frac{1240}{E_g\\,(\\text{eV})}', 'GaN (3.4 eV): 365 nm. Adding indium narrows the gap toward blue (2.7 eV, 459 nm).'],
+    ],
+    drills: [
+      ['Under reverse bias a silicon diode passes…', ['Almost no current (about I₀)', 'A huge current', 'Exactly 1 A', 'Light'], 'e^{V/V_T} → 0 for negative V.', 'I → −I₀.', 'A tiny leakage, −I₀.'],
+      ['How much more voltage multiplies the forward current by 10 at 300 K?', ['About 60 mV', 'About 0.6 V', 'About 6 mV', 'About 10 V'], 'V_T ln 10.', '25.9 × 2.303.', 'About 60 mV.'],
+      ['An LED emits at 620 nm (red). Its band gap is about…', ['2.0 eV', '1.1 eV', '3.4 eV', '620 eV'], 'E = 1240/λ.', '1240/620.', '2.0 eV.'],
+    ],
+    boss: [
+      'The Backwards LED',
+      'A student connects an LED to a 3 V battery backwards. Nothing lights. Then they reverse it and connect it straight across the battery with no resistor; it flashes brightly and dies. Why?',
+      ['Forward current grows exponentially with voltage, so with no resistor to limit it the current became huge', 'LEDs only work on alternating current', 'The battery was flat', 'Reverse bias damaged it earlier'],
+      'Look at how fast e^{V/V_T} grows.',
+      'Every 60 mV doubles the current more than three times over. With nothing to drop the extra voltage, the current far exceeds the LED’s rating and it overheats. A series resistor sets the current: (3 − 2)/0.02 = 50 Ω for 20 mA.',
+    ],
+    read: [
+      ['wiki', 'P–n junction', 'How the depletion region forms.', 'A p–n junction is a combination of two types of semiconductor materials, p-type and n-type, in a single crystal.'],
+      ['wiki', 'Light-emitting diode', 'How LEDs make light and colour.', 'A light-emitting diode (LED) is a semiconductor device that emits light when current flows through it.'],
+    ],
+    labs: [
+      phet('semiconductor', 'Semiconductors', 'Build a p–n junction and switch the battery around. Watch the depletion region widen and narrow.'),
+      home('Look at a phone charger’s small print, or a solar garden light. Find the diodes or the solar cell and note the voltage they work at.'),
+    ],
+    quiz: [
+      ['Who found the p–n junction (and a silicon solar cell) in 1940?', ['Russell Ohl', 'Nick Holonyak', 'Shuji Nakamura', 'Alessandro Volta'], 'A cracked rod and a flashlight.'],
+      ['Who made the first bright blue LED, in 1993?', ['Shuji Nakamura', 'Nick Holonyak', 'Thomas Edison', 'Gordon Teal'], 'Gallium nitride at Nichia.'],
+    ],
+    gloss: [
+      ['p–n junction', 'The boundary between p-type and n-type regions of one crystal.', ['pn junction', 'p-n junction']],
+      ['Depletion region', 'The thin zone at a junction with no free carriers.', ['depletion layer']],
+      ['Forward bias', 'Voltage that lowers the junction barrier so current flows.', []],
+      ['Reverse bias', 'Voltage that raises the junction barrier so almost no current flows.', []],
+      ['Thermal voltage', 'V_T = kT/q, about 25.9 mV at 300 K.', ['V_T']],
+    ],
+    events: [
+      [1940, 'Ohl’s p–n junction', 'Silicon rod and a flashlight.'],
+      [1962, 'First visible LED', 'Holonyak, General Electric.'],
+      [1993, 'Bright blue LED', 'Nakamura, Nichia.'],
+    ],
+  }),
+
+  mk({
+    id: 'elec-004',
+    code: 'ELE 104',
+    track: 'mate',
+    um: ['MATE 405'],
+    title: 'Growing Pure Silicon: Czochralski and Zone Refining',
+    subtitle: 'A dipped pen, a moving molten zone and the purest material ever made',
+    digest: [
+      'Chip silicon is about 99.9999999% pure (nine nines). It is grown as a single crystal by slowly pulling a seed out of molten silicon: the Czochralski method.',
+      'When a crystal freezes, most impurities prefer to stay in the liquid. The segregation coefficient k = C_solid / C_liquid is below 1 for most of them; for iron it is about 10⁻⁵.',
+      'Because impurities pile up in the melt, the end of the crystal is dirtier than the start (Scheil equation). Zone refining sweeps a molten band along a bar many times to push impurities to one end.',
+    ],
+    era: '1916 Czochralski’s pen → 1952 Pfann’s zone refining → 1950s Siemens process → today',
+    who: 'Jan Czochralski & William Pfann',
+    hook: 'If you freeze salty water slowly, the ice is almost fresh. How can that same trick make silicon pure enough for a chip?',
+    story: [
+      'In 1916 the Polish chemist Jan Czochralski was studying how fast metals crystallise. Distracted, he dipped his pen into a crucible of molten tin instead of the inkwell. As he pulled it out, a thin thread of tin froze on the nib: a single crystal. He turned the accident into a method for measuring crystal growth.',
+      'In the late 1940s Gordon Teal and John Little at Bell Labs used the same method to grow single crystals of germanium and later silicon, and transistors got much better. In 1952 William Pfann, also at Bell Labs, published zone refining: passing a short molten zone along a bar again and again, each time sweeping more impurity to the far end.',
+      'Today raw silicon is first purified as a gas (the Siemens process, from the late 1950s), then grown into Czochralski ingots up to 300 mm across and two metres long, and sliced into wafers.',
+    ],
+    takeaway: 'Impurities prefer the liquid; a slow, controlled freeze leaves them behind, and k tells you how much.',
+    viz: 'czochralski_scheil',
+    vizTitle: 'Where Impurities End Up in a Crystal',
+    vizHow: 'Pick an impurity and slide how much of the melt has frozen. The plot shows the impurity in the crystal along its length. Small k means a very pure start and a dirty end.',
+    steps: [
+      ['Segregation coefficient', 'k = \\frac{C_{\\text{solid}}}{C_{\\text{liquid}}}', 'Boron in silicon k ≈ 0.8, phosphorus 0.35, aluminium 0.002, iron about 8×10⁻⁶.'],
+      ['Scheil equation', 'C_s = k\\,C_0\\,(1 - f_s)^{k-1}', 'Phosphorus at half-way: 0.35 × (0.5)^{−0.65} = 0.55 of the starting melt value.'],
+      ['One pass of zone refining', 'C_s(x) = C_0\\left[1 - (1-k)\\,e^{-kx/L}\\right]', 'At the start (x = 0) the bar is only k times as dirty as before.'],
+    ],
+    drills: [
+      ['Iron has k ≈ 8×10⁻⁶ in silicon. The first solid to freeze from a melt holding 1 ppm iron holds…', ['About 8×10⁻⁶ ppm', '1 ppm', '8 ppm', 'None at all'], 'C_s = k C₀ at the start.', '8×10⁻⁶ × 1.', 'About 8×10⁻⁶ ppm.'],
+      ['Why is the tail of a Czochralski ingot dirtier than the head?', ['Rejected impurities build up in the shrinking melt', 'The tail freezes faster', 'The seed was dirty', 'Air gets in at the end'], 'Where do rejected atoms go?', 'Into less and less liquid.', 'The melt gets richer as it shrinks.'],
+      ['Which dopant gives the most even doping along an ingot?', ['Boron, k ≈ 0.8', 'Phosphorus, k ≈ 0.35', 'Aluminium, k ≈ 0.002', 'Iron, k ≈ 10⁻⁵'], 'k near 1 means little segregation.', 'Boron is closest to 1.', 'Boron.'],
+    ],
+    boss: [
+      'The Uneven Wafers',
+      'A plant grows phosphorus-doped ingots (k = 0.35). Wafers from the top read 10 Ω·cm, but those near the bottom read much lower. A customer complains. What is the real cause, and what is a fix?',
+      ['Phosphorus piles up in the melt so the tail has more dopant; sort wafers by position, or refill the melt during growth', 'The bottom wafers were cut thinner', 'The meter is broken', 'Phosphorus evaporates from the tail'],
+      'Use Scheil: what happens to C_s as f_s grows?',
+      'With k = 0.35, C_s rises as (1 − f_s)^−0.65: at 90% frozen it is 4.5 times the value at the start, so resistivity falls. Plants sort wafers into resistivity bins or top up the melt (continuous Czochralski) to keep it even.',
+    ],
+    read: [
+      ['wiki', 'Czochralski method', 'How single-crystal ingots are pulled.', 'The Czochralski method, also Czochralski technique or Czochralski process, is a method of crystal growth used to obtain single crystals of semiconductors.'],
+      ['wiki', 'Zone melting', 'Pfann’s method.', 'Zone melting (or zone refining, or floating-zone method, or floating-zone technique) is a group of similar methods of purifying crystals.'],
+    ],
+    labs: [
+      home('Freeze a glass of strongly salted water slowly in the freezer, half way. Pour off the liquid and taste a little melted ice. Is it less salty? That is segregation.'),
+      online('YouTube: "Czochralski crystal growth" videos', 'https://www.youtube.com/results?search_query=czochralski+silicon+ingot+growth', 'Watch a real silicon ingot being pulled and note the rotation and pull rates.'),
+    ],
+    quiz: [
+      ['How did Jan Czochralski find his crystal-pulling method in 1916?', ['He dipped his pen into molten tin by mistake', 'He dropped a crystal in water', 'He was purifying silicon for chips', 'He read it in Faraday’s notes'], 'Instead of the inkwell.'],
+      ['Who published zone refining in 1952?', ['William Pfann', 'Gordon Teal', 'Jan Czochralski', 'William Shockley'], 'At Bell Labs.'],
+    ],
+    gloss: [
+      ['Czochralski method', 'Growing a single crystal by slowly pulling a rotating seed from a melt.', ['Czochralski', 'CZ']],
+      ['Segregation coefficient', 'k = C_solid/C_liquid at a freezing front.', ['distribution coefficient', 'partition coefficient']],
+      ['Scheil equation', 'How impurity in the solid changes as a melt freezes: C_s = kC₀(1 − f_s)^{k−1}.', ['Scheil']],
+      ['Zone refining', 'Sweeping a molten zone along a bar to push impurities to one end.', ['zone melting']],
+    ],
+    events: [
+      [1916, 'Czochralski’s crystal pulling', 'Berlin.'],
+      [1952, 'Pfann’s zone refining', 'Bell Labs.'],
+    ],
+  }),
+
+  mk({
+    id: 'elec-005',
+    code: 'ELE 105',
+    track: 'mate',
+    um: ['MATE 405'],
+    title: 'Dielectrics and Capacitors',
+    subtitle: 'From the Leyden jar to the trillion tiny capacitors made each year',
+    digest: [
+      'A dielectric is an insulator that can be polarised: its charges shift a little in a field. Between capacitor plates it multiplies the stored charge by its relative permittivity εᵣ.',
+      'C = ε₀εᵣA/d. Thin layers and high-εᵣ ceramics such as barium titanate (εᵣ in the thousands) pack a lot of capacitance into a small space.',
+      'Every dielectric fails above its breakdown field. The stored energy, ½CV², is limited by how thin the layer can be and how high the field can go.',
+    ],
+    era: '1745 Leyden jar → 1837 Faraday’s dielectric constant → 1940s barium titanate → today',
+    who: 'Ewald von Kleist, Pieter van Musschenbroek & Michael Faraday',
+    hook: 'A modern phone holds around a thousand capacitors, many smaller than a grain of salt. How can such tiny parts store useful charge?',
+    story: [
+      'In 1745 Ewald von Kleist in Germany, and a few months later Pieter van Musschenbroek in Leiden, stored static electricity in a glass jar of water and got a shock that nearly knocked them over. The Leyden jar, glass between two conductors, was the first capacitor.',
+      'In 1837 Michael Faraday found that filling the space between plates with sulfur or shellac instead of air let them store more charge. He called the ratio the specific inductive capacity; we call it relative permittivity, εᵣ.',
+      'During the Second World War researchers in the USA, Japan and the Soviet Union found barium titanate, a ceramic with εᵣ in the thousands. Today multilayer ceramic capacitors (MLCCs), hundreds of micrometre-thin layers of it stacked with nickel electrodes, are made by the trillion each year.',
+    ],
+    takeaway: 'Capacitance grows with permittivity and area and shrinks with thickness; the dielectric’s breakdown field sets the limit.',
+    viz: 'capacitor_dielectric',
+    vizTitle: 'Filling a Capacitor',
+    vizHow: 'Pick a dielectric, set the gap and the voltage. Watch the stored charge and energy, and keep the field below the breakdown line.',
+    steps: [
+      ['Parallel-plate capacitor', 'C = \\frac{\\varepsilon_0\\,\\varepsilon_r\\,A}{d}', 'Plates 1 cm² apart by 0.1 mm of mica (εᵣ = 6): 8.854×10⁻¹² × 6 × 10⁻⁴ / 10⁻⁴ = 53 pF.'],
+      ['Field and breakdown', 'E = \\frac{V}{d} < E_{\\text{breakdown}}', '100 V across 0.1 mm is 1 MV/m; air breaks down at about 3 MV/m.'],
+      ['Stored energy', 'U = \\tfrac{1}{2}\\,C\\,V^2', '10 µF at 5 V stores ½ × 10⁻⁵ × 25 = 125 µJ.'],
+    ],
+    drills: [
+      ['Halving the gap between the plates makes C…', ['Double', 'Halve', 'Stay the same', 'Four times bigger'], 'C ∝ 1/d.', '1/(d/2) = 2/d.', 'Double.'],
+      ['Air (εᵣ = 1) is replaced by alumina (εᵣ ≈ 9.8). C becomes…', ['About 9.8 times bigger', '9.8 times smaller', 'The same', 'Zero'], 'C ∝ εᵣ.', 'Multiply by 9.8.', '9.8 times bigger.'],
+      ['Doubling the voltage on a capacitor multiplies its stored energy by…', ['4', '2', '½', '8'], 'U = ½CV².', 'V² goes up by 4.', '4.'],
+    ],
+    boss: [
+      'The Thin Layer',
+      'An engineer wants more capacitance in a tiny ceramic capacitor rated 50 V, so she halves the dielectric layer from 4 µm to 2 µm. The layer breaks down at about 15 MV/m. What happens?',
+      ['C doubles but the field at 50 V becomes 25 MV/m, above breakdown, so it fails', 'C doubles and nothing else changes', 'C halves', 'The voltage rating doubles'],
+      'Work out V/d for both thicknesses.',
+      'At 4 µm the field is 12.5 MV/m, safely below 15. At 2 µm it is 25 MV/m. Thinner layers need a lower voltage rating or a material with a higher breakdown field.',
+    ],
+    read: [
+      ['wiki', 'Dielectric', 'Polarisation and permittivity.', 'In electromagnetism, a dielectric (or dielectric medium) is an electrical insulator that can be polarised by an applied electric field.'],
+      ['wiki', 'Ceramic capacitor', 'How MLCCs are made.', 'A ceramic capacitor is a fixed-value capacitor where the ceramic material acts as the dielectric.'],
+    ],
+    labs: [
+      phet('capacitor-lab-basics', 'Capacitor Lab: Basics', 'Change the plate area and gap, add a dielectric, and check C = ε₀εᵣA/d.'),
+      home('Open an old broken phone charger or remote control (unplugged). Count the capacitors: the small brown or tan blocks are MLCCs, the cylinders are electrolytic capacitors.'),
+    ],
+    quiz: [
+      ['What was the first capacitor, made in 1745–46?', ['The Leyden jar', 'The voltaic pile', 'The MLCC', 'The Faraday cage'], 'Glass between two conductors.'],
+      ['Which ceramic, found in the 1940s, has a relative permittivity in the thousands?', ['Barium titanate', 'Alumina', 'Silica glass', 'Mica'], 'BaTiO₃, the base of most MLCCs.'],
+    ],
+    gloss: [
+      ['Dielectric', 'An insulator that polarises in an electric field.', ['dielectrics']],
+      ['Relative permittivity', 'εᵣ: how many times more charge a capacitor stores with the material than with vacuum.', ['dielectric constant', 'εr']],
+      ['Breakdown field', 'The electric field at which an insulator suddenly conducts and fails.', ['dielectric strength', 'breakdown']],
+      ['MLCC', 'Multilayer ceramic capacitor: many thin ceramic layers stacked with metal electrodes.', ['multilayer ceramic capacitor']],
+    ],
+    events: [
+      [1745, 'The Leyden jar', 'Kleist and Musschenbroek store charge.'],
+      [1837, 'Faraday’s dielectric constant', 'Insulators raise capacitance.'],
+    ],
+  }),
+
+  mk({
+    id: 'elec-006',
+    code: 'ELE 106',
+    track: 'mate',
+    um: ['MATE 405'],
+    title: 'Magnetic Materials: Soft, Hard and Strong',
+    subtitle: 'Weiss domains, hysteresis loops and the neodymium magnet',
+    digest: [
+      'In iron, nickel and cobalt the atomic magnets line up in small regions called domains. Magnetising the metal means growing the domains that point the right way.',
+      'Plotting B against the applied field H traces a hysteresis loop. Soft magnets (transformer steel, ferrite) have a thin loop: easy to flip, low losses. Hard magnets (NdFeB, ferrite magnets) have a fat loop: they keep their magnetism.',
+      'A permanent magnet’s strength is rated by its energy product (BH)max. Neodymium–iron–boron, invented in 1984, has about ten times that of ceramic ferrite magnets.',
+    ],
+    era: '1600 Gilbert → 1907 Weiss domains → 1931 Alnico → 1984 NdFeB → today',
+    who: 'William Gilbert, Pierre Weiss & Masato Sagawa',
+    hook: 'A transformer core and a fridge magnet are both made of magnetic materials. Why must one lose its magnetism easily and the other keep it for decades?',
+    story: [
+      'In 1600 William Gilbert, physician to Queen Elizabeth I, published De Magnete. He showed that the Earth itself is a giant magnet and that heating iron red-hot destroys its magnetism.',
+      'In 1907 Pierre Weiss explained why iron can be magnetised or not: it is divided into tiny domains, each fully magnetised but pointing in different directions so that they cancel. A field grows the domains that line up with it. When the field is removed, some stay grown: that memory is hysteresis.',
+      'Permanent magnets improved in steps: Alnico in 1931 (Tokushichi Mishima, Japan), ceramic ferrite magnets in the 1950s, samarium–cobalt in the 1960s, and in 1984 neodymium–iron–boron by Masato Sagawa at Sumitomo and, independently, by General Motors. NdFeB now spins the motors of electric cars, wind turbines and phone speakers.',
+    ],
+    takeaway: 'Soft magnets need thin loops for low loss; hard magnets need fat loops to keep their magnetism; domains explain both.',
+    viz: 'hysteresis_loop',
+    vizTitle: 'Hysteresis Loops',
+    vizHow: 'Pick a material and sweep the applied field H. Follow the loop: where it crosses the B axis is the remanence, where it crosses the H axis is the coercivity.',
+    steps: [
+      ['Remanence and coercivity', 'B_r = B(H = 0),\\quad H_c: B = 0', 'NdFeB: B_r ≈ 1.3 T and H_c ≈ 900 kA/m. Soft iron: H_c below 0.1 kA/m.'],
+      ['Loss per cycle', 'P = f \\times W_{\\text{loop}} \\times V', 'A core losing 10 J/m³ per cycle, 60 Hz, 0.001 m³: 0.6 W.'],
+      ['Energy product', '(BH)_{\\max}', 'NdFeB about 350 kJ/m³, ferrite about 30 kJ/m³: for the same pull, NdFeB needs roughly a tenth of the volume.'],
+    ],
+    drills: [
+      ['Which material should a transformer core be made of?', ['A soft magnet with a thin loop', 'A hard magnet with a fat loop', 'Copper', 'Any plastic'], 'The field flips 60 times a second.', 'Each cycle loses the loop area as heat.', 'A soft magnet.'],
+      ['Heating a magnet above its Curie temperature…', ['Destroys its magnetism', 'Makes it stronger', 'Turns it into a hard magnet', 'Has no effect'], 'Gilbert saw this with red-hot iron.', 'Heat scrambles the atomic magnets.', 'It loses its magnetism.'],
+      ['A loop loses 20 J/m³ per cycle at 60 Hz. Power lost per m³?', ['1200 W', '20 W', '3 W', '60 W'], 'P = f × W.', '60 × 20.', '1200 W per m³.'],
+    ],
+    boss: [
+      'The Hot Motor',
+      'An electric motor uses NdFeB magnets that lose strength fast above about 80–150 °C. A tricycle maker in the Philippines finds its motors weaken after climbing hills in the noon heat. What is the materials fix?',
+      ['Use a high-temperature NdFeB grade (with dysprosium) or improve cooling, since heat lowers the coercivity', 'Use soft iron magnets instead', 'Paint the magnets white', 'Use larger copper wires only'],
+      'What does heat do to a hard magnet’s loop?',
+      'Coercivity of NdFeB falls with temperature, so a reverse field from the windings can partly demagnetise a hot magnet. Grades with some dysprosium or terbium keep their coercivity to about 180–200 °C; better airflow keeps the magnets cooler.',
+    ],
+    read: [
+      ['wiki', 'Magnetic domain', 'Weiss domains and walls.', 'A magnetic domain is a region within a magnetic material in which the magnetization is in a uniform direction.'],
+      ['wiki', 'Neodymium magnet', 'The strongest permanent magnets.', 'A neodymium magnet is the most widely used type of rare-earth magnet. It is a permanent magnet made from an alloy of neodymium, iron, and boron.'],
+    ],
+    labs: [
+      phet('magnets-and-electromagnets', 'Magnets and Electromagnets', 'Compare a bar magnet with an electromagnet and see how the field depends on the current.'),
+      home('Stroke a steel needle 30 times one way with a fridge magnet. Does it now pick up a staple? Then heat it in a candle flame (with pliers) and test again. Explain with domains.'),
+    ],
+    quiz: [
+      ['Who explained magnetisation with domains in 1907?', ['Pierre Weiss', 'William Gilbert', 'Pierre Curie', 'Michael Faraday'], 'Domains are sometimes called Weiss domains.'],
+      ['Who invented the neodymium–iron–boron magnet at Sumitomo in 1984?', ['Masato Sagawa', 'Tokushichi Mishima', 'Kotaro Honda', 'Shuji Nakamura'], 'GM found it independently.'],
+    ],
+    gloss: [
+      ['Magnetic domain', 'A region of a magnetic material in which all atomic magnets point the same way.', ['domains', 'Weiss domain']],
+      ['Hysteresis loop', 'The closed curve of B against H as the field is swept back and forth.', ['hysteresis', 'B–H loop']],
+      ['Coercivity', 'The reverse field needed to bring B back to zero, H_c.', ['coercive field']],
+      ['Remanence', 'The magnetic flux density left at zero applied field, B_r.', ['remanent magnetisation']],
+      ['Curie temperature', 'The temperature above which a material loses its permanent magnetism.', ['Curie point']],
+    ],
+    events: [
+      [1600, 'Gilbert’s De Magnete', 'The Earth is a magnet.'],
+      [1907, 'Weiss domains', 'Why iron can be magnetised.'],
+      [1984, 'Neodymium magnet', 'Sagawa at Sumitomo, and General Motors.'],
+    ],
+  }),
+];

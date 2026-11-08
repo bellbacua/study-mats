@@ -13,6 +13,7 @@ export default function SceneView({ type, mission, beat, onGoal, goalDone }) {
   const [caption, setCaption] = useState('');
   const [playing, setPlaying] = useState(-1);
   const [cur, setCur] = useState(-1); // the step shown (−1: none yet)
+  const [ready, setReady] = useState(false);
   const seen = useRef({});
   const touched = useRef(false);
 
@@ -25,7 +26,9 @@ export default function SceneView({ type, mission, beat, onGoal, goalDone }) {
     setTarget(init);
     setCaption('');
     setCur(-1);
+    setReady(false);
     stage.current = new Stage(box.current, def, init);
+    let raf = requestAnimationFrame(() => (raf = requestAnimationFrame(() => setReady(true))));
     // Show step 1 straight away, so the learner sees what is going on.
     const first = def.beats?.[0];
     if (first) {
@@ -35,6 +38,7 @@ export default function SceneView({ type, mission, beat, onGoal, goalDone }) {
       setCur(0);
     }
     return () => {
+      cancelAnimationFrame(raf);
       clearTimeout(timer.current);
       stage.current?.dispose();
       stage.current = null;
@@ -67,7 +71,10 @@ export default function SceneView({ type, mission, beat, onGoal, goalDone }) {
         setPlaying(-1);
         return;
       }
-      apply(b.set, false);
+      // Rebuild the picture from the start up to this step, so going back
+      // always shows exactly what that step showed.
+      const upTo = def.beats.slice(0, i + 1).reduce((acc, x) => ({ ...acc, ...x.set }), initialParams(def));
+      apply(upTo, false);
       setCaption(b.say);
       setCur(i);
       setPlaying(chain ? i : -1);
@@ -116,6 +123,7 @@ export default function SceneView({ type, mission, beat, onGoal, goalDone }) {
       <div className="scene-stage">
         <div className="scene-view">
           <div className="scene-canvas" ref={box} />
+          {!ready && <div className="scene-loading">Setting up the animation…</div>}
           {def.camera?.kind === '3d' && <div className="scene-hint">drag to rotate · scroll to zoom</div>}
         </div>
         <div className="scene-bar">
