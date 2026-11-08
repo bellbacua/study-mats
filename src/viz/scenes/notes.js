@@ -1111,4 +1111,25 @@ export const NOTES = {
     [{ text: 'too broad: the gambler and the fool get in', at: [-4.4, -2.6], to: [-3.6, 0.4], color: C.red }],
     [{ text: 'the doctor gets in too: still unsolved', at: [-4.4, -2.6], to: [-3.6, 1.3], color: C.red }],
   ],
+  syllogism_venn: [
+    [{ text: 'the only open part of S lies inside P: valid', at: [-3.0, -3.0], to: [2.1, 0.0], color: C.green }],
+    [{ text: 'X: some S is surely here, and it is inside P', at: [-3.0, -3.0], to: [2.1, 0.1], color: C.red }],
+    [{ text: 'S outside P is still open: invalid', at: [-3.0, -3.0], to: [0.9, -0.6], color: C.red }],
+  ],
+  truth_table: [
+    [{ text: 'both premises true, and Q is true: valid', at: [5.2, 0.6], to: [2.6, 1.75], color: C.green }],
+    [{ text: 'premises true, conclusion false: invalid', at: [5.2, -1.2], to: [2.6, -0.3], color: C.red }],
+    [{ text: 'only row 4 qualifies, and ¬P holds: valid', at: [5.2, 0.8], to: [2.6, -1.4], color: C.green }],
+  ],
+  hidden_factor: [
+    [{ text: 'hot days (red): more ice cream and more swimmers', at: [-2.4, 2.6], to: [3.2, 0.6], color: C.red }],
+    [{ text: 'same temperature: almost no link left', at: [3.6, 2.6], to: [0.5, -0.8], color: C.grey }],
+    [{ text: 'a real cause would keep the slope', at: [-2.4, 2.6], to: [1.2, 0.7], color: C.white }],
+  ],
+  descartes_doubt: [
+    [],
+    [{ text: 'the senses fool us', at: [-6.2, -2.4], to: [-4.6, -2.4], color: C.grey }],
+    [{ text: 'true even in a dream', at: [-6.2, 1.9], to: [-4.6, 1.3], color: C.teal }],
+    [{ text: 'one belief survives', at: [-6.2, 2.5], to: [-4.6, 3.2], color: C.gold }],
+  ],
 };
