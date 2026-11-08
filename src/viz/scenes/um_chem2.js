@@ -593,7 +593,8 @@ export const beer_lambert = {
 // Environment: the Keeling curve (smoothed fit to the Mauna Loa record)
 // ---------------------------------------------------------------------------
 const co2 = (yr) => 280 + 35 * Math.exp((yr - 1958) / 47.3) + 3 * Math.cos(2 * Math.PI * (yr - Math.floor(yr) - 0.37));
-const co2s = (yr) => 280 + 35 * Math.exp((yr - 1958) / 47.3);
+// smooth fit to the Mauna Loa yearly means: 315 ppm (1958), 354 (1990), 425 (2024)
+const co2s = (yr) => 315.2 + 0.818 * (yr - 1958) + 0.01272 * (yr - 1958) ** 2;
 
 export const co2_keeling = {
   camera: { kind: '2d', x: [-8, 8], y: [-4.5, 4.5] },

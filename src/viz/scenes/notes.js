@@ -610,4 +610,34 @@ export const NOTES = {
     [{ text: 'slow cooling crosses the C-curves → soft pearlite', at: [5.6, 0.4], to: [-0.5, 1.3], color: C.red }],
     [{ text: 'water quench dodges the nose → hard martensite', at: [5.6, 0.4], to: [-5.1, 0.4], color: C.blue }],
   ],
+  griffith_fracture_composite_lab: [
+    [
+      { text: 'longer crack → lower breaking stress', at: [-2.6, 1.6], to: [-5.0, -0.2] },
+      { text: 'stress piles up at the crack tips', at: [4.6, 1.4], to: [4.1, 0.1], color: C.red },
+    ],
+    [{ text: '15 mm crack: 150 MPa is now above the curve → it breaks', at: [-2.6, 1.6], to: [-1.5, -1.8], color: C.red }],
+    [{ text: 'glass: so little toughness that a 1 mm scratch drops it to about 13 MPa', at: [-3.0, 1.0], to: [-6.9, -3.3], color: C.red }],
+  ],
+  slope_field_cooling: [
+    [
+      { text: 'each dash: the cooling rate at that time and temperature', at: [2.6, 2.6] },
+      { text: 'the true curve follows the dashes', at: [2.0, -0.4], to: [-2.6, 0.8], color: C.gold },
+    ],
+    [{ text: 'straight 10 s steps cut the corner: it cools too fast', at: [2.0, 0.6], to: [-2.3, -0.6], color: C.pink }],
+    [{ text: 'water + big steps: it overshoots below 50 °C', at: [2.6, -0.8], to: [-4.4, -3.0], color: C.red }],
+  ],
+  spreadsheet_fit: [
+    [{ text: 'each row of the sheet becomes one dot', at: [5.4, 1.0], to: [4.5, 2.5] }],
+    [{ text: 'fitting all 12 rows bends the line: the slope is a third too low', at: [5.4, 0.4], to: [3.6, 0.9], color: C.red }],
+    [{ text: 'only the straight first 7 rows: E ≈ 70 GPa', at: [5.4, 0.6], to: [2.45, 0.6], color: C.green }],
+  ],
+  co2_keeling: [
+    [
+      { text: '1958: about 315 ppm', at: [-4.0, -1.2], to: [-6.9, -2.3] },
+      { text: 'each small wiggle is one year', at: [3.0, -1.6], to: [1.4, 0.2] },
+    ],
+    [{ text: '1990: rising faster every decade', at: [-2.0, 1.6], to: [-0.6, -0.6], color: C.red }],
+    [{ text: 'summer: forests grow and draw CO₂ down', at: [4.6, 1.4], to: [3.0, -1.0], color: C.green }],
+    [{ text: 'today: over 420 ppm, about 50% above pre-industrial', at: [-1.6, 2.6], to: [6.3, 2.9], color: C.red }],
+  ],
 };

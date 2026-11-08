@@ -783,7 +783,7 @@ export const slope_field_cooling = {
     { key: 'h', label: 'Euler step size h (s)', min: 0.5, max: 20, step: 0.5, value: 10 },
   ],
   beats: [
-    { say: 'Each short line is the cooling rate at that moment and temperature. The yellow curve follows them exactly: T = 50 + 800e^(−0.05t).', set: { q: 'oil', T0: 850, h: 10 } },
+    { say: 'Each short line is the cooling rate at that moment and temperature. The yellow curve follows them exactly: T = 50 + 800e^(−0.05t). With tiny steps, the pink step-by-step path sits right on it.', set: { q: 'oil', T0: 850, h: 0.5 } },
     { say: 'Euler’s method with 10-second steps: follow the slope in a straight line for 10 s, then look again. It cuts the corner and cools too fast.', set: { q: 'oil', T0: 850, h: 10 } },
     { say: 'In water (k = 0.12) with big 10-second steps, each step overshoots below 50 °C: the dots jump around. Small steps fix it. Simulations must choose steps with care.', set: { q: 'water', T0: 850, h: 10 } },
   ],
