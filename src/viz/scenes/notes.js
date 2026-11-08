@@ -575,4 +575,39 @@ export const NOTES = {
     [{ text: 'phosphorus: spare electrons sitting just below the conduction band', at: [-1.0, 2.6], to: [-1.6, -1.0], color: C.green }],
     [{ text: 'falling back across the gap gives light: 2.75 eV → blue', at: [5.2, -3.2], to: [5.8, 0.3], color: C.blue }],
   ],
+  nucleation_barrier: [
+    [
+      { text: 'clusters keep forming, then melt away again', at: [-4.5, 0.6] },
+      { text: '40 K under: the barrier peaks far out, at r* = 6.4 nm', at: [5.2, -1.0], to: [2.3, 2.6], color: C.red },
+    ],
+    [
+      { text: 'past the top of the barrier, a cluster keeps growing…', at: [5.0, 2.0], to: [2.8, 0.9], color: C.gold },
+      { text: '…into a grain', at: [-2.4, -0.8], to: [-4.2, -2.4], color: C.gold },
+    ],
+    [{ text: 'tiny barrier: grains start everywhere → many small grains', at: [5.0, 2.0], to: [2.0, 0.3], color: C.gold }],
+  ],
+  taylor_build: [
+    [
+      { text: 'near 0, x matches sin x well…', at: [3.6, -2.6], to: [0.4, 0.4], color: C.gold },
+      { text: '…but shoots off as x grows', at: [-4.4, 3.0], to: [3.0, 3.0], color: C.gold },
+    ],
+    [{ text: '5 terms: hugs the wave from −π to π', at: [-3.0, 3.2], to: [-2.0, -0.9], color: C.gold }],
+    [
+      { text: 'matches only between −1 and 1', at: [-4.6, 2.6], to: [0.5, 0.4], color: C.gold },
+      { text: 'outside, the series falls apart', at: [4.4, -2.4], to: [1.7, -1.6], color: C.red },
+    ],
+  ],
+  least_squares: [
+    [
+      { text: 'each gap to the line, drawn as a real square', at: [-4.0, -2.2], to: [-4.4, -0.2], color: C.pink },
+      { text: 'a poor guess: 22× the smallest total', at: [4.6, -0.6], to: [4.4, 2.6] },
+    ],
+    [{ text: 'big gaps count most: their squares grow fastest', at: [-4.0, -2.2], to: [-4.4, -0.6], color: C.pink }],
+    [{ text: 'the least-squares line: no other line has less total area', at: [-4.0, -2.2], to: [-5.0, -0.4], color: C.gold }],
+  ],
+  ttt_cooling_curve_lab: [
+    [{ text: 'a race: reach the bottom before hitting this C-shaped “nose”', at: [5.6, 0.4], to: [-3.9, 0.8], color: C.red }],
+    [{ text: 'slow cooling crosses the C-curves → soft pearlite', at: [5.6, 0.4], to: [-0.5, 1.3], color: C.red }],
+    [{ text: 'water quench dodges the nose → hard martensite', at: [5.6, 0.4], to: [-5.1, 0.4], color: C.blue }],
+  ],
 };
