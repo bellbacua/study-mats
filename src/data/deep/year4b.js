@@ -44,7 +44,7 @@ export const YEAR4B = {
           pr('Bone (18 GPa, 500 mm²) and titanium (110 GPa, 100 mm²). What percentage of the load does the titanium carry?', 55, 'E × A is 9,000 for bone and 11,000 for the stem.', '11,000/20,000 = 55%.'),
           pr('In that same joint the load is 3,000 N. Force on the bone, in N?', 1350, 'Bone carries the other 45%.', '0.45 × 3,000 = 1,350 N.'),
           pr('Bone (18 GPa, 400 mm²) with a polymer stem (3 GPa, 200 mm²). What percentage of the load does the bone carry?', 92.3, 'E × A is 7,200 and 600.', '7,200/7,800 ≈ 92.3%.'),
-          pr('In the first example, 2,000 N acts on a total E × A of 29,200 kN. What is the strain, in microstrain (millionths)?', 68.5, 'Strain = force/total E × A. Keep the same units (2 kN).', '2/29,200 = 6.85 × 10⁻⁵ = 68.5 microstrain.'),
+          pr('Bone (18 GPa, 400 mm²) beside a titanium stem (110 GPa, 200 mm²) has a total E × A of 29,200 kN. A 2,000 N load acts on it. What is the strain, in microstrain (millionths)?', 68.5, 'Strain = force/total E × A. Keep the same units (2 kN).', '2/29,200 = 6.85 × 10⁻⁵ = 68.5 microstrain.'),
         ],
       },
       {

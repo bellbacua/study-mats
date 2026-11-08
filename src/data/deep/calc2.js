@@ -1316,7 +1316,7 @@ export const CALC2 = {
         practice: [
           pr("For y′ = y, start at y = 2. One Euler step with h = 0.1 gives what y?", 2.2, "Use the current value as the slope.", "Add 0.1 times the starting value. Answer: 2.2."),
           pr("For y′ = −2y, start at y = 1. Two Euler steps of h = 0.1 give what y?", 0.64, "Recalculate the slope after the first step.", "Each step multiplies y by 0.8. Answer: 0.64."),
-          pr("For T′ = −0.12(T − 50), start at 850 °C. One Euler step of 10 s gives what T, in °C?", -110, "A long step can overshoot the bath.", "Apply the step rule with the full initial excess. Answer: -110 °C."),
+          pr("For T′ = −0.12(T − 50), start at 850 °C. One Euler step of 10 s gives what T, in °C?", -110, "A long step can overshoot the bath.", "T = 850 + 10 × (−0.12)(850 − 50) = 850 − 960 = −110 °C. That is impossible: the part cannot get colder than the 50 °C bath. The step is too big (h × 0.12 = 1.2, more than 1), so Euler overshoots. Smaller steps fix it."),
           pr("How many equal steps of h = 0.5 s reach t = 20 s from t = 0?", 40, "Divide elapsed time by step size.", "Use 20/0.5. Answer: 40."),
         ],
       },

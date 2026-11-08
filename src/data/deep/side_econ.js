@@ -529,7 +529,7 @@ export const SIDE_ECON = {
         practice: [
           pr('v(500) (to the nearest whole number)?', v88(500), '500^0.88.', 'About 236.', { tol: 1 }),
           pr('v(−500) (to the nearest whole number)?', v88(-500), '−2.25 × 500^0.88.', 'About −531.', { tol: 1.5 }),
-          pr('Feeling of a 50:50 bet: win ₱2000 or lose ₱1000 (to the nearest whole number)?', 0.5 * v88(2000) + 0.5 * v88(-1000), '0.5 v(2000) + 0.5 v(−1000).', 'About −83: still feels slightly bad.', { tol: 1.5 }),
+          pr('Feeling of a 50:50 bet: win ₱2000 or lose ₱1000 (to the nearest whole number)?', 0.5 * v88(2000) + 0.5 * v88(-1000), '0.5 v(2000) + 0.5 v(−1000).', '0.5 × 803.6 + 0.5 × (−982.2) ≈ −89: still feels slightly bad, even though the bet gains ₱500 on average.', { tol: 1.5 }),
           ch('A loss compared with an equal gain feels…', ['About 2.25 times as strong', 'The same', 'Half as strong', 'Ten times as strong'], 'Loss aversion.', '2.25.'),
         ],
       },
