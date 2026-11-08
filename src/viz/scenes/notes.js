@@ -838,4 +838,36 @@ export const NOTES = {
     [{ text: 'overlap: a weak part meets a big load', at: [0.4, -0.6], to: [-3.0, -3.0], color: C.red }],
     [{ text: 'real loads 20% above the assumed ones', at: [-0.6, 2.6], to: [-3.3, 1.6], color: C.blue }],
   ],
+  beam_bending: [
+    [{ text: 'the bending moment peaks right under the load', at: [1.2, -2.7], to: [-2.2, -2.95], color: C.pink }],
+    [{ text: 'the near support carries most of the load', at: [-1.6, 1.3], to: [-6.2, 1.1], color: C.blue }],
+    [
+      { text: 'neutral axis: no stress at all', at: [1.6, 1.2], to: [4.4, 0.05], color: C.yellow },
+      { text: 'bottom is stretched: cracks start here', at: [1.6, -3.1], to: [5.2, -1.6], color: C.teal },
+    ],
+  ],
+  casting_riser: [
+    [
+      { text: 'shrinkage hole: nothing left to feed it', at: [0.4, -3.0], to: [-2.4, -1.9], color: C.red },
+      { text: 'riser (pink) freezes before the plate', at: [5.4, 0.6], to: [3.55, 1.65], color: C.pink },
+    ],
+    [{ text: 'the last liquid is now in the riser', at: [0.6, -0.9], to: [-2.95, 0.15], color: C.gold }],
+    [{ text: 'riser holds more steel than the plate: waste', at: [0.6, -0.9], to: [-2.0, 1.5], color: C.red }],
+  ],
+  stokes_fall: [
+    [{ text: 'bigger ball, faster: speed grows with r²', at: [-0.6, 1.6], to: [4.0, 0.0], color: C.white }],
+    [{ text: 'honey is thicker: the ball crawls', at: [0.6, -1.9], to: [5.0, -1.0], color: C.yellow }],
+    [{ text: 'engine oil is thinner: faster', at: [0.2, 2.1], to: [3.3, 0.75], color: C.gold }],
+  ],
+  charpy_dbtt: [
+    [
+      { text: 'upper shelf: tough, absorbs a lot', at: [1.4, 0.9], to: [5.85, -0.4], color: C.red },
+      { text: 'dull grey, torn break', at: [-4.6, -2.6], to: [-7.0, -2.6], color: C.grey },
+    ],
+    [
+      { text: 'lower shelf: brittle, almost nothing absorbed', at: [0.6, -1.4], to: [4.2, -3.0], color: C.red },
+      { text: 'flat, shiny break', at: [-4.6, -2.6], to: [-7.0, -2.6], color: C.white },
+    ],
+    [{ text: 'fine-grained steel: still tough at −20 °C', at: [-0.6, 0.9], to: [4.25, 2.4], color: C.blue }],
+  ],
 };
