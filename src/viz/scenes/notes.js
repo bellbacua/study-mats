@@ -977,4 +977,27 @@ export const NOTES = {
     [{ text: 'more bricks: shorter bars, a clear gap', at: [-4.0, 3.0], to: [-1.05, 0.9], color: C.yellow }],
     [{ text: 'a big gain shows even with 5 bricks', at: [-4.6, 3.0], to: [-2.0, 1.75], color: C.yellow }],
   ],
+  ashby_corrosion_capstone_lab: [
+    [{ text: 'up and to the left = light and stiff', at: [-4.0, 3.2], color: C.white }],
+    [{ text: 'the slope-2 line: slide it up', at: [4.4, -1.2], to: [1.3, 1.3], color: C.white }],
+    [{ text: 'the bright bubbles are above the line: the winners', at: [-4.2, 3.2], to: [-0.5, 1.1], color: C.gold }],
+  ],
+  bof_blow: [
+    [{ text: 'start: 4.4% carbon', at: [3.4, 2.6], to: [-0.4, 3.2], color: C.yellow }],
+    [{ text: 'a straight line: carbon burns at a steady rate', at: [4.4, 1.2], to: [1.0, 0.4], color: C.yellow }],
+    [{ text: 'the tail: carbon runs short, burning slows', at: [4.4, -1.2], to: [3.0, -3.0], color: C.yellow }],
+    [{ text: 'more oxygen: steeper start, same slow tail', at: [4.4, 1.4], to: [0.7, 0.3], color: C.yellow }],
+  ],
+  ellingham: [
+    [{ text: 'carbon’s line is above nickel’s: it can’t take the oxygen yet', at: [-4.2, 3.0], to: [-3.15, 1.4], color: C.white }],
+    [{ text: 'carbon dips below nickel: NiO can be reduced', at: [-4.4, 3.0], to: [-2.2, 1.35], color: C.green }],
+    [{ text: 'below FeO too: iron smelting works', at: [-4.6, 3.0], to: [-0.7, 0.7], color: C.red }],
+    [{ text: 'about 2,000 K: even silica gives up its oxygen', at: [0.0, -2.4], to: [3.7, -0.7], color: C.purple }],
+  ],
+  solid_solution: [
+    [{ text: 'nickel fits: almost the same size', at: [0.0, 3.6], to: [-1.5, 2.45], color: C.green }],
+    [{ text: 'brass: up to 35% zinc dissolves', at: [4.6, 2.4], to: [5.5, -0.6], color: C.teal }],
+    [{ text: 'tin: few atoms, big strengthening', at: [4.8, 2.6], to: [2.4, 0.7], color: C.purple }],
+    [{ text: 'extra tin forms a brittle second phase (grey)', at: [-1.0, 3.95], to: [-2.2, 1.6], color: C.grey }],
+  ],
 };

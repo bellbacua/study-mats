@@ -482,7 +482,7 @@ export const ashby_corrosion_capstone_lab = {
   beats: [
     { say: 'Every material family lives in a bubble on the stiffness-vs-density map. Up-left is light and stiff.', set: { shape: 1, shift: -1 } },
     { say: 'For a light, stiff beam, maximise E^½/ρ. On log axes that is a straight line of slope 2. Slide it up.', set: { shape: 2, shift: 0.4 } },
-    { say: 'Whatever sits above the line beats everything below it. For beams: composites and woods win, which is why aircraft and bicycles use carbon fibre.', set: { shape: 2, shift: 1.1 } },
+    { say: 'Whatever sits above the line beats everything below it. For beams that leaves woods, composites and ceramics. Ceramics are too brittle to bend, so composites and woods win, which is why aircraft and bicycles use carbon fibre.', set: { shape: 2, shift: 0.56 } },
   ],
   readout: (t) => {
     const n = t.shape;

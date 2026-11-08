@@ -94,8 +94,8 @@ const MISSIONS = {
   },
   semiconductor_bandgap_lab: { mission: 'Compare pure silicon with n-type silicon.', goal: (_t, seen) => !!seen.dope?.has('n') },
   ashby_corrosion_capstone_lab: {
-    mission: 'For a beam, slide the line up until only composites and woods stay above it.',
-    goal: (t) => t.shape === 2 && t.shift >= 0.8,
+    mission: 'For a beam, slide the line up until only woods, composites and ceramics stay above it.',
+    goal: (t) => t.shape === 2 && t.shift > 0.52 && t.shift < 0.61,
   },
 };
 
