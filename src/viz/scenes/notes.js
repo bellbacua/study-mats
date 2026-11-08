@@ -640,4 +640,36 @@ export const NOTES = {
     [{ text: 'summer: forests grow and draw CO₂ down', at: [4.6, 1.4], to: [3.0, -1.0], color: C.green }],
     [{ text: 'today: over 420 ppm, about 50% above pre-industrial', at: [-1.6, 2.6], to: [6.3, 2.9], color: C.red }],
   ],
+  damped_oscillator: [
+    [{ text: 'each swing a little smaller: underdamped', at: [5.0, -1.6], to: [4.2, 0.3], color: C.gold }],
+    [{ text: 'back to rest as fast as possible, without passing it', at: [3.6, 1.6], to: [0.3, 0.0], color: C.gold }],
+    [{ text: 'too much damping: it creeps back slowly', at: [4.2, 1.4], to: [2.0, 0.3], color: C.gold }],
+  ],
+  matrix_transform: [
+    [
+      { text: '(0, 1) leans over to (1, 1)', at: [-1.8, 3.0], to: [0.8, 0.9], color: C.red },
+      { text: 'same base, same height: the area stays 1', at: [4.0, -1.6], to: [1.2, 0.5], color: C.gold },
+    ],
+    [{ text: 'stretched 2 × 1.5: every area grows 3 times', at: [4.2, -1.6], to: [1.2, 0.8], color: C.gold }],
+    [{ text: 'a quarter turn: (1, 0) → (0, 1), and the area is unchanged', at: [4.2, -1.6], to: [0.0, 0.8], color: C.green }],
+  ],
+  force_balance: [
+    [
+      { text: 'each cable pulls 354 N, less than the 500 N lamp: they share the job', at: [-0.6, -2.4], to: [-4.2, 0.4] },
+      { text: 'head to tail, the arrows close a triangle → balance', at: [4.6, -2.6], to: [3.8, 0.4], color: C.gold },
+    ],
+    [{ text: 'flat cables: each must pull 966 N, almost twice the lamp', at: [-0.6, 2.4], to: [-4.6, 0.1], color: C.red }],
+    [{ text: 'the steeper cable carries more', at: [-0.4, 2.8], to: [-4.0, 1.4], color: C.blue }],
+  ],
+  anova_groups: [
+    [
+      { text: 'same true hardness: the groups differ only by chance', at: [-3.8, 2.6] },
+      { text: 'no spread between groups → F ≈ 0', at: [4.4, 1.2], to: [2.8, -2.9] },
+    ],
+    [
+      { text: 'group means 3 HRC apart', at: [-3.6, 2.6], to: [-2.2, 0.5], color: C.red },
+      { text: 'between ≫ within → F = 10: a real difference', at: [5.9, 0.4], to: [3.0, 1.6], color: C.gold },
+    ],
+    [{ text: 'a small gap lost in big scatter → F = 1.4: not convincing', at: [-3.6, 2.8] }],
+  ],
 };
