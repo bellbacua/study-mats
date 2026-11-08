@@ -12,6 +12,7 @@ export default function SceneView({ type, mission, beat, onGoal, goalDone }) {
   const [target, setTarget] = useState(() => (def ? initialParams(def) : {}));
   const [caption, setCaption] = useState('');
   const [playing, setPlaying] = useState(-1);
+  const [cur, setCur] = useState(-1); // the step shown (−1: none yet)
   const seen = useRef({});
   const touched = useRef(false);
 
@@ -23,7 +24,16 @@ export default function SceneView({ type, mission, beat, onGoal, goalDone }) {
     touched.current = false;
     setTarget(init);
     setCaption('');
+    setCur(-1);
     stage.current = new Stage(box.current, def, init);
+    // Show step 1 straight away, so the learner sees what is going on.
+    const first = def.beats?.[0];
+    if (first) {
+      stage.current.setTarget({ ...init, ...first.set });
+      setTarget({ ...init, ...first.set });
+      setCaption(first.say);
+      setCur(0);
+    }
     return () => {
       clearTimeout(timer.current);
       stage.current?.dispose();
@@ -38,6 +48,7 @@ export default function SceneView({ type, mission, beat, onGoal, goalDone }) {
     if (fromUser) {
       touched.current = true;
       setCaption('');
+      setCur(-1);
     }
     stage.current?.setTarget(next);
     setTarget((prev) => ({ ...prev, ...next }));
@@ -58,6 +69,7 @@ export default function SceneView({ type, mission, beat, onGoal, goalDone }) {
       }
       apply(b.set, false);
       setCaption(b.say);
+      setCur(i);
       setPlaying(chain ? i : -1);
       if (chain) {
         timer.current = setTimeout(() => {
@@ -91,6 +103,8 @@ export default function SceneView({ type, mission, beat, onGoal, goalDone }) {
     return <div className="scene-missing">No animation for this lesson yet.</div>;
   }
 
+  const nBeats = def.beats?.length || 0;
+
   const fullscreen = () => {
     const el = box.current?.parentElement;
     if (document.fullscreenElement) document.exitFullscreen();
@@ -106,16 +120,41 @@ export default function SceneView({ type, mission, beat, onGoal, goalDone }) {
         </div>
         <div className="scene-bar">
           <div className={`scene-caption ${caption ? '' : 'empty'}`} key={caption}>
-            {caption || 'Press “Watch it explained”, or move the sliders below.'}
+            {caption && cur >= 0 && <strong className="scene-step-tag">Step {cur + 1} of {nBeats} · </strong>}
+            {caption || 'Use the step buttons, press “Auto-play”, or move the sliders below.'}
+            {playing >= 0 && <span className="scene-timer" style={{ animationDuration: `${beatDuration(caption)}ms` }} />}
           </div>
           <div className="scene-tools">
+            {nBeats > 0 && (
+              <>
+                <button type="button" disabled={cur <= 0} onClick={() => playFrom(cur - 1, false)} title="Previous step">
+                  ◀
+                </button>
+                <span className="scene-steps" aria-label="Steps">
+                  {def.beats.map((_, i) => (
+                    <button
+                      key={i}
+                      type="button"
+                      className={`scene-step ${i === cur ? 'on' : ''} ${i < cur ? 'past' : ''}`}
+                      onClick={() => playFrom(i, false)}
+                      title={`Step ${i + 1}`}
+                    >
+                      {i + 1}
+                    </button>
+                  ))}
+                </span>
+                <button type="button" disabled={cur >= nBeats - 1} onClick={() => playFrom(cur + 1, false)} title="Next step">
+                  ▶
+                </button>
+              </>
+            )}
             {playing >= 0 ? (
-              <button type="button" onClick={stop}>
+              <button type="button" className="play" onClick={stop}>
                 ❚❚ Pause
               </button>
             ) : (
-              <button type="button" onClick={() => playFrom(0, true)}>
-                ▶ Watch it explained
+              <button type="button" className="play" disabled={!nBeats} onClick={() => playFrom(cur >= 0 && cur < nBeats - 1 ? cur : 0, true)}>
+                ▶ Auto-play
               </button>
             )}
             <button type="button" onClick={() => stage.current?.replayIntro()} title="Redraw">

@@ -681,6 +681,7 @@ pre {
   background: #0a0e13;
 }
 .scene-caption {
+  position: relative;
   flex: 1;
   font-size: 17px;
   line-height: 1.45;
@@ -710,7 +711,7 @@ pre {
   font-size: 14px;
   font-weight: 600;
 }
-.scene-tools button:first-child {
+.scene-tools button.play {
   background: var(--blue);
   color: #06212a;
   border-color: var(--blue);
@@ -2999,4 +3000,57 @@ input[type='range'] {
 }
 .spec-actions {
   margin-top: auto;
+}
+
+/* step-by-step controls for the animation */
+.scene-tools {
+  align-items: center;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+}
+.scene-tools button:disabled {
+  opacity: 0.35;
+  cursor: default;
+}
+.scene-steps {
+  display: inline-flex;
+  gap: 4px;
+}
+.scene-tools .scene-step {
+  min-width: 30px;
+  padding: 6px 8px;
+  font: 600 12px var(--mono);
+  color: var(--muted);
+}
+.scene-tools .scene-step.past {
+  color: var(--text);
+  border-color: rgba(88, 196, 221, 0.35);
+}
+.scene-tools .scene-step.on {
+  background: rgba(88, 196, 221, 0.18);
+  border-color: var(--blue);
+  color: var(--text);
+}
+.scene-step-tag {
+  color: var(--blue);
+  font-weight: 600;
+}
+.scene-timer {
+  position: absolute;
+  left: 0;
+  bottom: -8px;
+  height: 2px;
+  width: 100%;
+  background: var(--blue);
+  transform-origin: left;
+  animation: scene-timer linear forwards;
+  opacity: 0.7;
+}
+@keyframes scene-timer {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(1);
+  }
 }
