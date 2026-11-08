@@ -33,6 +33,20 @@ export const UM_COURSES = {
   'BEE 319': 'Basic Electrical Engineering',
   'CEE 117': 'Statics of Rigid Bodies',
   'CEE 118': 'Dynamics of Rigid Bodies',
+  'CEE 109': 'Engineering Economics',
+  'MATE 303': 'Materials Elective 1',
+  'MATE 310': 'Methods of Research',
+  'CEE 108': 'Engineering Management',
+  'MATE 402': 'Laws, Ethics, Seminars and Plant Visit',
+  'MATE 308': 'Materials Elective 2',
+  'BCE 222': 'Mechanics of Deformable Bodies',
+  'MATE 309': 'Mechanics of Fluids',
+  'MATE 401': 'Forensic Engineering',
+  'MATE 403': 'Thesis 1',
+  'MATE 404': 'Thesis 2',
+  'MATE 405': 'Special Topics',
+  'CEE 115': 'Technopreneurship',
+  'MATE 406': 'Quality Assurance',
 };
 
 export const phet = (slug, name, task) => ({ tool: `PhET: ${name}`, kind: 'online', url: `https://phet.colorado.edu/en/simulations/${slug}`, task });

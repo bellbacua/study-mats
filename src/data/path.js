@@ -43,7 +43,23 @@ const WEEKS = [
   ['mate-119', 'math-019', 'math-023'], // 29 nucleation · series · regression
   ['mate-203', 'math-024', 'mate-302'], // 30 heat treatment · hypothesis tests · ceramics
   ['math-025', 'eng-003', 'chem-017'], // 31 differential equations · data tools · environment
-  ['math-026', 'math-027', 'mate-402'], // 32 vibrations · matrices · capstone
+  ['math-026', 'math-027'], // 32 vibrations · matrices
+  ['phys-201', 'math-028', 'eng-004'], // 33 forces in balance · analysis of variance · interest and time
+  ['mate-120', 'phys-202', 'mate-121'], // 34 thermal analysis · friction · welding
+  ['eng-005', 'math-029', 'phys-203'], // 35 comparing alternatives · factorial experiments · centroids
+  ['mate-122', 'mate-123', 'phys-204'], // 36 hardenability · polymer processing · trusses
+  ['mate-124', 'phys-205', 'phys-207'], // 37 corrosion and Pourbaix · rigid-body rotation · circuit laws
+  ['eng-006', 'mate-125', 'phys-208'], // 38 research methods · fatigue · transformers
+  ['mate-127', 'phys-206', 'eng-007'], // 39 steels · mechanisms · project management
+  ['mate-126', 'phys-209', 'mate-128'], // 40 creep · AC power · glass
+  ['eng-008', 'phys-211'], // 41 ethics and disasters · beam bending
+  ['mate-130', 'phys-215', 'mate-133'], // 42 casting · pressure and viscosity · brittle fracture
+  ['phys-212', 'mate-135', 'mate-131'], // 43 buckling · the nanoscale · metal forming
+  ['phys-216', 'phys-213', 'mate-134'], // 44 flow · torsion · failure analysis
+  ['mate-132', 'phys-214', 'mate-136'], // 45 powder and sintering · Mohr’s circle · carbon nanomaterials
+  ['eng-009', 'mate-137', 'eng-010'], // 46 quality control · biomaterials · plant design
+  ['mate-138', 'eng-011', 'mate-139'], // 47 3D printing · technopreneurship · batteries
+  ['eng-012', 'mate-402'], // 48 the thesis · capstone: choosing materials
 ];
 
 // Headings on the roadmap: which part of the journey each week belongs to.
@@ -52,6 +68,10 @@ const STAGES = [
   { from: 10, title: 'UM Year 1, first semester prep', note: 'CEE 200 Math Plus · BCHE 111 Chemistry · DRAW 102 · MATE 101' },
   { from: 19, title: 'UM Year 1, second semester prep', note: 'CEE 101 Calculus 1 · MATE 102 Analytical Chem · MATE 103 Structure and properties' },
   { from: 25, title: 'UM Year 2 prep', note: 'Calculus 2 · Statistics · Differential equations · Physics · Thermodynamics · Kinetics · Solid state' },
+  { from: 33, title: 'UM Year 3, first semester prep', note: 'CEE 117 Statics · MATE 304 Experiments · CEE 109 Economics · MATE 302 Lab · MATE 303 Elective' },
+  { from: 37, title: 'UM Year 3, second semester prep', note: 'MATE 307 Degradation · CEE 118 Dynamics · BEE 319 Electrical · MATE 310 Research · CEE 108 Management · MATE 402 Ethics' },
+  { from: 41, title: 'UM Year 4, first semester prep', note: 'BCE 222 Deformable bodies · MATE 305 Processing · MATE 309 Fluids · MATE 401 Forensics · MATE 312 Nano' },
+  { from: 46, title: 'UM Year 4, second semester prep', note: 'MATE 406 Quality · MATE 405 Special topics · MATE 306 Plant design · CEE 115 Technopreneurship · Thesis' },
 ];
 
 // UM courses each of the original classes prepares for.
