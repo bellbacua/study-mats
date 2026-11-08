@@ -8,6 +8,7 @@ import { PHYSICS_LESSONS, PHYSICS_READINGS } from './physicsLessons';
 import { LESSON_READINGS } from './openSourceReadings';
 import { LANGUAGE_LESSON, LANGUAGE_READINGS } from './languageLesson';
 import { UM_LESSONS, UM_READINGS, UM_COURSES } from './um';
+import { applyCitations } from './citations';
 import { TRACKS, YEAR_ENDS, SIDES, SIDES_LATER, PROGRAMS } from './tracks';
 
 const DAYS = { 1: ['Mon'], 2: ['Mon', 'Thu'], 3: ['Mon', 'Wed', 'Fri'], 4: ['Mon', 'Tue', 'Thu', 'Fri'] };
@@ -179,6 +180,7 @@ export const TRACK_LESSONS = [...TRACKS, ...SIDES.map((t) => ({ ...t, side: true
   }));
 });
 export const ALL_LESSONS = [...LESSONS, ...TRACK_LESSONS];
+applyCitations(ALL_LESSONS, READINGS);
 const TRACK_BY_ID = Object.fromEntries([...TRACKS, ...SIDES].map((t) => [t.id, t]));
 export const trackOf = (l) => (l?.spec ? TRACK_BY_ID[l.spec] : null);
 export const trackLessons = (trackId) => TRACK_LESSONS.filter((l) => l.spec === trackId);
