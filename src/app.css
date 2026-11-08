@@ -3151,6 +3151,13 @@ input[type='range'] {
 .class-card.subj-bio {
   --subj: var(--teal);
 }
+.track-comp {
+  color: #8fa8ff;
+}
+.subj-comp,
+.class-card.subj-comp {
+  --subj: #8fa8ff;
+}
 .class-card.ge-card {
   border-style: dashed;
 }

@@ -125,6 +125,7 @@ export const SUBJECTS = {
   eng: 'Engineering',
   philo: 'Philosophy',
   bio: 'Biomolecular',
+  comp: 'Computing',
 };
 
 export { UM_COURSES };

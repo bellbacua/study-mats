@@ -106,6 +106,28 @@ SIDES.push({
   ],
 });
 
+SIDES.push({
+  id: 'comp',
+  title: 'Computing and AI',
+  icon: '💡',
+  blurb: 'From Boole’s logic and Babbage’s engines to Turing, chips, the internet, machine learning and today’s language models. How computers work and how AI got here.',
+  why: 'Computers run every lab instrument and simulation you will use, and AI is changing how engineers design materials. Knowing how it works helps you judge what it can and cannot do.',
+  classes: [
+    { id: 'comp-001' }, // Leibniz and Boole: binary and logic
+    { id: 'comp-002' }, // Babbage and Lovelace: the engines
+    { id: 'comp-003' }, // Turing: what can be computed
+    { id: 'comp-004' }, // Shannon: information and bits
+    { id: 'comp-005' }, // transistors and chips: Moore's law
+    { id: 'comp-006' }, // algorithms: how fast can it be done
+    { id: 'comp-007' }, // programs and languages
+    { id: 'comp-008' }, // the internet
+    { id: 'comp-009' }, // machines that learn
+    { id: 'comp-010' }, // neural networks and deep learning
+    { id: 'comp-011' }, // transformers and language models
+    { id: 'comp-012' }, // the AI landscape today
+  ],
+});
+
 // Shown on the program page as "coming next".
 export const SIDES_LATER = [
   { title: 'Chemical Engineering Basics', icon: '⚗️', blurb: 'Mass and energy balances, reactors and separations: the plant side of materials.' },

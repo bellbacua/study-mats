@@ -22,6 +22,7 @@ import * as spec_electronic from './spec_electronic';
 import * as spec_energy from './spec_energy';
 import * as side_philo from './side_philo';
 import * as side_bio from './side_bio';
+import * as side_comp from './side_comp';
 
 // The "try this" challenge for each scene, and how we know it's done.
 const MISSIONS = {
@@ -98,7 +99,7 @@ const MISSIONS = {
 
 // visualLab.type in the curriculum → scene definition
 export const SCENES = {};
-for (const [type, def] of Object.entries({ ...foundations, ...chemistry, ...calculus, ...materials, ...origins, ...matter, ...physics, ...language, ...um_math1, ...um_physics, ...um_chem1, ...um_chem2, ...um_mate1, ...um_mate2, ...um_math2, ...um_year3a, ...um_year3b, ...um_year4a, ...um_year4b, ...spec_metals, ...spec_electronic, ...spec_energy, ...side_philo, ...side_bio })) {
+for (const [type, def] of Object.entries({ ...foundations, ...chemistry, ...calculus, ...materials, ...origins, ...matter, ...physics, ...language, ...um_math1, ...um_physics, ...um_chem1, ...um_chem2, ...um_mate1, ...um_mate2, ...um_math2, ...um_year3a, ...um_year3b, ...um_year4a, ...um_year4b, ...spec_metals, ...spec_electronic, ...spec_energy, ...side_philo, ...side_bio, ...side_comp })) {
   if (typeof def !== 'object' || !def.setup) continue;
   SCENES[type] = { ...def, ...MISSIONS[type] };
 }
