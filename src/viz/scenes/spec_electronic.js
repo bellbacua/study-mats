@@ -206,7 +206,7 @@ export const diode_iv = {
   ],
   beats: [
     { say: 'At 0.3 V forward the barrier is only slightly lowered. The current is a few microamps at most.', set: { V: 0.3, T: 300 } },
-    { say: 'Past about 0.6 V the current shoots up: every extra 60 mV multiplies it by ten.', set: { V: 0.65, T: 300 } },
+    { say: 'Past about 0.6 V the current shoots up: every extra 60 mV multiplies it by ten.', set: { V: 0.62, T: 300 } },
     { say: 'Reverse bias raises the barrier. Only the tiny leakage I₀, a picoamp, gets through.', set: { V: -0.8, T: 300 } },
     { say: 'Heat the diode to 350 K and the same current flows at a lower voltage, about 2 mV less per kelvin.', set: { V: 0.52, T: 350 } },
   ],

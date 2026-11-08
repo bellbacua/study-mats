@@ -1023,4 +1023,33 @@ export const NOTES = {
     [{ text: 'impurities add a fixed extra', at: [-4.0, 3.2], to: [-4.35, 0.85], color: C.red }],
     [{ text: 'iron: about 6× copper', at: [4.6, -1.8], to: [2.05, -1.35], color: C.red }],
   ],
+  doping_carriers: [
+    [{ text: 'n = p: heat alone makes a few carriers', at: [3.6, 2.6], to: [2.7, 0.2], color: C.white }],
+    [
+      { text: 'each phosphorus atom frees one electron', at: [-2.0, 3.4], to: [-5.1, 0.4], color: C.green },
+      { text: 'electrons up a million times', at: [5.4, 2.6], to: [3.5, 1.9], color: C.blue },
+    ],
+    [{ text: 'boron grabs electrons: holes take over', at: [-2.0, 3.4], to: [-5.1, 0.4], color: C.purple }],
+  ],
+  diode_iv: [
+    [{ text: 'at 0.3 V: barely any current', at: [-2.6, -1.4], to: [2.7, -2.9], color: C.yellow }],
+    [{ text: 'past 0.6 V: the current shoots up', at: [0.6, 2.6], to: [5.0, 1.0], color: C.yellow }],
+    [{ text: 'reverse: only a picoamp leaks through', at: [-3.0, -1.4], to: [-4.9, -2.85], color: C.white }],
+    [{ text: 'hotter: the same current at ~0.1 V less', at: [0.6, 2.4], to: [4.25, 0.3], color: C.yellow }],
+  ],
+  czochralski_scheil: [
+    [{ text: 'first crystal: only 35% of the melt’s phosphorus', at: [0.6, 0.5], to: [1.2, 1.9], color: C.green }],
+    [
+      { text: 'late crystal: 4.5× richer', at: [3.6, 0.7], to: [6.55, 2.5], color: C.green },
+      { text: 'the last part to freeze is richest', at: [-2.0, -1.0], to: [-4.6, -1.25], color: C.red },
+    ],
+    [{ text: 'boron: almost even all along', at: [3.0, 0.8], to: [6.5, 2.5], color: C.purple }],
+    [{ text: 'iron stays behind in the melt', at: [3.4, -0.6], to: [4.1, -2.1], color: C.red }],
+  ],
+  capacitor_dielectric: [
+    [{ text: 'air: the field is 33% of breakdown', at: [5.6, -2.4], to: [3.45, -1.7], color: C.green }],
+    [{ text: 'molecules line up with the field: 6× the charge', at: [-3.6, 3.6], to: [-6.5, 0.8], color: C.yellow }],
+    [{ text: 'barium titanate: about 2,000× air', at: [-3.6, 3.6], to: [-3.0, 0.9], color: C.yellow }],
+    [{ text: 'too thin: the field beats breakdown', at: [-1.4, 3.3], to: [2.6, 1.6], color: C.red }],
+  ],
 };
