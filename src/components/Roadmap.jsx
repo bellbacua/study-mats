@@ -3,7 +3,7 @@ import { useReveal } from '../state/useReveal';
 
 const shortName = (p) => p.split('(')[0].trim();
 
-export default function Roadmap({ progress, nextUp, onOpen, status }) {
+export default function Roadmap({ progress, nextUp, onOpen, status, dueNow = 0, onReview }) {
   const done = Object.keys(progress.passed).length;
   useReveal([done]);
   return (
@@ -26,6 +26,15 @@ export default function Roadmap({ progress, nextUp, onOpen, status }) {
             {status === 'sqlite' ? 'Saved to data/study_mats.db' : status === 'offline' ? 'Database offline: saving in browser only' : 'Loading…'}
           </span>
         </div>
+        {dueNow > 0 && (
+          <button type="button" className="continue review-due" onClick={onReview}>
+            <span className="eyebrow">Review first</span>
+            <strong>
+              {dueNow} question{dueNow === 1 ? '' : 's'} from earlier classes are due today
+            </strong>
+            <span className="continue-meta">A few minutes of recall keeps what you learned. Then carry on with your next class.</span>
+          </button>
+        )}
         {nextUp && (
           <button type="button" className="continue" onClick={() => onOpen(nextUp.id)}>
             <span className="eyebrow">

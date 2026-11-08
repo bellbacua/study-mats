@@ -8,6 +8,7 @@ import {
   saveLessonNote,
   noteVersions,
   saveExamResult,
+  saveReviewCard,
   logStudyDay,
   updateSettings,
   resetProgress,
@@ -136,6 +137,15 @@ export async function handleApiRequest(req, res, next) {
       const body = await parseBody(req);
       if (!body.examId) return sendJson(res, 400, { error: 'examId is required' });
       const result = saveExamResult(String(body.examId), Number(body.score) || 0, Number(body.total) || 0, body.detail);
+      return sendJson(res, 200, { success: true, result });
+    }
+
+    // Move one question along the spaced-review ladder
+    if (pathname === '/api/progress/review' && req.method === 'POST') {
+      const body = await parseBody(req);
+      if (!body.cardId || !body.lessonId) return sendJson(res, 400, { error: 'cardId and lessonId are required' });
+      if (!/^\d{4}-\d{2}-\d{2}$/.test(String(body.due))) return sendJson(res, 400, { error: 'due must be YYYY-MM-DD' });
+      const result = saveReviewCard(String(body.cardId), String(body.lessonId), Number(body.box) || 0, body.due, Number(body.lapses) || 0);
       return sendJson(res, 200, { success: true, result });
     }
 

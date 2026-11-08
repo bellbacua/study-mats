@@ -22,6 +22,16 @@ const EMPTY = {
   scratch: '',
   exams: {},
   days: {},
+  review: {},
+};
+
+const REVIEW_KEY = 'um_mate_review_cards';
+const loadLocalReview = () => {
+  try {
+    return JSON.parse(localStorage.getItem(REVIEW_KEY) || '{}');
+  } catch {
+    return {};
+  }
 };
 
 export const today = (d = new Date()) =>
@@ -51,6 +61,7 @@ export function useProgress() {
         scratch: progress.brainDump || '',
         exams: progress.examResults || {},
         days: progress.studyDays || {},
+        review: { ...loadLocalReview(), ...progress.reviewCards },
       });
     });
     return () => {
@@ -142,6 +153,22 @@ export function useProgress() {
         const entry = { score, total, detail, takenAt: new Date().toISOString() };
         patch('exams', (m) => ({ ...m, [examId]: [...(m[examId] || []), entry] }));
         post('/api/progress/exam', { examId, score, total, detail });
+        logActivity();
+      },
+      [patch, logActivity]
+    ),
+    reviewAnswer: useCallback(
+      (cardId, lessonId, next) => {
+        patch('review', (m) => {
+          const merged = { ...m, [cardId]: { lessonId, ...next, seen: (m[cardId]?.seen || 0) + 1 } };
+          try {
+            localStorage.setItem(REVIEW_KEY, JSON.stringify(merged));
+          } catch {
+            // the server copy is the main one
+          }
+          return merged;
+        });
+        post('/api/progress/review', { cardId, lessonId, ...next });
         logActivity();
       },
       [patch, logActivity]

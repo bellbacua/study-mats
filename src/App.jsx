@@ -10,6 +10,8 @@ import ProgressPage, { streaks } from './components/ProgressPage';
 import Ambush from './components/Ambush';
 import StudyGuide from './components/StudyGuide';
 import NotesPage from './components/NotesPage';
+import ReviewPage from './components/ReviewPage';
+import { dueCards } from './state/review';
 import { useProgress } from './state/useProgress';
 
 export default function App() {
@@ -22,6 +24,7 @@ export default function App() {
   const nextUp = LESSONS.find((l) => !state.passed[l.id]) || null;
   const done = Object.keys(state.passed).length;
   const streak = streaks(state.days).current;
+  const dueNow = dueCards(state.passed, state.review).length;
 
   const actions = {
     ...store,
@@ -49,6 +52,9 @@ export default function App() {
           </button>
           <button type="button" className={view === 'lesson' ? 'on' : ''} onClick={() => setView('lesson')}>
             Lesson {idx + 1}
+          </button>
+          <button type="button" className={view === 'review' ? 'on' : ''} onClick={() => setView('review')}>
+            Review{dueNow > 0 && <span className="nav-badge">{dueNow}</span>}
           </button>
           <button type="button" className={view === 'timeline' ? 'on' : ''} onClick={() => setView('timeline')}>
             Timeline
@@ -81,7 +87,9 @@ export default function App() {
 
       <main className="main">
         {view === 'roadmap' ? (
-          <Roadmap progress={state} nextUp={nextUp} onOpen={actions.open} status={saveMode} />
+          <Roadmap progress={state} nextUp={nextUp} onOpen={actions.open} status={saveMode} dueNow={dueNow} onReview={() => setView('review')} />
+        ) : view === 'review' ? (
+          <ReviewPage progress={state} actions={actions} />
         ) : view === 'timeline' ? (
           <Timeline progress={state} onOpen={actions.open} />
         ) : view === 'notes' ? (

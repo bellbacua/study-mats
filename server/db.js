@@ -76,6 +76,16 @@ export function getDb() {
       minutes INTEGER NOT NULL DEFAULT 0
     );
 
+    CREATE TABLE IF NOT EXISTS review_cards (
+      card_id TEXT PRIMARY KEY,
+      lesson_id TEXT NOT NULL,
+      box INTEGER NOT NULL DEFAULT 0,
+      due TEXT NOT NULL,
+      seen INTEGER NOT NULL DEFAULT 0,
+      lapses INTEGER NOT NULL DEFAULT 0,
+      last_seen TEXT NOT NULL DEFAULT (datetime('now'))
+    );
+
     CREATE TABLE IF NOT EXISTS note_versions (
       id INTEGER PRIMARY KEY AUTOINCREMENT,
       lesson_id TEXT NOT NULL,
@@ -159,6 +169,12 @@ export function getProgress() {
     studyDays[row.day] = { actions: row.actions, minutes: row.minutes };
   }
 
+  // Spaced review: where each question sits in the 1, 3, 10, 30, 90 day ladder
+  const reviewCards = {};
+  for (const row of db.prepare('SELECT card_id, lesson_id, box, due, seen, lapses FROM review_cards').all()) {
+    reviewCards[row.card_id] = { lessonId: row.lesson_id, box: row.box, due: row.due, seen: row.seen, lapses: row.lapses };
+  }
+
   const isFresh =
     Object.keys(passedLessons).length === 0 &&
     Object.keys(completedLabs).length === 0 &&
@@ -176,6 +192,7 @@ export function getProgress() {
     lessonNotesAt,
     examResults,
     studyDays,
+    reviewCards,
     isFresh,
   };
 }
@@ -188,6 +205,16 @@ export function saveExamResult(examId, score, total, detail) {
 }
 
 // One row per local calendar day; `minutes` is active study time.
+export function saveReviewCard(cardId, lessonId, box, due, lapses) {
+  getDb()
+    .prepare(
+      `INSERT INTO review_cards (card_id, lesson_id, box, due, seen, lapses, last_seen) VALUES (?, ?, ?, ?, 1, ?, datetime('now'))
+       ON CONFLICT(card_id) DO UPDATE SET box = excluded.box, due = excluded.due, seen = review_cards.seen + 1, lapses = excluded.lapses, last_seen = excluded.last_seen`
+    )
+    .run(cardId, lessonId, box, due, lapses);
+  return { cardId, box, due };
+}
+
 export function logStudyDay(day, actions = 1, minutes = 0) {
   getDb()
     .prepare(
