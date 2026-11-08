@@ -925,4 +925,30 @@ export const NOTES = {
     [{ text: 'on the axis: no shear, σ₁ = 100 MPa', at: [5.6, 2.6], to: [6.1, 0.3], color: C.red }],
     [{ text: 'turned 45°: pure tension, 50 MPa', at: [-2.0, 3.0], to: [-4.0, 1.3], color: C.teal }],
   ],
+  nanotube_roll: [
+    [{ text: 'the arrow’s two ends meet when the sheet rolls up', at: [5.0, -1.1], to: [3.5, -2.55], color: C.yellow }],
+    [{ text: 'n − m = 0: conducts like a metal', at: [4.6, 0.6], to: [1.2, 0.6], color: C.yellow }],
+    [{ text: 'n − m = 10: a semiconductor', at: [4.4, 0.6], to: [0.8, 0.6], color: C.teal }],
+  ],
+  control_chart: [
+    [{ text: 'just noise: every point inside the limits', at: [-3.4, -2.4], to: [-3.9, -0.85], color: C.teal }],
+    [{ text: 'first sample after the drift: out of limits', at: [-3.6, 3.0], to: [0.0, 1.35], color: C.red }],
+    [{ text: 'small drift, small samples: hidden for 7 hours', at: [-3.4, 3.1], to: [2.75, 2.1], color: C.red }],
+  ],
+  implant_stiffness: [
+    [
+      { text: 'specks: bone thinning', at: [-0.6, -0.5], to: [-2.8, 0.2], color: C.white },
+      { text: 'the stem takes most of the load', at: [5.4, 1.3], to: [5.8, 2.6], color: C.teal },
+    ],
+    [{ text: 'titanium: half as stiff, bone takes 42%', at: [4.6, 0.9], to: [3.3, -1.6], color: C.blue }],
+    [{ text: 'bone now carries over half', at: [4.6, 0.9], to: [3.0, 2.65], color: C.yellow }],
+  ],
+  plant_scaleup: [
+    [{ text: 'gap = profit on each tonne', at: [-0.4, 1.6], to: [2.9, -0.7], color: C.green }],
+    [{ text: 'small plant: cost above the price, a loss', at: [4.4, 2.6], to: [1.95, 0.55], color: C.red }],
+    [
+      { text: 'cost ×2.3 for output ×4', at: [-0.8, 2.6], to: [-2.7, 0.75], color: C.teal },
+      { text: 'big plant: cheapest per tonne', at: [4.4, 1.4], to: [7.3, -1.6], color: C.green },
+    ],
+  ],
 };
