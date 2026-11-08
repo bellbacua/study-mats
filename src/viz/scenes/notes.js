@@ -672,4 +672,28 @@ export const NOTES = {
     ],
     [{ text: 'a small gap lost in big scatter → F = 1.4: not convincing', at: [-3.6, 2.8] }],
   ],
+  compound_growth: [
+    [
+      { text: 'compound: interest earns interest', at: [-2.0, 2.4], to: [1.4, 0.6], color: C.gold },
+      { text: 'simple: the same ₱8,000 every year', at: [3.8, -1.6], to: [2.4, 0.1], color: C.blue },
+    ],
+    [{ text: 'after 20 years the gap is huge', at: [2.0, -1.6], to: [6.9, 1.6], color: C.gold }],
+    [{ text: '₱110,000 in 2 years is worth only ₱94,307 today', at: [0.8, -1.4], to: [-5.3, 2.0], color: C.blue }],
+  ],
+  dsc_curve: [
+    [{ text: 'glass transition: a step down, it now needs more heat to warm', at: [2.4, 3.2], to: [0.2, -0.8], color: C.gold }],
+    [{ text: 'chains line up and crystallise: heat comes OUT (peak up)', at: [4.4, 3.2], to: [1.8, 0.6], color: C.gold }],
+    [
+      { text: 'already crystalline: no crystallisation peak', at: [2.6, 3.2], to: [1.8, -0.6] },
+      { text: 'melting: heat goes IN (deep dip)', at: [2.6, -2.8], to: [5.6, -2.6], color: C.red },
+    ],
+  ],
+  friction_ramp: [
+    [
+      { text: 'friction matches the pull: the block stays', at: [-3.6, 2.6], to: [-3.0, -1.3] },
+      { text: 'the pull down the slope is less than the most friction can give', at: [4.6, 2.8], to: [3.6, -2.0], color: C.gold },
+    ],
+    [{ text: 'past 26.6° the pull wins, and it slides', at: [4.6, 2.8], to: [5.4, -0.9], color: C.red }],
+    [{ text: 'oily steel (μₛ = 0.1) slides from just 5.7°', at: [-2.6, 2.0], to: [-4.0, -1.6], color: C.red }],
+  ],
 };
