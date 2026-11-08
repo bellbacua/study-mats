@@ -56,7 +56,7 @@ export const bragg_planes = {
     { key: 'hkl', label: 'Planes in copper', type: 'choice', value: '111', options: Object.entries(PLANES).map(([k, d]) => ({ value: k, label: `(${k}), d = ${d} nm` })) },
   ],
   beats: [
-    { say: 'At 2θ = 30° the wave from the second plane arrives out of step with the first. Add up eight planes and they cancel: almost no reflection.', set: { tt: 30, hkl: '111' } },
+    { say: 'At 2θ = 30° the wave from the second plane arrives out of step with the first, so the two only partly add. Each deeper plane is a bit further out of step, and over many planes they cancel: almost no reflection.', set: { tt: 30, hkl: '111' } },
     { say: 'At 2θ = 43.3° the extra path, 2d sin θ, is exactly one wavelength. Every plane’s wave lines up with the next, and a bright peak appears.', set: { tt: 43.3, hkl: '111' } },
     { say: 'The (220) planes are closer together, so their peak sits at a larger angle, 74.1°. Each spacing gives its own peak: the crystal’s fingerprint.', set: { tt: 74.1, hkl: '220' } },
   ],

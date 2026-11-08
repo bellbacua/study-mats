@@ -430,4 +430,33 @@ export const NOTES = {
       { text: 'fixed end', at: [-6.4, -2.2], to: [-7.0, -0.2] },
     ],
   ],
+  microscope_zoom: [
+    [{ text: 'to the eye: perfectly uniform steel', at: [0, -1.8], to: [0, -0.1] }],
+    [{ text: 'each patch is a separate crystal: a grain, about 50 μm across', at: [0, 0] }],
+    [{ text: 'pearlite: thin layers of iron and iron carbide, 0.3 μm apart', at: [0, 0] }],
+  ],
+  integral_area_toughness_lab: [
+    [{ text: '4 rectangles: some stick out, some fall short', at: [5.6, 2.6], to: [0.8, 1.8] }],
+    [{ text: '80 thin strips hug the curve: that sum is the integral', at: [5.6, 2.6], to: [3.0, 0.5] }],
+    [
+      { text: 'area = toughness: energy absorbed before breaking', at: [2.0, -1.4], to: [-4.0, -1.0], color: C.blue },
+      { text: 'broke early: all the area to the right is lost', at: [3.0, -2.8], to: [-2.5, -2.0], color: C.red },
+    ],
+  ],
+  heating_curve: [
+    [{ text: '42 kJ: ice warms from −20 to 0 °C', at: [-0.6, -1.2], to: [-3.5, -3.0], color: C.red }],
+    [{ text: '334 kJ in, yet stuck at 0 °C: the heat is pulling the crystal apart', at: [0.6, -1.0], to: [-2.9, -2.5], color: C.red }],
+    [{ text: 'boiling: 2,256 kJ, the longest flat part by far', at: [3.0, 0.6], to: [2.2, 2.3], color: C.red }],
+  ],
+  bragg_planes: [
+    [
+      { text: 'out of step with plane 1', at: [-4.6, 0.6], to: [-3.0, -1.3] },
+      { text: 'over many planes the mismatches cancel → almost nothing', at: [4.4, 0.4], to: [1.7, -3.0] },
+    ],
+    [
+      { text: 'extra path = one whole wavelength: the waves line up', at: [-4.4, 0.5], to: [-3.0, -2.6], color: C.gold },
+      { text: 'a bright peak', at: [4.6, 1.6], to: [2.7, 2.9] },
+    ],
+    [{ text: 'closer planes → the peak moves to a larger angle', at: [2.8, 0.4], to: [4.6, 2.8], color: C.gold }],
+  ],
 };
