@@ -731,4 +731,27 @@ export const NOTES = {
     [{ text: 'on edge: metal reaches 20 mm out → 16× stiffer (distance counts squared)', at: [-1.8, -2.4], to: [-4.6, 1.8], color: C.gold }],
     [{ text: 'I-beam: metal in flanges far from the centre → 28× the flat bar', at: [-1.6, -2.6], to: [-4.6, 2.0], color: C.gold }],
   ],
+  jominy_bar: [
+    [{ text: 'quenched end: cooled at ~150 °C/s → hard martensite', at: [-2.2, -2.6], to: [-5.4, -2.2], color: C.gold }],
+    [{ text: '15 mm in: only ~9 °C/s → soft pearlite, 21 HRC', at: [-2.0, 1.0], to: [3.6, -2.0], color: C.red }],
+    [{ text: '4340: alloying delays pearlite → still 55 HRC at 15 mm', at: [-2.0, 1.0], to: [3.6, 2.0], color: C.gold }],
+  ],
+  injection_cycle: [
+    [{ text: 'fill, pack, cool, eject: one part every 10.6 s', at: [-0.6, -2.8], to: [-4.6, -2.8] }],
+    [{ text: 'a 4 mm wall: cooling takes 4× as long', at: [2.6, -3.6], to: [-2.0, -2.8], color: C.blue }],
+    [{ text: '6 mm: about 41 s of cooling, so designers keep walls thin', at: [0.6, -1.4], to: [1.0, -2.7], color: C.blue }],
+  ],
+  truss_bridge: [
+    [
+      { text: 'top chord: squeezed (red)', at: [-3.4, 3.2], to: [-2.0, 2.4], color: C.red },
+      { text: 'bottom chord: stretched (blue)', at: [-2.6, -1.8], to: [-2.4, -0.8], color: C.blue },
+    ],
+    [{ text: 'Howe: diagonals pushed (red), verticals pulled (blue)', at: [3.6, 3.2], to: [1.6, 0.9], color: C.red }],
+    [{ text: 'load near the left: the left support takes 75 kN', at: [-0.6, -3.2], to: [-6.0, -2.0], color: C.gold }],
+  ],
+  pourbaix_iron: [
+    [{ text: 'neutral water at −0.3 V: corrosion, iron dissolves', at: [-4.0, 2.6], to: [-2.8, -0.9], color: C.red }],
+    [{ text: 'below −0.62 V: immunity, bare iron is stable', at: [-1.0, -1.6], to: [-2.8, -2.9], color: C.green }],
+    [{ text: 'concrete, pH 12.5: passive, an oxide film seals the steel', at: [-2.6, 2.6], to: [0.8, -0.3], color: C.blue }],
+  ],
 };
