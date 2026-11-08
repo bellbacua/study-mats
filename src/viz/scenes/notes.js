@@ -218,4 +218,80 @@ export const NOTES = {
       { text: 'polymers soften just above boiling water', at: [3.2, -2.6], to: [-1.4, -1.8], color: C.green },
     ],
   ],
+  sine_wave_unwrap: [
+    [
+      { text: 'the dot’s height…', at: [-4.4, 3.4], to: [-5.4, 1.8] },
+      { text: '…drawn out over time = the sine wave', at: [0.6, 3.3], to: [-2.2, 1.8], color: C.gold },
+    ],
+    [{ text: 'twice as fast → squeezed: one cycle takes π seconds', at: [2.4, -3.2], to: [3.8, -1.4], color: C.gold }],
+    [{ text: 'a quarter turn ahead: the peak comes early. That is cosine.', at: [3.0, -3.0], to: [-0.3, 2.0], color: C.gold }],
+  ],
+  stress_strain_curve_lab: [
+    [{ text: 'straight line: let go and it springs back', at: [-2.6, -1.4], to: [-6.9, -1.6] }],
+    [
+      { text: 'yield: atoms start slipping for good', at: [-3.6, -1.6], to: [-6.8, 0.3], color: C.red },
+      { text: 'and it gets stronger as it stretches', at: [1.8, 0.8], to: [-5.4, 2.1], color: C.gold },
+    ],
+    [
+      { text: 'UTS: the highest point', at: [0.4, 3.4], to: [-3.9, 2.9], color: C.gold },
+      { text: 'necking: it thins in one spot, then breaks', at: [1.6, -1.6], to: [5.0, 0.1], color: C.red },
+    ],
+  ],
+  complex_plane: [
+    [
+      { text: '× (−1) = a half turn', at: [-4.4, 2.6], to: [-0.4, 1.0], color: C.gold },
+      { text: 'is there a number that turns only 90°?', at: [4.0, 2.4], color: C.red },
+    ],
+    [
+      { text: '× i = a quarter turn: 2 becomes 2i', at: [-3.6, 2.8], to: [-0.1, 1.9], color: C.gold },
+      { text: 'twice = a half turn = × (−1), so i² = −1', at: [4.0, -2.4] },
+    ],
+    [{ text: 'turned 45° and stretched √2 times', at: [-3.4, 2.6], to: [0.4, 1.4], color: C.gold }],
+  ],
+  vector_add: [
+    [
+      { text: 'slide b so its tail sits on a’s tip', at: [4.6, 0.6], to: [2.1, 0.0], color: C.gold },
+      { text: 'start → finish = the sum', at: [-3.6, 2.4], to: [0.8, 1.0], color: C.green },
+    ],
+    [{ text: 'same direction: 4 + 3 = 7 N', at: [-3.4, 2.0], to: [1.6, 0.5], color: C.green }],
+    [{ text: 'opposite: they fight, 4 − 3 = 1 N left', at: [3.6, -2.4], to: [0.5, -0.4], color: C.green }],
+  ],
+  solubility_beaker: [
+    [
+      { text: 'only ~32 g dissolves; the rest sits on the bottom', at: [-2.6, -3.8], to: [-4.0, -2.6] },
+      { text: 'above the curve = more than the water can hold', at: [4.4, 2.6], to: [2.1, -2.0], color: C.red },
+    ],
+    [
+      { text: 'all 100 g has vanished', at: [-4.6, 3.4], to: [-4.6, 0.6] },
+      { text: 'hot water holds far more: 110 g at 60 °C', at: [4.4, 2.8], to: [4.6, -0.5], color: C.green },
+    ],
+    [
+      { text: 'cooled: the extra comes back out as crystals', at: [-2.4, -3.8], to: [-4.2, -1.8] },
+      { text: '100 g at 30 °C: far above the curve', at: [4.8, 2.6], to: [2.7, -0.5], color: C.red },
+    ],
+  ],
+  ohm_circuit: [
+    [
+      { text: 'blue dots = electrons drifting round the loop', at: [-0.6, 0.4], to: [-2.2, -2.4] },
+      { text: 'the resistor: how hard current is to push through', at: [-4.8, 3.6], to: [-1.8, 2.4], color: C.red },
+    ],
+    [{ text: 'half the resistance → double the current: brighter', at: [-0.4, 0.2], to: [3.2, 0.0], color: C.gold }],
+    [{ text: '8× the resistance → ⅛ the current: dim', at: [-0.4, 0.2], to: [3.9, 0.0], color: C.gold }],
+  ],
+  linear_system_intersection: [
+    [
+      { text: 'every point on a line fits its equation', at: [-4.4, -2.4], to: [-2.2, -1.2] },
+      { text: 'on both lines at once: the solution', at: [5.2, 2.8], to: [1.1, 2.1], color: C.red },
+    ],
+    [{ text: 'x + 1 = −x + 3 → x = 1, y = 2', at: [-4.4, 2.6], to: [0.9, 2.1], color: C.red }],
+    [{ text: 'same slope: parallel, never meet → no solution', at: [4.4, -2.4], color: C.red }],
+  ],
+  projectile_launcher: [
+    [
+      { text: 'sideways speed never changes', at: [1.2, -1.4], to: [-0.6, -3.3] },
+      { text: 'up-down speed shrinks, flips, then grows downward', at: [-2.2, 1.6], to: [-1.7, -3.6], color: C.red },
+    ],
+    [{ text: '60°: higher, but lands in the same spot', at: [3.6, -1.0], to: [-1.2, -3.5], color: C.gold }],
+    [{ text: '45°: the farthest landing for this speed', at: [3.4, -1.2], to: [-0.3, -3.5], color: C.gold }],
+  ],
 };
