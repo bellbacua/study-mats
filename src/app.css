@@ -2725,3 +2725,149 @@ input[type='range'] {
 .review-strength .report-bar {
   grid-template-columns: minmax(140px, 220px) 1fr 50px;
 }
+
+/* ---------- Learn it: classes split into parts ---------- */
+.learn {
+  max-width: 820px;
+  margin: 0 auto;
+}
+.part-bar {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+  gap: 8px;
+  margin-bottom: 24px;
+}
+.part-chip {
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+  text-align: left;
+  padding: 10px 12px;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  color: var(--muted);
+  font: inherit;
+  font-size: 13px;
+  cursor: pointer;
+}
+.part-chip.on {
+  border-color: var(--blue);
+  color: var(--text);
+  background: var(--surface-2);
+}
+.part-chip.done .part-num {
+  background: var(--green);
+  color: var(--bg);
+}
+.part-num {
+  flex: none;
+  width: 22px;
+  height: 22px;
+  border-radius: 999px;
+  display: grid;
+  place-items: center;
+  background: var(--surface-3);
+  font: 600 12px 'JetBrains Mono', monospace;
+}
+.part h2 {
+  margin: 6px 0 12px;
+}
+.part-explain p {
+  font-family: 'Newsreader', Georgia, serif;
+  font-size: 19px;
+  line-height: 1.65;
+  max-width: 72ch;
+}
+.part-formulas {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin: 16px 0 8px;
+}
+.part-formula {
+  padding: 12px 16px;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  overflow-x: auto;
+}
+.part-h {
+  margin: 32px 0 4px;
+}
+.worked,
+.problem {
+  padding: 16px;
+  margin: 12px 0;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+}
+.problem.ok {
+  border-color: var(--green);
+}
+.worked-q {
+  margin: 0 0 8px;
+}
+.worked-steps {
+  margin: 0 0 8px;
+  padding-left: 20px;
+}
+.worked-steps li {
+  margin: 8px 0;
+}
+.worked-steps .formula {
+  overflow-x: auto;
+}
+.worked-a strong {
+  color: var(--green);
+}
+.problem p {
+  margin: 0 0 10px;
+}
+.problem-row {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  align-items: center;
+}
+.problem-row input {
+  flex: 0 1 200px;
+  min-width: 120px;
+  padding: 8px 12px;
+  background: var(--bg);
+  border: 1px solid var(--line-strong);
+  border-radius: 8px;
+  color: var(--text);
+  font: 14px 'JetBrains Mono', monospace;
+}
+.problem-row input:focus {
+  outline: none;
+  border-color: var(--blue);
+}
+.problem-msg {
+  margin: 10px 0 0 !important;
+  font-size: 14px;
+  color: var(--muted);
+}
+.problem-msg.no {
+  color: var(--red);
+}
+.problem-msg.ok {
+  color: var(--green);
+}
+.part-nav {
+  margin-top: 32px;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.predict {
+  padding: 20px;
+  margin-bottom: 16px;
+  background: var(--surface);
+  border: 1px solid var(--blue);
+  border-radius: 16px;
+}
+.predict .verdict {
+  margin-top: 12px;
+}

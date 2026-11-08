@@ -173,6 +173,17 @@ export function useProgress() {
       },
       [patch, logActivity]
     ),
+    // A finished part of a class. Stored with the readings (id "part:<class>:<n>").
+    markPart: useCallback(
+      (lessonId, n) => {
+        const id = `part:${lessonId}:${n}`;
+        if (latest.current.readings[id]) return;
+        patch('readings', (m) => ({ ...m, [id]: true }));
+        syncToggleReading(id, true);
+        logActivity();
+      },
+      [patch, logActivity]
+    ),
     logActivity,
     setScratch: useCallback(
       (text) => {

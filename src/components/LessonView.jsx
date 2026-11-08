@@ -5,6 +5,8 @@ import { useReveal } from '../state/useReveal';
 import Practice from './Practice';
 import { READINGS as LESSON_READINGS, UM_COURSES } from '../data/path';
 import { LABS } from '../data/labs';
+import { DEEP } from '../data/deep';
+import LearnIt, { Predict } from './LearnIt';
 
 const SceneView = lazy(() => import('./SceneView'));
 
@@ -16,14 +18,18 @@ const Pin = ({ text, label = 'Add to my notes' }) => (
   </button>
 );
 
-const TABS = [
+const BASE_TABS = [
   { id: 'story', label: 'Story', hint: 'Who figured this out, and why' },
   { id: 'explore', label: 'See it', hint: 'Animated, step by step' },
   { id: 'practice', label: 'Practice', hint: 'Check you have it' },
   { id: 'deeper', label: 'Go deeper', hint: 'Readings & your notes' },
 ];
 
+const LEARN_TAB = { id: 'learn', label: 'Learn it', hint: 'Parts, examples, your turn' };
+
 export default function LessonView({ lesson, index, total, progress, actions, prevLesson, nextLesson }) {
+  const deep = DEEP[lesson.id];
+  const TABS = deep ? [BASE_TABS[0], BASE_TABS[1], LEARN_TAB, { ...BASE_TABS[2], label: 'Class quiz', hint: 'Pass to finish the class' }, BASE_TABS[3]] : BASE_TABS;
   const [tab, setTab] = useState('story');
   const [step, setStep] = useState(0);
 
@@ -117,6 +123,7 @@ export default function LessonView({ lesson, index, total, progress, actions, pr
 
       {tab === 'explore' && (
         <section className="explore">
+          <Predict key={lesson.id} predict={deep?.predict}>
           <Suspense fallback={<div className="scene-loading">Loading animation…</div>}>
             <SceneView
               type={lesson.visualLab.type}
@@ -126,6 +133,7 @@ export default function LessonView({ lesson, index, total, progress, actions, pr
               onGoal={() => actions.markLab(lesson.id)}
             />
           </Suspense>
+          </Predict>
 
           <div className="steps">
             <div className="steps-bar">
@@ -160,14 +168,24 @@ export default function LessonView({ lesson, index, total, progress, actions, pr
                     Next step →
                   </button>
                 ) : (
-                  <button type="button" className="btn primary" onClick={() => go('practice')}>
-                    Try the practice →
+                  <button type="button" className="btn primary" onClick={() => go(deep ? 'learn' : 'practice')}>
+                    {deep ? 'Learn it, part by part →' : 'Try the practice →'}
                   </button>
                 )}
               </div>
             </article>
           </div>
         </section>
+      )}
+
+      {tab === 'learn' && deep && (
+        <LearnIt
+          lessonId={lesson.id}
+          deep={deep}
+          done={(n) => !!progress.readings[`part:${lesson.id}:${n}`]}
+          onPartDone={(n) => actions.markPart(lesson.id, n)}
+          onFinish={() => go('practice')}
+        />
       )}
 
       {tab === 'practice' && (
