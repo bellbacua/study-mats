@@ -3,7 +3,7 @@ import { useReveal } from '../state/useReveal';
 
 const shortName = (p) => p.split('(')[0].trim();
 
-export default function Roadmap({ progress, nextUp, onOpen, status, dueNow = 0, onReview }) {
+export default function Roadmap({ progress, nextUp, onOpen, status, dueNow = 0, onReview, spec }) {
   const done = Object.keys(progress.passed).length;
   useReveal([done]);
   return (
@@ -33,6 +33,13 @@ export default function Roadmap({ progress, nextUp, onOpen, status, dueNow = 0, 
               {dueNow} question{dueNow === 1 ? '' : 's'} from earlier classes are due today
             </strong>
             <span className="continue-meta">A few minutes of recall keeps what you learned. Then carry on with your next class.</span>
+          </button>
+        )}
+        {spec && (
+          <button type="button" className="continue spec-due" onClick={spec.go}>
+            <span className="eyebrow">{spec.eyebrow}</span>
+            <strong>{spec.title}</strong>
+            <span className="continue-meta">{spec.meta}</span>
           </button>
         )}
         {nextUp && (

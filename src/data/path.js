@@ -8,6 +8,7 @@ import { PHYSICS_LESSONS, PHYSICS_READINGS } from './physicsLessons';
 import { LESSON_READINGS } from './openSourceReadings';
 import { LANGUAGE_LESSON, LANGUAGE_READINGS } from './languageLesson';
 import { UM_LESSONS, UM_READINGS, UM_COURSES } from './um';
+import { TRACKS, YEAR_ENDS } from './tracks';
 
 const DAYS = { 1: ['Mon'], 2: ['Mon', 'Thu'], 3: ['Mon', 'Wed', 'Fri'], 4: ['Mon', 'Tue', 'Thu', 'Fri'] };
 
@@ -154,3 +155,54 @@ export const CURRICULUM_TERMS = PLANNED.map((ids, w) => {
 });
 
 export const READINGS = { ...LESSON_READINGS, ...ORIGIN_READINGS, ...PHYSICS_READINGS, ...LANGUAGE_READINGS, ...UM_READINGS };
+
+// ---- specializations ---------------------------------------------------------
+export { TRACKS, YEAR_ENDS };
+
+const weekOf = (l) => Number(String(l.termId || '').replace('week-', '')) || 0;
+
+// Track classes that have been written, in track order, with where they sit.
+export const TRACK_LESSONS = TRACKS.flatMap((t) => {
+  const written = t.classes.filter((c) => byId[c.id]);
+  return written.map((c, i) => ({ ...byId[c.id], um: byId[c.id].um || t.um, spec: t.id, specIndex: i, specCount: written.length, after: c.after }));
+});
+export const ALL_LESSONS = [...LESSONS, ...TRACK_LESSONS];
+const TRACK_BY_ID = Object.fromEntries(TRACKS.map((t) => [t.id, t]));
+export const trackOf = (l) => (l?.spec ? TRACK_BY_ID[l.spec] : null);
+export const trackLessons = (trackId) => TRACK_LESSONS.filter((l) => l.spec === trackId);
+
+// "Week 12" for a core class, "Metals track" for a specialization class.
+export const whereLabel = (l) => (l.spec ? `${TRACK_BY_ID[l.spec].title} track` : `Week ${weekOf(l)}`);
+
+// How far the core timetable is done, year by year, and how many tracks are open.
+export function yearProgress(passed) {
+  return YEAR_ENDS.map((y) => {
+    const prev = YEAR_ENDS.find((p) => p.year === y.year - 1);
+    const from = prev ? prev.lastWeek + 1 : 1;
+    const list = LESSONS.filter((l) => weekOf(l) >= from && weekOf(l) <= y.lastWeek);
+    const done = list.filter((l) => passed[l.id]).length;
+    return { ...y, total: list.length, done, complete: done === list.length };
+  });
+}
+export function openSlots(passed) {
+  let slots = 0;
+  for (const y of yearProgress(passed)) {
+    if (!y.complete) break;
+    slots = y.slots;
+  }
+  return slots;
+}
+
+// A track class can be opened once the one before it in the track and its
+// core prerequisite are both passed.
+export function trackClassState(l, passed) {
+  if (passed[l.id]) return { open: true, done: true };
+  const list = trackLessons(l.spec);
+  const prev = list[l.specIndex - 1];
+  if (prev && !passed[prev.id]) return { open: false, why: `Pass “${prev.title.split(':')[0]}” first` };
+  if (l.after && byId[l.after] && !passed[l.after]) {
+    const core = LESSONS.find((c) => c.id === l.after);
+    return { open: false, why: `Needs ${core ? `Week ${weekOf(core)}: ${core.title.split(':')[0]}` : l.after}` };
+  }
+  return { open: true, done: false };
+}

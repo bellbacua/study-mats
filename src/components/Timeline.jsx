@@ -1,6 +1,6 @@
 import { useMemo, useState } from 'react';
 import { TIMELINE, ERAS, formatYear } from '../data/timeline';
-import { LESSONS, SUBJECTS } from '../data/path';
+import { ALL_LESSONS as LESSONS, SUBJECTS, whereLabel } from '../data/path';
 import { useReveal } from '../state/useReveal';
 
 const SUBJECT_KEYS = ['math', 'chem', 'phys', 'mate'];
@@ -57,7 +57,7 @@ export default function Timeline({ progress, onOpen }) {
                     {lesson && (
                       <span className="tl-link">
                         {done ? '✓ ' : ''}
-                        {lesson.termId.replace('week-', 'Week ')} · {lesson.code}
+                        {whereLabel(lesson)} · {lesson.code}
                       </span>
                     )}
                   </button>

@@ -6,7 +6,7 @@ import { createServer } from 'vite';
 import katex from 'katex';
 
 const server = await createServer({ server: { middlewareMode: true }, appType: 'custom', logLevel: 'silent' });
-const { LESSONS } = await server.ssrLoadModule('/src/data/path.js');
+const { ALL_LESSONS: LESSONS } = await server.ssrLoadModule('/src/data/path.js');
 const { DEEP } = await server.ssrLoadModule('/src/data/deep/index.js');
 const { isRight } = await server.ssrLoadModule('/src/components/LearnIt.jsx');
 await server.close();

@@ -2871,3 +2871,132 @@ input[type='range'] {
 .predict .verdict {
   margin-top: 12px;
 }
+
+/* ---- specializations ---- */
+.continue.spec-due {
+  border-color: rgba(240, 172, 95, 0.45);
+}
+.spec-page {
+  max-width: 1080px;
+  margin: 0 auto;
+}
+.spec-unlock {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 20px 24px;
+  margin: 8px 0 24px;
+  border-radius: var(--radius);
+  border: 1px solid var(--line);
+  background: var(--surface);
+}
+.spec-unlock strong {
+  font-size: 18px;
+}
+.spec-years {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 16px;
+  margin-top: 12px;
+}
+.spec-year {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  font-size: 14px;
+}
+.spec-year.done {
+  color: var(--green);
+}
+.spec-bar {
+  height: 6px;
+  border-radius: 3px;
+  background: var(--surface-3);
+  overflow: hidden;
+}
+.spec-bar > div {
+  height: 100%;
+  background: var(--gold);
+  transition: width 0.4s var(--ease);
+}
+.spec-year.done .spec-bar > div {
+  background: var(--green);
+}
+.spec-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 16px;
+}
+.spec-card {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 20px;
+  border-radius: var(--radius);
+  border: 1px solid var(--line);
+  border-top: 3px solid var(--gold);
+  background: var(--surface);
+}
+.spec-card.on {
+  border-color: rgba(240, 172, 95, 0.55);
+  background: var(--surface-2);
+}
+.spec-card.locked {
+  opacity: 0.75;
+}
+.spec-card header {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+.spec-card h2 {
+  margin: 0;
+  font-size: 20px;
+}
+.spec-card p {
+  margin: 0;
+}
+.spec-icon {
+  font-size: 26px;
+  width: 44px;
+  height: 44px;
+  display: grid;
+  place-items: center;
+  border-radius: 10px;
+  background: var(--surface-3);
+}
+.spec-classes {
+  list-style: none;
+  padding: 0;
+  margin: 4px 0 0;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.spec-class {
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+  width: 100%;
+  text-align: left;
+  padding: 10px 12px;
+  border-radius: 8px;
+  border: 1px solid var(--line);
+  background: var(--surface);
+  color: var(--text);
+}
+.spec-class span:last-child {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.spec-class:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+.spec-class.done {
+  border-color: rgba(131, 193, 103, 0.45);
+}
+.spec-actions {
+  margin-top: auto;
+}

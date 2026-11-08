@@ -1,4 +1,4 @@
-import { LESSONS } from '../data/path';
+import { ALL_LESSONS as LESSONS } from '../data/path';
 import { lessonQuestions, shuffled } from './quiz';
 
 // Spaced review. Every question of a class you have passed comes back after

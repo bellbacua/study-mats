@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { LESSONS } from './data/path';
+import { LESSONS, ALL_LESSONS, TRACKS, trackLessons, trackClassState, openSlots } from './data/path';
 import LessonView from './components/LessonView';
 import Roadmap from './components/Roadmap';
 import NotesPanel from './components/NotesPanel';
@@ -11,6 +11,7 @@ import Ambush from './components/Ambush';
 import StudyGuide from './components/StudyGuide';
 import NotesPage from './components/NotesPage';
 import ReviewPage from './components/ReviewPage';
+import SpecializationsPage from './components/SpecializationsPage';
 import { dueCards } from './state/review';
 import { useProgress } from './state/useProgress';
 
@@ -19,12 +20,29 @@ export default function App() {
   const [view, setView] = useState('roadmap');
   const [guideWeek, setGuideWeek] = useState(null);
 
-  const idx = Math.max(0, LESSONS.findIndex((l) => l.id === state.activeLessonId));
-  const lesson = LESSONS[idx];
+  // The open class may be a core class or one from a specialization track.
+  const active = ALL_LESSONS.find((l) => l.id === state.activeLessonId) || LESSONS[0];
+  const seq = active.spec ? trackLessons(active.spec) : LESSONS;
+  const pos = seq.findIndex((l) => l.id === active.id);
+  const lesson = active;
+  const idx = Math.max(0, LESSONS.findIndex((l) => l.id === active.id));
   const nextUp = LESSONS.find((l) => !state.passed[l.id]) || null;
   const done = Object.keys(state.passed).length;
   const streak = streaks(state.days).current;
   const dueNow = dueCards(state.passed, state.review).length;
+
+  // Roadmap card: a newly opened track slot, or the next class of a chosen track.
+  const slots = openSlots(state.passed);
+  const picked = TRACKS.filter((t) => state.readings[`spec:${t.id}`]);
+  const trackNext = picked
+    .map((t) => trackLessons(t.id).find((l) => !state.passed[l.id]))
+    .find((l) => l && trackClassState(l, state.passed).open);
+  const spec =
+    slots > picked.length
+      ? { eyebrow: '🔓 Specialization unlocked', title: 'Choose a track: metals, electronic or energy materials', meta: 'A short run of deeper classes on top of your timetable.', go: () => setView('spec') }
+      : trackNext
+        ? { eyebrow: `Your ${TRACKS.find((t) => t.id === trackNext.spec).title} track`, title: trackNext.title, meta: trackNext.subtitle, go: () => actions.open(trackNext.id) }
+        : null;
 
   const actions = {
     ...store,
@@ -51,10 +69,13 @@ export default function App() {
             Roadmap
           </button>
           <button type="button" className={view === 'lesson' ? 'on' : ''} onClick={() => setView('lesson')}>
-            Lesson {idx + 1}
+            {lesson.spec ? 'Track class' : `Lesson ${idx + 1}`}
           </button>
           <button type="button" className={view === 'review' ? 'on' : ''} onClick={() => setView('review')}>
             Review{dueNow > 0 && <span className="nav-badge">{dueNow}</span>}
+          </button>
+          <button type="button" className={view === 'spec' ? 'on' : ''} onClick={() => setView('spec')}>
+            Specializations
           </button>
           <button type="button" className={view === 'timeline' ? 'on' : ''} onClick={() => setView('timeline')}>
             Timeline
@@ -87,9 +108,11 @@ export default function App() {
 
       <main className="main">
         {view === 'roadmap' ? (
-          <Roadmap progress={state} nextUp={nextUp} onOpen={actions.open} status={saveMode} dueNow={dueNow} onReview={() => setView('review')} />
+          <Roadmap progress={state} nextUp={nextUp} onOpen={actions.open} status={saveMode} dueNow={dueNow} onReview={() => setView('review')} spec={spec} />
         ) : view === 'review' ? (
           <ReviewPage progress={state} actions={actions} />
+        ) : view === 'spec' ? (
+          <SpecializationsPage progress={state} onOpen={actions.open} onToggle={(id) => actions.toggleReading(`spec:${id}`)} />
         ) : view === 'timeline' ? (
           <Timeline progress={state} onOpen={actions.open} />
         ) : view === 'notes' ? (
@@ -103,12 +126,12 @@ export default function App() {
         ) : (
           <LessonView
             lesson={lesson}
-            index={idx}
-            total={LESSONS.length}
+            index={pos}
+            total={seq.length}
             progress={state}
             actions={actions}
-            prevLesson={LESSONS[idx - 1]}
-            nextLesson={LESSONS[idx + 1]}
+            prevLesson={seq[pos - 1]}
+            nextLesson={seq[pos + 1]}
           />
         )}
       </main>

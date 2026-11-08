@@ -11,8 +11,9 @@ import year3a from './year3a';
 import year3b from './year3b';
 import year4a from './year4a';
 import year4b from './year4b';
+import { TRACK_CLASSES } from '../tracks';
 
-const ALL = [...math1, ...physics, ...chem1, ...chem2, ...mate1, ...mate2, ...math2, ...year3a, ...year3b, ...year4a, ...year4b];
+const ALL = [...math1, ...physics, ...chem1, ...chem2, ...mate1, ...mate2, ...math2, ...year3a, ...year3b, ...year4a, ...year4b, ...TRACK_CLASSES];
 
 export const UM_LESSONS = ALL.map((c) => c.lesson);
 export const UM_READINGS = Object.fromEntries(ALL.map((c) => [c.lesson.id, c.readings]));

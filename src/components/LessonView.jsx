@@ -3,7 +3,7 @@ import MathFormula from './MathFormula';
 import Glossed from './Glossed';
 import { useReveal } from '../state/useReveal';
 import Practice from './Practice';
-import { READINGS as LESSON_READINGS, UM_COURSES } from '../data/path';
+import { READINGS as LESSON_READINGS, UM_COURSES, whereLabel } from '../data/path';
 import { LABS } from '../data/labs';
 import { DEEP } from '../data/deep';
 import LearnIt, { Predict } from './LearnIt';
@@ -55,7 +55,7 @@ export default function LessonView({ lesson, index, total, progress, actions, pr
         <div className="lesson-crumbs">
           <span className={`track track-${lesson.track}`}>{lesson.code}</span>
           <span>
-            Week {lesson.termId?.replace('week-', '')} · {lesson.day} · class {index + 1} of {total}
+            {lesson.spec ? `${whereLabel(lesson)} · class ${index + 1} of ${total}` : `Week ${lesson.termId?.replace('week-', '')} · ${lesson.day} · class ${index + 1} of ${total}`}
           </span>
           {progress.passed[lesson.id] && <span className="pill ok">✓ done</span>}
         </div>

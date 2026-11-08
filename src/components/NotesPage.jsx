@@ -1,5 +1,5 @@
 import { useMemo, useState } from 'react';
-import { CURRICULUM_TERMS, LESSONS, SUBJECTS } from '../data/path';
+import { CURRICULUM_TERMS, ALL_LESSONS as LESSONS, SUBJECTS, TRACKS } from '../data/path';
 import { renderNote } from '../notes/renderNote';
 import { useReveal } from '../state/useReveal';
 
@@ -33,8 +33,8 @@ export default function NotesPage({ notes, onOpen }) {
         </div>
       )}
 
-      {CURRICULUM_TERMS.map((term) => {
-        const items = shown.filter((l) => l.termId === term.id);
+      {[...CURRICULUM_TERMS, ...TRACKS.map((t) => ({ id: `spec:${t.id}`, title: `${t.title} track` }))].map((term) => {
+        const items = shown.filter((l) => (l.spec ? `spec:${l.spec}` : l.termId) === term.id);
         if (!items.length) return null;
         return (
           <section key={term.id} className="tl-era">
@@ -46,7 +46,7 @@ export default function NotesPage({ notes, onOpen }) {
                 <article key={l.id} className={`note-card subj-${l.track}`} data-reveal>
                   <header>
                     <span className="eyebrow">
-                      {l.day} · {SUBJECTS[l.track]} · {l.code}
+                      {l.spec ? 'Track' : l.day} · {SUBJECTS[l.track]} · {l.code}
                     </span>
                     <button type="button" className="tl-link-btn" onClick={() => onOpen(l.id)}>
                       Open class →

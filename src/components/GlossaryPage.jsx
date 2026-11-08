@@ -1,6 +1,6 @@
 import { useMemo, useState } from 'react';
 import { GLOSSARY } from '../data/glossary';
-import { LESSONS, SUBJECTS } from '../data/path';
+import { ALL_LESSONS as LESSONS, SUBJECTS, whereLabel } from '../data/path';
 import { useReveal } from '../state/useReveal';
 
 export default function GlossaryPage({ onOpen }) {
@@ -37,7 +37,7 @@ export default function GlossaryPage({ onOpen }) {
                     <p>{g.def}</p>
                     {lesson && (
                       <button type="button" className="tl-link-btn" onClick={() => onOpen(lesson.id)}>
-                        {SUBJECTS[lesson.track]} · {lesson.termId.replace('week-', 'Week ')} · {lesson.title.split(':')[0]} →
+                        {SUBJECTS[lesson.track]} · {whereLabel(lesson)} · {lesson.title.split(':')[0]} →
                       </button>
                     )}
                   </article>
