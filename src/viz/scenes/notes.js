@@ -1248,4 +1248,33 @@ export const NOTES = {
     [{ text: 'every two years: right through the chips', at: [-3.6, 1.6], to: [-1.0, -1.45], color: C.blue }],
     [{ text: 'the M1 is far above this line', at: [2.6, 3.4], to: [5.9, 2.4], color: C.gold }],
   ],
+  search_race: [
+    [
+      { text: 'check each name: up to 1000 looks', at: [-5.0, 0.6], to: [-2.6, -1.6], color: C.red },
+      { text: 'halving: at most 10', at: [1.2, -1.0], to: [-2.4, -2.85], color: C.green },
+    ],
+    [
+      { text: 'a million looks', at: [-3.6, 1.6], to: [0.4, 0.1], color: C.red },
+      { text: 'just 20', at: [3.0, -1.4], to: [0.6, -2.7], color: C.green },
+    ],
+    [
+      { text: 'a billion looks', at: [-0.6, 2.8], to: [3.4, 1.85], color: C.red },
+      { text: 'only 30', at: [5.4, -1.4], to: [3.6, -2.55], color: C.green },
+    ],
+  ],
+  euclid_trace: [
+    [{ text: 'remainder 0: the GCD is 6', at: [2.6, 1.0], to: [0.4, 1.9], color: C.green }],
+    [{ text: 'one pass leaves 1, the next finishes', at: [3.0, 1.2], to: [0.6, 2.25], color: C.green }],
+    [{ text: 'Fibonacci neighbours: the slowest case, 9 passes', at: [3.0, -1.2], to: [0.4, -2.0], color: C.white }],
+  ],
+  packet_route: [
+    [{ text: 'the fastest route: 42 ms', at: [3.6, 3.6], to: [1.4, 2.4], color: C.green }],
+    [{ text: 'B–D cut: packets find another way by themselves', at: [-4.6, 3.4], to: [-2.3, 2.5], color: C.red }],
+    [{ text: 'last hop cut: the long way via H', at: [5.8, -2.9], to: [4.6, -1.3], color: C.green }],
+  ],
+  gradient_descent: [
+    [{ text: 'small steps creep down', at: [2.4, 1.0], to: [-2.6, -1.8], color: C.yellow }],
+    [{ text: 'η = 0.5: one jump to the bottom', at: [2.6, 1.6], to: [0.0, -3.4], color: C.yellow }],
+    [{ text: 'overshoots back and forth, but closes in', at: [-0.8, 1.4], to: [2.4, -2.0], color: C.yellow }],
+  ],
 };
