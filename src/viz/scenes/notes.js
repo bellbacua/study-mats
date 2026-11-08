@@ -783,4 +783,33 @@ export const NOTES = {
     [{ text: 'below the endurance limit the steel curve goes flat → it lasts forever', at: [4.6, 2.6], to: [5.6, -0.4], color: C.blue }],
     [{ text: 'aluminium has no floor: it fails eventually, after ~6 million cycles', at: [4.6, 2.6], to: [5.3, -2.0], color: C.gold }],
   ],
+  transformer: [
+    [{ text: 'twice the turns on this side → twice the voltage', at: [-0.6, -2.8], to: [-2.4, -1.0], color: C.green }],
+    [
+      { text: '1,000 turns in, 50 out: 230 V becomes 11.5 V', at: [-0.6, -2.8], to: [-2.3, -1.0], color: C.green },
+      { text: 'the output wave is tiny', at: [4.6, -1.6], to: [4.0, 0.3], color: C.green },
+    ],
+    [{ text: 'power in ≈ power out: 0.43 A × 230 V ≈ 8.7 A × 11.5 V', at: [-4.4, -3.6] }],
+  ],
+  steel_carbon: [
+    [{ text: '0.2% C: mostly soft ferrite, easy to bend and weld', at: [5.0, 0.4], to: [2.3, -0.6], color: C.gold }],
+    [{ text: '0.45% C: about 58% pearlite → stronger, less ductile', at: [5.4, -0.6], to: [3.4, 0.0], color: C.gold }],
+    [
+      { text: 'past 0.76% C: brittle cementite lines the grain boundaries', at: [4.4, -1.2], to: [-2.2, 0.0], color: C.red },
+      { text: 'strength barely rises; ductility keeps falling', at: [4.6, 0.6], to: [6.5, 2.1] },
+    ],
+  ],
+  four_bar: [
+    [{ text: 'shortest + longest ≤ the other two: the short crank turns fully', at: [3.2, 0.0], to: [-5.8, -1.1], color: C.gold }],
+    [{ text: 'not Grashof: no link turns fully, the crank only rocks', at: [3.2, 0.0], to: [-5.0, 0.0], color: C.gold }],
+    [{ text: 'a point on the coupler traces a curve', at: [3.2, 0.0], to: [-4.5, 0.4], color: C.pink }],
+  ],
+  gantt_cpm: [
+    [
+      { text: 'critical path A → B → D → F: 12 weeks', at: [-0.6, 2.8], to: [0.4, 1.0], color: C.red },
+      { text: 'slack: C can slip 2 weeks', at: [3.4, -3.2], to: [2.2, 0.1] },
+    ],
+    [{ text: 'a 6-week foundation ties: now both paths are critical', at: [4.0, -3.0], to: [2.0, 0.2], color: C.red }],
+    [{ text: '9-week foundation: the new critical path, finish moves to week 15', at: [3.6, -3.0], to: [3.0, 0.2], color: C.red }],
+  ],
 };
