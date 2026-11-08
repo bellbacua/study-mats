@@ -1,8 +1,9 @@
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import { LESSONS, ALL_LESSONS, TRACKS, trackLessons, trackClassState, openSlots } from './data/path';
 import LessonView from './components/LessonView';
 import Roadmap from './components/Roadmap';
 import NotesPanel from './components/NotesPanel';
+import TopNav from './components/TopNav';
 import Timeline from './components/Timeline';
 import GlossaryPage from './components/GlossaryPage';
 import ExamsPage from './components/ExamsPage';
@@ -55,6 +56,22 @@ export default function App() {
 
   const saveMode = status.mode === 'sqlite' ? 'sqlite' : status.mode === 'offline' ? 'offline' : 'loading';
 
+  const lessonLabel = lesson.spec ? 'Track class' : `Lesson ${idx + 1}`;
+  const navItems = useMemo(
+    () => [
+      { id: 'roadmap', label: 'Roadmap' },
+      { id: 'lesson', label: lessonLabel },
+      { id: 'review', label: <>Review{dueNow > 0 && <span className="nav-badge">{dueNow}</span>}</> },
+      { id: 'spec', label: 'Tracks' },
+      { id: 'timeline', label: 'Timeline' },
+      { id: 'glossary', label: 'Glossary' },
+      { id: 'notes', label: 'My notes' },
+      { id: 'exams', label: 'Exams' },
+      { id: 'progress', label: 'Progress' },
+    ],
+    [lessonLabel, dueNow],
+  );
+
   if (guideWeek) return <StudyGuide week={guideWeek} notes={state.notes} onClose={() => setGuideWeek(null)} />;
 
   return (
@@ -64,35 +81,7 @@ export default function App() {
           <span className="brand-mark">∂</span>
           <span>Study Mats</span>
         </button>
-        <nav className="topnav">
-          <button type="button" className={view === 'roadmap' ? 'on' : ''} onClick={() => setView('roadmap')}>
-            Roadmap
-          </button>
-          <button type="button" className={view === 'lesson' ? 'on' : ''} onClick={() => setView('lesson')}>
-            {lesson.spec ? 'Track class' : `Lesson ${idx + 1}`}
-          </button>
-          <button type="button" className={view === 'review' ? 'on' : ''} onClick={() => setView('review')}>
-            Review{dueNow > 0 && <span className="nav-badge">{dueNow}</span>}
-          </button>
-          <button type="button" className={view === 'spec' ? 'on' : ''} onClick={() => setView('spec')}>
-            Tracks
-          </button>
-          <button type="button" className={view === 'timeline' ? 'on' : ''} onClick={() => setView('timeline')}>
-            Timeline
-          </button>
-          <button type="button" className={view === 'glossary' ? 'on' : ''} onClick={() => setView('glossary')}>
-            Glossary
-          </button>
-          <button type="button" className={view === 'notes' ? 'on' : ''} onClick={() => setView('notes')}>
-            My notes
-          </button>
-          <button type="button" className={view === 'exams' ? 'on' : ''} onClick={() => setView('exams')}>
-            Exams
-          </button>
-          <button type="button" className={view === 'progress' ? 'on' : ''} onClick={() => setView('progress')}>
-            Progress
-          </button>
-        </nav>
+        <TopNav items={navItems} view={view} onPick={setView} />
         <div className="topbar-right">
           <span className={`save-dot ${saveMode}`} title={saveMode === 'sqlite' ? 'Saved to SQLite' : 'Not saving to the database'} />
           {streak > 0 && (

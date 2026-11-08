@@ -3064,3 +3064,74 @@ input[type='range'] {
   font-size: 15px;
   pointer-events: none;
 }
+
+/* Top nav fits its space: tabs that do not fit go into "More" (see TopNav.jsx). */
+.app > .topbar .topnav {
+  position: relative;
+  flex: 1 1 auto;
+  min-width: 0;
+  overflow: visible;
+  flex-wrap: nowrap;
+}
+.topnav > button,
+.topnav-more > button {
+  white-space: nowrap;
+  flex: none;
+}
+.topnav-more {
+  position: relative;
+  flex: none;
+}
+.topnav-menu {
+  position: absolute;
+  top: calc(100% + 6px);
+  right: 0;
+  z-index: 30;
+  display: flex;
+  flex-direction: column;
+  min-width: 160px;
+  padding: 6px;
+  background: var(--surface);
+  border: 1px solid var(--line-strong);
+  border-radius: 10px;
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.45);
+}
+.topnav-menu button {
+  background: none;
+  border: 0;
+  text-align: left;
+  padding: 8px 12px;
+  border-radius: 7px;
+  color: var(--muted);
+  font-weight: 600;
+  white-space: nowrap;
+}
+.topnav-menu button:hover {
+  color: var(--text);
+  background: var(--surface-2);
+}
+.topnav-menu button.on {
+  color: var(--text);
+  background: var(--surface-2);
+}
+.topnav-measure {
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: flex;
+  gap: 4px;
+  visibility: hidden;
+  pointer-events: none;
+  height: 0;
+  overflow: hidden;
+}
+.topnav-measure button {
+  white-space: nowrap;
+  flex: none;
+}
+.topbar-right {
+  flex: none;
+}
+.brand {
+  flex: none;
+}
