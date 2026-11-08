@@ -1132,4 +1132,30 @@ export const NOTES = {
     [{ text: 'true even in a dream', at: [-6.2, 1.9], to: [-4.6, 1.3], color: C.teal }],
     [{ text: 'one belief survives', at: [-6.2, 2.5], to: [-4.6, 3.2], color: C.gold }],
   ],
+  induction_turkey: [
+    [{ text: 'only 3 meals: 80% sure', at: [-2.0, 0.6], to: [-5.9, 0.8], color: C.yellow }],
+    [{ text: 'day 98: 99%, the rule seems proven', at: [-1.0, 1.6], to: [-4.7, 3.2], color: C.yellow }],
+    [{ text: 'one surprise undoes a thousand mornings', at: [2.0, 0.6], to: [5.95, 0.0], color: C.red }],
+  ],
+  bayes_grid: [
+    [
+      { text: 'red: the 9 sick people caught', at: [-4.2, 1.6], to: [-5.6, 3.95], color: C.red },
+      { text: 'yellow: 89 healthy people flagged too', at: [1.2, 1.4], to: [-1.0, 3.3], color: C.gold },
+    ],
+    [{ text: 'a common condition: red now outnumbers yellow', at: [0.0, 0.8], to: [0.0, 3.0], color: C.red }],
+    [{ text: 'cleaner test: only about as many yellow as red', at: [0.0, 1.0], to: [-3.0, 3.9], color: C.gold }],
+  ],
+  eclipse_1919: [
+    [{ text: 'Príncipe: a wide error bar', at: [5.4, 0.2], to: [2.75, 0.6], color: C.yellow }],
+    [{ text: 'Sobral: about 9 error bars from Newton', at: [-2.6, -1.6], to: [1.2, 1.6], color: C.yellow }],
+    [{ text: 'radio: right on Einstein’s 1.75', at: [5.4, -0.4], to: [3.95, 0.95], color: C.green }],
+  ],
+  epicycles: [
+    [{ text: 'line of sight: where Mars appears among the stars', at: [-2.6, 3.6], to: [-6.6, 2.6], color: C.white }],
+    [
+      { text: 'Earth overtakes: Mars seems to go backwards', at: [2.2, 2.6], to: [-2.4, 3.25], color: C.red },
+      { text: 'the backwards dip', at: [-1.0, -2.6], to: [1.7, -3.5], color: C.red },
+    ],
+    [{ text: 'the epicycle’s loop is the backwards bit', at: [2.6, 2.6], to: [-2.8, 2.3], color: C.red }],
+  ],
 };

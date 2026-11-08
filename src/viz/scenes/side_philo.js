@@ -429,7 +429,7 @@ export const induction_turkey = {
     const sign = kit.label('\\text{day 1001: no food}', [0, 0], { size: 12, color: C.red });
     return (p) => {
       dot.set(P.toW(p.n, laplace(p.n)));
-      const end = p.n >= 1000;
+      const end = p.n >= 999.5;
       drop.set(end ? [P.toW(1000, laplace(1000)), P.toW(1000, 0.5)] : []);
       sign.visible(end).pos([P.toW(880, 0.6)[0], P.toW(0, 0.6)[1]]);
     };
