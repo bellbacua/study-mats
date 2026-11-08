@@ -1181,4 +1181,31 @@ export const NOTES = {
     [{ text: 'half G–C: about 60 °C', at: [5.4, -2.25], to: [3.05, -3.5], color: C.gold }],
     [{ text: 'all G–C, 3 bonds each: about 80 °C', at: [2.4, -2.25], to: [5.5, -3.5], color: C.red }],
   ],
+  codon_reader: [
+    [
+      { text: 'three letters = one amino acid', at: [-4.0, -1.6], to: [-6.5, 1.6], color: C.teal },
+      { text: 'UAA: stop', at: [4.6, -0.8], to: [5.6, 1.55], color: C.red },
+    ],
+    [{ text: 'one letter off: every word changes', at: [-4.0, -1.6], to: [-7.0, 1.7], color: C.red }],
+    [{ text: 'one letter swapped: one amino acid changes', at: [1.4, -2.4], to: [-2.0, -0.3], color: C.white }],
+    [
+      { text: 'one extra letter', at: [-6.0, 3.4], to: [-3.5, 2.0], color: C.white },
+      { text: 'an early stop: the protein is cut short', at: [0.8, -1.8], to: [-2.0, -0.3], color: C.red },
+    ],
+  ],
+  levinthal_search: [
+    [{ text: '20 links: a third of a millisecond', at: [-1.0, -1.0], to: [-4.6, -2.8], color: C.white }],
+    [{ text: '65 links: longer than the universe has existed', at: [-3.4, 1.6], to: [-0.75, -0.6], color: C.red }],
+    [{ text: 'real proteins fold below this line: no blind search', at: [2.4, -1.0], to: [2.0, -2.35], color: C.green }],
+  ],
+  michaelis_menten: [
+    [{ text: 'low [S]: speed rises almost in proportion', at: [-1.6, -1.6], to: [-5.9, -1.45], color: C.white }],
+    [{ text: '[S] = Km: exactly half the top speed', at: [-1.2, -1.2], to: [-5.0, -0.05], color: C.gold }],
+    [{ text: 'nine times Km: 90%, nearly always busy', at: [1.6, 0.6], to: [5.5, 2.7], color: C.white }],
+  ],
+  batch_growth: [
+    [{ text: 'too few cells to see yet', at: [0.6, -1.8], to: [-2.4, -3.35], color: C.white }],
+    [{ text: 'half full after about 15 hours', at: [4.4, -2.0], to: [1.85, -0.25], color: C.gold }],
+    [{ text: 'food runs out: growth stops at 10 g/L', at: [3.6, 1.4], to: [5.5, 3.4], color: C.gold }],
+  ],
 };
