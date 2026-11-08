@@ -229,6 +229,9 @@ const DEFECTS = [
   ['boundary', 'grain boundary'],
 ];
 
+// the second grain is the same metal, tinted only so its tilted rows stand out
+const GRAIN2 = 0xd9c08f;
+
 export const defect_lattice = {
   camera: { kind: '2d', x: [-8, 8], y: [-4.5, 4.5] },
   mission: 'Look at every kind of defect, then heat copper near its melting point (1358 K) to see how many sites are empty.',
@@ -287,7 +290,9 @@ export const defect_lattice = {
         last = t.type;
         let pts = base.filter(inBox);
         if (t.type === 'boundary') {
-          pts = pts.filter((q) => q[0] < cx - 0.05).concat(grain2.filter((q) => inBox(q) && q[0] > cx + 0.35));
+          // keep a clear gap at the seam so atoms of the two grains do not overlap
+          const right = grain2.filter((q) => inBox(q) && q[0] > cx + 0.35);
+          pts = pts.filter((q) => q[0] < cx - 0.05 && right.every((r) => Math.hypot(r[0] - q[0], r[1] - q[1]) > 0.5)).concat(right.map((q) => [...q, 1]));
         }
         // push or pull neighbours around the defect at the centre
         const push = { vacancy: -0.05, interstitial: 0.05, big: 0.06, small: -0.05 }[t.type] ?? 0;
@@ -303,18 +308,19 @@ export const defect_lattice = {
             const dy = q[1] - sp[1];
             const r = Math.hypot(dx, dy) || 1;
             const u = (push * a * a) / (r * r);
-            return [q[0] + (dx / r) * u * a, q[1] + (dy / r) * u * a];
+            return [q[0] + (dx / r) * u * a, q[1] + (dy / r) * u * a, q[2]];
           });
         special.visible(['interstitial', 'big', 'small'].includes(t.type));
         special.scale({ interstitial: 0.6, big: 1.25, small: 0.75 }[t.type] ?? 1);
         ring.visible(t.type === 'vacancy');
         bline.visible(t.type === 'boundary');
       }
-      const amp = 0.05 * Math.sqrt(p.T / 300);
+      // thermal shaking, drawn smaller than life so the rows stay readable
+      const amp = 0.025 * Math.sqrt(p.T / 300);
       pool.forEach((d, i) => {
         const q = atoms[i];
         if (!q) return d.visible(false);
-        d.visible(true).set([q[0] + amp * Math.sin(time * 9 + jit[i][0]), q[1] + amp * Math.cos(time * 8 + jit[i][1])]);
+        d.visible(true).color(q[2] ? GRAIN2 : C.gold).set([q[0] + amp * Math.sin(time * 9 + jit[i][0]), q[1] + amp * Math.cos(time * 8 + jit[i][1])]);
         return d;
       });
       dot.set(P.toW(p.T, Math.log10(vacFrac(p.T))));

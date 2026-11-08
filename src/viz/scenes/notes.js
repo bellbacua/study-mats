@@ -459,4 +459,39 @@ export const NOTES = {
     ],
     [{ text: 'closer planes → the peak moves to a larger angle', at: [2.8, 0.4], to: [4.6, 2.8], color: C.gold }],
   ],
+  lens_rays: [
+    [
+      { text: 'object far away (beyond 2f)', at: [-5.6, 2.8], to: [-5.3, 1.3] },
+      { text: 'image: small and upside down', at: [3.8, 1.4], to: [2.2, -0.5], color: C.gold },
+    ],
+    [{ text: 'between f and 2f: bigger, still upside down', at: [4.4, 1.6], to: [4.4, -1.6], color: C.gold }],
+    [
+      { text: 'object inside f', at: [-3.4, -1.8], to: [-1.9, 0.6] },
+      { text: 'your eye traces the rays back: a big upright image', at: [4.6, 0.8], to: [-3.4, 2.6], color: C.gold },
+    ],
+  ],
+  integration_methods: [
+    [
+      { text: 'an awkward area…', at: [-5.2, -2.8], to: [-5.8, 0.4], color: C.green },
+      { text: '…is the same area under cos u: sin 1 ≈ 0.84', at: [4.6, 1.4], to: [2.2, 1.2], color: C.green },
+    ],
+    [{ text: 'both dip below the axis together and always match', at: [0, -3.4], color: C.red }],
+    [
+      { text: 'hard: the area under ln u', at: [4.4, -1.6], to: [1.0, -1.6], color: C.blue },
+      { text: 'easy: the area beside it, b − 1', at: [-3.6, 3.0], to: [-4.6, 0.6], color: C.green },
+    ],
+  ],
+  entropy_mixing: [
+    [{ text: 'pure copper: one arrangement, W = 1, S = 0', at: [4.4, -1.2], to: [1.3, -3.4] }],
+    [{ text: 'one nickel, any of 64 sites → 64 arrangements', at: [4.4, -1.2], to: [-2.3, 1.9], color: C.teal }],
+    [{ text: 'half and half: the most arrangements of all', at: [4.4, -1.2], to: [4.0, 3.3], color: C.gold }],
+  ],
+  defect_lattice: [
+    [{ text: 'a vacancy: one empty site', at: [-3.6, -3.2], to: [-3.6, -0.35], color: C.red }],
+    [{ text: 'an extra small atom squeezed in, pushing its neighbours apart', at: [-3.6, -3.2], to: [-3.3, 0.0], color: C.teal }],
+    [
+      { text: 'grain boundary: two crystals at different tilts meet', at: [-3.6, -3.4], to: [-3.45, -1.6], color: C.red },
+      { text: 'near melting: about 1 site in 2,000 is empty', at: [4.4, -1.6], to: [6.8, 3.2] },
+    ],
+  ],
 };
