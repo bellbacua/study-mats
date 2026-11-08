@@ -332,4 +332,42 @@ export const NOTES = {
     ],
     [{ text: '+30 A upsets the balance, so more B forms', at: [4.4, 0.6], to: [1.1, -0.6], color: C.gold }],
   ],
+  collision_carts: [
+    [
+      { text: 'equal, bouncy carts: watch cart 1 stop dead', at: [0, 2.0] },
+      { text: 'momentum = mass × speed; the total before = the total after', at: [0, -2.6], color: C.gold },
+    ],
+    [
+      { text: 'sticky: they leave together at half the speed', at: [0, 2.0] },
+      { text: 'half the movement energy → heat and bent metal', at: [0, -2.6], color: C.red },
+    ],
+    [{ text: 'heavy hits light: the light cart shoots off faster', at: [0, 2.0], color: C.gold }],
+  ],
+  limit_zoom: [
+    [
+      { text: 'a hole: 0/0 at x = 1', at: [2.6, -1.6], to: [0.1, 0.2], color: C.red },
+      { text: 'start 1 away, then step closer', at: [-4.6, 2.6], to: [-2.6, -0.6], color: C.gold },
+    ],
+    [{ text: 'from both sides it heads to 2: the limit is 2', at: [3.4, -1.0], to: [0.1, 0.3], color: C.gold }],
+    [{ text: 'a hole at 0, yet it heads firmly to 1', at: [-3.6, 3.0], to: [-0.1, 1.7], color: C.gold }],
+  ],
+  ph_scale: [
+    [
+      { text: 'pure water: right in the middle', at: [-4.0, 3.4], to: [-0.1, 0.9] },
+      { text: 'H⁺ = OH⁻: neutral', at: [5.2, -3.4], to: [2.9, -3.3] },
+    ],
+    [{ text: 'each step = ×10: 5 steps → 100,000× more H⁺', at: [-3.4, 3.4], to: [-4.6, 0.9], color: C.red }],
+    [{ text: 'lots of OH⁻: this alkaline coat keeps the steel bars from rusting', at: [4.8, 3.2], to: [5.0, 1.0], color: C.blue }],
+  ],
+  derivative_tangent_lab: [
+    [
+      { text: 'the secant: average slope across the gap h', at: [-5.0, 3.0], to: [-2.4, -1.6], color: C.gold },
+      { text: 'rise over run', at: [5.2, -2.4], to: [2.9, -0.2] },
+    ],
+    [{ text: 'shrink h: the secant settles onto the tangent', at: [5.2, -2.2], to: [1.3, -0.4], color: C.gold }],
+    [
+      { text: 'green = f′(x): the slope at every x', at: [-4.0, -3.4], to: [-3.1, -1.9], color: C.green },
+      { text: 'f peaks → f′ crosses zero', at: [4.4, 3.4], to: [1.6, 0.1], color: C.gold },
+    ],
+  ],
 };
