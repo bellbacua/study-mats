@@ -92,7 +92,7 @@ const family = (sym, g) => {
 };
 
 export const periodic_table_3d = {
-  camera: { kind: '3d', position: [0, 12, 13], target: [0, 0.5, 0.3], fov: 50 },
+  camera: { kind: '3d', position: [0, 13.5, 8.5], target: [0, 0.8, 0.8], fov: 50 },
   params: [
     {
       key: 'prop',
@@ -103,6 +103,7 @@ export const periodic_table_3d = {
         { value: 'radius', label: 'Atom size' },
         { value: 'en', label: 'Electron greed (electronegativity)' },
         { value: 'z', label: 'Atomic number' },
+        { value: 'flat', label: 'Nothing (flat table)' },
       ],
     },
     {
@@ -118,8 +119,8 @@ export const periodic_table_3d = {
     { key: 'Z', label: 'Highlight element Z', min: 1, max: 36, step: 1, value: 14 },
   ],
   beats: [
-    { say: 'Mendeleev (1869) sorted the 63 known elements by weight and noticed properties repeat. In 1871 he left gaps and predicted the missing elements’ properties.', set: { era: '1871', prop: 'z', Z: 31 } },
-    { say: 'Gallium (1875), scandium (1879) and germanium (1886) were then discovered with almost exactly the predicted properties. That convinced the world.', set: { era: 'today', prop: 'z', Z: 32 } },
+    { say: 'Mendeleev (1869) sorted the 63 known elements by weight and noticed properties repeat. In 1871 he left gaps and predicted the missing elements’ properties.', set: { era: '1871', prop: 'flat', Z: 31 } },
+    { say: 'Gallium (1875), scandium (1879) and germanium (1886) were then discovered with almost exactly the predicted properties. That convinced the world.', set: { era: 'today', prop: 'flat', Z: 32 } },
     { say: 'Plot atom size as height: atoms shrink across each row and grow down each column. The table is a map of the outer electrons.', set: { era: 'today', prop: 'radius', Z: 14 } },
   ],
   readout: (t) => {
@@ -151,7 +152,7 @@ export const periodic_table_3d = {
     return (_p, t, time, dt) => {
       cells.forEach((c) => {
         const [, , , en, r] = PT[c.i];
-        const val = t.prop === 'radius' ? r / 60 : t.prop === 'en' ? (en ?? 0) : (c.i + 1) / 10;
+        const val = t.prop === 'radius' ? r / 60 : t.prop === 'en' ? (en ?? 0) : t.prop === 'flat' ? 0.3 : (c.i + 1) / 10;
         const missing = t.era === '1871' && MISSING_1871.has(c.sym);
         const target = missing ? 0.05 : Math.max(0.1, val);
         c.h += (target - c.h) * ease(dt, 4);

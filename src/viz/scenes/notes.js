@@ -1338,4 +1338,121 @@ export const NOTES = {
     [{ text: 'output low, so the price is high', at: [1.6, 2.6], to: [-2.9, 2.35], color: C.yellow }],
     [{ text: 'the swings shrink to the crossing', at: [2.0, 2.6], to: [-1.9, 1.7], color: C.white }],
   ],
+  bohr_orbital_builder: [
+    [
+      { text: 'nucleus: 6 protons (red) + 6 neutrons (grey)', at: [-4.6, -3.6, 0], to: [-0.5, -0.5, 0], color: C.red },
+      { text: '6 electrons: charge +6 − 6 = 0', at: [5.0, 3.8, 0], color: C.blue },
+    ],
+    [{ text: '14 neutrons, not 12: still magnesium, just heavier', at: [-4.2, -3.6, 0], to: [-0.6, -0.6, 0], color: C.red }],
+    [{ text: 'gold dots: the 4 outer (valence) electrons', at: [4.6, 3.8, 0], color: C.yellow }],
+  ],
+  crystal_lattice_3d: [
+    [{ text: 'corner atoms touch along each edge', at: [0, 3.6, 0], to: [0, 1.7, 1.6], color: C.blue }],
+    [{ text: 'the yellow centre atom touches all 8 corners', at: [0, 3.6, 0], to: [0, 0.4, 0], color: C.yellow }],
+    [{ text: 'green: one atom in the middle of each face', at: [0, 3.6, 0], to: [0, 1.7, 0], color: C.green }],
+  ],
+  polymer_tg_chain_lab: [
+    [
+      { text: 'one colour = one long chain', at: [-6.0, 1.0, 0], to: [-3.8, 2.3, 0], color: C.purple },
+      { text: '25 °C, far above Tg: the chains wriggle and slide', at: [0, -3.6, 0], color: C.yellow },
+    ],
+    [{ text: '−100 °C, below Tg: the chains are frozen still', at: [0, -3.6, 0], color: C.blue }],
+    [{ text: 'polystyrene: Tg is 100 °C, so it is frozen at room temperature', at: [0, -3.6, 0], color: C.blue }],
+  ],
+  abacus_place_value: [
+    [{ text: 'no beads up: 0 tens', at: [6.5, -2.6, 0], to: [1.6, -3.9, 0], color: C.yellow }],
+    [{ text: 'with no 0 to write, 205 looks like this', at: [6.3, 1.0, 0], color: C.red }],
+    [{ text: '0 holds the empty tens', at: [6.5, -2.6, 0], to: [1.6, -3.9, 0], color: C.yellow }],
+  ],
+  t_test: [
+    [
+      { text: 'means 10 MPa apart, but the dots spread wider', at: [-4.0, -3.8], to: [-3.4, -0.7], color: C.green },
+      { text: 'p = 0.18: not convincing', at: [1.6, 2.6], to: [4.1, 3.2], color: C.pink },
+    ],
+    [
+      { text: '30 rods: the same gap now clears the scatter', at: [-4.0, -3.8], to: [-3.2, -0.7], color: C.green },
+      { text: 't lands far out in the tail', at: [2.2, 3.0], to: [6.8, 1.0], color: C.pink },
+    ],
+    [{ text: 'no real difference, and p = 0.77 stays large', at: [-4.0, -3.8], color: C.pink }],
+  ],
+  periodic_table_3d: [
+    [{ text: '?: gaps left for elements nobody had found yet', at: [0, 0.3, 4.6], to: [3.5, 0.4, 2.0], color: C.yellow }],
+    [{ text: 'germanium (1886) drops into its gap', at: [0, 0.3, 4.6], to: [4.5, 0.4, 2.0], color: C.yellow }],
+    [
+      { text: 'biggest atoms: bottom left', at: [-4.5, 0.3, 4.6], to: [-8.5, 3.6, 1.8], color: C.red },
+      { text: 'smallest: top right', at: [4.5, 0.3, -5.2], to: [7.5, 1.0, -0.6], color: C.blue },
+    ],
+  ],
+  carbon_chains: [
+    [
+      { text: 'carbon in the middle, a hydrogen at each corner', at: [-4.2, 2.8, 0], to: [-0.3, 0.1, 0], color: C.white },
+      { text: 'every H–C–H angle: 109.5°', at: [4.2, -2.6, 0], color: C.yellow },
+    ],
+    [{ text: 'every carbon is a tetrahedron, so the chain zigzags', at: [0, -3.2, 0], color: C.yellow }],
+    [{ text: 'double bond: flat, and it cannot twist', at: [0, -2.8, 0], to: [0, -0.15, 0], color: C.yellow }],
+    [{ text: 'six carbons in one flat ring', at: [4.4, -2.8, 0], to: [0.3, -0.2, 0], color: C.yellow }],
+  ],
+  functional_groups: [
+    [{ text: 'the glowing –OH is what makes it an alcohol', at: [0, -3.2, 0], color: C.yellow }],
+    [{ text: 'the glowing –COOH: its H can leave, so it is an acid', at: [0, -3.2, 0], color: C.yellow }],
+    [{ text: 'the glowing ester link –COO– joins acid and alcohol', at: [0, -3.2, 0], color: C.yellow }],
+  ],
+  orbital_clouds: [
+    [{ text: 'the dots crowd around the nucleus: most likely there', at: [-3.6, 2.8, 0], to: [-0.15, 0.1, 0], color: C.blue }],
+    [{ text: 'a slice through it: the dark ring is the node', at: [-3.8, 2.8, 0], to: [-0.5, 0.25, 0], color: C.white }],
+    [{ text: 'an empty plane between the two lobes', at: [4.2, 1.8, 0], to: [0.9, 0, 0.6], color: C.white }],
+    [{ text: 'four lobes, alternating + (blue) and − (red)', at: [-3.6, 2.8, 0], color: C.white }],
+  ],
+  cad_extrude: [
+    [{ text: 'the L sketch: 9 cm²', at: [-4.4, 3.4, 0], to: [-1.24, 2.2, -0.85], color: C.yellow }],
+    [{ text: 'every point pushed 4 cm straight out', at: [4.4, 2.8, 0], to: [0.81, 0.6, 2.0], color: C.yellow }],
+    [{ text: 'the sketch swept 270° around the red axis', at: [-4.2, 3.4, 0], to: [0, 2.6, 0], color: C.red }],
+  ],
+  materials_tetrahedron: [
+    [
+      { text: 'forged, then only the edge quenched', at: [-4.4, 1.0, 0], to: [-0.3, -0.9, -2.86], color: C.gold },
+      { text: 'hard martensite edge, softer pearlite spine', at: [4.2, 2.9, 0], to: [0.4, 2.9, 0], color: C.blue },
+      { text: 'a hard, sharp edge on a tough back', at: [-4.6, -3.6, 0], to: [-2.7, -1.6, 1.56], color: C.green },
+      { text: 'cuts for years without snapping', at: [4.6, -3.6, 0], to: [2.7, -1.6, 1.56], color: C.pink },
+    ],
+    [
+      { text: 'one huge crystal, doped with boron or phosphorus', at: [-4.4, 1.0, 0], to: [-0.3, -0.9, -2.86], color: C.gold },
+      { text: 'a perfect crystal with chosen impurity atoms', at: [4.2, 2.9, 0], to: [0.4, 2.9, 0], color: C.blue },
+      { text: 'conducts in a precisely controlled way', at: [-4.6, -3.6, 0], to: [-2.7, -1.6, 1.56], color: C.green },
+      { text: 'billions of switches working in a phone', at: [4.6, -3.6, 0], to: [2.7, -1.6, 1.56], color: C.pink },
+    ],
+    [
+      { text: 'hot plastic blown and stretched in a mould', at: [-4.4, 1.0, 0], to: [-0.3, -0.9, -2.86], color: C.gold },
+      { text: 'long chains lined up by the stretching', at: [4.2, 2.9, 0], to: [0.4, 2.9, 0], color: C.blue },
+      { text: 'clear, light and strong for its thickness', at: [-4.6, -3.6, 0], to: [-2.7, -1.6, 1.56], color: C.green },
+      { text: 'holds water safely and can be recycled', at: [4.6, -3.6, 0], to: [2.7, -1.6, 1.56], color: C.pink },
+    ],
+  ],
+  miller_planes: [
+    [{ text: 'cuts x at 1, never meets y or z: a cube face', at: [4.6, 2.6, 0], to: [1.5, 0.3, 0.3], color: C.yellow }],
+    [{ text: 'cuts x and y at 1, runs parallel to z', at: [4.6, 2.6, 0], to: [0.2, 0.5, 0], color: C.yellow }],
+    [{ text: 'in copper this plane is packed tight: layers slide along it', at: [4.4, 2.8, 0], to: [-0.4, -0.3, 0.5], color: C.yellow }],
+    [
+      { text: '(200): halfway in', at: [4.6, 2.6, 0], to: [0, 0.6, 0], color: C.yellow },
+      { text: 'faint: (100) of the same family', at: [5.0, -1.0, 0], to: [1.5, -0.6, 0], color: C.white },
+    ],
+  ],
+  ortho_views: [
+    [{ text: 'traced on the back wall: width and height', at: [-4.8, 3.2, 0], to: [-0.6, 0.8, -2.9], color: C.blue }],
+    [{ text: 'traced on the floor: width and depth', at: [5.2, -1.2, 0], to: [1.0, -2.9, 0.5], color: C.green }],
+    [{ text: 'dashed: the hole you cannot see from the front', at: [-4.8, 3.2, 0], to: [0.4, -1.0, -2.9], color: C.blue }],
+  ],
+  disk_volume: [
+    [
+      { text: 'only 4 disks: a stepped tower', at: [-4.4, 2.6, 0], to: [-1.2, 0.8, 0], color: C.blue },
+      { text: 'the straight line being spun', at: [4.4, 3.0, 0], to: [2.4, 1.75, 0], color: C.yellow },
+    ],
+    [{ text: '40 thin disks: the steps almost vanish', at: [-3.6, 2.8, 0], to: [1.0, 1.2, 0], color: C.blue }],
+    [{ text: 'each slice adds π r² × its thickness', at: [-4.4, 2.9, 0], to: [-0.5, 0.6, 1.4], color: C.blue }],
+  ],
+  partial_slice: [
+    [{ text: 'gold: the plate cut along x, at y = 0', at: [3.6, 3.7, 0], to: [3.0, 1.0, 0], color: C.yellow }],
+    [{ text: 'along y the top is flat here: slope 0', at: [3.6, 3.7, 0], to: [1.6, 2.3, 0], color: C.red }],
+    [{ text: 'the steepest drop on the plate', at: [3.6, 3.7, 0], to: [0.1, 1.7, -2.0], color: C.red }],
+  ],
 };

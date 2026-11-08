@@ -230,8 +230,8 @@ export const crystal_lattice_3d = {
   ],
   beats: [
     { say: 'Simple cubic: one atom per corner. Grow them until they touch: only 52% of space is filled.', set: { structure: 'sc', cells: 1, size: 1 } },
-    { say: 'BCC adds an atom in the centre. 8 neighbours, 68% filled. This is room-temperature iron.', set: { structure: 'bcc', cells: 1, size: 1 } },
-    { say: 'FCC puts atoms on every face: 12 neighbours, 74%, the densest possible packing. Copper and aluminium are FCC, which is why they bend so easily.', set: { structure: 'fcc', cells: 2, size: 0.45 } },
+    { say: 'BCC adds an atom in the centre. 8 neighbours, 68% filled. This is room-temperature iron.', set: { structure: 'bcc', cells: 1, size: 0.85 } },
+    { say: 'FCC puts atoms on every face: 12 neighbours, 74%, the densest possible packing. Copper and aluminium are FCC, which is why they bend so easily.', set: { structure: 'fcc', cells: 1, size: 0.65 } },
   ],
   goal: (_t, seen) => (seen.structure?.size || 0) >= 3,
   readout: (t) => {

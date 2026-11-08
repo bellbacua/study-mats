@@ -40,7 +40,7 @@ const EXAMPLES = {
 const CORNERS = ['processing', 'structure', 'properties', 'performance'];
 
 export const materials_tetrahedron = {
-  camera: { kind: '3d', position: [0, 2.5, 10] },
+  camera: { kind: '3d', position: [0, 1.2, 13] },
   mission: 'Look at all four products and trace each one from processing to performance.',
   goal: (_t, seen) => Object.keys(EXAMPLES).every((k) => seen.ex?.has(k)),
   params: [{ key: 'ex', label: 'Product', type: 'choice', value: 'bolo', options: Object.entries(EXAMPLES).map(([k, v]) => ({ value: k, label: v.name })) }],
@@ -411,7 +411,8 @@ function planePoly(h, k, l, rhs) {
   const f = (p) => h * p[0] + k * p[1] + l * p[2] - rhs;
   const corners = [];
   for (const x of [0, 1]) for (const y of [0, 1]) for (const z of [0, 1]) corners.push([x, y, z]);
-  const pts = [];
+  // corners that lie exactly on the plane (all 8 are checked, including the last)
+  const pts = corners.filter((a) => Math.abs(f(a)) < 1e-9);
   for (let i = 0; i < 8; i++) {
     for (let j = i + 1; j < 8; j++) {
       const a = corners[i];
@@ -419,7 +420,6 @@ function planePoly(h, k, l, rhs) {
       if (a.filter((v, q) => v !== b[q]).length !== 1) continue;
       const fa = f(a);
       const fb = f(b);
-      if (Math.abs(fa) < 1e-9) pts.push(a);
       if (fa * fb < 0) {
         const s = fa / (fa - fb);
         pts.push(a.map((v, q) => v + (b[q] - v) * s));

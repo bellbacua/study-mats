@@ -206,7 +206,7 @@ export const titration_curve = {
 // ---------------------------------------------------------------------------
 const ORB = {
   '1s': { R: 5, psi: (x, y, z, r) => Math.exp(-r) },
-  '2s': { R: 16, psi: (x, y, z, r) => (2 - r) * Math.exp(-r / 2) },
+  '2s': { R: 12, psi: (x, y, z, r) => (2 - r) * Math.exp(-r / 2) },
   '2p': { R: 14, psi: (x, y, z, r) => z * Math.exp(-r / 2) },
   '3dz2': { R: 24, psi: (x, y, z, r) => (3 * z * z - r * r) * Math.exp(-r / 3) },
   '3dxy': { R: 24, psi: (x, y, z, r) => x * y * Math.exp(-r / 3) },
@@ -299,6 +299,8 @@ export const orbital_clouds = {
         const x = (Math.random() * 2 - 1) * o.R;
         const y = (Math.random() * 2 - 1) * o.R;
         const z = (Math.random() * 2 - 1) * o.R;
+        // 2s: show a thin slice through the middle so the hidden node shows as a dark ring
+        if (name === '2s' && Math.abs(y) > 0.8) continue;
         const s = o.psi(x, y, z, Math.hypot(x, y, z));
         if (Math.random() * mx * 1.05 > s * s) continue;
         const k = 3.2 / o.R;
@@ -319,7 +321,8 @@ export const orbital_clouds = {
         built = t.orb;
         build(t.orb);
       }
-      g.rotation.y = time * 0.15;
+      // the 2s slice stays facing the camera
+      g.rotation.y = t.orb === '2s' ? 0 : time * 0.15;
     };
   },
 };
