@@ -7,6 +7,7 @@ import TopNav from './components/TopNav';
 import ProgramPage from './components/ProgramPage';
 import Welcome from './components/Welcome';
 import Timeline from './components/Timeline';
+import LibraryPage from './components/LibraryPage';
 import PathwaysPage from './components/PathwaysPage';
 import GlossaryPage from './components/GlossaryPage';
 import ExamsPage from './components/ExamsPage';
@@ -67,6 +68,7 @@ export default function App() {
       { id: 'spec', label: 'Program' },
       { id: 'timeline', label: 'Timeline' },
       { id: 'paths', label: 'Pathways' },
+      { id: 'library', label: 'Library' },
       { id: 'glossary', label: 'Glossary' },
       { id: 'notes', label: 'My notes' },
       { id: 'exams', label: 'Exams' },
@@ -128,6 +130,8 @@ export default function App() {
           <Timeline progress={state} onOpen={actions.open} />
         ) : view === 'paths' ? (
           <PathwaysPage progress={state} onOpen={actions.open} />
+        ) : view === 'library' ? (
+          <LibraryPage progress={state} onOpen={actions.open} />
         ) : view === 'notes' ? (
           <NotesPage notes={state.notes} onOpen={actions.open} />
         ) : view === 'glossary' ? (

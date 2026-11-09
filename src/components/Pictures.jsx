@@ -175,3 +175,38 @@ export default function Pictures({ sources }) {
     </section>
   );
 }
+
+// One lead picture for one Wikipedia link, shared with the cache above.
+// Used by the Library cards; `enabled` lets a card wait until it is on screen.
+export function useWikiPic(url, enabled = true) {
+  const title = wikiTitle(url);
+  const [pic, setPic] = useState(() => {
+    const c = title ? readCache()[title] : null;
+    return c && !c.none ? c : null;
+  });
+  useEffect(() => {
+    if (!title || !enabled) return undefined;
+    const cache = readCache();
+    if (title in cache) {
+      setPic(cache[title] && !cache[title].none ? cache[title] : null);
+      return undefined;
+    }
+    if (typeof navigator !== 'undefined' && navigator.onLine === false) return undefined;
+    let alive = true;
+    summary(title)
+      .catch(() => null)
+      .then((got) => {
+        if (!got) return;
+        const c = readCache();
+        c[title] = got;
+        writeCache(c);
+        if (alive) setPic(got.none ? null : got);
+      });
+    return () => {
+      alive = false;
+    };
+  }, [title, enabled]);
+  return pic;
+}
+
+export { filePage };
