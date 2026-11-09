@@ -7,6 +7,8 @@ import { DISCOVERIES } from '../data/library/discoveries';
 import { ALL_LESSONS } from '../data/path';
 import { useWikiPic, filePage } from './Pictures';
 import MathFormula from './MathFormula';
+import PhMap from './PhMap';
+import { SITES } from '../data/library/phSites';
 import { useReveal } from '../state/useReveal';
 
 const SHELVES = [
@@ -14,6 +16,7 @@ const SHELVES = [
   { id: 'failures', icon: '🗂️', label: 'Failure files', blurb: `${FAILURES.length} famous accidents: what broke, why, and what engineers changed afterwards.` },
   { id: 'formulas', icon: '∑', label: 'Formula sheet', blurb: `${FORMULAS.length} key equations of the course, with their symbols, units and the class that teaches each.` },
   { id: 'people', icon: '👤', label: 'Who’s who', blurb: `${PEOPLE.length} people from the class stories, with the classes they appear in.` },
+  { id: 'map', icon: '🗺️', label: 'Philippine map', blurb: `${SITES.length} places in the Philippines where materials are mined, made or studied. Tap a pin for its story.` },
   { id: 'discoveries', icon: '💡', label: 'Discoveries', blurb: `${DISCOVERIES.length} famous discoveries, how they were made, and which ones were lucky accidents.` },
 ];
 
@@ -609,7 +612,7 @@ function DiscoveriesShelf({ q, byId, progress, onOpen }) {
 
 // ---------------------------------------------------------------- page
 
-export default function LibraryPage({ progress, onOpen }) {
+export default function LibraryPage({ progress, onOpen, onGo }) {
   const [shelf, setShelfState] = useState(loadShelf);
   const [query, setQuery] = useState('');
   const setShelf = (id) => {
@@ -654,6 +657,7 @@ export default function LibraryPage({ progress, onOpen }) {
       {shelf === 'formulas' && <FormulasShelf {...props} />}
       {shelf === 'people' && <PeopleShelf {...props} text={text} />}
       {shelf === 'discoveries' && <DiscoveriesShelf {...props} />}
+      {shelf === 'map' && <PhMap {...props} onGo={onGo} />}
       {shelf === 'materials' && (
         <footer className="pw-sources">
           <span className="eyebrow">Sources for the property values</span>

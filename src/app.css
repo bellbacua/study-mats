@@ -3523,7 +3523,7 @@ sup.cite a {
 /* ---------- library ---------- */
 .lib-shelves {
   display: grid;
-  grid-template-columns: repeat(5, minmax(0, 1fr));
+  grid-template-columns: repeat(6, minmax(0, 1fr));
   gap: 8px;
   margin: 8px 0 14px;
 }
@@ -4027,4 +4027,185 @@ sup.cite a {
 .lib-table thead th:first-child {
   z-index: 2;
   background: var(--surface-2);
+}
+
+/* ---------- Philippine map ---------- */
+.ph-wrap {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 16px;
+  align-items: start;
+}
+.ph-map {
+  margin: 0;
+  position: sticky;
+  top: 72px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  overflow: hidden;
+  background: var(--bg);
+}
+.ph-map svg {
+  display: block;
+  width: 100%;
+  height: auto;
+  max-height: calc(100vh - 140px);
+}
+.ph-map figcaption {
+  font-size: 11px;
+  color: var(--faint);
+  padding: 6px 10px 8px;
+}
+.ph-land {
+  fill: var(--surface-3);
+  stroke: color-mix(in srgb, var(--blue) 55%, transparent);
+  stroke-width: 2;
+  stroke-linejoin: round;
+}
+.ph-region {
+  fill: var(--faint);
+  font-size: 34px;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  opacity: 0.55;
+  pointer-events: none;
+}
+.ph-city circle {
+  fill: var(--muted);
+}
+.ph-city text {
+  fill: var(--muted);
+  font-size: 24px;
+  pointer-events: none;
+}
+.ph-hit {
+  fill: transparent;
+}
+.ph-pin {
+  cursor: pointer;
+  outline: none;
+}
+.ph-dot {
+  stroke: var(--bg);
+  stroke-width: 4;
+  transition: r 0.2s var(--ease);
+}
+.ph-pin:hover .ph-dot,
+.ph-pin:focus-visible .ph-dot {
+  stroke: var(--text);
+}
+.ph-halo {
+  fill: none;
+  stroke-width: 4;
+  opacity: 0.7;
+  animation: ph-pulse 1.8s var(--ease) infinite;
+}
+@keyframes ph-pulse {
+  from {
+    r: 16;
+    opacity: 0.9;
+  }
+  to {
+    r: 40;
+    opacity: 0;
+  }
+}
+.ph-line {
+  stroke: var(--blue);
+  stroke-width: 3;
+  stroke-dasharray: 10 10;
+  opacity: 0.7;
+}
+.ph-label {
+  fill: var(--text);
+  font-size: 30px;
+  font-weight: 650;
+  paint-order: stroke;
+  stroke: var(--bg);
+  stroke-width: 8px;
+  pointer-events: none;
+}
+.ph-card h2 {
+  margin: 4px 0 2px;
+}
+.ph-card p {
+  color: var(--muted);
+  margin: 8px 0 0;
+}
+.ph-place {
+  font-size: 13px;
+  color: var(--faint) !important;
+}
+.ph-why {
+  color: var(--text) !important;
+}
+.ph-pic {
+  margin: 10px 0 0;
+}
+.ph-pic img {
+  width: 100%;
+  max-height: 220px;
+  object-fit: cover;
+  border-radius: 10px;
+  display: block;
+}
+.ph-pic figcaption {
+  font-size: 11px;
+  color: var(--faint);
+  margin-top: 4px;
+}
+.ph-pic a {
+  color: var(--faint);
+}
+.ph-go {
+  margin-top: 12px;
+  color: var(--blue);
+}
+.ph-list {
+  list-style: none;
+  margin: 14px 0 0;
+  padding: 0;
+  display: grid;
+  gap: 6px;
+}
+.ph-list button {
+  all: unset;
+  box-sizing: border-box;
+  cursor: pointer;
+  display: flex;
+  gap: 10px;
+  align-items: baseline;
+  width: 100%;
+  padding: 8px 12px;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  background: var(--surface);
+}
+.ph-list button:hover,
+.ph-list button.on {
+  border-color: var(--line-strong);
+  background: var(--surface-2);
+}
+.ph-list span:last-child {
+  display: flex;
+  flex-direction: column;
+}
+.ph-list strong {
+  font-size: 14px;
+  font-weight: 600;
+}
+.ph-list small {
+  color: var(--faint);
+  font-size: 12px;
+}
+@container (max-width: 760px) {
+  .ph-wrap {
+    grid-template-columns: 1fr;
+  }
+  .ph-map {
+    position: static;
+  }
+  .ph-card {
+    scroll-margin-top: 70px;
+  }
 }
