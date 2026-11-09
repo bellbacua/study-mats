@@ -128,7 +128,7 @@ export default function Pictures({ sources }) {
 
   if (!pics.length) return null;
   return (
-    <section className="pictures" data-reveal>
+    <section className="pictures">
       <span className="eyebrow">Pictures</span>
       <div className="pic-strip">
         {pics.map((p) => (

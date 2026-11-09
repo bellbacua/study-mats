@@ -19,7 +19,15 @@ export function useReveal(deps = []) {
       },
       { rootMargin: '0px 0px -8% 0px', threshold: 0.05 }
     );
-    document.querySelectorAll('[data-reveal]:not(.in)').forEach((el) => io.observe(el));
-    return () => io.disconnect();
+    const scan = () => document.querySelectorAll('[data-reveal]:not(.in)').forEach((el) => io.observe(el));
+    scan();
+    // Items that appear later (pictures loaded from the internet, data that
+    // arrives after the first paint) must be watched too, or they stay hidden.
+    const mo = new MutationObserver(scan);
+    mo.observe(document.body, { childList: true, subtree: true });
+    return () => {
+      io.disconnect();
+      mo.disconnect();
+    };
   }, deps); // eslint-disable-line react-hooks/exhaustive-deps
 }

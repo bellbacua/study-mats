@@ -39,7 +39,8 @@ function wrap(db) {
 
 const isApi = (u) => {
   try {
-    return new URL(u, location.href).pathname.startsWith('/api/');
+    const url = new URL(u, location.href);
+    return url.origin === location.origin && url.pathname.startsWith('/api/');
   } catch {
     return false;
   }
