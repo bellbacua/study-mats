@@ -555,7 +555,9 @@ function PeopleShelf({ q, byId, progress, onOpen, text }) {
 
 function DiscoveriesShelf({ q, byId, progress, onOpen }) {
   const [lucky, setLucky] = useState(false);
-  const list = DISCOVERIES.filter((x) => (!lucky || x.luck) && matches(q, x.title, x.who, x.how, x.why));
+  const [field, setField] = useState('all');
+  const list = DISCOVERIES.filter((x) => (!lucky || x.luck) && (field === 'all' || x.field === field) && matches(q, x.title, x.who, x.how, x.why)).sort((a, b) => a.year - b.year);
+  const used = FIELDS.filter((f) => DISCOVERIES.some((x) => x.field === f.id));
   return (
     <>
       <div className="chips lib-fams">
@@ -565,6 +567,16 @@ function DiscoveriesShelf({ q, byId, progress, onOpen }) {
         <button type="button" className={`chip ${lucky ? 'on' : ''}`} style={{ '--subj': 'var(--yellow)' }} onClick={() => setLucky(true)}>
           🍀 Only lucky accidents ({DISCOVERIES.filter((x) => x.luck).length})
         </button>
+      </div>
+      <div className="chips lib-fams">
+        <button type="button" className={`chip ${field === 'all' ? 'on' : ''}`} onClick={() => setField('all')}>
+          Every field
+        </button>
+        {used.map((f) => (
+          <button key={f.id} type="button" className={`chip ${field === f.id ? 'on' : ''}`} onClick={() => setField(f.id)}>
+            {f.label} ({DISCOVERIES.filter((x) => x.field === f.id).length})
+          </button>
+        ))}
       </div>
       <ol className="tl-line">
         {list.map((x, i) => (
