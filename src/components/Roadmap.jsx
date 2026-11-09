@@ -23,7 +23,7 @@ export default function Roadmap({ progress, nextUp, onOpen, status, dueNow = 0, 
             {done} of {LESSONS.length} done
           </span>
           <span className={`save-state ${status}`}>
-            {status === 'sqlite' ? 'Saved to data/study_mats.db' : status === 'offline' ? 'Database offline: saving in browser only' : 'Loading…'}
+            {status === 'sqlite' ? (window.__TAURI_INTERNALS__ ? 'Saved on this computer' : 'Saved to data/study_mats.db') : status === 'offline' ? 'Database offline: saving in browser only' : 'Loading…'}
           </span>
         </div>
         {dueNow > 0 && (

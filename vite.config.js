@@ -3,13 +3,19 @@ import { defineConfig } from 'vite';
 import { VitePWA } from 'vite-plugin-pwa';
 import { sqliteApiPlugin } from './server/vite-plugin-sqlite.js';
 
+// The desktop app (Tauri) sets TAURI_ENV_PLATFORM while building. It loads
+// files from inside the app, so it needs relative paths and no service worker.
+const desktop = !!process.env.TAURI_ENV_PLATFORM;
+
 // https://vite.dev/config/
 export default defineConfig({
+  base: desktop ? './' : '/',
   plugins: [
     react(),
     sqliteApiPlugin(),
     // Installable app (desktop & Android) that keeps working offline.
     // The /api routes always go to the network so progress lands in SQLite.
+    !desktop &&
     VitePWA({
       registerType: 'autoUpdate',
       includeAssets: ['icon.svg'],

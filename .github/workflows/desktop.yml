@@ -1,0 +1,41 @@
+# Builds the Windows desktop app (an .exe installer) in the cloud and
+# publishes it on the repository's Releases page.
+# Runs when a tag like desktop-v1.0.0 is pushed, or by hand from the Actions tab.
+name: Desktop app (Windows)
+
+on:
+  push:
+    tags: ['desktop-v*']
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  windows:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - uses: dtolnay/rust-toolchain@stable
+
+      - uses: swatinem/rust-cache@v2
+        with:
+          workspaces: './src-tauri -> target'
+
+      - run: npm ci
+
+      - uses: tauri-apps/tauri-action@v0
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tagName: desktop-v__VERSION__
+          releaseName: 'Study Mats for Windows v__VERSION__'
+          releaseBody: 'Download the file ending in -setup.exe below and run it. Your progress is saved in %APPDATA%\com.bellbacua.studymats\study_mats.db, with a dated backup each day in the backups folder next to it.'
+          releaseDraft: false
+          prerelease: false

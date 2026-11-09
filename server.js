@@ -2,6 +2,7 @@ import http from 'node:http';
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
+import './server/db.js'; // opens data/study_mats.db with node:sqlite
 import { handleApiRequest } from './server/api.js';
 import { getStats } from './server/db.js';
 

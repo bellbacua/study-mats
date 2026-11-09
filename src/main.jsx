@@ -84,10 +84,36 @@ class ErrorBoundary extends Component {
   }
 }
 
-createRoot(document.getElementById('root')).render(
-  <StrictMode>
-    <ErrorBoundary>
-      <App />
-    </ErrorBoundary>
-  </StrictMode>,
-);
+const render = () =>
+  createRoot(document.getElementById('root')).render(
+    <StrictMode>
+      <ErrorBoundary>
+        <App />
+      </ErrorBoundary>
+    </StrictMode>,
+  );
+
+// In the desktop app, answer /api calls inside the app and save to its own
+// SQLite file. (?desktop-test runs the same code in a browser, saving to
+// localStorage, so it can be checked without the app.)
+const desktopTest = import.meta.env.DEV && new URLSearchParams(location.search).has('desktop-test');
+if ((typeof window !== 'undefined' && window.__TAURI_INTERNALS__) || desktopTest) {
+  import('./desktop/desktopApi.js')
+    .then(({ installDesktopApi, tauriStore }) => {
+      const store = desktopTest
+        ? {
+            load: async () => {
+              const b = localStorage.getItem('desktop-test-db');
+              return b ? Uint8Array.from(atob(b), (c) => c.charCodeAt(0)) : null;
+            },
+            save: async (u8) => localStorage.setItem('desktop-test-db', btoa(String.fromCharCode(...u8))),
+            where: async () => 'localStorage (test)',
+          }
+        : tauriStore();
+      return installDesktopApi(store);
+    })
+    .catch((e) => console.error('Desktop storage failed to start', e))
+    .finally(render);
+} else {
+  render();
+}

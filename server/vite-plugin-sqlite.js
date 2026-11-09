@@ -1,3 +1,4 @@
+import './db.js'; // opens data/study_mats.db with node:sqlite
 import { handleApiRequest } from './api.js';
 
 export function sqliteApiPlugin() {
