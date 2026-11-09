@@ -39,7 +39,7 @@ export const TECHNIQUES = [
     ],
     standards: 'ASTM E3 (preparing samples), ASTM E407 (etchants), ASTM E112 (grain size).',
     sketch: null,
-    sources: [W('Metallography'), CALLISTER, ASTM],
+    sources: [W('Metallography'), W('Nital'), CALLISTER, ASTM],
   },
   {
     id: 'sem',
@@ -156,14 +156,14 @@ export const TECHNIQUES = [
       'Rockwell: a cone or small ball; the machine reads depth directly as a number (HRC for hardened steel). Fast.',
       'Vickers: a diamond pyramid; measure the two diagonals under a microscope. Works from soft to very hard and for tiny areas (microhardness).',
     ],
-    read: 'Always give the scale: "60 HRC" or "200 HV10". Numbers from different scales are not the same thing, and conversion tables are only approximate. For steels, tensile strength in MPa is roughly 3.45 × Brinell hardness.',
+    read: 'Always give the scale: "60 HRC" or "200 HV10". Numbers from different scales are not the same thing, and conversion tables are only approximate. For steels, a rough rule is that the Brinell number divided by two gives the tensile strength in ksi (about 3.45 × HB in MPa), but the rule depends on the material, so use it only as a first guess.',
     mistakes: [
       'Testing too close to an edge or another dent, or on a sample too thin (the dent "feels" the table below).',
       'Testing on a rough or decarburised surface layer and reporting it as the bulk hardness.',
       'Comparing hardness numbers across different scales as if they were equal.',
     ],
     standards: 'ASTM E10 (Brinell), ASTM E18 (Rockwell), ASTM E92 and E384 (Vickers and microhardness), ASTM E140 (conversion tables).',
-    sources: [W('Hardness'), W('Rockwell_hardness_test'), W('Vickers_hardness_test'), W('Brinell_hardness_test'), ASTM],
+    sources: [W('Hardness'), W('Brinell_hardness_test'), W('Rockwell_hardness_test'), W('Vickers_hardness_test'), ASTM],
   },
   {
     id: 'charpy',
@@ -195,7 +195,7 @@ export const TECHNIQUES = [
     wiki: 'https://en.wikipedia.org/wiki/Fatigue_(material)',
     tells: 'How long parts last under repeated loading (S–N curve), and for many steels a fatigue limit below which they seem to last forever.',
     how: ['Use polished samples; a rotating-bending or axial machine loads them back and forth.', 'Repeat at several stress levels, several samples each, because results scatter a lot.'],
-    read: 'Plot stress against the number of cycles to failure on a log scale. Steels often level off (a fatigue limit, roughly half the tensile strength); aluminium keeps sloping down, so designers use the strength at a set life, such as 10⁸ cycles.',
+    read: 'Plot stress against the number of cycles to failure on a log scale. Many steels level off (a fatigue limit, which textbooks put at roughly 35–60% of the tensile strength); aluminium keeps sloping down, so designers use the strength at a set life, such as 10⁸ cycles.',
     mistakes: [
       'Testing one sample per stress: fatigue lives easily vary tenfold.',
       'Forgetting surface finish: a rough or scratched real part can have a much lower fatigue life than a polished lab bar.',

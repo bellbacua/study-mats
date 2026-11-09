@@ -13,6 +13,8 @@ import { useReveal } from '../state/useReveal';
 import { ClassChips, Sources } from './LibBits';
 import PhaseDiagrams from './PhaseDiagrams';
 import LabHandbook from './LabHandbook';
+import MicrographGallery from './MicrographGallery';
+import { MICROGRAPHS, MIC_SOURCES } from '../data/library/micrographs';
 import { TECHNIQUES } from '../data/library/techniques';
 import { DIAGRAMS } from '../data/library/phases';
 import PeriodicTable, { PT_SOURCES } from './PeriodicTable';
@@ -26,6 +28,7 @@ const SHELVES = [
   { id: 'elements', icon: '⚛️', label: 'Periodic table', blurb: `All ${ELEMENTS.length} elements. Tap one for when and how it was found, its crystal structure, what it is used for and where it is mined.` },
   { id: 'phases', icon: '🌡️', label: 'Phase diagrams', blurb: `${DIAGRAMS.length} real alloy phase diagrams. Tap anywhere to see which phases are there and how much of each, or cool an alloy down slowly.` },
   { id: 'lab', icon: '🔬', label: 'Lab handbook', blurb: `${TECHNIQUES.length} lab tests: what each one tells you, how it is done, how to read the result, and the usual mistakes.` },
+  { id: 'micro', icon: '🔍', label: 'Microscope pictures', blurb: `${MICROGRAPHS.length} microstructures seen under the microscope, with real photos and what to notice in each.` },
   { id: 'map', icon: '🗺️', label: 'Philippine map', blurb: `${SITES.length} places in the Philippines where materials are mined, made or studied. Tap a pin for its story.` },
   { id: 'discoveries', icon: '💡', label: 'Discoveries', blurb: `${DISCOVERIES.length} famous discoveries, how they were made, and which ones were lucky accidents.` },
 ];
@@ -638,7 +641,14 @@ export default function LibraryPage({ progress, onOpen, onGo }) {
       {shelf === 'elements' && <PeriodicTable {...props} text={text} />}
       {shelf === 'phases' && <PhaseDiagrams {...props} text={text} />}
       {shelf === 'lab' && <LabHandbook {...props} text={text} />}
+      {shelf === 'micro' && <MicrographGallery {...props} />}
       {shelf === 'map' && <PhMap {...props} onGo={onGo} />}
+      {shelf === 'micro' && (
+        <footer className="pw-sources">
+          <span className="eyebrow">General sources</span>
+          <Sources list={MIC_SOURCES} />
+        </footer>
+      )}
       {shelf === 'elements' && (
         <footer className="pw-sources">
           <span className="eyebrow">General sources</span>
