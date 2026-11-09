@@ -10,12 +10,19 @@ import MathFormula from './MathFormula';
 import PhMap from './PhMap';
 import { SITES } from '../data/library/phSites';
 import { useReveal } from '../state/useReveal';
+import { ClassChips, Sources } from './LibBits';
+import PhaseDiagrams from './PhaseDiagrams';
+import { DIAGRAMS } from '../data/library/phases';
+import PeriodicTable, { PT_SOURCES } from './PeriodicTable';
+import { ELEMENTS } from '../data/library/elements';
 
 const SHELVES = [
   { id: 'materials', icon: '🧱', label: 'Materials', blurb: `${MATERIALS.length} materials with their typical properties. Plot any two properties against each other, or pick two to compare.` },
   { id: 'failures', icon: '🗂️', label: 'Failure files', blurb: `${FAILURES.length} famous accidents: what broke, why, and what engineers changed afterwards.` },
   { id: 'formulas', icon: '∑', label: 'Formula sheet', blurb: `${FORMULAS.length} key equations of the course, with their symbols, units and the class that teaches each.` },
   { id: 'people', icon: '👤', label: 'Who’s who', blurb: `${PEOPLE.length} people from the class stories, with the classes they appear in.` },
+  { id: 'elements', icon: '⚛️', label: 'Periodic table', blurb: `All ${ELEMENTS.length} elements. Tap one for when and how it was found, its crystal structure, what it is used for and where it is mined.` },
+  { id: 'phases', icon: '🌡️', label: 'Phase diagrams', blurb: `${DIAGRAMS.length} real alloy phase diagrams. Tap anywhere to see which phases are there and how much of each, or cool an alloy down slowly.` },
   { id: 'map', icon: '🗺️', label: 'Philippine map', blurb: `${SITES.length} places in the Philippines where materials are mined, made or studied. Tap a pin for its story.` },
   { id: 'discoveries', icon: '💡', label: 'Discoveries', blurb: `${DISCOVERIES.length} famous discoveries, how they were made, and which ones were lucky accidents.` },
 ];
@@ -74,38 +81,6 @@ function PicCredit({ url }) {
         </>
       )}
     </span>
-  );
-}
-
-function ClassChips({ ids, byId, progress, onOpen }) {
-  const ls = [...new Set(ids)].map((id) => byId[id]).filter(Boolean);
-  if (!ls.length) return null;
-  return (
-    <div className="lib-classes">
-      <span className="eyebrow">In your classes</span>
-      <div className="chips">
-        {ls.map((l) => (
-          <button key={l.id} type="button" className="chip pw-class" onClick={() => onOpen(l.id)}>
-            {progress.passed[l.id] ? '✓ ' : ''}
-            {l.code} · {l.title}
-          </button>
-        ))}
-      </div>
-    </div>
-  );
-}
-
-function Sources({ list }) {
-  return (
-    <ul className="lib-src">
-      {list.map((s) => (
-        <li key={s.url + s.title}>
-          <a href={s.url} target="_blank" rel="noreferrer">
-            {s.title}
-          </a>
-        </li>
-      ))}
-    </ul>
   );
 }
 
@@ -657,7 +632,16 @@ export default function LibraryPage({ progress, onOpen, onGo }) {
       {shelf === 'formulas' && <FormulasShelf {...props} />}
       {shelf === 'people' && <PeopleShelf {...props} text={text} />}
       {shelf === 'discoveries' && <DiscoveriesShelf {...props} />}
+      {shelf === 'elements' && <PeriodicTable {...props} text={text} />}
+      {shelf === 'phases' && <PhaseDiagrams {...props} text={text} />}
       {shelf === 'map' && <PhMap {...props} onGo={onGo} />}
+      {shelf === 'elements' && (
+        <footer className="pw-sources">
+          <span className="eyebrow">General sources</span>
+          <Sources list={PT_SOURCES} />
+          <p className="pw-note">Numbers are the usual reference values at normal air pressure. Pictures are real samples; where no real photo exists, none is shown.</p>
+        </footer>
+      )}
       {shelf === 'materials' && (
         <footer className="pw-sources">
           <span className="eyebrow">Sources for the property values</span>

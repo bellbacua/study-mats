@@ -3523,7 +3523,7 @@ sup.cite a {
 /* ---------- library ---------- */
 .lib-shelves {
   display: grid;
-  grid-template-columns: repeat(6, minmax(0, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(118px, 1fr));
   gap: 8px;
   margin: 8px 0 14px;
 }
@@ -3996,6 +3996,9 @@ sup.cite a {
   .lib-shelves {
     grid-template-columns: repeat(3, minmax(0, 1fr));
   }
+  .pt-body {
+    grid-template-columns: 1fr;
+  }
   .lib-detail-head {
     flex-direction: column;
   }
@@ -4208,4 +4211,96 @@ sup.cite a {
   .ph-card {
     scroll-margin-top: 70px;
   }
+}
+
+/* ---------------------------------------------------------------- periodic table */
+.pt-legend .chip { font-size: 12px; }
+.pt-ramp { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; font-size: 12px; color: var(--muted); margin: 4px 0 10px; }
+.pt-ramp i { display: block; width: 180px; height: 10px; border-radius: 5px; }
+.pt-ramp small { color: var(--faint); }
+.pt-scroll { overflow-x: auto; margin: 0 0 14px; padding-bottom: 4px; }
+.pt-grid {
+  display: grid;
+  grid-template-columns: repeat(18, minmax(34px, 1fr));
+  grid-template-rows: repeat(7, auto) 10px repeat(2, auto);
+  gap: 3px;
+  min-width: 640px;
+}
+.pt-cell {
+  position: relative;
+  aspect-ratio: 1 / 1.1;
+  border: 1px solid color-mix(in srgb, var(--el) 55%, var(--line));
+  background: color-mix(in srgb, var(--el) 22%, var(--surface));
+  border-radius: 6px;
+  color: var(--text);
+  padding: 2px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font: inherit;
+  transition: transform 0.15s var(--ease), opacity 0.2s;
+  min-width: 0;
+}
+.pt-cell small { position: absolute; top: 2px; left: 4px; font-size: 9px; color: var(--muted); }
+.pt-cell b { font-size: 15px; line-height: 1; margin-top: 4px; }
+.pt-cell span { font-size: 8px; color: var(--muted); max-width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.pt-cell:hover, .pt-cell:focus-visible { transform: scale(1.12); z-index: 2; }
+.pt-cell.on { outline: 2px solid var(--el); outline-offset: 1px; background: color-mix(in srgb, var(--el) 45%, var(--surface)); }
+.pt-cell.dim { opacity: 0.2; }
+.pt-gap { font-size: 9px; color: var(--faint); display: flex; align-items: center; justify-content: center; text-align: center; border: 1px dashed var(--line); border-radius: 6px; }
+.pt-head { display: flex; gap: 16px; align-items: flex-start; }
+.pt-big { flex: none; width: 84px; height: 92px; border-radius: 10px; border: 2px solid var(--el); background: color-mix(in srgb, var(--el) 22%, var(--surface)); display: flex; flex-direction: column; align-items: center; justify-content: center; }
+.pt-big small { color: var(--muted); }
+.pt-big b { font-size: 36px; line-height: 1; }
+.pt-head h2 { margin: 2px 0 6px; }
+.pt-found { margin: 0; color: var(--muted); }
+.pt-body { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 14px; }
+.pt-facts { display: grid; grid-template-columns: 1fr 1fr; gap: 8px 14px; margin: 0; }
+.pt-facts div { border-bottom: 1px solid var(--line); padding-bottom: 4px; }
+.pt-facts dt { font-size: 11px; color: var(--faint); text-transform: uppercase; letter-spacing: 0.04em; }
+.pt-facts dd { margin: 0; font-variant-numeric: tabular-nums; }
+.pt-more { margin: 14px 0 0; }
+.pt-more dt { font-weight: 600; margin-top: 10px; color: var(--subj); }
+.pt-more dd { margin: 2px 0 0; }
+@media (max-width: 640px) {
+  .pt-facts { grid-template-columns: 1fr 1fr; }
+  .pt-body { grid-template-columns: 1fr; }
+  .pt-big { width: 64px; height: 72px; }
+  .pt-big b { font-size: 26px; }
+}
+
+/* ---------------------------------------------------------------- phase diagrams */
+.pd-wrap { display: grid; grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr); gap: 16px; align-items: start; }
+.pd-plot { margin: 0; }
+.pd-plot svg { width: 100%; height: auto; display: block; touch-action: none; cursor: crosshair; background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); }
+.pd-plot figcaption { font-size: 11px; color: var(--faint); margin-top: 4px; }
+.pd-region { opacity: 0.16; transition: opacity 0.2s; }
+.pd-region.on { opacity: 0.38; }
+.pd-line { fill: none; stroke: var(--text); stroke-width: 1.6; opacity: 0.8; }
+.pd-axis { stroke: var(--muted); }
+.pd-tick { font-size: 11px; fill: var(--muted); }
+.pd-axlabel { font-size: 12px; fill: var(--muted); }
+.pd-rlabel { font-size: 13px; font-weight: 600; fill: var(--text); pointer-events: none; }
+.pd-band line { stroke: var(--faint); stroke-dasharray: 4 4; }
+.pd-band text { font-size: 11px; fill: var(--faint); }
+.pd-mark { fill: var(--text); }
+.pd-tie { stroke: var(--yellow); stroke-width: 3; }
+.pd-end { fill: var(--yellow); }
+.pd-guide { stroke: var(--blue); stroke-dasharray: 3 4; opacity: 0.5; }
+.pd-point { fill: var(--blue); stroke: var(--bg); stroke-width: 2; }
+.pd-sliders { display: grid; gap: 10px; margin-bottom: 12px; }
+.pd-sliders label { display: grid; gap: 4px; font-size: 13px; color: var(--muted); }
+.pd-sliders strong { color: var(--text); }
+.pd-sliders input { width: 100%; }
+.pd-card h3 { margin: 4px 0 10px; }
+.pd-bar { display: flex; height: 26px; border-radius: 6px; overflow: hidden; margin-bottom: 10px; border: 1px solid var(--line); }
+.pd-bar span { display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 600; transition: width 0.15s; }
+.pd-bar span:first-child { background: color-mix(in srgb, var(--blue) 45%, var(--surface)); }
+.pd-bar span:last-child { background: color-mix(in srgb, var(--gold) 45%, var(--surface)); }
+.pd-math { font-family: var(--mono); font-size: 12px; color: var(--muted); }
+.pd-about { margin-top: 16px; }
+@media (max-width: 760px) {
+  .pd-wrap { grid-template-columns: 1fr; }
 }
