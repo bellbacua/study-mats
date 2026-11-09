@@ -12,6 +12,8 @@ import { SITES } from '../data/library/phSites';
 import { useReveal } from '../state/useReveal';
 import { ClassChips, Sources } from './LibBits';
 import PhaseDiagrams from './PhaseDiagrams';
+import LabHandbook from './LabHandbook';
+import { TECHNIQUES } from '../data/library/techniques';
 import { DIAGRAMS } from '../data/library/phases';
 import PeriodicTable, { PT_SOURCES } from './PeriodicTable';
 import { ELEMENTS } from '../data/library/elements';
@@ -23,6 +25,7 @@ const SHELVES = [
   { id: 'people', icon: '👤', label: 'Who’s who', blurb: `${PEOPLE.length} people from the class stories, with the classes they appear in.` },
   { id: 'elements', icon: '⚛️', label: 'Periodic table', blurb: `All ${ELEMENTS.length} elements. Tap one for when and how it was found, its crystal structure, what it is used for and where it is mined.` },
   { id: 'phases', icon: '🌡️', label: 'Phase diagrams', blurb: `${DIAGRAMS.length} real alloy phase diagrams. Tap anywhere to see which phases are there and how much of each, or cool an alloy down slowly.` },
+  { id: 'lab', icon: '🔬', label: 'Lab handbook', blurb: `${TECHNIQUES.length} lab tests: what each one tells you, how it is done, how to read the result, and the usual mistakes.` },
   { id: 'map', icon: '🗺️', label: 'Philippine map', blurb: `${SITES.length} places in the Philippines where materials are mined, made or studied. Tap a pin for its story.` },
   { id: 'discoveries', icon: '💡', label: 'Discoveries', blurb: `${DISCOVERIES.length} famous discoveries, how they were made, and which ones were lucky accidents.` },
 ];
@@ -634,6 +637,7 @@ export default function LibraryPage({ progress, onOpen, onGo }) {
       {shelf === 'discoveries' && <DiscoveriesShelf {...props} />}
       {shelf === 'elements' && <PeriodicTable {...props} text={text} />}
       {shelf === 'phases' && <PhaseDiagrams {...props} text={text} />}
+      {shelf === 'lab' && <LabHandbook {...props} text={text} />}
       {shelf === 'map' && <PhMap {...props} onGo={onGo} />}
       {shelf === 'elements' && (
         <footer className="pw-sources">
