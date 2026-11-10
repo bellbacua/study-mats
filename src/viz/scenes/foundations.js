@@ -375,7 +375,7 @@ export const fraction_area_grid = {
 // ---------------------------------------------------------------------------
 // MATH 003: unit cancellation pipeline
 // ---------------------------------------------------------------------------
-const PIPELINES = {
+export const PIPELINES = {
   density: {
     start: () => ({ n: '7.87', nu: 'g', d: '1', du: 'cm³' }),
     cards: [

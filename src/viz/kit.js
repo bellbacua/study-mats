@@ -183,6 +183,12 @@ export function createKit(stage) {
         head.material.color.set(c);
         return api;
       },
+      opacity(a) {
+        shaft.opacity(a);
+        head.material.transparent = true;
+        head.material.opacity = a;
+        return api;
+      },
       visible(b) {
         api._visible = b;
         group.visible = b;

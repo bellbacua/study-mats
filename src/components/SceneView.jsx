@@ -2,7 +2,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { Stage } from '../viz/Stage';
 import { SCENES, initialParams } from '../viz/scenes';
 
-const beatDuration = (say) => 2600 + say.length * 42;
+const beatDuration = (say, b) => b?.ms ?? 2600 + say.length * 42;
 
 export default function SceneView({ type, mission, beat, onGoal, goalDone }) {
   const def = SCENES[type];
@@ -46,7 +46,10 @@ export default function SceneView({ type, mission, beat, onGoal, goalDone }) {
     };
   }, [def]);
 
-  const apply = useCallback((next, fromUser) => {
+  const apply = useCallback((nextIn, fromUser) => {
+    // Touching a control opens the whole picture: story-only settings
+    // (hidden from the controls) jump to their "free play" values.
+    const next = fromUser && def?.free ? { ...def.free, ...nextIn } : nextIn;
     for (const [k, v] of Object.entries(next)) {
       (seen.current[k] ||= new Set()).add(v);
     }
@@ -58,7 +61,7 @@ export default function SceneView({ type, mission, beat, onGoal, goalDone }) {
     }
     stage.current?.setTarget(next);
     setTarget((prev) => ({ ...prev, ...next }));
-  }, []);
+  }, [def]);
 
   const stop = useCallback(() => {
     clearTimeout(timer.current);
@@ -88,7 +91,7 @@ export default function SceneView({ type, mission, beat, onGoal, goalDone }) {
             setPlaying(-1);
             touched.current = true;
           }
-        }, beatDuration(b.say));
+        }, beatDuration(b.say, b));
       }
     },
     [def, apply]
@@ -133,7 +136,7 @@ export default function SceneView({ type, mission, beat, onGoal, goalDone }) {
           <div className={`scene-caption ${caption ? '' : 'empty'}`} key={caption}>
             {caption && cur >= 0 && <strong className="scene-step-tag">Step {cur + 1} of {nBeats} · </strong>}
             {caption || 'Use the step buttons, press “Auto-play”, or move the sliders below.'}
-            {playing >= 0 && <span className="scene-timer" style={{ animationDuration: `${beatDuration(caption)}ms` }} />}
+            {playing >= 0 && <span className="scene-timer" style={{ animationDuration: `${beatDuration(caption, def.beats?.[playing])}ms` }} />}
           </div>
           <div className="scene-tools">
             {nBeats > 0 && (
@@ -190,7 +193,7 @@ export default function SceneView({ type, mission, beat, onGoal, goalDone }) {
 
       <div className="scene-panel">
         <div className="controls">
-          {def.params.map((p) =>
+          {def.params.filter((p) => !p.hidden).map((p) =>
             p.type === 'choice' ? (
               <div key={p.key} className="control">
                 <span className="control-label">{p.label}</span>

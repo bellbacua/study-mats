@@ -179,7 +179,8 @@ export class Stage {
     this.time += dt;
     this.intro = Math.min(1, this.intro + dt / 1.4);
 
-    const k = 1 - Math.exp(-dt * 5.5);
+    // Story scenes set a slower `ease` so each move can be followed by eye.
+    const k = 1 - Math.exp(-dt * (this.def.ease ?? 5.5));
     for (const [key, v] of Object.entries(this.target)) {
       if (typeof v === 'number') {
         const cur = this.current[key];
