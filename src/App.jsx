@@ -131,7 +131,7 @@ export default function App() {
         ) : view === 'paths' ? (
           <PathwaysPage progress={state} onOpen={actions.open} />
         ) : view === 'library' ? (
-          <LibraryPage progress={state} onOpen={actions.open} onGo={setView} />
+          <LibraryPage progress={state} onOpen={actions.open} onGo={setView} onMark={(id) => !state.readings[id] && actions.toggleReading(id)} />
         ) : view === 'notes' ? (
           <NotesPage notes={state.notes} onOpen={actions.open} />
         ) : view === 'glossary' ? (

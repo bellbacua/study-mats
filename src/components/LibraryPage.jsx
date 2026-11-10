@@ -18,11 +18,15 @@ import { MICROGRAPHS, MIC_SOURCES } from '../data/library/micrographs';
 import { TECHNIQUES } from '../data/library/techniques';
 import { DIAGRAMS } from '../data/library/phases';
 import PeriodicTable, { PT_SOURCES } from './PeriodicTable';
+import { BriefsShelf, DetectiveShelf } from './Challenges';
+import { BRIEFS } from '../data/library/briefs';
 import { ELEMENTS } from '../data/library/elements';
 
 const SHELVES = [
   { id: 'materials', icon: '🧱', label: 'Materials', blurb: `${MATERIALS.length} materials with their typical properties. Plot any two properties against each other, or pick two to compare.` },
   { id: 'failures', icon: '🗂️', label: 'Failure files', blurb: `${FAILURES.length} famous accidents: what broke, why, and what engineers changed afterwards.` },
+  { id: 'briefs', icon: '🎯', label: 'Design challenges', blurb: `${BRIEFS.length} real design jobs. Read the brief, compare the numbers, and pick the material you would use.` },
+  { id: 'detective', icon: '🕵️', label: 'Failure detective', blurb: `The ${FAILURES.length} failure files as mysteries. Get the clues one at a time and name the cause.` },
   { id: 'formulas', icon: '∑', label: 'Formula sheet', blurb: `${FORMULAS.length} key equations of the course, with their symbols, units and the class that teaches each.` },
   { id: 'people', icon: '👤', label: 'Who’s who', blurb: `${PEOPLE.length} people from the class stories, with the classes they appear in.` },
   { id: 'elements', icon: '⚛️', label: 'Periodic table', blurb: `All ${ELEMENTS.length} elements. Tap one for when and how it was found, its crystal structure, what it is used for and where it is mined.` },
@@ -605,7 +609,7 @@ function DiscoveriesShelf({ q, byId, progress, onOpen }) {
 
 // ---------------------------------------------------------------- page
 
-export default function LibraryPage({ progress, onOpen, onGo }) {
+export default function LibraryPage({ progress, onOpen, onGo, onMark }) {
   const [shelf, setShelfState] = useState(loadShelf);
   const [query, setQuery] = useState('');
   const setShelf = (id) => {
@@ -647,6 +651,8 @@ export default function LibraryPage({ progress, onOpen, onGo }) {
       </div>
       {shelf === 'materials' && <MaterialsShelf {...props} />}
       {shelf === 'failures' && <FailuresShelf {...props} />}
+      {shelf === 'briefs' && <BriefsShelf {...props} onMark={onMark} />}
+      {shelf === 'detective' && <DetectiveShelf {...props} onMark={onMark} />}
       {shelf === 'formulas' && <FormulasShelf {...props} />}
       {shelf === 'people' && <PeopleShelf {...props} text={text} />}
       {shelf === 'discoveries' && <DiscoveriesShelf {...props} />}
