@@ -95,6 +95,7 @@ export default function ProgressPage({ progress, nextUp, onOpen, onPrintWeek }) 
         </button>
       )}
 
+      <div className="progress-split">
       <section className="calendar" data-reveal>
         <div className="cal-head">
           <button type="button" className="btn ghost sm" onClick={() => setOffset(offset + 1)}>
@@ -127,7 +128,7 @@ export default function ProgressPage({ progress, nextUp, onOpen, onPrintWeek }) 
         </div>
       </section>
 
-      <section data-reveal>
+      <section className="progress-subjects" data-reveal>
         <h2 className="section-title">By subject</h2>
         <div className="report-subjects">
           {bySubject.map(({ k, done: dn, total }) => (
@@ -143,6 +144,7 @@ export default function ProgressPage({ progress, nextUp, onOpen, onPrintWeek }) 
           ))}
         </div>
       </section>
+      </div>
 
       <ExportPanel progress={progress} onPrintWeek={onPrintWeek} />
     </div>

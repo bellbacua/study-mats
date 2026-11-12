@@ -3150,6 +3150,66 @@ input[type='range'] {
   flex: none;
 }
 
+/* Grouped menus ("Explore", "You"): a label plus a one-line hint per entry. */
+.topnav-caret {
+  font-size: 10px;
+  opacity: 0.7;
+  margin-left: 2px;
+}
+.topnav-more > .topnav-menu {
+  left: 0;
+  right: auto;
+  min-width: 260px;
+  gap: 2px;
+  background: #0b0e12;
+  border-color: var(--line);
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+}
+.topnav-more.end > .topnav-menu {
+  left: auto;
+  right: 0;
+}
+.topnav-menu button {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 2px;
+  padding: 9px 12px;
+  white-space: normal;
+}
+.topnav-menu .tm-label {
+  color: var(--text);
+  font-size: 14px;
+}
+.topnav-menu .tm-hint {
+  color: var(--faint);
+  font-size: 12px;
+  font-weight: 500;
+}
+.topnav-menu button.on {
+  box-shadow: inset 2px 0 0 var(--blue);
+}
+.topnav-menu-group + .topnav-menu-group,
+.topnav-menu > button + .topnav-menu-group {
+  border-top: 1px solid var(--line);
+  margin-top: 4px;
+  padding-top: 4px;
+}
+.topnav-menu-head {
+  padding: 6px 12px 2px;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--faint);
+}
+.topnav > button:focus-visible,
+.topnav-more > button:focus-visible,
+.topnav-menu button:focus-visible {
+  outline: 2px solid var(--blue);
+  outline-offset: 2px;
+}
+
 /* ---------- side topics (GE-style classes) ---------- */
 .track-philo {
   color: #e59ac0;
@@ -4828,4 +4888,126 @@ button.prog-program.on:disabled {
 
 /* "Add subjects from other programs": reachable from the Roadmap button */
 .borrow-section { scroll-margin-top: 90px; }
-.roadmap-head .borrow-cta { margin-top: 10px; }
+.roadmap-head .borrow-cta { margin-left: auto; }
+
+/* ---------- polish pass (Nov 12) ---------- */
+/* Lesson steps: one row whatever the number of steps (was 4 + 1 wrapped). */
+.lesson .tabs,
+.tabs {
+  grid-template-columns: none;
+  grid-auto-flow: column;
+  grid-auto-columns: minmax(0, 1fr);
+}
+.tab-label {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.tab > span:last-child {
+  min-width: 0;
+}
+.tab:not(.on):hover {
+  background: var(--surface-2);
+  color: var(--text);
+}
+
+/* Progress: month calendar and subject bars side by side. */
+.progress-split {
+  display: grid;
+  grid-template-columns: minmax(0, 340px) minmax(0, 1fr);
+  gap: 48px;
+  align-items: start;
+  margin-top: 24px;
+}
+.progress-split .calendar {
+  margin-top: 0;
+  max-width: none;
+}
+.progress-split .cal-grid {
+  gap: 4px;
+}
+.progress-split .cal-day {
+  border-radius: 6px;
+  font-size: 12px;
+}
+.progress-split .progress-subjects .section-title {
+  margin-top: 6px;
+}
+@container (max-width: 720px) {
+  .progress-split {
+    grid-template-columns: 1fr;
+    gap: 24px;
+  }
+}
+
+/* Roadmap: the "next class" card says it is clickable. */
+button.continue {
+  position: relative;
+  padding-right: 64px;
+}
+button.continue::after {
+  content: '→';
+  position: absolute;
+  right: 24px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 20px;
+  color: var(--blue);
+  transition: transform 0.2s var(--ease);
+}
+button.continue:hover::after {
+  transform: translate(4px, -50%);
+}
+.roadmap-meter {
+  margin-top: 20px;
+}
+
+/* Empty states: a quiet card instead of a stray line of text. */
+.empty-card {
+  margin-top: 24px;
+  padding: 24px;
+  max-width: 640px;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+}
+.empty-card strong {
+  font-size: 17px;
+}
+.empty-card p {
+  margin: 6px 0 16px;
+  color: var(--muted);
+}
+.ladder {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.ladder li {
+  display: flex;
+  align-items: baseline;
+  gap: 4px;
+  padding: 6px 12px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  font-size: 12px;
+  color: var(--faint);
+}
+.ladder li span {
+  font-family: var(--mono, 'JetBrains Mono', monospace);
+  font-size: 14px;
+  color: var(--blue);
+}
+
+/* Page intros read as a paragraph, not a banner across the whole screen. */
+.timeline-head > p {
+  max-width: 720px;
+}
+
+/* An open nav menu sits above the notes handle. */
+.app > .topbar:has(.topnav-menu) {
+  z-index: 45;
+}

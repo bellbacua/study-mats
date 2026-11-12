@@ -32,9 +32,18 @@ export default function ReviewPage({ progress, actions }) {
       </header>
 
       {passedCount === 0 ? (
-        <p className="notes-hint" data-reveal>
-          Nothing to review yet. Pass your first class and its questions will appear here tomorrow.
-        </p>
+        <div className="empty-card" data-reveal>
+          <strong>Nothing to review yet</strong>
+          <p>Pass your first class and its questions will show up here tomorrow. Each right answer pushes a question further out:</p>
+          <ol className="ladder" aria-label="Days until a question comes back">
+            {[1, 3, 10, 30, 90].map((d) => (
+              <li key={d}>
+                <span>{d}</span>
+                {d === 1 ? 'day' : 'days'}
+              </li>
+            ))}
+          </ol>
+        </div>
       ) : (
         <>
           <section className="review-today" data-reveal>

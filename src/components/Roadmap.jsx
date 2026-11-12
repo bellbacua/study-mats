@@ -12,11 +12,6 @@ export default function Roadmap({ progress, nextUp, onOpen, status, dueNow = 0, 
       <header className="roadmap-head">
         <h1>{PROGRAM.heading}</h1>
         <p>{PROGRAM.intro(CURRICULUM_TERMS.length)}</p>
-        {onBorrow && otherNames && (
-          <button type="button" className="btn ghost sm borrow-cta" onClick={onBorrow}>
-            + Add subjects from {otherNames}
-          </button>
-        )}
         <div className="roadmap-meter">
           <div className="meter">
             <div style={{ width: `${(done / LESSONS.length) * 100}%` }} />
@@ -25,8 +20,13 @@ export default function Roadmap({ progress, nextUp, onOpen, status, dueNow = 0, 
             {done} of {LESSONS.length} done
           </span>
           <span className={`save-state ${status}`}>
-            {status === 'sqlite' ? (window.__TAURI_INTERNALS__ ? 'Saved on this computer' : 'Saved to data/study_mats.db') : status === 'offline' ? 'Database offline: saving in browser only' : 'Loading…'}
+            {status === 'sqlite' ? (window.__TAURI_INTERNALS__ ? 'Saved on this computer' : 'Progress saved') : status === 'offline' ? 'Saving in this browser only' : 'Loading…'}
           </span>
+          {onBorrow && otherNames && (
+            <button type="button" className="btn ghost sm borrow-cta" onClick={onBorrow}>
+              + Add subjects from {otherNames}
+            </button>
+          )}
         </div>
         {dueNow > 0 && (
           <button type="button" className="continue review-due" onClick={onReview}>

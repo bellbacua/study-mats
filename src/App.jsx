@@ -23,6 +23,11 @@ export default function App() {
   const { state, status, actions: store } = useProgress();
   const [view, setView] = useState('roadmap');
   const [guideWeek, setGuideWeek] = useState(null);
+  // A new page starts at the top, not where the last one was scrolled to.
+  const go = (v) => {
+    setView(v);
+    window.scrollTo({ top: 0 });
+  };
 
   // The open class may be a core class or one from a specialization track.
   const active = ALL_LESSONS.find((l) => l.id === state.activeLessonId) || LESSONS[0];
@@ -66,13 +71,25 @@ export default function App() {
       { id: 'lesson', label: lessonLabel },
       { id: 'review', label: <>Review{dueNow > 0 && <span className="nav-badge">{dueNow}</span>}</> },
       { id: 'spec', label: 'Program' },
-      { id: 'timeline', label: 'Timeline' },
-      ...(PROGRAM_ID === 'mate' ? [{ id: 'paths', label: 'Pathways' }] : []),
-      { id: 'library', label: 'Library' },
-      { id: 'glossary', label: 'Glossary' },
-      { id: 'notes', label: 'My notes' },
-      { id: 'exams', label: 'Exams' },
-      { id: 'progress', label: 'Progress' },
+      {
+        group: 'explore',
+        label: 'Explore',
+        children: [
+          { id: 'library', label: 'Library', hint: 'Materials, people, formulas, case files' },
+          { id: 'timeline', label: 'Timeline', hint: 'Every class in the order it happened' },
+          { id: 'glossary', label: 'Glossary', hint: 'Words from your classes, explained' },
+          ...(PROGRAM_ID === 'mate' ? [{ id: 'paths', label: 'Pathways', hint: 'From school to licence to a career' }] : []),
+        ],
+      },
+      {
+        group: 'you',
+        label: 'You',
+        children: [
+          { id: 'progress', label: 'Progress', hint: 'Streak, study days, subjects' },
+          { id: 'exams', label: 'Quizzes & exams', hint: 'Weekly quizzes, midterm, final' },
+          { id: 'notes', label: 'My notes', hint: 'Everything you have written' },
+        ],
+      },
     ],
     [lessonLabel, dueNow],
   );
@@ -126,19 +143,19 @@ export default function App() {
   return (
     <div className="app">
       <header className="topbar">
-        <button type="button" className="brand" onClick={() => setView('roadmap')}>
+        <button type="button" className="brand" onClick={() => go('roadmap')}>
           <span className="brand-mark">∂</span>
           <span>Study Mats</span>
         </button>
-        <TopNav items={navItems} view={view} onPick={setView} />
+        <TopNav items={navItems} view={view} onPick={go} />
         <div className="topbar-right">
-          <span className={`save-dot ${saveMode}`} title={saveMode === 'sqlite' ? 'Saved to SQLite' : 'Not saving to the database'} />
+          <span className={`save-dot ${saveMode}`} title={saveMode === 'sqlite' ? 'Your progress is saved' : 'Progress is not being saved right now'} />
           {streak > 0 && (
-            <button type="button" className="streak" onClick={() => setView('progress')} title="Study streak">
+            <button type="button" className="streak" onClick={() => go('progress')} title="Study streak">
               🔥 {streak}
             </button>
           )}
-          <span className="count">
+          <span className="count" title="Classes finished">
             {done}/{LESSONS.length}
           </span>
         </div>
@@ -146,7 +163,7 @@ export default function App() {
 
       <main className="main">
         {view === 'roadmap' ? (
-          <Roadmap progress={state} nextUp={nextUp} onOpen={actions.open} status={saveMode} dueNow={dueNow} onReview={() => setView('review')} spec={spec} sideWeeks={sideWeeks} onBorrow={goBorrow} />
+          <Roadmap progress={state} nextUp={nextUp} onOpen={actions.open} status={saveMode} dueNow={dueNow} onReview={() => go('review')} spec={spec} sideWeeks={sideWeeks} onBorrow={goBorrow} />
         ) : view === 'review' ? (
           <ReviewPage progress={state} actions={actions} />
         ) : view === 'spec' ? (
@@ -163,7 +180,7 @@ export default function App() {
         ) : view === 'paths' ? (
           <PathwaysPage progress={state} onOpen={actions.open} />
         ) : view === 'library' ? (
-          <LibraryPage progress={state} onOpen={actions.open} onGo={setView} onMark={(id) => !state.readings[id] && actions.toggleReading(id)} />
+          <LibraryPage progress={state} onOpen={actions.open} onGo={go} onMark={(id) => !state.readings[id] && actions.toggleReading(id)} />
         ) : view === 'notes' ? (
           <NotesPage notes={state.notes} onOpen={actions.open} />
         ) : view === 'glossary' ? (
