@@ -18,7 +18,8 @@ import { SIDE_BIO } from './side_bio';
 import { SIDE_COMP } from './side_comp';
 import { SIDE_ECON } from './side_econ';
 import { CS_PROG } from './cs_prog';
+import { CS_AI } from './cs_ai';
 
 // Classes that have been split into parts (the "Learn it" section).
 // The Calculus 1 classes are the pilot.
-export const DEEP = { ...CALC1, ...CALC2, ...NUMBERS, ...ALGEBRA, ...PHYSICS1, ...CHEM1, ...CHEM2, ...MATE1, ...YEAR3A, ...YEAR3B, ...YEAR4A, ...YEAR4B, ...SPEC_METALS, ...SPEC_ELECTRONIC, ...SPEC_ENERGY, ...SIDE_PHILO, ...SIDE_BIO, ...SIDE_COMP, ...SIDE_ECON, ...CS_PROG };
+export const DEEP = { ...CALC1, ...CALC2, ...NUMBERS, ...ALGEBRA, ...PHYSICS1, ...CHEM1, ...CHEM2, ...MATE1, ...YEAR3A, ...YEAR3B, ...YEAR4A, ...YEAR4B, ...SPEC_METALS, ...SPEC_ELECTRONIC, ...SPEC_ENERGY, ...SIDE_PHILO, ...SIDE_BIO, ...SIDE_COMP, ...SIDE_ECON, ...CS_PROG, ...CS_AI };

@@ -45,6 +45,7 @@ import * as stories18 from './stories18';
 import * as stories19 from './stories19';
 import * as stories20 from './stories20';
 import * as cs_prog from './cs_prog';
+import * as cs_ai from './cs_ai';
 import { NOTES } from './notes';
 
 // The "try this" challenge for each scene, and how we know it's done.
@@ -121,11 +122,11 @@ const MISSIONS = {
 };
 
 // Scenes rebuilt as narrated stories (they carry their own notes per step).
-const STORY = new Set([...Object.keys(stories1), ...Object.keys(stories2), ...Object.keys(stories3), ...Object.keys(stories4), ...Object.keys(stories5), ...Object.keys(stories6), ...Object.keys(stories7), ...Object.keys(stories8), ...Object.keys(stories9), ...Object.keys(stories10), ...Object.keys(stories11), ...Object.keys(stories12), ...Object.keys(stories13), ...Object.keys(stories14), ...Object.keys(stories15), ...Object.keys(stories16).filter((k) => k !== 'retell'), ...Object.keys(stories17), ...Object.keys(stories18), ...Object.keys(stories19), ...Object.keys(stories20), ...Object.keys(cs_prog)]);
+const STORY = new Set([...Object.keys(stories1), ...Object.keys(stories2), ...Object.keys(stories3), ...Object.keys(stories4), ...Object.keys(stories5), ...Object.keys(stories6), ...Object.keys(stories7), ...Object.keys(stories8), ...Object.keys(stories9), ...Object.keys(stories10), ...Object.keys(stories11), ...Object.keys(stories12), ...Object.keys(stories13), ...Object.keys(stories14), ...Object.keys(stories15), ...Object.keys(stories16).filter((k) => k !== 'retell'), ...Object.keys(stories17), ...Object.keys(stories18), ...Object.keys(stories19), ...Object.keys(stories20), ...Object.keys(cs_prog), ...Object.keys(cs_ai)]);
 
 // visualLab.type in the curriculum → scene definition
 export const SCENES = {};
-for (const [type, def] of Object.entries({ ...foundations, ...chemistry, ...calculus, ...materials, ...origins, ...matter, ...physics, ...language, ...um_math1, ...um_physics, ...um_chem1, ...um_chem2, ...um_mate1, ...um_mate2, ...um_math2, ...um_year3a, ...um_year3b, ...um_year4a, ...um_year4b, ...spec_metals, ...spec_electronic, ...spec_energy, ...side_philo, ...side_bio, ...side_comp, ...side_econ, ...stories1, ...stories2, ...stories3, ...stories4, ...stories5, ...stories6, ...stories7, ...stories8, ...stories9, ...stories10, ...stories11, ...stories12, ...stories13, ...stories14, ...stories15, ...stories16, ...stories17, ...stories18, ...stories19, ...stories20, ...cs_prog })) {
+for (const [type, def] of Object.entries({ ...foundations, ...chemistry, ...calculus, ...materials, ...origins, ...matter, ...physics, ...language, ...um_math1, ...um_physics, ...um_chem1, ...um_chem2, ...um_mate1, ...um_mate2, ...um_math2, ...um_year3a, ...um_year3b, ...um_year4a, ...um_year4b, ...spec_metals, ...spec_electronic, ...spec_energy, ...side_philo, ...side_bio, ...side_comp, ...side_econ, ...stories1, ...stories2, ...stories3, ...stories4, ...stories5, ...stories6, ...stories7, ...stories8, ...stories9, ...stories10, ...stories11, ...stories12, ...stories13, ...stories14, ...stories15, ...stories16, ...stories17, ...stories18, ...stories19, ...stories20, ...cs_prog, ...cs_ai })) {
   if (typeof def !== 'object' || !def.setup) continue;
   SCENES[type] = { ...def, ...MISSIONS[type] };
   // On-picture callouts for each narrated step (see notes.js).
