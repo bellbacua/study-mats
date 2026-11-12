@@ -165,7 +165,9 @@ export function createKit(stage) {
         const len = d.length();
         group.visible = len > 1e-3 && api._visible !== false;
         if (!group.visible) return api;
-        const hl = Math.min(headLen, len * 0.6);
+        // `screen` arrows keep their head size on screen when the camera zooms
+        const z = opts.screen && stage.view && stage.home?.x ? (stage.view.x[1] - stage.view.x[0]) / (stage.home.x[1] - stage.home.x[0]) : 1;
+        const hl = Math.min(headLen * z, len * 0.6);
         const shaftEnd = B.clone().sub(d.clone().normalize().multiplyScalar(hl * 0.8));
         shaft.set([a, [shaftEnd.x, shaftEnd.y, shaftEnd.z]]);
         head.scale.setScalar(hl / headLen);
@@ -512,6 +514,8 @@ export function createKit(stage) {
       tick(time) {
         const on = h.active();
         g.visible = h.shown;
+        // keep the same size on screen when a story step zooms the camera
+        if (stage.view && stage.home?.x) g.scale.setScalar((stage.view.x[1] - stage.view.x[0]) / (stage.home.x[1] - stage.home.x[0]));
         const pulse = h.hot ? 1 : 0.5 + 0.5 * Math.sin(time * 3.2);
         const R = r * (h.hot ? 2.1 : 1.5 + 0.5 * pulse);
         ring.obj.scale.setScalar(R);

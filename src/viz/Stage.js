@@ -119,7 +119,7 @@ export class Stage {
       if (!slot) {
         slot = {
           label: this.kit.label('', [0, 0], { cls: 'viz-note', tex: false }),
-          arrow: this.kit.arrow([0, 0], [0.01, 0], { color: C.yellow, width: 3, head: 0.28 }),
+          arrow: this.kit.arrow([0, 0], [0.01, 0], { color: C.yellow, width: 3, head: 0.28, screen: true }),
           a: 0,
         };
         // callout arrows always draw on top of the scene

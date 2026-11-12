@@ -29,6 +29,7 @@ import * as stories2 from './stories2';
 import * as stories3 from './stories3';
 import * as stories4 from './stories4';
 import * as stories5 from './stories5';
+import * as stories6 from './stories6';
 import { NOTES } from './notes';
 
 // The "try this" challenge for each scene, and how we know it's done.
@@ -105,11 +106,11 @@ const MISSIONS = {
 };
 
 // Scenes rebuilt as narrated stories (they carry their own notes per step).
-const STORY = new Set([...Object.keys(stories1), ...Object.keys(stories2), ...Object.keys(stories3), ...Object.keys(stories4), ...Object.keys(stories5)]);
+const STORY = new Set([...Object.keys(stories1), ...Object.keys(stories2), ...Object.keys(stories3), ...Object.keys(stories4), ...Object.keys(stories5), ...Object.keys(stories6)]);
 
 // visualLab.type in the curriculum → scene definition
 export const SCENES = {};
-for (const [type, def] of Object.entries({ ...foundations, ...chemistry, ...calculus, ...materials, ...origins, ...matter, ...physics, ...language, ...um_math1, ...um_physics, ...um_chem1, ...um_chem2, ...um_mate1, ...um_mate2, ...um_math2, ...um_year3a, ...um_year3b, ...um_year4a, ...um_year4b, ...spec_metals, ...spec_electronic, ...spec_energy, ...side_philo, ...side_bio, ...side_comp, ...side_econ, ...stories1, ...stories2, ...stories3, ...stories4, ...stories5 })) {
+for (const [type, def] of Object.entries({ ...foundations, ...chemistry, ...calculus, ...materials, ...origins, ...matter, ...physics, ...language, ...um_math1, ...um_physics, ...um_chem1, ...um_chem2, ...um_mate1, ...um_mate2, ...um_math2, ...um_year3a, ...um_year3b, ...um_year4a, ...um_year4b, ...spec_metals, ...spec_electronic, ...spec_energy, ...side_philo, ...side_bio, ...side_comp, ...side_econ, ...stories1, ...stories2, ...stories3, ...stories4, ...stories5, ...stories6 })) {
   if (typeof def !== 'object' || !def.setup) continue;
   SCENES[type] = { ...def, ...MISSIONS[type] };
   // On-picture callouts for each narrated step (see notes.js).
