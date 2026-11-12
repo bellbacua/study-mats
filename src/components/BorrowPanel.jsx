@@ -24,7 +24,7 @@ export default function BorrowPanel({ progress, onToggleKey, onOpen, startWeek }
   });
   for (const t of prog.tracks) {
     const ls = trackLessons(t.id);
-    if (ls.length) groups.push({ title: `${t.icon} ${t.title} track`, note: t.blurb, lessons: ls });
+    if (ls.length) groups.push({ title: `${t.icon} ${t.title} track`, note: t.blurb, lessons: ls, open: true });
   }
 
   const add = (ids) => {
@@ -38,9 +38,9 @@ export default function BorrowPanel({ progress, onToggleKey, onOpen, startWeek }
   };
 
   return (
-    <section data-reveal>
+    <section data-reveal id="borrow" className="borrow-section">
       <div className="prog-section-head">
-        <h2>Borrow classes from other programs</h2>
+        <h2>Add subjects from other programs</h2>
         <p>
           Any class from another program can sit in your timetable as an extra, from week {startWeek} on. Classes that both programs share (most of the math)
           count once, in both. If a class builds on things you have not passed yet, you will see them first, with the option to add them too.
@@ -117,7 +117,7 @@ export default function BorrowPanel({ progress, onToggleKey, onOpen, startWeek }
         {groups
           .filter((g) => g.lessons.length)
           .map((g) => (
-            <details key={g.title} className="borrow-group">
+            <details key={g.title} className="borrow-group" open={g.open}>
               <summary>
                 <strong>{g.title}</strong>
                 <span className="notes-hint">

@@ -4825,3 +4825,7 @@ button.prog-program.on:disabled {
 }
 .viz-label.mono { font-family: var(--mono); }
 .viz-label.mono { white-space: pre; }
+
+/* "Add subjects from other programs": reachable from the Roadmap button */
+.borrow-section { scroll-margin-top: 90px; }
+.roadmap-head .borrow-cta { margin-top: 10px; }

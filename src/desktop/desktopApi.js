@@ -125,6 +125,8 @@ export async function installDesktopApi(store) {
     return true;
   };
 
+  // The app calls this before a reload (switching program) so nothing is lost.
+  window.__studyFlush = flush;
   return { flush };
 }
 

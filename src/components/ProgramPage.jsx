@@ -24,6 +24,7 @@ export default function ProgramPage({ progress, onOpen, onToggle, onToggleKey, o
       <section data-reveal>
         <div className="prog-section-head">
           <h2>Main program</h2>
+          <p>Switching changes your whole timetable. To keep your program and just add a few subjects from another one, use “Add subjects from other programs” below.</p>
         </div>
         <div className="prog-programs">
           {PROGRAMS.map((p) => (
@@ -60,9 +61,9 @@ export default function ProgramPage({ progress, onOpen, onToggle, onToggleKey, o
         )}
       </section>
 
-      <SpecializationsPage progress={progress} onOpen={onOpen} onToggle={onToggle} embedded />
-
       <BorrowPanel progress={progress} onToggleKey={onToggleKey} onOpen={onOpen} startWeek={startWeek} />
+
+      <SpecializationsPage progress={progress} onOpen={onOpen} onToggle={onToggle} embedded />
 
       <section data-reveal>
         <div className="prog-section-head">

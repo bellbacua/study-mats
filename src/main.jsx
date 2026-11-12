@@ -106,7 +106,12 @@ if ((typeof window !== 'undefined' && window.__TAURI_INTERNALS__) || desktopTest
               const b = localStorage.getItem('desktop-test-db');
               return b ? Uint8Array.from(atob(b), (c) => c.charCodeAt(0)) : null;
             },
-            save: async (u8) => localStorage.setItem('desktop-test-db', btoa(String.fromCharCode(...u8))),
+            // &slow makes each write take 400 ms, like writing the file to disk.
+            save: async (u8) => {
+              const data = btoa(String.fromCharCode(...u8));
+              if (new URLSearchParams(location.search).has('slow')) await new Promise((r) => setTimeout(r, 400));
+              localStorage.setItem('desktop-test-db', data);
+            },
             where: async () => 'localStorage (test)',
           }
         : tauriStore();

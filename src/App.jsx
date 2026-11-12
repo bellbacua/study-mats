@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { LESSONS, ALL_LESSONS, TRACKS, PROGRAMS, PROGRAM_ID, rememberProgram, seqOf, trackLessons, trackClassState, openSlots, sideByWeek, weekNumber } from './data/path';
 import LessonView from './components/LessonView';
 import Roadmap from './components/Roadmap';
@@ -84,18 +84,31 @@ export default function App() {
 
   // The timetable is built for the program remembered in this browser. If the
   // saved progress says another one (a new device, an import), switch to it.
+  const switchingRef = useRef(false);
   useEffect(() => {
+    if (switchingRef.current) return;
     if (savedProgram && savedProgram !== PROGRAM_ID) {
       rememberProgram(savedProgram);
       window.location.reload();
     }
   }, [savedProgram]);
-  const switchProgram = (id) => {
+  const switchProgram = async (id) => {
+    // Block the "saved progress says another program" check above while the
+    // new choice is still being written, or it would switch straight back.
+    switchingRef.current = true;
     for (const p of PROGRAMS) if (state.readings[`program:${p.id}`] && p.id !== id) actions.toggleReading(`program:${p.id}`);
     if (!state.readings[`program:${id}`]) actions.toggleReading(`program:${id}`);
     rememberProgram(id);
-    // Give the save a moment to reach the database before the page reloads.
-    setTimeout(() => window.location.reload(), 1200);
+    // Let the save reach the database (and, in the desktop app, the file on
+    // disk) before the page reloads.
+    await new Promise((r) => setTimeout(r, 500));
+    if (window.__studyFlush) await window.__studyFlush().catch(() => {});
+    else await new Promise((r) => setTimeout(r, 700));
+    window.location.reload();
+  };
+  const goBorrow = () => {
+    setView('spec');
+    setTimeout(() => document.getElementById('borrow')?.scrollIntoView({ behavior: 'smooth', block: 'start' }), 150);
   };
 
   if (status.mode && status.mode !== 'loading' && !hasProgram)
@@ -133,7 +146,7 @@ export default function App() {
 
       <main className="main">
         {view === 'roadmap' ? (
-          <Roadmap progress={state} nextUp={nextUp} onOpen={actions.open} status={saveMode} dueNow={dueNow} onReview={() => setView('review')} spec={spec} sideWeeks={sideWeeks} />
+          <Roadmap progress={state} nextUp={nextUp} onOpen={actions.open} status={saveMode} dueNow={dueNow} onReview={() => setView('review')} spec={spec} sideWeeks={sideWeeks} onBorrow={goBorrow} />
         ) : view === 'review' ? (
           <ReviewPage progress={state} actions={actions} />
         ) : view === 'spec' ? (

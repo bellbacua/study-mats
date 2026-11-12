@@ -1,9 +1,10 @@
-import { CURRICULUM_TERMS, LESSONS, SUBJECTS, PROGRAM, trackClassState } from '../data/path';
+import { CURRICULUM_TERMS, LESSONS, SUBJECTS, PROGRAM, PROGRAMS, PROGRAM_ID, trackClassState } from '../data/path';
 import { useReveal } from '../state/useReveal';
 
 const shortName = (p) => p.split('(')[0].trim();
 
-export default function Roadmap({ progress, nextUp, onOpen, status, dueNow = 0, onReview, spec, sideWeeks = {} }) {
+export default function Roadmap({ progress, nextUp, onOpen, status, dueNow = 0, onReview, spec, sideWeeks = {}, onBorrow }) {
+  const otherNames = PROGRAMS.filter((p) => p.ready && p.id !== PROGRAM_ID).map((p) => p.short || p.title).join(' or ');
   const done = LESSONS.filter((l) => progress.passed[l.id]).length;
   useReveal([done]);
   return (
@@ -11,6 +12,11 @@ export default function Roadmap({ progress, nextUp, onOpen, status, dueNow = 0, 
       <header className="roadmap-head">
         <h1>{PROGRAM.heading}</h1>
         <p>{PROGRAM.intro(CURRICULUM_TERMS.length)}</p>
+        {onBorrow && otherNames && (
+          <button type="button" className="btn ghost sm borrow-cta" onClick={onBorrow}>
+            + Add subjects from {otherNames}
+          </button>
+        )}
         <div className="roadmap-meter">
           <div className="meter">
             <div style={{ width: `${(done / LESSONS.length) * 100}%` }} />
