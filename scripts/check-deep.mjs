@@ -28,7 +28,7 @@ const tex = (id, where, t) => {
 };
 const words = (id, where, v) => {
   // The Computing side topic is allowed to talk about computing.
-  if (String(id).startsWith('comp-')) return;
+  if (/^(comp|cs|ai)-/.test(String(id))) return;
   if (typeof v === 'string') {
     // A few ordinary phrases that happen to contain a flagged word.
     if (CS.test(v.replace(/genetic code|codons? table|code of ethics/gi, ''))) bad(id, `${where} uses programming wording: "${v.slice(0, 80)}"`);
@@ -51,7 +51,7 @@ for (const [id, d] of Object.entries(DEEP)) {
     const w = `part ${n + 1}`;
     if (!pt.title || !(pt.minutes > 0)) bad(id, `${w} needs title and minutes`);
     if (!Array.isArray(pt.explain) || pt.explain.length < 2) bad(id, `${w} needs at least 2 explain paragraphs`);
-    if (!Array.isArray(pt.formulas) || pt.formulas.length < 1) bad(id, `${w} needs at least 1 formula`);
+    if ((pt.formulas || []).length + (pt.code || []).length < 1) bad(id, `${w} needs at least 1 formula or code box`);
     (pt.formulas || []).forEach(([label, t], k) => (label ? tex(id, `${w} formula ${k + 1}`, t) : bad(id, `${w} formula ${k + 1} needs a label`)));
     if (!Array.isArray(pt.examples) || pt.examples.length < 2) bad(id, `${w} needs at least 2 worked examples`);
     (pt.examples || []).forEach((e, k) => {

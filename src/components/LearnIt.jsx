@@ -168,8 +168,14 @@ function Part({ p, n, count, done, onDone }) {
           </p>
         ))}
       </div>
+      {(p.code || []).map(([label, text]) => (
+        <div key={label} className="part-formula">
+          <span className="eyebrow">{label}</span>
+          <Code text={text} />
+        </div>
+      ))}
       <div className="part-formulas">
-        {p.formulas.map(([label, tex]) => (
+        {(p.formulas || []).map(([label, tex]) => (
           <div key={label} className="part-formula">
             <span className="eyebrow">{label}</span>
             <MathFormula tex={tex} />
@@ -207,6 +213,7 @@ function Worked({ e, k }) {
       <p className="worked-q">
         <strong>Example {k + 1}.</strong> <Glossed text={e.problem} />
       </p>
+      <Code text={e.code} />
       <ol className="worked-steps">
         {e.steps.slice(0, shownSteps).map(([text, tex], i) => (
           <li key={i}>
@@ -253,6 +260,7 @@ function ChoiceProblem({ item, k, onRight }) {
       <p>
         <strong>{k + 1}.</strong> <Glossed text={item.q} />
       </p>
+      <Code text={item.code} />
       <div className="options problem-options">
         {mixed.options.map((o, i) => (
           <button
@@ -310,6 +318,7 @@ function TypedProblem({ item, k, onRight }) {
       <p>
         <strong>{k + 1}.</strong> <Glossed text={item.q} />
       </p>
+      <Code text={item.code} />
       <div className="problem-row">
         <input
           type="text"
@@ -395,5 +404,15 @@ export function Predict({ predict: raw, children }) {
       </div>
       {pick !== null && children}
     </>
+  );
+}
+
+// A short program to read (Computer Science classes).
+function Code({ text }) {
+  if (!text) return null;
+  return (
+    <pre className="code-block">
+      <code>{text}</code>
+    </pre>
   );
 }

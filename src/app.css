@@ -4812,3 +4812,16 @@ button.prog-program:not(:disabled):hover {
 button.prog-program.on:disabled {
   opacity: 1;
 }
+.code-block {
+  margin: 8px 0;
+  padding: 12px 14px;
+  border-radius: 10px;
+  border: 1px solid var(--line);
+  background: #0b1220;
+  color: #d6e4ff;
+  font: 14px/1.5 ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  overflow-x: auto;
+  white-space: pre;
+}
+.viz-label.mono { font-family: var(--mono); }
+.viz-label.mono { white-space: pre; }
