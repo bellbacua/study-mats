@@ -157,17 +157,3 @@ export const SIDES_LATER = [
   { title: 'History of Technology', icon: '🏛', blurb: 'From bronze to silicon: how materials shaped empires and everyday life.' },
   { title: 'Design and Drawing', icon: '✏️', blurb: 'Sketching, perspective and how products are designed for people.' },
 ];
-
-// The main program a learner follows. Only one is written so far.
-export const PROGRAMS = [
-  {
-    id: 'mate',
-    title: 'BS Materials Engineering',
-    school: 'University of Mindanao',
-    blurb: '48 weeks from counting to materials engineering, lined up with the UM program, with three specialization tracks.',
-    ready: true,
-  },
-  { id: 'phys', title: 'BS Physics', blurb: 'Mechanics to quantum physics, built the same way.', ready: false },
-  { id: 'cheme', title: 'BS Chemical Engineering', blurb: 'Reactions, processes and plants.', ready: false },
-  { id: 'cs', title: 'BS Computer Science', blurb: 'How computing works, from logic to large systems.', ready: false },
-];

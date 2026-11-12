@@ -4,7 +4,7 @@ import Glossed from './Glossed';
 import Pictures from './Pictures';
 import { useReveal } from '../state/useReveal';
 import Practice from './Practice';
-import { READINGS as LESSON_READINGS, UM_COURSES, whereLabel } from '../data/path';
+import { READINGS as LESSON_READINGS, UM_COURSES, PROGRAM, whereLabel } from '../data/path';
 import { LABS } from '../data/labs';
 import { LEGENDS } from '../data/legends';
 import { DEEP } from '../data/deep';
@@ -105,7 +105,7 @@ export default function LessonView({ lesson, index, total, progress, actions, pr
         <div className="lesson-crumbs">
           <span className={`track track-${lesson.track}`}>{lesson.code}</span>
           <span>
-            {lesson.spec ? `${whereLabel(lesson)} · class ${index + 1} of ${total}` : `Week ${lesson.termId?.replace('week-', '')} · ${lesson.day} · class ${index + 1} of ${total}`}
+            {lesson.spec || lesson.from ? `${whereLabel(lesson)} · class ${index + 1} of ${total}` : `Week ${lesson.termId?.replace('week-', '')} · ${lesson.day} · class ${index + 1} of ${total}`}
           </span>
           {progress.passed[lesson.id] && <span className="pill ok">✓ done</span>}
         </div>
@@ -113,7 +113,7 @@ export default function LessonView({ lesson, index, total, progress, actions, pr
         <p className="lesson-sub">{lesson.subtitle}</p>
         {lesson.um?.length > 0 && (
           <p className="um-tags">
-            <span>Prepares you for</span>
+            <span>{lesson.from ? 'Part of' : PROGRAM.tagLabel}</span>
             {lesson.um.map((c) => (
               <span key={c} className="um-tag" title={UM_COURSES[c] || ''}>
                 <strong>{c}</strong> {UM_COURSES[c]}

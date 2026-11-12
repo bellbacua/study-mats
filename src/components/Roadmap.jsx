@@ -1,4 +1,4 @@
-import { CURRICULUM_TERMS, LESSONS, SUBJECTS, trackClassState } from '../data/path';
+import { CURRICULUM_TERMS, LESSONS, SUBJECTS, PROGRAM, trackClassState } from '../data/path';
 import { useReveal } from '../state/useReveal';
 
 const shortName = (p) => p.split('(')[0].trim();
@@ -9,12 +9,8 @@ export default function Roadmap({ progress, nextUp, onOpen, status, dueNow = 0, 
   return (
     <div className="roadmap">
       <header className="roadmap-head">
-        <h1>From counting to materials engineering</h1>
-        <p>
-          {CURRICULUM_TERMS.length} weeks, three or four classes a week, covering what you need for the first two years of UM’s BS Materials
-          Engineering. Math, Chemistry, Physics, Materials and Engineering take turns, and each follows its own history from
-          the very beginning.
-        </p>
+        <h1>{PROGRAM.heading}</h1>
+        <p>{PROGRAM.intro(CURRICULUM_TERMS.length)}</p>
         <div className="roadmap-meter">
           <div className="meter">
             <div style={{ width: `${(done / LESSONS.length) * 100}%` }} />
@@ -100,7 +96,9 @@ export default function Roadmap({ progress, nextUp, onOpen, status, dueNow = 0, 
                 );
               })}
               {(sideWeeks[term.id] || []).map((l) => {
-                const st = trackClassState(l, progress.passed);
+                // Borrowed classes are never locked: the Program page already
+                // suggested their foundations.
+                const st = l.borrowed ? { open: true, done: !!progress.passed[l.id] } : trackClassState(l, progress.passed);
                 return (
                   <li key={l.id} data-reveal>
                     <button
@@ -111,9 +109,9 @@ export default function Roadmap({ progress, nextUp, onOpen, status, dueNow = 0, 
                       onClick={() => onOpen(l.id)}
                     >
                       <span className="class-top">
-                        <span className="class-day">GE</span>
+                        <span className="class-day">{l.borrowed ? 'Extra' : 'GE'}</span>
                         <span className={`subject track-${l.track}`}>{SUBJECTS[l.track] || l.track}</span>
-                        <span className="class-num">{st.done ? '✓' : st.open ? `${l.specIndex + 1}/${l.specCount}` : '🔒'}</span>
+                        <span className="class-num">{st.done ? '✓' : l.borrowed ? '' : st.open ? `${l.specIndex + 1}/${l.specCount}` : '🔒'}</span>
                       </span>
                       <span className="path-title">{l.title}</span>
                       <span className="path-meta">
@@ -124,6 +122,7 @@ export default function Roadmap({ progress, nextUp, onOpen, status, dueNow = 0, 
                 );
               })}
             </ol>
+            {term.soon.length > 0 && <p className="notes-hint week-soon">Being written for this week: {term.soon.join(' · ')}</p>}
           </section>
         );
       })}

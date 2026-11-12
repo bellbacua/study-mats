@@ -1,4 +1,4 @@
-import { TRACKS, trackLessons, trackClassState, yearProgress, openSlots, UM_COURSES } from '../data/path';
+import { TRACKS, PROGRAM_ID, trackLessons, trackClassState, yearProgress, openSlots, UM_COURSES } from '../data/path';
 import { useReveal } from '../state/useReveal';
 
 // Elective tracks. Locked until Year 1 is finished; then pick one. Finishing
@@ -15,10 +15,17 @@ export default function SpecializationsPage({ progress, onOpen, onToggle, embedd
     <div className="spec-page">
       <header className={embedded ? 'prog-section-head' : 'timeline-head'} data-reveal>
         {embedded ? <h2>Specialization tracks</h2> : <h1>Specializations</h1>}
-        <p>
-          Materials engineering splits into branches, like any big field. A track adds a short run of deeper classes on top of your timetable, and fills
-          the elective slots of your UM program ({['MATE 303', 'MATE 308', 'MATE 405'].map((c) => `${c} ${UM_COURSES[c]}`).join(', ')}).
-        </p>
+        {PROGRAM_ID === 'mate' ? (
+          <p>
+            Materials engineering splits into branches, like any big field. A track adds a short run of deeper classes on top of your timetable, and fills
+            the elective slots of your UM program ({['MATE 303', 'MATE 308', 'MATE 405'].map((c) => `${c} ${UM_COURSES[c]}`).join(', ')}).
+          </p>
+        ) : (
+          <p>
+            Computer science splits into branches too. A track adds a run of deeper classes on top of your timetable, like the electives and specializations
+            of a BSCS program. Each class also waits for the core classes it builds on.
+          </p>
+        )}
       </header>
 
       <section className="spec-unlock" data-reveal>

@@ -1,5 +1,5 @@
-import { useMemo, useState } from 'react';
-import { LESSONS, ALL_LESSONS, TRACKS, PROGRAMS, trackLessons, trackClassState, openSlots, sideByWeek, weekNumber } from './data/path';
+import { useEffect, useMemo, useState } from 'react';
+import { LESSONS, ALL_LESSONS, TRACKS, PROGRAMS, PROGRAM_ID, rememberProgram, seqOf, trackLessons, trackClassState, openSlots, sideByWeek, weekNumber } from './data/path';
 import LessonView from './components/LessonView';
 import Roadmap from './components/Roadmap';
 import NotesPanel from './components/NotesPanel';
@@ -26,7 +26,7 @@ export default function App() {
 
   // The open class may be a core class or one from a specialization track.
   const active = ALL_LESSONS.find((l) => l.id === state.activeLessonId) || LESSONS[0];
-  const seq = active.spec ? trackLessons(active.spec) : LESSONS;
+  const seq = seqOf(active);
   const pos = seq.findIndex((l) => l.id === active.id);
   const lesson = active;
   const idx = Math.max(0, LESSONS.findIndex((l) => l.id === active.id));
@@ -43,7 +43,7 @@ export default function App() {
     .find((l) => l && trackClassState(l, state.passed).open);
   const spec =
     slots > picked.length
-      ? { eyebrow: '🔓 Specialization unlocked', title: 'Choose a track: metals, electronic or energy materials', meta: 'A short run of deeper classes on top of your timetable.', go: () => setView('spec') }
+      ? { eyebrow: '🔓 Specialization unlocked', title: `Choose a track: ${TRACKS.map((t) => t.title.toLowerCase()).join(', ').replace(/, ([^,]*)$/, ' or $1')}`, meta: 'A short run of deeper classes on top of your timetable.', go: () => setView('spec') }
       : trackNext
         ? { eyebrow: `Your ${TRACKS.find((t) => t.id === trackNext.spec).title} track`, title: trackNext.title, meta: trackNext.subtitle, go: () => actions.open(trackNext.id) }
         : null;
@@ -59,7 +59,7 @@ export default function App() {
 
   const saveMode = status.mode === 'sqlite' ? 'sqlite' : status.mode === 'offline' ? 'offline' : 'loading';
 
-  const lessonLabel = lesson.side ? 'GE class' : lesson.spec ? 'Track class' : `Lesson ${idx + 1}`;
+  const lessonLabel = lesson.side ? 'GE class' : lesson.spec ? 'Track class' : lesson.from ? 'Borrowed class' : `Lesson ${idx + 1}`;
   const navItems = useMemo(
     () => [
       { id: 'roadmap', label: 'Roadmap' },
@@ -67,7 +67,7 @@ export default function App() {
       { id: 'review', label: <>Review{dueNow > 0 && <span className="nav-badge">{dueNow}</span>}</> },
       { id: 'spec', label: 'Program' },
       { id: 'timeline', label: 'Timeline' },
-      { id: 'paths', label: 'Pathways' },
+      ...(PROGRAM_ID === 'mate' ? [{ id: 'paths', label: 'Pathways' }] : []),
       { id: 'library', label: 'Library' },
       { id: 'glossary', label: 'Glossary' },
       { id: 'notes', label: 'My notes' },
@@ -79,14 +79,32 @@ export default function App() {
 
   const startWeek = nextUp ? weekNumber(nextUp) : 1;
   const sideWeeks = useMemo(() => sideByWeek(state.readings), [state.readings]);
-  const hasProgram = PROGRAMS.some((p) => state.readings[`program:${p.id}`]);
+  const savedProgram = PROGRAMS.find((p) => p.ready && state.readings[`program:${p.id}`])?.id;
+  const hasProgram = Boolean(savedProgram);
+
+  // The timetable is built for the program remembered in this browser. If the
+  // saved progress says another one (a new device, an import), switch to it.
+  useEffect(() => {
+    if (savedProgram && savedProgram !== PROGRAM_ID) {
+      rememberProgram(savedProgram);
+      window.location.reload();
+    }
+  }, [savedProgram]);
+  const switchProgram = (id) => {
+    for (const p of PROGRAMS) if (state.readings[`program:${p.id}`] && p.id !== id) actions.toggleReading(`program:${p.id}`);
+    if (!state.readings[`program:${id}`]) actions.toggleReading(`program:${id}`);
+    rememberProgram(id);
+    // Give the save a moment to reach the database before the page reloads.
+    setTimeout(() => window.location.reload(), 1200);
+  };
 
   if (status.mode && status.mode !== 'loading' && !hasProgram)
     return (
       <Welcome
         onDone={(program, sides) => {
-          actions.toggleReading(`program:${program}`);
           for (const id of sides) actions.toggleReading(`side:${id}@${startWeek}`);
+          if (program === PROGRAM_ID) actions.toggleReading(`program:${program}`);
+          else switchProgram(program);
         }}
       />
     );
@@ -124,6 +142,7 @@ export default function App() {
             onOpen={actions.open}
             onToggle={(id) => actions.toggleReading(`spec:${id}`)}
             onToggleKey={(key) => actions.toggleReading(key)}
+            onSwitch={switchProgram}
             startWeek={startWeek}
           />
         ) : view === 'timeline' ? (

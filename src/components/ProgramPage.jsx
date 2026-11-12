@@ -1,12 +1,15 @@
-import { PROGRAMS, SIDES, SIDES_LATER, trackLessons, trackClassState, pickedSides, sideByWeek } from '../data/path';
+import { useState } from 'react';
+import { PROGRAMS, PROGRAM_ID, SIDES, SIDES_LATER, trackLessons, trackClassState, pickedSides, sideByWeek } from '../data/path';
+import BorrowPanel from './BorrowPanel';
 import { useReveal } from '../state/useReveal';
 import SpecializationsPage from './SpecializationsPage';
 
 // Your program: the main degree, its specialization tracks, and side topics
 // (short courses outside the field that sit in your timetable like GE classes).
-export default function ProgramPage({ progress, onOpen, onToggle, onToggleKey, startWeek }) {
+export default function ProgramPage({ progress, onOpen, onToggle, onToggleKey, onSwitch, startWeek }) {
+  const [switching, setSwitching] = useState(null);
   const sides = pickedSides(progress.readings);
-  const program = PROGRAMS.find((p) => progress.readings[`program:${p.id}`]) || PROGRAMS[0];
+  const program = PROGRAMS.find((p) => p.id === PROGRAM_ID);
   const plan = sideByWeek(progress.readings);
   const weekOfClass = Object.fromEntries(Object.entries(plan).flatMap(([w, ls]) => ls.map((l) => [l.id, w.replace('week-', '')])));
   useReveal([sides.length]);
@@ -24,17 +27,42 @@ export default function ProgramPage({ progress, onOpen, onToggle, onToggleKey, s
         </div>
         <div className="prog-programs">
           {PROGRAMS.map((p) => (
-            <div key={p.id} className={`prog-program ${p.id === program.id ? 'on' : ''} ${p.ready ? '' : 'later'}`}>
+            <button
+              key={p.id}
+              type="button"
+              className={`prog-program ${p.id === program.id ? 'on' : ''} ${p.ready ? '' : 'later'}`}
+              disabled={!p.ready || p.id === program.id}
+              onClick={() => setSwitching(p)}
+            >
               <strong>{p.title}</strong>
               {p.school && <span className="eyebrow">{p.school}</span>}
               <span className="notes-hint">{p.blurb}</span>
-              <span className="prog-tag">{p.id === program.id ? 'Your program' : p.ready ? '' : 'Coming later'}</span>
-            </div>
+              <span className="prog-tag">{p.id === program.id ? 'Your program' : p.ready ? 'Switch to this' : 'Coming later'}</span>
+            </button>
           ))}
         </div>
+        {switching && (
+          <div className="borrow-ask">
+            <strong>Make {switching.title} your main program?</strong>
+            <p className="notes-hint">
+              Nothing is lost: every class you passed stays passed, and classes both programs share (most of the math) count in both. You can switch back
+              any time. The app reloads to rebuild your timetable.
+            </p>
+            <div className="spec-actions">
+              <button type="button" className="btn primary sm" onClick={() => onSwitch(switching.id)}>
+                Switch to {switching.title}
+              </button>
+              <button type="button" className="btn ghost sm" onClick={() => setSwitching(null)}>
+                Cancel
+              </button>
+            </div>
+          </div>
+        )}
       </section>
 
       <SpecializationsPage progress={progress} onOpen={onOpen} onToggle={onToggle} embedded />
+
+      <BorrowPanel progress={progress} onToggleKey={onToggleKey} onOpen={onOpen} startWeek={startWeek} />
 
       <section data-reveal>
         <div className="prog-section-head">

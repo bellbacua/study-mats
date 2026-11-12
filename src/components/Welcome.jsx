@@ -31,7 +31,7 @@ export default function Welcome({ onDone }) {
 
         <h2>Side topics (optional)</h2>
         <div className="welcome-options">
-          {SIDES.map((t) => {
+          {SIDES.filter((t) => !(program === 'cs' && t.id === 'comp')).map((t) => {
             const n = trackLessons(t.id).length;
             return (
               <button key={t.id} type="button" className={`welcome-option ${sides.has(t.id) ? 'on' : ''}`} disabled={!n} onClick={() => flip(t.id)}>

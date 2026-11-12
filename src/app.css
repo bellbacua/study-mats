@@ -4704,3 +4704,108 @@ sup.cite a {
   color: var(--faint);
   font-size: 13px;
 }
+
+/* ---------- borrowing classes from other programs ---------- */
+button.prog-program {
+  text-align: left;
+  font: inherit;
+  color: inherit;
+  cursor: pointer;
+}
+button.prog-program:disabled {
+  cursor: default;
+}
+button.prog-program:not(:disabled):hover {
+  border-color: var(--blue);
+}
+.btn.xs {
+  padding: 3px 10px;
+  font-size: 12px;
+}
+.linkish {
+  background: none;
+  border: 0;
+  padding: 0;
+  color: var(--blue);
+  font: inherit;
+  cursor: pointer;
+  text-align: left;
+}
+.borrow-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+.borrow-ask,
+.borrow-mine {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin: 12px 0;
+  padding: 16px;
+  border: 1px solid var(--blue);
+  border-radius: 12px;
+  background: var(--surface);
+}
+.borrow-mine {
+  border-color: var(--line);
+}
+.borrow-mine ul,
+.borrow-group ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.borrow-mine li {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  padding: 4px 0;
+}
+.borrow-need {
+  margin: 0;
+  padding-left: 22px;
+}
+.borrow-groups {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.borrow-group {
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  background: var(--surface);
+  padding: 10px 14px;
+}
+.borrow-group summary {
+  cursor: pointer;
+}
+.borrow-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 6px 0;
+  border-top: 1px solid var(--line);
+}
+.borrow-title {
+  flex: 1;
+  min-width: 0;
+}
+.week-soon {
+  margin: 6px 0 0;
+  font-style: italic;
+}
+
+/* ---------- Computer Science subjects ---------- */
+.track-prog { color: #7fd1ff; }
+.subj-prog, .class-card.subj-prog { --subj: #7fd1ff; }
+.track-disc { color: #c3a6ff; }
+.subj-disc, .class-card.subj-disc { --subj: #c3a6ff; }
+.track-algo { color: #9be37a; }
+.subj-algo, .class-card.subj-algo { --subj: #9be37a; }
+.track-sys { color: #f2a65a; }
+.subj-sys, .class-card.subj-sys { --subj: #f2a65a; }
+.track-ai { color: #ff8fb1; }
+.subj-ai, .class-card.subj-ai { --subj: #ff8fb1; }

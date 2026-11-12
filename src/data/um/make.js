@@ -96,6 +96,7 @@ export function mk(o) {
     overtimeMins: 15,
     xpReward: 100,
     prereqIds: [],
+    after: o.after,
     umCourseLink: '',
     title: o.title,
     subtitle: o.subtitle,
