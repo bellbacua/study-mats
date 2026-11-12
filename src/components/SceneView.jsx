@@ -1,8 +1,39 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { Stage } from '../viz/Stage';
 import { SCENES, initialParams } from '../viz/scenes';
+import 'katex/dist/katex.min.css';
 
 const beatDuration = (say, b) => b?.ms ?? 2600 + say.length * 42;
+
+// The camera framing a step asks for: the latest `cam` at or before it.
+const camAt = (beats, i) => {
+  for (let j = i; j >= 0; j--) if (beats[j] && 'cam' in beats[j]) return beats[j].cam;
+  return null;
+};
+
+// Read-aloud narration, like the voice over a 3Blue1Brown video.
+const VOICE_KEY = 'scene-voice';
+const canSpeak = typeof window !== 'undefined' && 'speechSynthesis' in window;
+let pickedVoice = null;
+function voice() {
+  if (pickedVoice || !canSpeak) return pickedVoice;
+  const all = window.speechSynthesis.getVoices().filter((v) => /^en/i.test(v.lang));
+  const rank = (v) => (/natural|neural|online/i.test(v.name) ? 0 : 2) + (/en-(US|GB)/i.test(v.lang) ? 0 : 1);
+  pickedVoice = all.sort((a, b) => rank(a) - rank(b))[0] || null;
+  return pickedVoice;
+}
+function speak(text, onEnd) {
+  if (!canSpeak) return;
+  window.speechSynthesis.cancel();
+  const u = new SpeechSynthesisUtterance(text.replace(/×/g, ' times ').replace(/−/g, ' minus ').replace(/≈/g, ' about '));
+  const v = voice();
+  if (v) u.voice = v;
+  u.rate = 0.98;
+  u.onend = onEnd;
+  u.onerror = onEnd;
+  window.speechSynthesis.speak(u);
+}
+const hush = () => canSpeak && window.speechSynthesis.cancel();
 
 export default function SceneView({ type, mission, beat, onGoal, goalDone }) {
   const def = SCENES[type];
@@ -16,6 +47,15 @@ export default function SceneView({ type, mission, beat, onGoal, goalDone }) {
   const [ready, setReady] = useState(false);
   const seen = useRef({});
   const touched = useRef(false);
+  const [voiceOn, setVoiceOn] = useState(() => {
+    try {
+      return localStorage.getItem(VOICE_KEY) === '1';
+    } catch {
+      return false;
+    }
+  });
+  const voiceRef = useRef(voiceOn);
+  voiceRef.current = voiceOn;
 
   // (Re)build the three.js stage when the scene type changes.
   useEffect(() => {
@@ -37,16 +77,18 @@ export default function SceneView({ type, mission, beat, onGoal, goalDone }) {
       setCaption(first.say);
       setCur(0);
       stage.current.setNotes(first.notes);
+      stage.current.setCam(camAt(def.beats, 0));
     }
     return () => {
       cancelAnimationFrame(raf);
       clearTimeout(timer.current);
+      hush();
       stage.current?.dispose();
       stage.current = null;
     };
   }, [def]);
 
-  const apply = useCallback((nextIn, fromUser) => {
+  const apply = useCallback((nextIn, fromUser, keepCam) => {
     // Touching a control opens the whole picture: story-only settings
     // (hidden from the controls) jump to their "free play" values.
     const next = fromUser && def?.free ? { ...def.free, ...nextIn } : nextIn;
@@ -57,7 +99,9 @@ export default function SceneView({ type, mission, beat, onGoal, goalDone }) {
       touched.current = true;
       setCaption('');
       setCur(-1);
+      hush();
       stage.current?.setNotes([]);
+      if (!keepCam) stage.current?.setCam(null);
     }
     stage.current?.setTarget(next);
     setTarget((prev) => ({ ...prev, ...next }));
@@ -67,6 +111,15 @@ export default function SceneView({ type, mission, beat, onGoal, goalDone }) {
     clearTimeout(timer.current);
     setPlaying(-1);
   }, []);
+
+  // Dragging a point in the picture is the same as moving its control.
+  useEffect(() => {
+    if (!stage.current) return;
+    stage.current.onUser = (next) => {
+      stop();
+      apply(next, true, true);
+    };
+  }, [def, apply, stop]);
 
   const playFrom = useCallback(
     (i, chain) => {
@@ -81,17 +134,29 @@ export default function SceneView({ type, mission, beat, onGoal, goalDone }) {
       const upTo = def.beats.slice(0, i + 1).reduce((acc, x) => ({ ...acc, ...x.set }), initialParams(def));
       apply(upTo, false);
       stage.current?.setNotes(b.notes);
+      stage.current?.setCam(camAt(def.beats, i));
       setCaption(b.say);
       setCur(i);
       setPlaying(chain ? i : -1);
-      if (chain) {
-        timer.current = setTimeout(() => {
-          if (i + 1 < def.beats.length) playFrom(i + 1, true);
-          else {
-            setPlaying(-1);
-            touched.current = true;
-          }
-        }, beatDuration(b.say, b));
+      const next = () => {
+        if (i + 1 < def.beats.length) playFrom(i + 1, true);
+        else {
+          setPlaying(-1);
+          touched.current = true;
+        }
+      };
+      if (voiceRef.current) {
+        // wait for both the picture and the voice before moving on
+        let spoke = !chain;
+        let shown = !chain;
+        const go = () => spoke && shown && next();
+        speak(b.say, () => {
+          spoke = true;
+          if (chain) timer.current = setTimeout(go, 700);
+        });
+        if (chain) timer.current = setTimeout(() => ((shown = true), go()), Math.min(beatDuration(b.say, b), 5000));
+      } else if (chain) {
+        timer.current = setTimeout(next, beatDuration(b.say, b));
       }
     },
     [def, apply]
@@ -131,6 +196,11 @@ export default function SceneView({ type, mission, beat, onGoal, goalDone }) {
           <div className="scene-canvas" ref={box} />
           {!ready && <div className="scene-loading">Setting up the animation…</div>}
           {def.camera?.kind === '3d' && <div className="scene-hint">drag to rotate · scroll to zoom</div>}
+          {cur === nBeats - 1 && nBeats > 1 && playing < 0 && (def.mission || mission) && (
+            <div className="scene-yourturn">
+              <strong>Your turn.</strong> {def.mission || mission.replace(/^Lab Mission:\s*/i, '')} <span>Use the controls below{stage.current?.handles?.length ? ', or drag the glowing points' : ''}.</span>
+            </div>
+          )}
         </div>
         <div className="scene-bar">
           <div className={`scene-caption ${caption ? '' : 'empty'}`} key={caption}>
@@ -169,6 +239,27 @@ export default function SceneView({ type, mission, beat, onGoal, goalDone }) {
             ) : (
               <button type="button" className="play" disabled={!nBeats} onClick={() => playFrom(cur >= 0 && cur < nBeats - 1 ? cur : 0, true)}>
                 ▶ Auto-play
+              </button>
+            )}
+            {canSpeak && (
+              <button
+                type="button"
+                className={voiceOn ? 'on' : ''}
+                title={voiceOn ? 'Narration on: each step is read aloud' : 'Read each step aloud'}
+                aria-pressed={voiceOn}
+                onClick={() => {
+                  const v = !voiceOn;
+                  setVoiceOn(v);
+                  try {
+                    localStorage.setItem(VOICE_KEY, v ? '1' : '0');
+                  } catch {
+                    // private window: the choice just isn't remembered
+                  }
+                  if (v && caption) speak(caption);
+                  else hush();
+                }}
+              >
+                {voiceOn ? '🔊' : '🔈'}
               </button>
             )}
             <button type="button" onClick={() => stage.current?.replayIntro()} title="Redraw">

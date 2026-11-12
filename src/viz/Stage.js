@@ -50,11 +50,20 @@ export class Stage {
       this.controls.target.set(...(cam.target || [0, 0, 0]));
       this.controls.autoRotate = !!cam.autoRotate;
       this.controls.autoRotateSpeed = 0.6;
+      this.home = { position: [...(cam.position || [8, 6, 10])], target: [...(cam.target || [0, 0, 0])] };
+      // once the learner grabs the view, the scene stops steering the camera
+      this.controls.addEventListener('start', () => {
+        this.userOrbit = true;
+        this.camGoal = null;
+      });
       // soft studio reflections make metal and plastic read as real materials
       const pmrem = new THREE.PMREMGenerator(renderer);
       this.scene.environment = pmrem.fromScene(new RoomEnvironment(), 0.04).texture;
       pmrem.dispose();
       this.scene.environmentIntensity = 0.35; // reflections, not a wash of light
+      // distant things fade a little toward the background: a depth cue
+      const dist = this.camera.position.distanceTo(this.controls.target);
+      this.scene.fog = new THREE.Fog(C.bg, dist * 0.9, dist * 2.6);
       this.introCam = this.camera.position.clone();
       this.camera.position.multiplyScalar(1.35);
       this.scene.add(new THREE.AmbientLight(0xffffff, 0.55));
@@ -65,11 +74,13 @@ export class Stage {
       rim.position.set(-8, -2, -6);
       this.scene.add(rim);
     } else {
-      this.view = { x: cam.x, y: cam.y };
+      this.view = { x: [...cam.x], y: [...cam.y] };
+      this.home = { x: [...cam.x], y: [...cam.y] };
       this.camera = new THREE.OrthographicCamera(-1, 1, 1, -1, -100, 100);
       this.camera.position.z = 10;
     }
 
+    this.handles = [];
     this.kit = createKit(this);
     this.update = def.setup(this.kit, { stage: this, target: this.target }) || (() => {});
 
@@ -78,6 +89,7 @@ export class Stage {
     this.observer.observe(container);
     this.resize();
 
+    this.bindPointer();
     this.clock = new THREE.Clock();
     renderer.setAnimationLoop(() => this.frame());
   }
@@ -144,6 +156,113 @@ export class Stage {
     }
   }
 
+  // Move the camera for a story step, the way a narrator points the eye.
+  // 2D: { x: [x0, x1], y: [y0, y1] } is the window to show.
+  // 3D: { position: [x, y, z], target?: [x, y, z] }.
+  // null goes back to the scene's own framing.
+  setCam(cam) {
+    const goal = cam || this.home;
+    if (this.is3d) {
+      if (this.userOrbit && !cam) return; // leave the learner's own view alone
+      this.camGoal = {
+        position: new THREE.Vector3(...(goal.position || this.home.position)),
+        target: new THREE.Vector3(...(goal.target || this.home.target)),
+      };
+      this.userOrbit = false;
+    } else {
+      this.viewGoal = { x: [...(goal.x || this.home.x)], y: [...(goal.y || this.home.y)] };
+    }
+  }
+
+  // Screen point → world point on the z = 0 plane (2D scenes).
+  toWorld(ev) {
+    const r = this.renderer.domElement.getBoundingClientRect();
+    const nx = ((ev.clientX - r.left) / r.width) * 2 - 1;
+    const ny = -((ev.clientY - r.top) / r.height) * 2 + 1;
+    const v = new THREE.Vector3(nx, ny, 0).unproject(this.camera);
+    return [v.x, v.y];
+  }
+
+  // Draggable points: kit.handle registers them, the pointer moves them,
+  // and the scene turns the new position into parameter values.
+  bindPointer() {
+    const el = this.renderer.domElement;
+    if (this.is3d) return;
+    const near = (ev) => {
+      if (!this.handles.length) return null;
+      const [x, y] = this.toWorld(ev);
+      const tol = 26 / (this.pxPerUnit || 40); // about 26 px, finger friendly
+      let best = null;
+      let bd = Infinity;
+      for (const h of this.handles) {
+        if (!h.active()) continue;
+        const d = Math.hypot(h.pos[0] - x, h.pos[1] - y);
+        if (d < Math.max(tol, h.r * 1.6) && d < bd) {
+          best = h;
+          bd = d;
+        }
+      }
+      return best;
+    };
+    el.style.touchAction = 'none';
+    el.addEventListener('pointerdown', (ev) => {
+      const h = near(ev);
+      if (!h) return;
+      this.dragging = h;
+      h.hot = true;
+      el.setPointerCapture(ev.pointerId);
+      el.style.cursor = 'grabbing';
+      ev.preventDefault();
+    });
+    el.addEventListener('pointermove', (ev) => {
+      if (this.dragging) {
+        const out = this.dragging.onDrag(this.toWorld(ev));
+        if (out) this.onUser?.(out);
+        return;
+      }
+      const h = near(ev);
+      for (const k of this.handles) k.hot = k === h;
+      el.style.cursor = h ? 'grab' : '';
+    });
+    const up = () => {
+      if (!this.dragging) return;
+      this.dragging.hot = false;
+      this.dragging = null;
+      el.style.cursor = '';
+    };
+    el.addEventListener('pointerup', up);
+    el.addEventListener('pointercancel', up);
+  }
+
+  tickCamera(dt) {
+    const k = 1 - Math.exp(-dt * 2.2); // unhurried, like a camera operator
+    if (!this.is3d) {
+      if (!this.viewGoal) return;
+      let moved = false;
+      for (const ax of ['x', 'y']) {
+        for (let i = 0; i < 2; i++) {
+          const d = this.viewGoal[ax][i] - this.view[ax][i];
+          if (Math.abs(d) > 1e-3) moved = true;
+          this.view[ax][i] += d * k;
+        }
+      }
+      if (moved) this.fitView();
+      else this.viewGoal = null;
+      return;
+    }
+    if (this.camGoal) {
+      this.camera.position.lerp(this.camGoal.position, k);
+      this.controls.target.lerp(this.camGoal.target, k);
+      if (this.camera.position.distanceTo(this.camGoal.position) < 1e-3) this.camGoal = null;
+    } else if (!this.userOrbit && !this.camGoal && this.intro >= 1 && !this.controls.autoRotate) {
+      // a slow sway, so a 3D picture reads as 3D before anyone touches it
+      const t = this.controls.target;
+      const off = this.camera.position.clone().sub(t);
+      off.applyAxisAngle(new THREE.Vector3(0, 1, 0), Math.cos(this.time * 0.35) * 0.0018);
+      this.camera.position.copy(t).add(off);
+    }
+  }
+
   replayIntro() {
     this.intro = 0;
   }
@@ -157,6 +276,12 @@ export class Stage {
     this.labelRenderer.setSize(w, h);
     for (const m of this.lineMaterials) m.resolution.set(w, h);
 
+    this.fitView();
+  }
+
+  fitView() {
+    const w = this.container.clientWidth || 1;
+    const h = this.container.clientHeight || 1;
     if (this.is3d) {
       this.camera.aspect = w / h;
     } else {
@@ -195,7 +320,9 @@ export class Stage {
     this.update(this.current, this.target, this.time, dt);
     this.tickNotes(dt);
     // 3D scenes open with a gentle camera dolly-in
-    if (this.introCam && this.intro < 1) this.camera.position.lerp(this.introCam, 1 - Math.exp(-dt * 2.5));
+    if (this.introCam && this.intro < 1 && !this.camGoal) this.camera.position.lerp(this.introCam, 1 - Math.exp(-dt * 2.5));
+    this.tickCamera(dt);
+    for (const h of this.handles) h.tick?.(this.time);
     this.controls?.update();
     this.renderer.render(this.scene, this.camera);
     this.labelRenderer.render(this.scene, this.camera);

@@ -4634,3 +4634,37 @@ sup.cite a {
 .ch-opt.right:disabled {
   color: var(--text);
 }
+
+/* Story end: hand the picture over to the learner */
+.scene-yourturn {
+  position: absolute;
+  left: 50%;
+  bottom: 12px;
+  transform: translateX(-50%);
+  max-width: min(92%, 640px);
+  padding: 8px 14px;
+  border-radius: 10px;
+  border: 1px solid rgba(255, 216, 74, 0.55);
+  background: rgba(13, 17, 23, 0.88);
+  color: var(--text);
+  font-size: 14px;
+  line-height: 1.4;
+  animation: rise 0.5s ease-out, yourturn-out 0.8s ease-in 9s forwards;
+  pointer-events: none;
+}
+@keyframes yourturn-out {
+  to {
+    opacity: 0;
+    visibility: hidden;
+  }
+}
+.scene-yourturn strong {
+  color: var(--yellow);
+}
+.scene-yourturn span {
+  color: var(--muted);
+}
+.scene-tools button.on {
+  border-color: var(--blue);
+  color: var(--blue);
+}

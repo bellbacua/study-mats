@@ -492,6 +492,56 @@ export function createKit(stage) {
     return api.set(a, b);
   }
 
+  // A point the learner can grab and drag (2D scenes). `onDrag([x, y])`
+  // returns the parameter values for that spot, or null to ignore it.
+  // A soft ring pulses around it so it is clear it can be moved.
+  function handle(p, opts = {}) {
+    const color = opts.color ?? C.yellow;
+    const r = opts.r ?? 0.16;
+    const ringPts = (R) => range(0, Math.PI * 2, 41).map((a) => [Math.cos(a) * R, Math.sin(a) * R, 0]);
+    const g = add(new THREE.Group(), opts.parent);
+    const core = dot([0, 0], { r, color, parent: g, z: 8 });
+    const ring = line(ringPts(1), { color, width: 2, parent: g, create: false, z: 8 });
+    const h = {
+      pos: [p[0], p[1]],
+      r,
+      hot: false,
+      shown: true,
+      active: () => h.shown && (opts.when ? opts.when() : true),
+      onDrag: opts.onDrag || (() => null),
+      tick(time) {
+        const on = h.active();
+        g.visible = h.shown;
+        const pulse = h.hot ? 1 : 0.5 + 0.5 * Math.sin(time * 3.2);
+        const R = r * (h.hot ? 2.1 : 1.5 + 0.5 * pulse);
+        ring.obj.scale.setScalar(R);
+        ring.opacity(on ? (h.hot ? 0.95 : 0.35 + 0.4 * (1 - pulse)) : 0);
+        core.scale(h.hot ? 1.25 : 1);
+      },
+    };
+    stage.handles.push(h);
+    const api = {
+      obj: g,
+      handle: h,
+      set(q) {
+        h.pos = [q[0], q[1]];
+        g.position.set(q[0], q[1], 0.05);
+        return api;
+      },
+      color(c) {
+        core.color(c);
+        ring.color(c);
+        return api;
+      },
+      visible(b) {
+        h.shown = b;
+        g.visible = b;
+        return api;
+      },
+    };
+    return api.set(p);
+  }
+
   function group(parent) {
     return add(new THREE.Group(), parent);
   }
@@ -500,5 +550,5 @@ export function createKit(stage) {
     for (const l of creatable) l.applyIntro(intro);
   }
 
-  return { line, arrow, dot, label, plane, curve, fill, rect, sphere, cylinder, group, tick, THREE, C };
+  return { line, arrow, dot, label, plane, curve, fill, rect, sphere, cylinder, handle, group, tick, THREE, C };
 }
