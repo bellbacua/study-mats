@@ -85,12 +85,12 @@ export default function BorrowPanel({ progress, onToggleKey, onOpen, startWeek }
           </strong>
           <p className="notes-hint">We recommend taking these first, in this order. It will make the new class much easier to follow.</p>
           <ol className="borrow-need">
-            {asking.need.slice(0, 12).map((n) => (
+            {asking.need.length > 12 && <li className="notes-hint">…{asking.need.length - 12} earlier classes, then:</li>}
+            {asking.need.slice(-12).map((n) => (
               <li key={n.id}>
                 {short(n.title)} <span className="notes-hint">{MINE.has(n.id) ? `· already on your timetable, week ${MINE.get(n.id).termId.replace('week-', '')}` : taken.has(n.id) ? '· already added' : ''}</span>
               </li>
             ))}
-            {asking.need.length > 12 && <li className="notes-hint">…and {asking.need.length - 12} more before those</li>}
           </ol>
           {(() => {
             const extra = asking.need.filter((n) => !MINE.has(n.id) && !taken.has(n.id)).map((n) => n.id);

@@ -4809,3 +4809,6 @@ button.prog-program:not(:disabled):hover {
 .subj-sys, .class-card.subj-sys { --subj: #f2a65a; }
 .track-ai { color: #ff8fb1; }
 .subj-ai, .class-card.subj-ai { --subj: #ff8fb1; }
+button.prog-program.on:disabled {
+  opacity: 1;
+}
