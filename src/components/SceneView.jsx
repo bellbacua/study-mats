@@ -203,10 +203,22 @@ export default function SceneView({ type, mission, beat, onGoal, goalDone }) {
           )}
         </div>
         <div className="scene-bar">
-          <div className={`scene-caption ${caption ? '' : 'empty'}`} key={caption}>
-            {caption && cur >= 0 && <strong className="scene-step-tag">Step {cur + 1} of {nBeats} · </strong>}
-            {caption || 'Use the step buttons, press “Auto-play”, or move the sliders below.'}
-            {playing >= 0 && <span className="scene-timer" style={{ animationDuration: `${beatDuration(caption, def.beats?.[playing])}ms` }} />}
+          {/* Every step's text sits invisibly in the same spot, so the bar is always as tall as the longest step and nothing below it jumps. */}
+          <div className="scene-caption-wrap">
+            {(def.beats || []).map((b, i) => (
+              <div key={`g${i}`} className="scene-caption ghost" aria-hidden="true">
+                <strong className="scene-step-tag">Step {i + 1} of {nBeats} · </strong>
+                {b.say}
+              </div>
+            ))}
+            <div className="scene-caption ghost empty" aria-hidden="true">
+              Use the step buttons, press “Auto-play”, or move the sliders below.
+            </div>
+            <div className={`scene-caption ${caption ? '' : 'empty'}`} key={caption} aria-live="polite">
+              {caption && cur >= 0 && <strong className="scene-step-tag">Step {cur + 1} of {nBeats} · </strong>}
+              {caption || 'Use the step buttons, press “Auto-play”, or move the sliders below.'}
+              {playing >= 0 && <span className="scene-timer" style={{ animationDuration: `${beatDuration(caption, def.beats?.[playing])}ms` }} />}
+            </div>
           </div>
           <div className="scene-tools">
             {nBeats > 0 && (

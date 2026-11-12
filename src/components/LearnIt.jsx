@@ -385,9 +385,12 @@ export function Predict({ predict: raw, children }) {
           </div>
         )}
         {pick === null && (
-          <button type="button" className="btn ghost sm" onClick={() => setPick(-1)}>
-            Skip and show the animation
-          </button>
+          <div className="predict-skip">
+            <span>Not sure yet?</span>
+            <button type="button" className="btn ghost sm" onClick={() => setPick(-1)}>
+              Skip to the animation →
+            </button>
+          </div>
         )}
       </div>
       {pick !== null && children}

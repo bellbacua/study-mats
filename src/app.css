@@ -4668,3 +4668,39 @@ sup.cite a {
   border-color: var(--blue);
   color: var(--blue);
 }
+
+/* ---- steady step bar: fixed height, fixed button widths ---- */
+.scene-caption-wrap {
+  flex: 1;
+  min-width: 0;
+  display: grid;
+  align-items: start;
+}
+.scene-caption-wrap > .scene-caption {
+  grid-area: 1 / 1;
+}
+.scene-caption.ghost {
+  visibility: hidden;
+  animation: none;
+  pointer-events: none;
+}
+.scene-bar {
+  align-items: flex-start;
+}
+.scene-tools button.play {
+  min-width: 112px;
+  text-align: center;
+}
+
+/* ---- predict-first: keep the skip button well away from the answers ---- */
+.predict-skip {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 12px;
+  margin-top: 22px;
+  padding-top: 14px;
+  border-top: 1px dashed var(--line);
+  color: var(--faint);
+  font-size: 13px;
+}
