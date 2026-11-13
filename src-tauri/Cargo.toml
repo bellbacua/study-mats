@@ -1,6 +1,6 @@
 [package]
 name = "study-mats"
-version = "1.0.14"
+version = "1.0.15"
 description = "Study Mats desktop app"
 edition = "2021"
 
