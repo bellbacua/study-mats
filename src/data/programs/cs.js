@@ -64,38 +64,7 @@ export const WEEKS = [
 ];
 
 // Titles of planned classes, shown as "being written" until they exist.
-export const SOON = {
-  'cs-111': 'Logic and truth tables',
-  'cs-112': 'Sets, relations and functions',
-  'cs-113': 'Proof by induction',
-  'cs-114': 'Counting: permutations and combinations',
-  'cs-115': 'Graphs: Euler’s bridges',
-  'cs-116': 'Modular arithmetic and RSA',
-  'cs-122': 'The stored-program computer',
-  'cs-123': 'Memory and caches',
-  'cs-131': 'Recursion',
-  'cs-132': 'Sorting',
-  'cs-133': 'Stacks and queues',
-  'cs-134': 'Hashing',
-  'cs-135': 'Trees and binary search trees',
-  'cs-136': 'Shortest paths: Dijkstra',
-  'cs-137': 'Dynamic programming',
-  'cs-138': 'P versus NP',
-  'cs-141': 'Finite automata and regular expressions',
-  'cs-142': 'Grammars and parsing',
-  'cs-151': 'Operating systems and processes',
-  'cs-152': 'Concurrency and deadlock',
-  'cs-153': 'Virtual memory',
-  'cs-154': 'Packets, TCP and IP',
-  'cs-155': 'Databases and SQL',
-  'cs-156': 'Cryptography: Caesar to public keys',
-  'cs-157': 'Human-computer interaction',
-  'cs-158': 'Software engineering',
-  'cs-159': 'Version control and testing',
-  'cs-160': 'Parallel computing and GPUs',
-  'cs-161': 'Ethics and privacy',
-  'cs-162': 'The CS thesis',
-};
+export const SOON = {};
 
 export const STAGES = [
   { from: 1, title: 'Year 1, first semester', note: 'Numbers from scratch · Introduction to Computing · Fundamentals of Programming · Discrete Structures 1' },
@@ -188,6 +157,15 @@ export const TRACKS = [
     blurb: 'How a computer draws: pixels, 3D geometry, light and shadow, animation and games.',
     jobs: 'Game studios, animation and visual effects, simulation, AR and VR, user-interface engineering.',
     um: ['CS HCI'],
-    classes: [],
+    classes: [
+      { id: 'gfx-001', after: ['cs-105', 'comp-001'] },
+      { id: 'gfx-002', after: ['cs-103'] },
+      { id: 'gfx-003', after: ['math-027'] },
+      { id: 'gfx-004', after: ['gfx-003'] },
+      { id: 'gfx-005', after: ['gfx-004'] },
+      { id: 'gfx-006', after: ['gfx-005', 'math-011'] },
+      { id: 'gfx-007', after: ['gfx-006'] },
+      { id: 'gfx-008', after: ['gfx-003'] },
+    ],
   },
 ];
