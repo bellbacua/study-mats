@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { LESSONS, ALL_LESSONS, TRACKS, PROGRAMS, PROGRAM_ID, rememberProgram, seqOf, trackLessons, trackClassState, openSlots, sideByWeek, weekNumber } from './data/path';
+import { LESSONS, ALL_LESSONS, TRACKS, PROGRAMS, PROGRAM_ID, rememberProgram, seqOf, trackLessons, trackClassState, openSlots, sideByWeek, weekNumber, startState } from './data/path';
 import LessonView from './components/LessonView';
 import Roadmap from './components/Roadmap';
 import NotesPanel from './components/NotesPanel';
@@ -72,6 +72,10 @@ export default function App() {
   const lesson = active;
   const idx = Math.max(0, LESSONS.findIndex((l) => l.id === active.id));
   const nextUp = LESSONS.find((l) => !state.passed[l.id]) || null;
+  // The Start here level, and where it leads after its last class.
+  const startInfo = startState(state.passed, state.readings);
+  const skipStart = () => actions.toggleReading('start:skip');
+  const afterStart = (l) => (l?.start ? nextUp : null);
   const done = LESSONS.filter((l) => state.passed[l.id]).length;
   const streak = streaks(state.days).current;
   const dueNow = dueCards(state.passed, state.review).length;
@@ -157,7 +161,7 @@ export default function App() {
 
   const saveMode = status.mode === 'sqlite' ? 'sqlite' : status.mode === 'offline' ? 'offline' : 'loading';
 
-  const lessonLabel = lesson.side ? 'GE class' : lesson.spec ? 'Track class' : lesson.from ? 'Borrowed class' : `Lesson ${idx + 1}`;
+  const lessonLabel = lesson.start ? 'Start here' : lesson.side ? 'GE class' : lesson.spec ? 'Track class' : lesson.from ? 'Borrowed class' : `Lesson ${idx + 1}`;
   const navItems = useMemo(
     () => [
       { id: 'today', label: 'Today' },
@@ -228,7 +232,8 @@ export default function App() {
   if (status.mode && status.mode !== 'loading' && !hasProgram)
     return (
       <Welcome
-        onDone={(program, sides) => {
+        onDone={(program, sides, startHere = true) => {
+          if (!startHere && !state.readings['start:skip']) actions.toggleReading('start:skip');
           for (const id of sides) actions.toggleReading(`side:${id}@${startWeek}`);
           if (program === PROGRAM_ID) actions.toggleReading(`program:${program}`);
           else switchProgram(program);
@@ -278,12 +283,14 @@ export default function App() {
             plan={plan}
             missCount={missCount}
             onOpenUnit={openUnit}
+            start={startInfo}
+            onSkipStart={skipStart}
             onOpen={actions.open}
             onGo={go}
             onLibrary={() => openLibrary('collection')}
           />
         ) : view === 'roadmap' ? (
-          <Roadmap progress={state} nextUp={nextUp} onOpen={actions.open} status={saveMode} dueNow={dueNow} onReview={() => go('review')} spec={spec} sideWeeks={sideWeeks} onBorrow={goBorrow} />
+          <Roadmap progress={state} nextUp={nextUp} onOpen={actions.open} status={saveMode} dueNow={dueNow} onReview={() => go('review')} spec={spec} sideWeeks={sideWeeks} onBorrow={goBorrow} start={startInfo} onSkipStart={skipStart} />
         ) : view === 'plan' ? (
           <PlanPage progress={state} plan={plan} onSave={(p) => store.setItem('plan', 'main', p)} onOpenUnit={openUnit} />
         ) : view === 'mistakes' ? (
@@ -323,7 +330,7 @@ export default function App() {
             progress={state}
             actions={actions}
             prevLesson={seq[pos - 1]}
-            nextLesson={seq[pos + 1]}
+            nextLesson={seq[pos + 1] || afterStart(lesson)}
             opening={opening}
           />
         )}
@@ -351,7 +358,7 @@ export default function App() {
       {recap && ALL_LESSONS.find((l) => l.id === recap.id) && (() => {
         const l = ALL_LESSONS.find((x) => x.id === recap.id);
         const sq = seqOf(l);
-        const nx = sq[sq.findIndex((x) => x.id === l.id) + 1];
+        const nx = sq[sq.findIndex((x) => x.id === l.id) + 1] || afterStart(l);
         return (
           <FinishRecap
             lesson={l}

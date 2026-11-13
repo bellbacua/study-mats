@@ -1,5 +1,5 @@
 import { useMemo } from 'react';
-import { LESSONS, SUBJECTS, PROGRAM, CURRICULUM_TERMS, weekNumber } from '../data/path';
+import { LESSONS, SUBJECTS, PROGRAM, CURRICULUM_TERMS, START_LESSONS, START_LEVEL, weekNumber } from '../data/path';
 import { DEEP } from '../data/deep';
 import { today } from '../state/useProgress';
 import { streaks } from './ProgressPage';
@@ -35,7 +35,7 @@ function Pic({ url, alt }) {
   return <div className="today-pic">{pic ? <img src={pic.thumb} alt={alt} loading="lazy" /> : <span aria-hidden="true">✦</span>}</div>;
 }
 
-export default function TodayPage({ progress, active, nextUp, dueNow, spec, plan, missCount = 0, onOpenUnit, onOpen, onGo, onLibrary }) {
+export default function TodayPage({ progress, active, nextUp, dueNow, spec, plan, missCount = 0, onOpenUnit, start, onSkipStart, onOpen, onGo, onLibrary }) {
   useReveal([]);
   const now = new Date();
   const { current, longest } = useMemo(() => streaks(progress.days), [progress.days]);
@@ -47,11 +47,16 @@ export default function TodayPage({ progress, active, nextUp, dueNow, spec, plan
   // The class to carry on with: the one you have open, if you started it and
   // have not finished it yet; otherwise the next one on your timetable.
   const started = (l) => l && !progress.passed[l.id] && (progress.labs[l.id] || Object.keys(progress.readings).some((k) => k.startsWith(`part:${l.id}:`)));
-  const hero = started(active) ? active : nextUp;
+  // A newcomer is led through Start here first (until it is done or skipped).
+  const lead = start?.leads ? start.next : nextUp;
+  const hero = started(active) ? active : lead;
   const heroResume = hero && hero === active && started(active);
   const term = hero && CURRICULUM_TERMS.find((t) => t.id === hero.termId);
 
-  const upNext = useMemo(() => LESSONS.filter((l) => !progress.passed[l.id] && l.id !== hero?.id).slice(0, 3), [progress.passed, hero]);
+  const upNext = useMemo(
+    () => [...(start?.leads ? START_LESSONS : []), ...LESSONS].filter((l) => !progress.passed[l.id] && l.id !== hero?.id).slice(0, 3),
+    [progress.passed, hero, start?.leads]
+  );
 
   // The last seven days, oldest first, for the streak strip.
   const week = Array.from({ length: 7 }, (_, i) => {
@@ -74,7 +79,11 @@ export default function TodayPage({ progress, active, nextUp, dueNow, spec, plan
         <span className="eyebrow">{now.toLocaleDateString(undefined, { weekday: 'long', day: 'numeric', month: 'long' })}</span>
         <h1>{greeting(now)}.</h1>
         <p>
-          {done === 0
+          {done === 0 && start?.leads
+            ? start.done
+              ? `Start here: ${start.done} of ${start.total} done. A few more short classes, then week 1 of ${PROGRAM.short || PROGRAM.title}.`
+              : `Welcome. Before week 1 there are ${start.total} short classes on how to study and the math basics. No background needed.`
+            : done === 0
             ? `Welcome to ${PROGRAM.short || PROGRAM.title}. Everything starts from zero, so your first class is the easiest one.`
             : `${done} of ${LESSONS.length} classes done${weekNo ? `. You are in week ${weekNo} of ${CURRICULUM_TERMS.length}` : ''}.`}
         </p>
@@ -86,13 +95,15 @@ export default function TodayPage({ progress, active, nextUp, dueNow, spec, plan
         {hero ? (
           <section className={`today-hero subj-${hero.track}`} data-reveal>
             <div className="today-hero-top">
-              <span className="eyebrow">{heroResume ? 'Pick up where you left off' : done ? 'Your next class' : 'Start here'}</span>
+              <span className="eyebrow">
+                {heroResume ? 'Pick up where you left off' : hero.start ? `Start here · class ${START_LESSONS.indexOf(hero) + 1} of ${START_LESSONS.length}` : done ? 'Your next class' : 'Start here'}
+              </span>
               <span className={`subject track-${hero.track}`}>{SUBJECTS[hero.track] || hero.track}</span>
             </div>
             <h2>{hero.title}</h2>
             <p className="today-hero-sub">{hero.subtitle}</p>
             <p className="today-hero-meta">
-              {term ? `${term.title} · ${hero.day} · ` : ''}
+              {term ? `${term.title} · ${hero.day} · ` : hero.start ? 'Before week 1 · ' : ''}
               {hero.history?.era?.split('•')[0].trim()} · {shortName(hero.history?.protagonist)}
             </p>
             <ol className="today-steps" aria-label="Your progress in this class">
@@ -107,9 +118,14 @@ export default function TodayPage({ progress, active, nextUp, dueNow, spec, plan
               <button type="button" className="btn primary lg" onClick={() => onOpen(hero.id)}>
                 {heroResume ? 'Continue class' : 'Start class'} →
               </button>
-              {heroResume && nextUp && nextUp.id !== hero.id && (
+              {heroResume && nextUp && nextUp.id !== hero.id && !hero.start && (
                 <button type="button" className="btn ghost" onClick={() => onOpen(nextUp.id)}>
                   Or your next timetable class
+                </button>
+              )}
+              {hero.start && !start?.skipped && (
+                <button type="button" className="btn ghost" onClick={onSkipStart} title="You can come back to Start here from the Roadmap at any time">
+                  I have studied before: skip to week 1
                 </button>
               )}
             </div>
@@ -170,6 +186,16 @@ export default function TodayPage({ progress, active, nextUp, dueNow, spec, plan
         </button>
       )}
 
+      {start && !start.leads && !start.finished && !start.skipped && (
+        <button type="button" className="continue start-due today-spec" onClick={() => onOpen(start.next.id)} data-reveal>
+          <span className="eyebrow">
+            {START_LEVEL.icon} Start here · optional · {start.done} of {start.total} done
+          </span>
+          <strong>{start.next.title}</strong>
+          <span className="continue-meta">Short classes on how memory works, testing yourself, notes and the math basics. Worth it even if you are well along.</span>
+        </button>
+      )}
+
       {upNext.length > 0 && (
         <section className="today-section" data-reveal>
           <div className="today-section-head">
@@ -185,7 +211,7 @@ export default function TodayPage({ progress, active, nextUp, dueNow, spec, plan
                   <span className="class-top">
                     <span className="class-day">{l.day}</span>
                     <span className={`subject track-${l.track}`}>{SUBJECTS[l.track] || l.track}</span>
-                    <span className="class-num">Week {weekNumber(l)}</span>
+                    <span className="class-num">{l.start ? `${START_LESSONS.indexOf(l) + 1} of ${START_LESSONS.length}` : `Week ${weekNumber(l)}`}</span>
                   </span>
                   <span className="path-title">{l.title}</span>
                   <span className="path-meta">

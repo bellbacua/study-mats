@@ -157,3 +157,23 @@ export const SIDES_LATER = [
   { title: 'History of Technology', icon: '🏛', blurb: 'From bronze to silicon: how materials shaped empires and everyday life.' },
   { title: 'Design and Drawing', icon: '✏️', blurb: 'Sketching, perspective and how products are designed for people.' },
 ];
+
+// "Start here": a short level before week 1 of every program, for people who
+// have not studied for a while or never learned how. It is never locked and
+// you can skip it (saved as the reading "start:skip").
+export const START_LEVEL = {
+  id: 'start',
+  title: 'Start here',
+  icon: '🌱',
+  blurb: 'Seven short classes before week 1: how memory works, how to test yourself, how to take notes and get unstuck, how to read math symbols and check a claim, plus an arithmetic refresher.',
+  why: 'Learning how to learn first makes every later class faster, and the refresher shows which early classes to take slowly.',
+  classes: [
+    { id: 'start-001' }, // Ebbinghaus: forgetting and spacing (1885)
+    { id: 'start-002' }, // Fibonacci: the arithmetic refresher (1202)
+    { id: 'start-003' }, // Gates: testing yourself (1917, 2006)
+    { id: 'start-004' }, // the everyday math symbols (1489–1659)
+    { id: 'start-005' }, // Pólya: getting unstuck (1945)
+    { id: 'start-006' }, // the Royal Society: checking a claim (1660)
+    { id: 'start-007' }, // Pauk: Cornell notes (1950s)
+  ],
+};

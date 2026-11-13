@@ -33,7 +33,7 @@ export default function NotesPage({ notes, onOpen }) {
         </div>
       )}
 
-      {[...CURRICULUM_TERMS, ...TRACKS.map((t) => ({ id: `spec:${t.id}`, title: `${t.title} track` }))].map((term) => {
+      {[{ id: 'spec:start', title: 'Start here' }, ...CURRICULUM_TERMS, ...TRACKS.map((t) => ({ id: `spec:${t.id}`, title: `${t.title} track` }))].map((term) => {
         const items = shown.filter((l) => (l.spec ? `spec:${l.spec}` : l.termId) === term.id);
         if (!items.length) return null;
         return (

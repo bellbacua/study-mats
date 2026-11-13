@@ -3242,6 +3242,38 @@ input[type='range'] {
 .class-card.ge-card {
   border-style: dashed;
 }
+
+/* ---------- start here (the level before week 1) ---------- */
+.track-start {
+  color: #a6d96a;
+}
+.subj-start,
+.class-card.subj-start {
+  --subj: #a6d96a;
+}
+.start-level .term-head span {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+}
+.start-skip {
+  font-size: 12px;
+}
+.continue.start-due {
+  border-color: color-mix(in srgb, #a6d96a 55%, var(--line));
+}
+.welcome-option.welcome-start {
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+  text-align: left;
+  margin: 6px 0 18px;
+  cursor: pointer;
+}
+.welcome-start input {
+  margin-top: 4px;
+  accent-color: #a6d96a;
+}
 .class-card.ge-card:disabled {
   opacity: 0.55;
   cursor: not-allowed;

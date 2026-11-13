@@ -5,6 +5,7 @@ import { PROGRAMS, SIDES, trackLessons } from '../data/path';
 export default function Welcome({ onDone }) {
   const [program, setProgram] = useState('mate');
   const [sides, setSides] = useState(() => new Set());
+  const [startHere, setStartHere] = useState(true);
   const flip = (id) =>
     setSides((s) => {
       const n = new Set(s);
@@ -44,7 +45,18 @@ export default function Welcome({ onDone }) {
           })}
         </div>
 
-        <button type="button" className="btn primary" onClick={() => onDone(program, [...sides])}>
+        <h2>New to studying?</h2>
+        <label className="welcome-option welcome-start">
+          <input type="checkbox" checked={startHere} onChange={(e) => setStartHere(e.target.checked)} />
+          <span>
+            <strong>🌱 Begin with Start here</strong>
+            <span className="notes-hint">
+              Seven short classes before week 1: how memory works, how to test yourself and take notes, what to do when stuck, how to read math symbols and check a claim, and an arithmetic refresher. Untick it if you have studied recently.
+            </span>
+          </span>
+        </label>
+
+        <button type="button" className="btn primary" onClick={() => onDone(program, [...sides], startHere)}>
           Start studying
         </button>
         <p className="notes-hint">You can change all of this later on the Program page.</p>

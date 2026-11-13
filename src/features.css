@@ -112,7 +112,7 @@
     color: var(--red);
   }
   /* pale subject inks need more depth on paper */
-  & :is(.track-philo, .track-comp, .track-econ, .track-prog, .track-disc, .track-algo, .track-sys, .track-ai) {
+  & :is(.track-start, .track-philo, .track-comp, .track-econ, .track-prog, .track-disc, .track-algo, .track-sys, .track-ai) {
     filter: brightness(0.62) saturate(1.3);
   }
 }

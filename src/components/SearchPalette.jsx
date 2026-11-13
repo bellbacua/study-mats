@@ -31,7 +31,7 @@ function buildIndex(pages) {
   const out = [];
   for (const p of pages) out.push({ group: 'page', id: `page:${p.id}`, title: p.label, sub: p.hint, icon: p.icon || '→', act: { go: p.id }, extra: p.words || '' });
   for (const l of ALL_LESSONS) {
-    const where = l.from ? `From ${PROGRAM_DATA[l.from]?.short || l.from}` : l.spec ? 'Track class' : l.side ? 'GE class' : `Week ${weekNumber(l)} · ${l.day}`;
+    const where = l.start ? 'Start here' : l.from ? `From ${PROGRAM_DATA[l.from]?.short || l.from}` : l.spec ? 'Track class' : l.side ? 'GE class' : `Week ${weekNumber(l)} · ${l.day}`;
     out.push({
       group: 'class',
       id: `class:${l.id}`,

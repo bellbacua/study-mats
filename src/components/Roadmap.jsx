@@ -1,9 +1,9 @@
-import { CURRICULUM_TERMS, LESSONS, SUBJECTS, PROGRAM, PROGRAMS, PROGRAM_ID, trackClassState } from '../data/path';
+import { CURRICULUM_TERMS, LESSONS, SUBJECTS, PROGRAM, PROGRAMS, PROGRAM_ID, START_LESSONS, START_LEVEL, trackClassState } from '../data/path';
 import { useReveal } from '../state/useReveal';
 
 const shortName = (p) => p.split('(')[0].trim();
 
-export default function Roadmap({ progress, nextUp, onOpen, status, dueNow = 0, onReview, spec, sideWeeks = {}, onBorrow }) {
+export default function Roadmap({ progress, nextUp, onOpen, status, dueNow = 0, onReview, spec, sideWeeks = {}, onBorrow, start, onSkipStart }) {
   const otherNames = PROGRAMS.filter((p) => p.ready && p.id !== PROGRAM_ID).map((p) => p.short || p.title).join(' or ');
   const done = LESSONS.filter((l) => progress.passed[l.id]).length;
   useReveal([done]);
@@ -44,7 +44,18 @@ export default function Roadmap({ progress, nextUp, onOpen, status, dueNow = 0, 
             <span className="continue-meta">{spec.meta}</span>
           </button>
         )}
-        {nextUp && (
+        {start?.leads && (
+          <button type="button" className="continue start-due" onClick={() => onOpen(start.next.id)}>
+            <span className="eyebrow">
+              {start.done ? 'Continue' : 'Begin'}: Start here, class {START_LESSONS.indexOf(start.next) + 1} of {start.total}
+            </span>
+            <strong>{start.next.title}</strong>
+            <span className="continue-meta">
+              {start.next.history.era.split('→')[0].trim()} · {shortName(start.next.history.protagonist)}
+            </span>
+          </button>
+        )}
+        {nextUp && !start?.leads && (
           <button type="button" className="continue" onClick={() => onOpen(nextUp.id)}>
             <span className="eyebrow">
               {done ? 'Continue' : 'Start here'}: {CURRICULUM_TERMS.find((t) => t.id === nextUp.termId)?.title}, {nextUp.day} ·{' '}
@@ -57,6 +68,52 @@ export default function Roadmap({ progress, nextUp, onOpen, status, dueNow = 0, 
           </button>
         )}
       </header>
+
+      {START_LESSONS.length > 0 && (
+        <section className="term start-level">
+          <div className="stage-head" data-reveal>
+            <h2>
+              {START_LEVEL.icon} {START_LEVEL.title}
+            </h2>
+            <p>
+              Before week 1, for anyone: how memory works, how to test yourself, notes, getting unstuck, math symbols, checking a claim and an arithmetic refresher.
+              {!start?.leads && !start?.finished && ' Optional if you have studied before.'}
+            </p>
+          </div>
+          <div className="term-head" data-reveal>
+            <h2>Before week 1</h2>
+            <span>
+              {start?.done ?? 0}/{START_LESSONS.length}
+              {onSkipStart && !start?.finished && (
+                <button type="button" className="btn ghost sm start-skip" onClick={onSkipStart}>
+                  {start?.skipped ? 'Show it as my first step again' : 'Skip it'}
+                </button>
+              )}
+            </span>
+          </div>
+          <ol className="week">
+            {START_LESSONS.map((l, i) => {
+              const isDone = !!progress.passed[l.id];
+              const isNext = start?.leads && start.next?.id === l.id;
+              return (
+                <li key={l.id} data-reveal>
+                  <button type="button" className={`class-card subj-start ${isDone ? 'done' : ''} ${isNext ? 'next' : ''}`} onClick={() => onOpen(l.id)}>
+                    <span className="class-top">
+                      <span className="class-day">{i + 1}</span>
+                      <span className="subject track-start">Start here</span>
+                      <span className="class-num">{isDone ? '✓' : isNext ? 'next' : ''}</span>
+                    </span>
+                    <span className="path-title">{l.title}</span>
+                    <span className="path-meta">
+                      {l.history.era.split('→')[0].trim()} · {shortName(l.history.protagonist)}
+                    </span>
+                  </button>
+                </li>
+              );
+            })}
+          </ol>
+        </section>
+      )}
 
       {CURRICULUM_TERMS.map((term, ti) => {
         const lessons = LESSONS.filter((l) => l.termId === term.id);
@@ -80,7 +137,7 @@ export default function Roadmap({ progress, nextUp, onOpen, status, dueNow = 0, 
               {lessons.map((l) => {
                 const n = LESSONS.indexOf(l) + 1;
                 const isDone = !!progress.passed[l.id];
-                const isNext = nextUp?.id === l.id;
+                const isNext = !start?.leads && nextUp?.id === l.id;
                 return (
                   <li key={l.id} data-reveal>
                     <button

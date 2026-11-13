@@ -9,7 +9,7 @@ import { LESSON_READINGS } from './openSourceReadings';
 import { LANGUAGE_LESSON, LANGUAGE_READINGS } from './languageLesson';
 import { UM_LESSONS, UM_READINGS, UM_COURSES as UM_ONLY } from './um';
 import { applyCitations } from './citations';
-import { SIDES, SIDES_LATER } from './tracks';
+import { SIDES, SIDES_LATER, START_LEVEL } from './tracks';
 import { PROGRAM_DATA, PROGRAMS, storedProgram, rememberProgram } from './programs';
 
 const DAYS = { 1: ['Mon'], 2: ['Mon', 'Thu'], 3: ['Mon', 'Wed', 'Fri'], 4: ['Mon', 'Tue', 'Thu', 'Fri'] };
@@ -35,6 +35,7 @@ export const SUBJECTS = {
   algo: 'Algorithms',
   sys: 'Systems',
   ai: 'AI',
+  start: 'Start here',
 };
 
 // Course names for every program, so a borrowed class still shows its tags.
@@ -89,13 +90,14 @@ const weekOf = (l) => Number(String(l.termId || '').replace('week-', '')) || 0;
 // Side topics use the same shape, marked with side: true and no UM codes.
 // Every program's tracks are here, so a class borrowed from another
 // program's track can still be opened.
-export const TRACK_LESSONS = [...ALL_TRACKS, ...SIDES.map((t) => ({ ...t, side: true }))].flatMap((t) => {
+export const TRACK_LESSONS = [...ALL_TRACKS, ...SIDES.map((t) => ({ ...t, side: true })), { ...START_LEVEL, start: true }].flatMap((t) => {
   const written = t.classes.filter((c) => byId[c.id] && !IN_CORE.has(c.id));
   return written.map((c, i) => ({
     ...byId[c.id],
     um: t.side ? [] : byId[c.id].um || t.um,
     spec: t.id,
     side: Boolean(t.side),
+    start: Boolean(t.start),
     specIndex: i,
     specCount: written.length,
     after: c.after ?? byId[c.id].after,
@@ -113,7 +115,7 @@ const OTHER_LESSONS = Object.values(PROGRAM_DATA)
 
 export const ALL_LESSONS = [...LESSONS, ...TRACK_LESSONS, ...OTHER_LESSONS];
 applyCitations(ALL_LESSONS, READINGS);
-const TRACK_BY_ID = Object.fromEntries([...ALL_TRACKS, ...SIDES].map((t) => [t.id, t]));
+const TRACK_BY_ID = Object.fromEntries([...ALL_TRACKS, ...SIDES, START_LEVEL].map((t) => [t.id, t]));
 const LESSON_BY_ID = Object.fromEntries(ALL_LESSONS.map((l) => [l.id, l]));
 export const lessonById = (id) => LESSON_BY_ID[id];
 export const trackOf = (l) => (l?.spec ? TRACK_BY_ID[l.spec] : null);
@@ -121,7 +123,9 @@ export const trackLessons = (trackId) => TRACK_LESSONS.filter((l) => l.spec === 
 
 // "Week 12" for a core class, "Metals track" for a specialization class.
 export const whereLabel = (l) =>
-  l.side
+  l.start
+    ? 'Start here'
+    : l.side
     ? TRACK_BY_ID[l.spec].title
     : l.spec
       ? `${TRACK_BY_ID[l.spec].title} track${l.program && l.program !== PROGRAM_ID ? ` (${PROGRAM_DATA[l.program].short})` : ''}`
@@ -152,6 +156,7 @@ export function openSlots(passed) {
 // core prerequisite are both passed.
 export function trackClassState(l, passed) {
   if (passed[l.id]) return { open: true, done: true };
+  if (l.start) return { open: true, done: false };
   const list = trackLessons(l.spec);
   const prev = list[l.specIndex - 1];
   if (prev && !passed[prev.id]) return { open: false, why: `Pass “${prev.title.split(':')[0]}” first` };
@@ -251,4 +256,19 @@ export function seqOf(l) {
   if (l.spec) return trackLessons(l.spec);
   if (l.from) return PROGRAM_LESSONS[l.from].map((x) => LESSON_BY_ID[x.id] || x);
   return LESSONS;
+}
+
+// ---- start here -----------------------------------------------------------------
+// The short level before week 1 (see START_LEVEL in tracks/meta.js). It leads
+// the way for a newcomer until it is finished or skipped ("start:skip"); for
+// someone who has already passed core classes it stays on the roadmap as an
+// optional extra.
+export { START_LEVEL };
+export const START_LESSONS = TRACK_LESSONS.filter((l) => l.start);
+export function startState(passed, readings) {
+  const done = START_LESSONS.filter((l) => passed[l.id]).length;
+  const skipped = Boolean(readings?.['start:skip']);
+  const coreDone = LESSONS.some((l) => passed[l.id]);
+  const next = START_LESSONS.find((l) => !passed[l.id]) || null;
+  return { done, total: START_LESSONS.length, skipped, next, finished: !next, leads: Boolean(next) && !skipped && !coreDone };
 }
