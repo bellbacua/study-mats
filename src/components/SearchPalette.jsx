@@ -4,6 +4,7 @@ import { GLOSSARY } from '../data/glossary';
 import { PEOPLE } from '../data/library/people';
 import { MATERIALS } from '../data/library/materials';
 import { DISCOVERIES } from '../data/library/discoveries';
+import { ESTIMATES } from '../data/library/estimates';
 
 // One search box over everything: classes, glossary words, people, materials,
 // discoveries and the app's pages. Opens with Ctrl+K (⌘K on a Mac) or "/".
@@ -22,6 +23,7 @@ const GROUPS = [
   { id: 'person', label: 'People' },
   { id: 'material', label: 'Materials' },
   { id: 'discovery', label: 'Discoveries' },
+  { id: 'game', label: 'Library games' },
 ];
 
 function buildIndex(pages) {
@@ -60,6 +62,14 @@ function buildIndex(pages) {
   for (const m of MATERIALS) out.push({ group: 'material', id: `material:${m.id}`, title: m.name, sub: m.note, icon: '🧱', act: { shelf: 'materials', q: m.name }, extra: '' });
   for (const d of DISCOVERIES)
     out.push({ group: 'discovery', id: `disc:${d.title}`, title: d.title, sub: `${yearLabel(d.year)} · ${d.who}`, icon: '💡', act: { shelf: 'discoveries', q: d.title }, extra: d.how });
+  const GAMES = [
+    { shelf: 'spot', title: 'Spot the microstructure', sub: 'Picture game: name real microscope photos', icon: '🧩', extra: 'game quiz micrograph microscope microstructure pearlite martensite grains' },
+    { shelf: 'estimate', title: 'Estimate it', sub: 'Guess how big, how heavy, how many', icon: '📏', extra: 'game quiz estimate guess fermi order of magnitude powers of ten' },
+    { shelf: 'briefs', title: 'Design challenges', sub: 'Pick the right material for a real job', icon: '🎯', extra: 'game quiz material selection' },
+    { shelf: 'detective', title: 'Failure detective', sub: 'Name the cause of a real accident from clues', icon: '🕵️', extra: 'game quiz failure accident' },
+  ];
+  for (const g of GAMES) out.push({ group: 'game', id: `game:${g.shelf}`, title: g.title, sub: g.sub, icon: g.icon, act: { shelf: g.shelf }, extra: g.extra });
+  for (const x of ESTIMATES) out.push({ group: 'game', id: `est:${x.id}`, title: x.q, sub: `Estimate it · answer in ${x.unit}`, icon: '📏', act: { shelf: 'estimate', q: x.q }, extra: x.fact });
   for (const e of out) {
     e.ft = fold(e.title);
     e.fx = fold(`${e.sub} ${e.extra}`);
@@ -67,7 +77,7 @@ function buildIndex(pages) {
   return out;
 }
 
-const BIAS = { page: 6, class: 5, person: 4, discovery: 2, word: 0, material: 0 };
+const BIAS = { page: 6, class: 5, person: 4, game: 3, discovery: 2, word: 0, material: 0 };
 
 function score(e, q, words) {
   if (!words.every((w) => e.ft.includes(w) || e.fx.includes(w))) return 0;

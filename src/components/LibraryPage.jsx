@@ -19,6 +19,8 @@ import { TECHNIQUES } from '../data/library/techniques';
 import { DIAGRAMS } from '../data/library/phases';
 import PeriodicTable, { PT_SOURCES } from './PeriodicTable';
 import { BriefsShelf, DetectiveShelf } from './Challenges';
+import { SpotShelf, EstimateShelf } from './Games';
+import { ESTIMATES } from '../data/library/estimates';
 import { BRIEFS } from '../data/library/briefs';
 import { ELEMENTS } from '../data/library/elements';
 import CollectionShelf from './CollectionShelf';
@@ -30,6 +32,8 @@ const SHELVES = [
   { id: 'failures', icon: '🗂️', label: 'Failure files', blurb: `${FAILURES.length} famous accidents: what broke, why, and what engineers changed afterwards.` },
   { id: 'briefs', icon: '🎯', label: 'Design challenges', blurb: `${BRIEFS.length} real design jobs. Read the brief, compare the numbers, and pick the material you would use.` },
   { id: 'detective', icon: '🕵️', label: 'Failure detective', blurb: `The ${FAILURES.length} failure files as mysteries. Get the clues one at a time and name the cause.` },
+  { id: 'spot', icon: '🧩', label: 'Spot the microstructure', blurb: `A picture game: name ${MICROGRAPHS.length} kinds of microstructure from real microscope photos, eight at a time.` },
+  { id: 'estimate', icon: '📏', label: 'Estimate it', blurb: `${ESTIMATES.length} how-big, how-heavy, how-many questions. Guess the size of the number on a powers-of-ten scale.` },
   { id: 'formulas', icon: '∑', label: 'Formula sheet', blurb: `${FORMULAS.length} key equations of the course, with their symbols, units and the class that teaches each.` },
   { id: 'people', icon: '👤', label: 'Who’s who', blurb: `${PEOPLE.length} people from the class stories, with the classes they appear in.` },
   { id: 'elements', icon: '⚛️', label: 'Periodic table', blurb: `All ${ELEMENTS.length} elements. Tap one for when and how it was found, its crystal structure, what it is used for and where it is mined.` },
@@ -681,6 +685,17 @@ export default function LibraryPage({ progress, onOpen, onGo, onMark, focus }) {
       {shelf === 'failures' && <FailuresShelf {...props} />}
       {shelf === 'briefs' && <BriefsShelf {...props} onMark={onMark} />}
       {shelf === 'detective' && <DetectiveShelf {...props} onMark={onMark} />}
+      {shelf === 'spot' && (
+        <SpotShelf
+          {...props}
+          onMark={onMark}
+          onShelf={(id) => {
+            setShelf(id);
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+          }}
+        />
+      )}
+      {shelf === 'estimate' && <EstimateShelf {...props} onMark={onMark} />}
       {shelf === 'formulas' && <FormulasShelf {...props} />}
       {shelf === 'people' && <PeopleShelf {...props} text={text} />}
       {shelf === 'discoveries' && <DiscoveriesShelf {...props} />}

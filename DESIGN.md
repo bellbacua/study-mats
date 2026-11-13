@@ -75,3 +75,8 @@ Don't: gradients on cards, more than one accent in a view, pure `#000` canvas, c
 - **Animation player**: one bar under the caption: previous, play, next, replay step · segmented scrub bar (one segment per step, the running one fills over its duration) · step count, speed (0.5–2×), narration, full screen. Keys while it has focus: space, ←/→, R, F.
 - **Finishing moments**: the class recap card (what you learned, who, new collection cards, what it unlocks) and a streak toast at 3, 7, 14, 30, 50, 100… days. Confetti is CSS only and is skipped under reduced motion.
 - **Collection**: Library "My collection" album. Cards are worked out from passed classes (`src/state/collection.js`), so nothing extra is saved.
+
+## Library games (src/components/Challenges.jsx, src/components/Games.jsx)
+- Four game shelves share the `ch-*` look: Design challenges, Failure detective, **Spot the microstructure** and **Estimate it**. Wins are saved as readings ids (`brief:`, `case:`, `spot:<micrograph id>`, `est:<question id>`).
+- **Spot the microstructure**: 8 pictures a round from the Microscope pictures list. A Commons picture is used only if its own description matches the right answer's pattern and none of the wrong options', so the answer is never in doubt. Clue (costs a star) shows "what to notice" with the answer's words blanked. Needs internet; says so when offline.
+- **Estimate it** (src/data/library/estimates.js): one slider on a powers-of-ten scale, then the real value on the same scale with a green ×10 band. Stars: within ×2 = 3, ×10 = 2, ×100 = 1. Every question carries its reasoning steps and sources.

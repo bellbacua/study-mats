@@ -12,7 +12,7 @@ const strip = (h) => {
 
 // Search Commons for files and keep only those whose own description
 // (or title) matches what we claim the picture shows.
-async function findPics(m) {
+export async function findPics(m) {
   if (cache.has(m.id)) return cache.get(m.id);
   const q = new URLSearchParams({
     action: 'query',
@@ -43,8 +43,7 @@ async function findPics(m) {
             artist: strip(md.Artist?.value),
           };
         })
-        .filter((x) => x.thumb && x.desc && m.must.test(x.desc))
-        .slice(0, 2),
+        .filter((x) => x.thumb && x.desc && m.must.test(x.desc)),
     )
     .catch(() => null);
   cache.set(m.id, p);
@@ -62,7 +61,7 @@ function Card({ m }) {
       (es) => {
         if (es.some((e) => e.isIntersecting)) {
           io.disconnect();
-          findPics(m).then((r) => live && setPics(r));
+          findPics(m).then((r) => live && setPics(r && r.slice(0, 2)));
         }
       },
       { rootMargin: '300px' },

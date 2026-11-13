@@ -5011,3 +5011,66 @@ button.continue:hover::after {
 .app > .topbar:has(.topnav-menu) {
   z-index: 45;
 }
+
+/* Library games: spot the microstructure, estimate it */
+.gm-hero { display: flex; gap: 16px; align-items: flex-start; border-left: 3px solid var(--subj); margin-top: 4px; }
+.gm-hero-icon { font-size: 34px; line-height: 1; }
+.gm-hero strong { font-size: 17px; }
+.gm-hero p { margin: 6px 0 0; color: var(--muted); max-width: 72ch; line-height: 1.55; }
+.gm-hero .ch-actions { margin-bottom: 0; flex-wrap: wrap; }
+.gm-h { margin: 24px 0 8px; font-size: 13px; text-transform: uppercase; letter-spacing: 0.06em; color: var(--muted); }
+.gm-card-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); gap: 8px; }
+.gm-tick { display: flex; gap: 10px; align-items: flex-start; padding: 10px 12px; border: 1px solid var(--line); border-radius: 10px; background: var(--surface); font-size: 14px; }
+.gm-tick > span:first-child { color: var(--faint); font-weight: 600; }
+.gm-tick > span:last-child { display: flex; flex-direction: column; gap: 2px; }
+.gm-tick .eyebrow { font-size: 11px; }
+.gm-tick.done { border-color: color-mix(in srgb, var(--green) 45%, var(--line)); }
+.gm-tick.done > span:first-child { color: var(--green); }
+.gm-top { display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap; }
+.gm-count { display: flex; align-items: center; gap: 10px; font-size: 12px; color: var(--muted); font-family: var(--mono); }
+.gm-count i { width: 120px; height: 6px; border-radius: 99px; background: var(--surface-3); overflow: hidden; position: relative; }
+.gm-count i::after { content: ''; position: absolute; inset: 0 auto 0 0; width: var(--p); background: var(--subj); border-radius: 99px; transition: width 0.4s cubic-bezier(0.2, 0.7, 0.2, 1); }
+.gm-pic { margin: 16px 0 0; }
+.gm-frame { display: grid; place-items: center; min-height: 260px; border: 1px solid var(--line); border-radius: 12px; background: var(--surface-2, var(--surface)); overflow: hidden; }
+.gm-frame img { display: block; max-width: 100%; max-height: 440px; object-fit: contain; animation: ch-in 0.35s ease-out; }
+.gm-credit { font-size: 12px; color: var(--faint); margin-top: 6px; line-height: 1.45; max-width: 80ch; }
+.gm-credit q { color: var(--muted); }
+.gm-credit a { color: var(--faint); }
+.gm-opts { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 8px; }
+.gm-opts .ch-opt { display: flex; flex-direction: column; gap: 2px; min-height: 56px; }
+.gm-opts .ch-opt .eyebrow { font-size: 11px; text-decoration: none; }
+.gm-clue { margin: 0; padding: 10px 12px; border: 1px dashed var(--line-strong); border-radius: 10px; max-width: 72ch; line-height: 1.5; }
+.gm-list { list-style: none; margin: 12px 0 0; padding: 0; display: grid; gap: 4px; font-size: 14px; }
+.gm-list li { color: var(--muted); }
+.gm-list li.ok { color: var(--text); }
+.gm-q { font-size: 22px; line-height: 1.35; max-width: 40ch; }
+.gm-guess { margin-top: 16px; padding: 18px 18px 8px; border: 1px solid var(--line); border-radius: 12px; background: var(--surface-2, var(--surface)); }
+.gm-guess output { display: block; text-align: center; margin-bottom: 10px; }
+.gm-say { font-family: var(--mono); font-size: 30px; font-weight: 600; letter-spacing: -0.01em; color: var(--text); }
+.gm-unit { font-size: 15px; color: var(--muted); margin-left: 4px; }
+.gm-guess input[type='range'] { width: 100%; accent-color: var(--gold); height: 28px; cursor: pointer; margin: 0; }
+.gm-guess input[type='range']:disabled { cursor: default; opacity: 0.55; }
+.gm-guess input[type='range']:focus-visible { outline: 2px solid var(--blue); outline-offset: 2px; }
+.gm-scale { position: relative; height: 34px; margin: 4px 8px 0; border-top: 1px solid var(--line-strong); }
+.gm-tickmark { position: absolute; top: -1px; width: 1px; height: 7px; background: var(--line-strong); }
+.gm-tickmark em { position: absolute; top: 9px; left: 50%; transform: translateX(-50%); font-style: normal; font-size: 11px; font-family: var(--mono); color: var(--faint); white-space: nowrap; }
+.gm-band { position: absolute; top: -5px; height: 9px; border-radius: 99px; background: color-mix(in srgb, var(--green) 22%, transparent); animation: ch-in 0.4s ease-out; }
+.gm-mark { position: absolute; top: -9px; width: 14px; height: 14px; margin-left: -7px; border-radius: 50%; border: 2px solid var(--surface); animation: ch-in 0.4s ease-out; }
+.gm-mark.truth { background: var(--green); }
+.gm-mark.guess { background: var(--yellow); }
+.gm-help { margin: 4px 0 6px; font-size: 13px; color: var(--muted); text-align: center; }
+.gm-legend { font-size: 12px; color: var(--muted); display: flex; align-items: center; gap: 6px; flex-wrap: wrap; }
+.gm-dot { display: inline-block; width: 10px; height: 10px; border-radius: 50%; margin-left: 6px; }
+.gm-dot.truth { background: var(--green); }
+.gm-dot.guess { background: var(--yellow); }
+.gm-dot.band { border-radius: 99px; width: 18px; background: color-mix(in srgb, var(--green) 22%, transparent); border: 1px solid color-mix(in srgb, var(--green) 40%, transparent); }
+.gm-cardq { font-weight: 500; line-height: 1.4; }
+@media (max-width: 600px) {
+  .gm-hero { flex-direction: column; gap: 8px; }
+  .gm-say { font-size: 24px; }
+  .gm-q { font-size: 19px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .gm-frame img, .gm-band, .gm-mark { animation: none; }
+}
+.gm-center { justify-content: center; margin-bottom: 0; }
