@@ -62,6 +62,7 @@ export function useProgress() {
         exams: progress.examResults || {},
         days: progress.studyDays || {},
         review: { ...loadLocalReview(), ...progress.reviewCards },
+        loaded: true,
       });
     });
     return () => {

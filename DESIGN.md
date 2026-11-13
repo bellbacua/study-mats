@@ -62,3 +62,16 @@ Don't: gradients on cards, more than one accent in a view, pure `#000` canvas, c
 ## Accessibility
 - Contrast ≥ 4.5:1 for text. Focus ring 2px `--blue` at 2px offset on every interactive element.
 - Touch targets ≥ 40px on mobile. All animation has a static readout beside it.
+
+## Themes and reading comfort
+- Three themes: **dark** (default), **light** and **sepia**, set on `<html data-theme>` from the "Aa" menu (`src/state/prefs.js`, saved per device). Light and sepia redefine the same tokens in `src/features.css`; never hard-code a colour that only works on dark. Text on a solid accent uses `--on-accent`.
+- The animation stage stays dark in every theme (a film screen); `.scene-stage` resets the tokens to the dark set.
+- Text size scales the reading blocks of a class with `zoom: var(--read-scale)`; the top bar and the canvas keep their size.
+- Focus mode (`data-focus="on"`) hides the top bar, pop-quiz button and notes handle. A faint "Leave focus · Esc" pill stays in the corner.
+
+## App-feel components (src/features.css)
+- **Today** is the home view: one hero card (the class to continue, with its parts as pills), Review and Streak cards beside it, then "Coming up" and the collection.
+- **Search** (Ctrl K, ⌘K or "/"): a floating palette. Name matches are grouped (classes, glossary, people, materials, discoveries); text-only matches follow under "Also mentioned in".
+- **Animation player**: one bar under the caption: previous, play, next, replay step · segmented scrub bar (one segment per step, the running one fills over its duration) · step count, speed (0.5–2×), narration, full screen. Keys while it has focus: space, ←/→, R, F.
+- **Finishing moments**: the class recap card (what you learned, who, new collection cards, what it unlocks) and a streak toast at 3, 7, 14, 30, 50, 100… days. Confetti is CSS only and is skipped under reduced motion.
+- **Collection**: Library "My collection" album. Cards are worked out from passed classes (`src/state/collection.js`), so nothing extra is saved.

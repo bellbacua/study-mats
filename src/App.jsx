@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { LESSONS, ALL_LESSONS, TRACKS, PROGRAMS, PROGRAM_ID, rememberProgram, seqOf, trackLessons, trackClassState, openSlots, sideByWeek, weekNumber } from './data/path';
 import LessonView from './components/LessonView';
 import Roadmap from './components/Roadmap';
@@ -17,11 +17,39 @@ import StudyGuide from './components/StudyGuide';
 import NotesPage from './components/NotesPage';
 import ReviewPage from './components/ReviewPage';
 import { dueCards } from './state/review';
+import TodayPage from './components/TodayPage';
+import SearchPalette from './components/SearchPalette';
+import ReadingMenu from './components/ReadingMenu';
+import { FinishRecap, StreakToast } from './components/Celebrations';
+import { usePrefs } from './state/prefs';
+import { today as todayKey } from './state/useProgress';
+
+const STREAK_MILESTONES = [3, 7, 14, 30, 50, 100, 200, 365];
+const isMac = typeof navigator !== 'undefined' && /Mac|iPhone|iPad/.test(navigator.platform || navigator.userAgent);
+
+// Pages the search box can jump to (with extra words people might type).
+const PAGES = [
+  { id: 'today', label: 'Today', hint: 'Your next class, reviews and streak', icon: '☀', words: 'home start dashboard' },
+  { id: 'roadmap', label: 'Roadmap', hint: 'Every week of your timetable', icon: '🗺', words: 'timetable schedule weeks plan' },
+  { id: 'review', label: 'Review', hint: 'Questions due from earlier classes', icon: '↻', words: 'spaced repetition flashcards recall' },
+  { id: 'spec', label: 'Program', hint: 'Your program, tracks and borrowed subjects', icon: '🎓', words: 'tracks specialization borrow switch' },
+  { id: 'library', label: 'Library', hint: 'Materials, people, formulas, case files', icon: '📚', words: 'collection album shelves' },
+  { id: 'timeline', label: 'Timeline', hint: 'Every class in the order it happened', icon: '⏳', words: 'history dates' },
+  { id: 'glossary', label: 'Glossary', hint: 'Words from your classes, explained', icon: 'Aa', words: 'dictionary definitions terms' },
+  { id: 'progress', label: 'Progress', hint: 'Streak, study days, subjects', icon: '🔥', words: 'stats calendar streak export' },
+  { id: 'exams', label: 'Quizzes & exams', hint: 'Weekly quizzes, midterm, final', icon: '✎', words: 'test midterm final' },
+  { id: 'notes', label: 'My notes', hint: 'Everything you have written', icon: '📝', words: 'notebook' },
+];
 import { useProgress } from './state/useProgress';
 
 export default function App() {
   const { state, status, actions: store } = useProgress();
-  const [view, setView] = useState('roadmap');
+  const [view, setView] = useState('today');
+  const [searchOpen, setSearchOpen] = useState(false);
+  const [libFocus, setLibFocus] = useState(null);
+  const [recap, setRecap] = useState(null); // { id, score } of a class just passed
+  const [toast, setToast] = useState(null); // streak milestone reached
+  const [prefs, setPrefs] = usePrefs();
   const [guideWeek, setGuideWeek] = useState(null);
   // A new page starts at the top, not where the last one was scrolled to.
   const go = (v) => {
@@ -60,13 +88,58 @@ export default function App() {
       setView('lesson');
       window.scrollTo({ top: 0 });
     },
+    // Passing a class for the first time shows the recap card.
+    pass: (id, score) => {
+      if (!state.passed[id]) setRecap({ id, score });
+      store.pass(id, score);
+    },
   };
+  const openLibrary = (shelf, q = '') => {
+    setLibFocus({ shelf, q, n: Date.now() });
+    go('library');
+  };
+
+  // Ctrl+K (⌘K) or "/" opens search from anywhere. Esc leaves focus mode.
+  useEffect(() => {
+    const onKey = (e) => {
+      const typing = e.target.closest?.('input, textarea, select, [contenteditable="true"], .cm-editor');
+      if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'k') {
+        e.preventDefault();
+        setSearchOpen((o) => !o);
+      } else if (e.key === '/' && !typing && !e.ctrlKey && !e.metaKey) {
+        e.preventDefault();
+        setSearchOpen(true);
+      } else if (e.key === 'Escape' && prefs.focus && !searchOpen && !document.fullscreenElement && !document.querySelector('.modal-backdrop, .palette-backdrop')) {
+        setPrefs({ focus: false });
+      }
+    };
+    window.addEventListener('keydown', onKey);
+    return () => window.removeEventListener('keydown', onKey);
+  }, [prefs.focus, searchOpen, setPrefs]);
+
+  // A streak milestone, reached while the app is open, gets a small celebration
+  // (once per streak run; remembered with your progress).
+  const lastStreak = useRef(null);
+  useEffect(() => {
+    if (!state.loaded) return; // count from the saved streak, not from zero
+    const prev = lastStreak.current;
+    lastStreak.current = streak;
+    if (prev == null || streak <= prev || !STREAK_MILESTONES.includes(streak)) return;
+    const start = new Date(Date.now() - (streak - 1) * 86_400_000);
+    const key = `celebrated:streak-${streak}:${todayKey(start)}`;
+    if (state.readings[key]) return;
+    store.toggleReading(key);
+    setToast(streak);
+  }, [streak, state.loaded, state.readings, store]);
+  const closeToast = useCallback(() => setToast(null), []);
+  const closeRecap = useCallback(() => setRecap(null), []);
 
   const saveMode = status.mode === 'sqlite' ? 'sqlite' : status.mode === 'offline' ? 'offline' : 'loading';
 
   const lessonLabel = lesson.side ? 'GE class' : lesson.spec ? 'Track class' : lesson.from ? 'Borrowed class' : `Lesson ${idx + 1}`;
   const navItems = useMemo(
     () => [
+      { id: 'today', label: 'Today' },
       { id: 'roadmap', label: 'Roadmap' },
       { id: 'lesson', label: lessonLabel },
       { id: 'review', label: <>Review{dueNow > 0 && <span className="nav-badge">{dueNow}</span>}</> },
@@ -143,12 +216,21 @@ export default function App() {
   return (
     <div className="app">
       <header className="topbar">
-        <button type="button" className="brand" onClick={() => go('roadmap')}>
+        <button type="button" className="brand" onClick={() => go('today')}>
           <span className="brand-mark">∂</span>
           <span>Study Mats</span>
         </button>
         <TopNav items={navItems} view={view} onPick={go} />
         <div className="topbar-right">
+          <button type="button" className="search-btn" onClick={() => setSearchOpen(true)} title="Search everything">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <circle cx="11" cy="11" r="6.5" fill="none" stroke="currentColor" strokeWidth="2" />
+              <path d="M16 16l4.5 4.5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+            </svg>
+            <span className="search-btn-label">Search</span>
+            <kbd>{isMac ? '⌘K' : 'Ctrl K'}</kbd>
+          </button>
+          <ReadingMenu />
           <span className={`save-dot ${saveMode}`} title={saveMode === 'sqlite' ? 'Your progress is saved' : 'Progress is not being saved right now'} />
           {streak > 0 && (
             <button type="button" className="streak" onClick={() => go('progress')} title="Study streak">
@@ -162,7 +244,18 @@ export default function App() {
       </header>
 
       <main className="main">
-        {view === 'roadmap' ? (
+        {view === 'today' ? (
+          <TodayPage
+            progress={state}
+            active={active}
+            nextUp={nextUp}
+            dueNow={dueNow}
+            spec={spec}
+            onOpen={actions.open}
+            onGo={go}
+            onLibrary={() => openLibrary('collection')}
+          />
+        ) : view === 'roadmap' ? (
           <Roadmap progress={state} nextUp={nextUp} onOpen={actions.open} status={saveMode} dueNow={dueNow} onReview={() => go('review')} spec={spec} sideWeeks={sideWeeks} onBorrow={goBorrow} />
         ) : view === 'review' ? (
           <ReviewPage progress={state} actions={actions} />
@@ -180,7 +273,7 @@ export default function App() {
         ) : view === 'paths' ? (
           <PathwaysPage progress={state} onOpen={actions.open} />
         ) : view === 'library' ? (
-          <LibraryPage progress={state} onOpen={actions.open} onGo={go} onMark={(id) => !state.readings[id] && actions.toggleReading(id)} />
+          <LibraryPage progress={state} focus={libFocus} onOpen={actions.open} onGo={go} onMark={(id) => !state.readings[id] && actions.toggleReading(id)} />
         ) : view === 'notes' ? (
           <NotesPage notes={state.notes} onOpen={actions.open} />
         ) : view === 'glossary' ? (
@@ -201,6 +294,49 @@ export default function App() {
           />
         )}
       </main>
+
+      {prefs.focus && (
+        <button type="button" className="focus-exit" onClick={() => setPrefs({ focus: false })} title="Leave focus mode (Esc)">
+          Leave focus <kbd>Esc</kbd>
+        </button>
+      )}
+
+      <SearchPalette
+        open={searchOpen}
+        onClose={() => setSearchOpen(false)}
+        pages={PAGES}
+        passed={state.passed}
+        suggestions={[
+          ...(nextUp ? [{ group: 'page', head: 'Suggested', id: 's:next', title: nextUp.title, sub: 'Your next class', icon: '▶', track: nextUp.track, act: { open: nextUp.id } }] : []),
+          ...(dueNow ? [{ group: 'page', head: 'Suggested', id: 's:review', title: `Review ${dueNow} due question${dueNow === 1 ? '' : 's'}`, sub: 'Keep earlier classes fresh', icon: '↻', act: { go: 'review' } }] : []),
+          ...PAGES.map((p, i) => ({ group: 'pages', head: i === 0 ? 'Pages' : null, id: `sp:${p.id}`, title: p.label, sub: p.hint, icon: p.icon, act: { go: p.id } })),
+        ]}
+        onAct={(a) => (a.open ? actions.open(a.open) : a.shelf ? openLibrary(a.shelf, a.q) : go(a.go))}
+      />
+
+      {recap && ALL_LESSONS.find((l) => l.id === recap.id) && (() => {
+        const l = ALL_LESSONS.find((x) => x.id === recap.id);
+        const sq = seqOf(l);
+        const nx = sq[sq.findIndex((x) => x.id === l.id) + 1];
+        return (
+          <FinishRecap
+            lesson={l}
+            score={recap.score}
+            passed={state.passed}
+            nextLesson={nx}
+            onClose={closeRecap}
+            onNext={() => {
+              setRecap(null);
+              if (nx) actions.open(nx.id);
+            }}
+            onLibrary={() => {
+              setRecap(null);
+              openLibrary('collection');
+            }}
+          />
+        );
+      })()}
+      {toast && <StreakToast days={toast} onClose={closeToast} />}
 
       <Ambush progress={state} activeIdx={idx} paused={view === 'exams'} onAnswered={() => actions.logActivity()} />
       <NotesPanel lesson={lesson} notes={state.notes} scratch={state.scratch} onNote={actions.setNote} />

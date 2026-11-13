@@ -1,6 +1,7 @@
 import React, { StrictMode, Component } from 'react';
 import { createRoot } from 'react-dom/client';
 import './app.css';
+import './features.css';
 import App from './App.jsx';
 
 class ErrorBoundary extends Component {

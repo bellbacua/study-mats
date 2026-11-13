@@ -5,6 +5,19 @@ import 'katex/dist/katex.min.css';
 
 const beatDuration = (say, b) => b?.ms ?? 2600 + say.length * 42;
 
+// Playback speed, remembered on this device like the narration switch.
+const SPEEDS = [0.5, 0.75, 1, 1.25, 1.5, 2];
+const SPEED_KEY = 'scene-speed';
+const loadSpeed = () => {
+  try {
+    const v = Number(localStorage.getItem(SPEED_KEY));
+    return SPEEDS.includes(v) ? v : 1;
+  } catch {
+    return 1;
+  }
+};
+const speedLabel = (v) => `${v}×`;
+
 // The camera framing a step asks for: the latest `cam` at or before it.
 const camAt = (beats, i) => {
   for (let j = i; j >= 0; j--) if (beats[j] && 'cam' in beats[j]) return beats[j].cam;
@@ -22,13 +35,14 @@ function voice() {
   pickedVoice = all.sort((a, b) => rank(a) - rank(b))[0] || null;
   return pickedVoice;
 }
+let speechRate = 0.98;
 function speak(text, onEnd) {
   if (!canSpeak) return;
   window.speechSynthesis.cancel();
   const u = new SpeechSynthesisUtterance(text.replace(/×/g, ' times ').replace(/−/g, ' minus ').replace(/≈/g, ' about '));
   const v = voice();
   if (v) u.voice = v;
-  u.rate = 0.98;
+  u.rate = speechRate;
   u.onend = onEnd;
   u.onerror = onEnd;
   window.speechSynthesis.speak(u);
@@ -56,6 +70,14 @@ export default function SceneView({ type, mission, beat, onGoal, goalDone }) {
   });
   const voiceRef = useRef(voiceOn);
   voiceRef.current = voiceOn;
+  const [speed, setSpeedState] = useState(loadSpeed);
+  const speedRef = useRef(speed);
+  speedRef.current = speed;
+  speechRate = Math.min(1.8, Math.max(0.6, 0.98 * Math.sqrt(speed)));
+  const shell = useRef(null);
+  const [isFull, setIsFull] = useState(false);
+  const scrubbing = useRef(false);
+  const dur = (say, b) => beatDuration(say, b) / speedRef.current;
 
   // (Re)build the three.js stage when the scene type changes.
   useEffect(() => {
@@ -154,9 +176,9 @@ export default function SceneView({ type, mission, beat, onGoal, goalDone }) {
           spoke = true;
           if (chain) timer.current = setTimeout(go, 700);
         });
-        if (chain) timer.current = setTimeout(() => ((shown = true), go()), Math.min(beatDuration(b.say, b), 5000));
+        if (chain) timer.current = setTimeout(() => ((shown = true), go()), Math.min(dur(b.say, b), 5000 / speedRef.current));
       } else if (chain) {
-        timer.current = setTimeout(next, beatDuration(b.say, b));
+        timer.current = setTimeout(next, dur(b.say, b));
       }
     },
     [def, apply]
@@ -175,6 +197,12 @@ export default function SceneView({ type, mission, beat, onGoal, goalDone }) {
     if (ok && touched.current) onGoal?.();
   }, [target, def, goalDone, onGoal]);
 
+  useEffect(() => {
+    const on = () => setIsFull(document.fullscreenElement === shell.current);
+    document.addEventListener('fullscreenchange', on);
+    return () => document.removeEventListener('fullscreenchange', on);
+  }, []);
+
   const readout = useMemo(() => (def?.readout ? def.readout(target) : []), [def, target]);
 
   if (!def) {
@@ -184,15 +212,95 @@ export default function SceneView({ type, mission, beat, onGoal, goalDone }) {
   const nBeats = def.beats?.length || 0;
 
   const fullscreen = () => {
-    const el = box.current?.parentElement;
-    if (document.fullscreenElement) document.exitFullscreen();
-    else el?.requestFullscreen?.();
+    if (document.fullscreenElement) document.exitFullscreen?.();
+    else shell.current?.requestFullscreen?.();
+  };
+
+  const setSpeed = (v) => {
+    setSpeedState(v);
+    speedRef.current = v;
+    try {
+      localStorage.setItem(SPEED_KEY, String(v));
+    } catch {
+      // not remembered in a private window
+    }
+    // carry on at the new pace from the step being shown
+    if (playing >= 0) playFrom(playing, true);
+  };
+  const cycleSpeed = () => setSpeed(SPEEDS[(SPEEDS.indexOf(speed) + 1) % SPEEDS.length]);
+
+  // Play this step's change again from the step before it.
+  const replayStep = () => {
+    const i = Math.max(0, cur);
+    if (!nBeats) return stage.current?.replayIntro();
+    const before = def.beats.slice(0, i).reduce((acc, x) => ({ ...acc, ...x.set }), initialParams(def));
+    stage.current?.setTarget(before);
+    stage.current?.snap();
+    if (i === 0) stage.current?.replayIntro();
+    requestAnimationFrame(() => playFrom(i, playing >= 0));
+  };
+
+  const togglePlay = () => (playing >= 0 ? stop() : nBeats && playFrom(cur >= 0 && cur < nBeats - 1 ? cur : 0, true));
+
+  // Scrub bar: press or drag across it to jump between steps.
+  const stepAt = (e) => {
+    const r = e.currentTarget.getBoundingClientRect();
+    return Math.max(0, Math.min(nBeats - 1, Math.floor(((e.clientX - r.left) / r.width) * nBeats)));
+  };
+  const scrubDown = (e) => {
+    if (!nBeats) return;
+    scrubbing.current = true;
+    e.currentTarget.setPointerCapture?.(e.pointerId);
+    stop();
+    playFrom(stepAt(e), false);
+  };
+  const scrubMove = (e) => {
+    if (!scrubbing.current) return;
+    const i = stepAt(e);
+    if (i !== cur) playFrom(i, false);
+  };
+  const scrubUp = () => {
+    scrubbing.current = false;
+  };
+  const scrubKey = (e) => {
+    if (e.key === 'ArrowLeft' || e.key === 'ArrowDown') {
+      e.preventDefault();
+      if (cur > 0) playFrom(cur - 1, false);
+    } else if (e.key === 'ArrowRight' || e.key === 'ArrowUp') {
+      e.preventDefault();
+      if (cur < nBeats - 1) playFrom(cur + 1, false);
+    } else if (e.key === 'Home') {
+      e.preventDefault();
+      playFrom(0, false);
+    } else if (e.key === 'End') {
+      e.preventDefault();
+      playFrom(nBeats - 1, false);
+    }
+  };
+
+  // Keyboard, while the player has focus: space plays, arrows step,
+  // R replays the step, F goes full screen.
+  const onKey = (e) => {
+    if (e.target.closest?.('input, textarea, select, [role="slider"]')) return;
+    if (e.ctrlKey || e.metaKey || e.altKey) return;
+    const k = e.key.toLowerCase();
+    if (k === ' ' || k === 'k') {
+      e.preventDefault();
+      togglePlay();
+    } else if (k === 'arrowright' && cur < nBeats - 1) {
+      e.preventDefault();
+      playFrom(cur + 1, false);
+    } else if (k === 'arrowleft' && cur > 0) {
+      e.preventDefault();
+      playFrom(cur - 1, false);
+    } else if (k === 'r') replayStep();
+    else if (k === 'f') fullscreen();
   };
 
   return (
     <div className="scene">
-      <div className="scene-stage">
-        <div className="scene-view">
+      <div className={`scene-stage player ${isFull ? 'is-full' : ''}`} ref={shell} tabIndex={-1} onKeyDown={onKey}>
+        <div className="scene-view" onPointerDown={() => shell.current?.focus({ preventScroll: true })}>
           <div className="scene-canvas" ref={box} />
           {!ready && <div className="scene-loading">Setting up the animation…</div>}
           {def.camera?.kind === '3d' && <div className="scene-hint">drag to rotate · scroll to zoom</div>}
@@ -212,52 +320,73 @@ export default function SceneView({ type, mission, beat, onGoal, goalDone }) {
               </div>
             ))}
             <div className="scene-caption ghost empty" aria-hidden="true">
-              Use the step buttons, press “Auto-play”, or move the sliders below.
+              Press play, drag along the bar below, or move the sliders.
             </div>
             <div className={`scene-caption ${caption ? '' : 'empty'}`} key={caption} aria-live="polite">
               {caption && cur >= 0 && <strong className="scene-step-tag">Step {cur + 1} of {nBeats} · </strong>}
-              {caption || 'Use the step buttons, press “Auto-play”, or move the sliders below.'}
-              {playing >= 0 && <span className="scene-timer" style={{ animationDuration: `${beatDuration(caption, def.beats?.[playing])}ms` }} />}
+              {caption || 'Press play, drag along the bar below, or move the sliders.'}
             </div>
           </div>
-          <div className="scene-tools">
-            {nBeats > 0 && (
-              <>
-                <button type="button" disabled={cur <= 0} onClick={() => playFrom(cur - 1, false)} title="Previous step">
-                  ◀
-                </button>
-                <span className="scene-steps" aria-label="Steps">
-                  {def.beats.map((_, i) => (
-                    <button
-                      key={i}
-                      type="button"
-                      className={`scene-step ${i === cur ? 'on' : ''} ${i < cur ? 'past' : ''}`}
-                      onClick={() => playFrom(i, false)}
-                      title={`Step ${i + 1}`}
-                    >
-                      {i + 1}
-                    </button>
-                  ))}
+        </div>
+        <div className="player-bar">
+          <div className="player-left">
+            <button type="button" className="pb" disabled={cur <= 0} onClick={() => playFrom(cur - 1, false)} title="Previous step (←)" aria-label="Previous step">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 5h2v14H6zM20 5v14L9 12z" /></svg>
+            </button>
+            <button type="button" className="pb play" disabled={!nBeats} onClick={togglePlay} title={playing >= 0 ? 'Pause (space)' : 'Play the steps (space)'} aria-label={playing >= 0 ? 'Pause' : 'Play'}>
+              {playing >= 0 ? (
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 5h4v14H7zM13 5h4v14h-4z" /></svg>
+              ) : (
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z" /></svg>
+              )}
+            </button>
+            <button type="button" className="pb" disabled={cur >= nBeats - 1} onClick={() => playFrom(cur + 1, false)} title="Next step (→)" aria-label="Next step">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M16 5h2v14h-2zM4 5v14l11-7z" /></svg>
+            </button>
+            <button type="button" className="pb" onClick={replayStep} title="Replay this step (R)" aria-label="Replay this step">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5V2L7 6l5 4V7a5 5 0 1 1-5 5H5a7 7 0 1 0 7-7z" /></svg>
+            </button>
+          </div>
+          {nBeats > 0 && (
+            <div
+              className="scrub"
+              role="slider"
+              tabIndex={0}
+              aria-label="Steps"
+              aria-valuemin={1}
+              aria-valuemax={nBeats}
+              aria-valuenow={Math.max(1, cur + 1)}
+              aria-valuetext={`Step ${Math.max(1, cur + 1)} of ${nBeats}`}
+              onPointerDown={scrubDown}
+              onPointerMove={scrubMove}
+              onPointerUp={scrubUp}
+              onPointerCancel={scrubUp}
+              onKeyDown={scrubKey}
+            >
+              {def.beats.map((b, i) => (
+                <span key={i} className={`scrub-seg ${i < cur ? 'past' : ''} ${i === cur ? 'now' : ''}`} title={`Step ${i + 1}`}>
+                  <span
+                    className={`scrub-fill ${i === playing ? 'run' : ''}`}
+                    key={i === playing ? `run-${caption}-${speed}` : 'still'}
+                    style={i === playing ? { animationDuration: `${dur(b.say, b)}ms` } : undefined}
+                  />
                 </span>
-                <button type="button" disabled={cur >= nBeats - 1} onClick={() => playFrom(cur + 1, false)} title="Next step">
-                  ▶
-                </button>
-              </>
-            )}
-            {playing >= 0 ? (
-              <button type="button" className="play" onClick={stop}>
-                ❚❚ Pause
-              </button>
-            ) : (
-              <button type="button" className="play" disabled={!nBeats} onClick={() => playFrom(cur >= 0 && cur < nBeats - 1 ? cur : 0, true)}>
-                ▶ Auto-play
-              </button>
-            )}
+              ))}
+            </div>
+          )}
+          <div className="player-right">
+            <span className="player-count">
+              {Math.max(0, cur + 1)}/{nBeats}
+            </span>
+            <button type="button" className="pb speed" onClick={cycleSpeed} title="Playback speed" aria-label={`Playback speed ${speedLabel(speed)}`}>
+              {speedLabel(speed)}
+            </button>
             {canSpeak && (
               <button
                 type="button"
-                className={voiceOn ? 'on' : ''}
+                className={`pb ${voiceOn ? 'on' : ''}`}
                 title={voiceOn ? 'Narration on: each step is read aloud' : 'Read each step aloud'}
+                aria-label="Read aloud"
                 aria-pressed={voiceOn}
                 onClick={() => {
                   const v = !voiceOn;
@@ -271,14 +400,19 @@ export default function SceneView({ type, mission, beat, onGoal, goalDone }) {
                   else hush();
                 }}
               >
-                {voiceOn ? '🔊' : '🔈'}
+                {voiceOn ? (
+                  <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9h4l5-4v14l-5-4H4zM16 8.5a5 5 0 0 1 0 7M18.5 6a8.5 8.5 0 0 1 0 12" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" /></svg>
+                ) : (
+                  <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9h4l5-4v14l-5-4H4z" /><path d="M17 9l5 6M22 9l-5 6" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" /></svg>
+                )}
               </button>
             )}
-            <button type="button" onClick={() => stage.current?.replayIntro()} title="Redraw">
-              ↻
-            </button>
-            <button type="button" onClick={fullscreen} title="Full screen">
-              ⛶
+            <button type="button" className="pb" onClick={fullscreen} title={isFull ? 'Leave full screen (F)' : 'Full screen (F)'} aria-label="Full screen">
+              {isFull ? (
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 4v5H4M15 4v5h5M9 20v-5H4M15 20v-5h5" fill="none" stroke="currentColor" strokeWidth="2" /></svg>
+              ) : (
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5" fill="none" stroke="currentColor" strokeWidth="2" /></svg>
+              )}
             </button>
           </div>
         </div>

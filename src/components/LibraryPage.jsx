@@ -21,8 +21,11 @@ import PeriodicTable, { PT_SOURCES } from './PeriodicTable';
 import { BriefsShelf, DetectiveShelf } from './Challenges';
 import { BRIEFS } from '../data/library/briefs';
 import { ELEMENTS } from '../data/library/elements';
+import CollectionShelf from './CollectionShelf';
+import { COLLECTABLES } from '../state/collection';
 
 const SHELVES = [
+  { id: 'collection', icon: '📒', label: 'My collection', blurb: `Your album of ${COLLECTABLES.length} people, discoveries and materials. Each one unlocks when you finish a class it appears in.` },
   { id: 'materials', icon: '🧱', label: 'Materials', blurb: `${MATERIALS.length} materials with their typical properties. Plot any two properties against each other, or pick two to compare.` },
   { id: 'failures', icon: '🗂️', label: 'Failure files', blurb: `${FAILURES.length} famous accidents: what broke, why, and what engineers changed afterwards.` },
   { id: 'briefs', icon: '🎯', label: 'Design challenges', blurb: `${BRIEFS.length} real design jobs. Read the brief, compare the numbers, and pick the material you would use.` },
@@ -40,9 +43,9 @@ const SHELVES = [
 const KEY = 'library:shelf';
 const loadShelf = () => {
   try {
-    return localStorage.getItem(KEY) || 'materials';
+    return localStorage.getItem(KEY) || 'collection';
   } catch {
-    return 'materials';
+    return 'collection';
   }
 };
 
@@ -306,6 +309,11 @@ function MaterialsShelf({ q, byId, progress, onOpen }) {
     setPick(m);
     requestAnimationFrame(() => detailRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' }));
   };
+  // Arriving from search with a material's full name: open its card.
+  useEffect(() => {
+    const hit = q && MATERIALS.find((m) => m.name.toLowerCase() === q);
+    if (hit) setPick(hit);
+  }, [q]);
   const axisOpts = NUMERIC.filter((p) => p.key !== 't');
   return (
     <>
@@ -515,6 +523,10 @@ function PeopleShelf({ q, byId, progress, onOpen, text }) {
     [text],
   );
   const list = withClasses.filter((p) => (field === 'all' || p.field === field) && matches(q, p.name, p.what));
+  useEffect(() => {
+    if (q && list.length === 1) setOpen(list[0].name);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [q]);
   return (
     <>
       <div className="chips lib-fams">
@@ -609,18 +621,25 @@ function DiscoveriesShelf({ q, byId, progress, onOpen }) {
 
 // ---------------------------------------------------------------- page
 
-export default function LibraryPage({ progress, onOpen, onGo, onMark }) {
-  const [shelf, setShelfState] = useState(loadShelf);
-  const [query, setQuery] = useState('');
-  const setShelf = (id) => {
+export default function LibraryPage({ progress, onOpen, onGo, onMark, focus }) {
+  const [shelf, setShelfState] = useState(() => focus?.shelf || loadShelf());
+  const [query, setQuery] = useState(() => focus?.q || '');
+  const setShelf = (id, q = '') => {
     setShelfState(id);
-    setQuery('');
+    setQuery(q);
     try {
       localStorage.setItem(KEY, id);
     } catch {
       /* fine: just not remembered */
     }
   };
+  // Search (and the collection) can ask for a shelf, already filtered.
+  useEffect(() => {
+    if (focus?.shelf) {
+      setShelfState(focus.shelf);
+      setQuery(focus.q || '');
+    }
+  }, [focus]);
   const byId = useMemo(() => Object.fromEntries(ALL_LESSONS.map((l) => [l.id, l])), []);
   const text = useMemo(
     () => Object.fromEntries(ALL_LESSONS.map((l) => [l.id, [l.title, l.subtitle, l.history?.protagonist, l.history?.era, ...(l.history?.narrative || [])].join(' ')])),
@@ -649,6 +668,15 @@ export default function LibraryPage({ progress, onOpen, onGo, onMark }) {
         <p>{s.blurb}</p>
         <input type="search" value={query} onChange={(e) => setQuery(e.target.value)} placeholder={`Search ${s.label.toLowerCase()}…`} aria-label={`Search ${s.label}`} />
       </div>
+      {shelf === 'collection' && (
+        <CollectionShelf
+          {...props}
+          onShow={(id, name) => {
+            setShelf(id, name);
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+          }}
+        />
+      )}
       {shelf === 'materials' && <MaterialsShelf {...props} />}
       {shelf === 'failures' && <FailuresShelf {...props} />}
       {shelf === 'briefs' && <BriefsShelf {...props} onMark={onMark} />}
