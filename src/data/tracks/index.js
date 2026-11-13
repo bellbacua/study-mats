@@ -6,7 +6,8 @@ import comp from './comp';
 import econ from './econ';
 import bio from './bio';
 import ai from './ai';
+import sec from './sec';
 import start from './start';
 
 export { TRACKS, YEAR_ENDS, SIDES, SIDES_LATER, START_LEVEL } from './meta';
-export const TRACK_CLASSES = [...metals, ...electronic, ...energy, ...philo, ...bio, ...comp, ...econ, ...ai, ...start];
+export const TRACK_CLASSES = [...metals, ...electronic, ...energy, ...philo, ...bio, ...comp, ...econ, ...ai, ...sec, ...start];

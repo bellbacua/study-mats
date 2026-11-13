@@ -170,7 +170,16 @@ export const TRACKS = [
     blurb: 'What really happens inside a computer and across a network, and how attackers and defenders fight over it.',
     jobs: 'Systems and cloud engineering, network engineering, cybersecurity (SOC analyst, penetration tester), embedded systems.',
     um: ['CS OS', 'CS SEC'],
-    classes: [],
+    classes: [
+      { id: 'sec-001', after: ['cs-122', 'cs-111'] }, // from switches to an adder
+      { id: 'sec-002', after: ['sec-001', 'cs-153'] }, // storage that survives failure
+      { id: 'sec-003', after: ['cs-154', 'cs-152'] }, // agreeing across machines
+      { id: 'sec-004', after: ['cs-151', 'cs-133'] }, // smashing the stack
+      { id: 'sec-005', after: ['cs-155'] }, // injection attacks on the web
+      { id: 'sec-006', after: ['cs-156', 'cs-114'] }, // passwords and cracking
+      { id: 'sec-007', after: ['cs-156', 'cs-154'] }, // TLS and certificates
+      { id: 'sec-008', after: ['sec-004', 'cs-154'] }, // worms, ransomware and patching
+    ],
   },
   {
     id: 'graphics',

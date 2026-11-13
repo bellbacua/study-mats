@@ -4858,6 +4858,10 @@ button.prog-program:not(:disabled):hover {
 .subj-sys, .class-card.subj-sys { --subj: #f2a65a; }
 .track-ai { color: #ff8fb1; }
 .subj-ai, .class-card.subj-ai { --subj: #ff8fb1; }
+.track-sec { color: #ff9d6b; }
+.subj-sec, .class-card.subj-sec { --subj: #ff9d6b; }
+.track-gfx { color: #6be3d1; }
+.subj-gfx, .class-card.subj-gfx { --subj: #6be3d1; }
 button.prog-program.on:disabled {
   opacity: 1;
 }

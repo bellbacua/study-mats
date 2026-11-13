@@ -28,7 +28,7 @@ const tex = (id, where, t) => {
 };
 const words = (id, where, v) => {
   // The Computing side topic is allowed to talk about computing.
-  if (/^(comp|cs|ai)-/.test(String(id))) return;
+  if (/^(comp|cs|ai|sec|gfx)-/.test(String(id))) return;
   if (typeof v === 'string') {
     // A few ordinary phrases that happen to contain a flagged word.
     if (CS.test(v.replace(/genetic code|codons? table|code of ethics/gi, ''))) bad(id, `${where} uses programming wording: "${v.slice(0, 80)}"`);

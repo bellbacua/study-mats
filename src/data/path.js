@@ -35,6 +35,8 @@ export const SUBJECTS = {
   algo: 'Algorithms',
   sys: 'Systems',
   ai: 'AI',
+  sec: 'Systems & Security',
+  gfx: 'Graphics',
   start: 'Start here',
 };
 
