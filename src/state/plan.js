@@ -1,6 +1,7 @@
 import { LESSONS, CURRICULUM_TERMS, START_LESSONS, sideByWeek, startState } from '../data/path';
 import { DEEP } from '../data/deep';
 import { addDays, todayStr } from './review';
+import { knownSet } from './placement';
 
 // A study plan: a goal date, hours a week and the weekdays you study. The
 // rest is worked out fresh each day from what is left, so falling behind or
@@ -23,12 +24,15 @@ export const niceDate = (day, opts = { day: 'numeric', month: 'short', year: 'nu
 // The classes the plan covers, in timetable order: the "Start here" level
 // first (unless you skipped it, or went straight to week 1 without it), then
 // your core weeks with the side topics and borrowed classes you have put into
-// those weeks.
-export function planClasses(readings, passed = {}) {
+// those weeks. Core classes the placement check found you already know are
+// left out (unless you have passed them anyway).
+export function planClasses(readings, passed = {}, items = {}) {
   const extra = sideByWeek(readings);
   const st = startState(passed, readings);
+  const known = knownSet(items);
   const start = !st.skipped && (st.leads || st.done > 0) ? START_LESSONS : [];
-  return [...start, ...CURRICULUM_TERMS.flatMap((t) => [...LESSONS.filter((l) => l.termId === t.id), ...(extra[t.id] || [])])];
+  const core = (t) => LESSONS.filter((l) => l.termId === t.id && (passed[l.id] || !known.has(l.id)));
+  return [...start, ...CURRICULUM_TERMS.flatMap((t) => [...core(t), ...(extra[t.id] || [])])];
 }
 
 // Minutes for the story and the animation, measured from the class itself:
@@ -63,7 +67,7 @@ export function unitsOf(l, progress) {
   return out;
 }
 
-export const allUnits = (progress) => planClasses(progress.readings, progress.passed).flatMap((l) => unitsOf(l, progress));
+export const allUnits = (progress) => planClasses(progress.readings, progress.passed, progress.items).flatMap((l) => unitsOf(l, progress));
 
 // Minutes you can give to new material on a study day.
 export const dayBudget = (plan) => Math.max(10, Math.round(((plan.hours * 60) / Math.max(1, plan.days.length)) * (1 - REVIEW_SHARE)));

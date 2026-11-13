@@ -6,6 +6,7 @@ export default function Welcome({ onDone }) {
   const [program, setProgram] = useState('mate');
   const [sides, setSides] = useState(() => new Set());
   const [startHere, setStartHere] = useState(true);
+  const [place, setPlace] = useState(false);
   const flip = (id) =>
     setSides((s) => {
       const n = new Set(s);
@@ -56,7 +57,18 @@ export default function Welcome({ onDone }) {
           </span>
         </label>
 
-        <button type="button" className="btn primary" onClick={() => onDone(program, [...sides], startHere)}>
+        <h2>Already know some of it?</h2>
+        <label className="welcome-option welcome-start welcome-place">
+          <input type="checkbox" checked={place} onChange={(e) => setPlace(e.target.checked)} />
+          <span>
+            <strong>🧭 Take a short placement check</strong>
+            <span className="notes-hint">
+              About 5 minutes, one subject at a time. Say “no, it is new to me” to any subject, or “I have not learned this yet” to any question. The classes you already know stay open on your roadmap; you just do not start with them. Leave it unticked if you are new: everything starts from zero.
+            </span>
+          </span>
+        </label>
+
+        <button type="button" className="btn primary" onClick={() => onDone(program, [...sides], startHere, place)}>
           Start studying
         </button>
         <p className="notes-hint">You can change all of this later on the Program page.</p>

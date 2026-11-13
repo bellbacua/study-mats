@@ -80,3 +80,9 @@ Don't: gradients on cards, more than one accent in a view, pure `#000` canvas, c
 - Four game shelves share the `ch-*` look: Design challenges, Failure detective, **Spot the microstructure** and **Estimate it**. Wins are saved as readings ids (`brief:`, `case:`, `spot:<micrograph id>`, `est:<question id>`).
 - **Spot the microstructure**: 8 pictures a round from the Microscope pictures list. A Commons picture is used only if its own description matches the right answer's pattern and none of the wrong options', so the answer is never in doubt. Clue (costs a star) shows "what to notice" with the answer's words blanked. Needs internet; says so when offline.
 - **Estimate it** (src/data/library/estimates.js): one slider on a powers-of-ten scale, then the real value on the same scale with a green ×10 band. Stars: within ×2 = 3, ×10 = 2, ×100 = 1. Every question carries its reasoning steps and sources.
+
+## Placement check (src/components/PlacementPage.jsx, src/state/placement.js)
+- Optional, offered on the Welcome screen, on Today (until a class is passed), on the Program page and under You ▸ Placement check.
+- One subject at a time: "Have you studied any … before?" (yes / no, it is new to me), then questions from the class drills at the 1st, 2nd, 4th, 7th, 11th… class of that subject until one is new. One slip per class gets a second question. Nothing is marked right or wrong on screen; "I have not learned this yet" is a full-width dashed button under the options.
+- The result lists where each subject starts, with the skipped classes as tick boxes so a learner can keep any. Saved as the learner item `place/<program>` `{ known: [ids], subjects }`; null undoes it.
+- Known classes are not passed. They show on the roadmap as dashed cards marked "knew it", stay openable, and are left out of "next", Coming up and the study plan.

@@ -6,6 +6,7 @@ import { streaks } from './ProgressPage';
 import { useReveal } from '../state/useReveal';
 import { useWikiPic } from './Pictures';
 import { COLLECTABLES, KINDS, collectionStats, isCollected } from '../state/collection';
+import { knownSet, placementOf } from '../state/placement';
 import { classMinutes, fmtMinutes, niceDate, nextStudyDay, planSummary, todaysUnits } from '../state/plan';
 
 const DAY = 86_400_000;
@@ -53,9 +54,12 @@ export default function TodayPage({ progress, active, nextUp, dueNow, spec, plan
   const heroResume = hero && hero === active && started(active);
   const term = hero && CURRICULUM_TERMS.find((t) => t.id === hero.termId);
 
+  // Classes the placement check found you already know are left out.
+  const known = useMemo(() => knownSet(progress.items), [progress.items]);
+  const placed = Boolean(placementOf(progress.items));
   const upNext = useMemo(
-    () => [...(start?.leads ? START_LESSONS : []), ...LESSONS].filter((l) => !progress.passed[l.id] && l.id !== hero?.id).slice(0, 3),
-    [progress.passed, hero, start?.leads]
+    () => [...(start?.leads ? START_LESSONS : []), ...LESSONS].filter((l) => !progress.passed[l.id] && !known.has(l.id) && l.id !== hero?.id).slice(0, 3),
+    [progress.passed, hero, start?.leads, known]
   );
 
   // The last seven days, oldest first, for the streak strip.
@@ -83,6 +87,8 @@ export default function TodayPage({ progress, active, nextUp, dueNow, spec, plan
             ? start.done
               ? `Start here: ${start.done} of ${start.total} done. A few more short classes, then week 1 of ${PROGRAM.short || PROGRAM.title}.`
               : `Welcome. Before week 1 there are ${start.total} short classes on how to study and the math basics. No background needed.`
+            : done === 0 && known.size && weekNo
+            ? `Your placement check moved you ahead: you begin in week ${weekNo} of ${CURRICULUM_TERMS.length}, where it starts to be new.`
             : done === 0
             ? `Welcome to ${PROGRAM.short || PROGRAM.title}. Everything starts from zero, so your first class is the easiest one.`
             : `${done} of ${LESSONS.length} classes done${weekNo ? `. You are in week ${weekNo} of ${CURRICULUM_TERMS.length}` : ''}.`}
@@ -193,6 +199,14 @@ export default function TodayPage({ progress, active, nextUp, dueNow, spec, plan
           </span>
           <strong>{start.next.title}</strong>
           <span className="continue-meta">Short classes on how memory works, testing yourself, notes and the math basics. Worth it even if you are well along.</span>
+        </button>
+      )}
+
+      {done === 0 && !placed && (
+        <button type="button" className="continue place-due today-spec" onClick={() => onGo('placement')} data-reveal>
+          <span className="eyebrow">🧭 Optional · about 5 minutes</span>
+          <strong>Already know some of this? Skip ahead</strong>
+          <span className="continue-meta">A short placement check finds where each subject starts to be new to you. No grades, and “I have not learned this yet” is always an answer.</span>
         </button>
       )}
 

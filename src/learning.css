@@ -927,3 +927,342 @@
 .mistakes .plan-head-actions {
   margin-bottom: 20px;
 }
+
+/* ---------- placement check ---------- */
+.placement {
+  max-width: 760px;
+  margin: 0 auto;
+  padding: 32px 0 64px;
+}
+.place-card {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 28px;
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  background: var(--surface);
+  animation: place-in 0.35s cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+@keyframes place-in {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .place-card {
+    animation: none;
+  }
+}
+.place-card h1 {
+  margin: 0;
+  font-size: 30px;
+  letter-spacing: -0.02em;
+}
+.place-card h2 {
+  margin: 0;
+  font-size: 22px;
+  letter-spacing: -0.01em;
+  line-height: 1.35;
+}
+.place-lead {
+  margin: 0;
+  color: var(--muted);
+  max-width: 62ch;
+}
+.place-points {
+  margin: 4px 0;
+  padding-left: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  color: var(--text);
+}
+.place-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 8px;
+}
+
+/* subjects along the top */
+.place-steps {
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 16px;
+  margin: 0 0 16px;
+  padding: 0;
+  font-size: 13px;
+  color: var(--faint);
+}
+.place-steps li {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+.place-steps li.now {
+  color: var(--text);
+  font-weight: 600;
+}
+.place-steps li.done {
+  color: var(--muted);
+}
+.place-dot {
+  width: 16px;
+  height: 16px;
+  border-radius: 999px;
+  border: 1.5px solid var(--subj, var(--line-strong));
+  display: inline-grid;
+  place-items: center;
+  font-size: 10px;
+  line-height: 1;
+  color: var(--on-accent, #08090b);
+  opacity: 0.6;
+}
+.place-steps li.now .place-dot {
+  opacity: 1;
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--subj, var(--blue)) 25%, transparent);
+}
+.place-steps li.done .place-dot {
+  opacity: 1;
+  background: var(--subj, var(--blue));
+}
+
+/* "have you studied it?" */
+.place-choices {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  width: 100%;
+  margin-top: 6px;
+}
+.place-choice {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  text-align: left;
+  padding: 16px;
+  min-height: 72px;
+  border: 1.5px solid var(--line);
+  border-radius: 12px;
+  background: var(--surface-2);
+  color: var(--text);
+  transition: border-color 0.15s, transform 0.15s;
+}
+.place-choice span {
+  color: var(--muted);
+  font-size: 14px;
+}
+.place-choice:hover {
+  border-color: var(--blue);
+  transform: translateY(-1px);
+}
+
+/* a question */
+.place-q-top {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 6px 12px;
+  font-size: 13px;
+}
+.place-from {
+  color: var(--faint);
+}
+.place-q {
+  font-weight: 600;
+}
+.place-options {
+  width: 100%;
+}
+.place-options .option {
+  color: var(--text);
+}
+.place-options .option:hover {
+  border-color: var(--blue);
+}
+.place-notyet {
+  width: 100%;
+  min-height: 44px;
+  padding: 10px 14px;
+  border: 1.5px dashed var(--line-strong);
+  border-radius: 10px;
+  background: none;
+  color: var(--text);
+  font-weight: 600;
+  font-size: 15px;
+}
+.place-notyet:hover {
+  border-color: var(--blue);
+  border-style: solid;
+}
+.place-foot {
+  margin: 4px 0 0;
+  font-size: 13px;
+  color: var(--faint);
+}
+
+/* results */
+.place-result,
+.place-sum {
+  list-style: none;
+  margin: 4px 0;
+  padding: 0;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.place-row {
+  border: 1px solid var(--line);
+  border-left: 3px solid var(--subj, var(--line));
+  border-radius: 12px;
+  background: var(--surface-2);
+  padding: 12px 14px;
+}
+.place-row-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 4px 12px;
+}
+.place-row-head .subject {
+  min-width: 96px;
+}
+.place-row-start {
+  flex: 1 1 260px;
+  color: var(--muted);
+}
+.place-row-start strong {
+  color: var(--text);
+}
+.place-row-n {
+  font-family: var(--mono);
+  font-size: 12px;
+  color: var(--faint);
+}
+.place-known {
+  margin-top: 8px;
+}
+.place-known summary {
+  cursor: pointer;
+  font-size: 13px;
+  color: var(--blue);
+  font-weight: 600;
+  min-height: 32px;
+  display: flex;
+  align-items: center;
+}
+.place-known ul {
+  list-style: none;
+  margin: 6px 0 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 4px 16px;
+}
+.place-known label {
+  display: flex;
+  gap: 8px;
+  align-items: flex-start;
+  font-size: 14px;
+  padding: 4px 0;
+  cursor: pointer;
+}
+.place-known input {
+  margin-top: 3px;
+  accent-color: var(--blue);
+}
+.place-known em {
+  color: var(--faint);
+}
+.place-sum li {
+  display: flex;
+  gap: 12px;
+  align-items: baseline;
+  font-size: 14px;
+  color: var(--muted);
+}
+.place-sum .subject {
+  min-width: 96px;
+}
+
+/* on the roadmap, Today and the Program page */
+.class-card.known {
+  border-top-style: dashed;
+  background: transparent;
+}
+.class-card.known .path-title {
+  color: var(--muted);
+}
+.class-card.known .class-num {
+  color: var(--subj, var(--muted));
+  font-family: inherit;
+  font-weight: 600;
+}
+.continue.place-due {
+  border-color: var(--line-strong);
+}
+.continue.place-due:hover {
+  border-color: var(--blue);
+}
+.place-inline {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-top: 14px;
+  padding: 14px 16px;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  background: var(--surface);
+}
+.place-inline > span {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.welcome-place input {
+  accent-color: var(--blue);
+}
+
+@media (max-width: 640px) {
+  .placement {
+    padding: 16px 0 48px;
+  }
+  .place-card {
+    padding: 20px 16px;
+  }
+  .place-card h1 {
+    font-size: 26px;
+  }
+  .place-card h2 {
+    font-size: 19px;
+  }
+  .place-choices,
+  .place-options {
+    grid-template-columns: 1fr;
+  }
+  .place-inline {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}
+
+/* Welcome: tick boxes sit beside their text (the shared .welcome-option rule
+   stacks children in a column). */
+.welcome-option.welcome-start {
+  flex-direction: row;
+}
+.welcome-option.welcome-start > span {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.place-inline > .btn {
+  flex: none;
+  white-space: nowrap;
+}

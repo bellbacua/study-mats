@@ -27,9 +27,12 @@ import MistakesPage from './components/MistakesPage';
 import IdeaMap from './components/IdeaMap';
 import GlossCard from './components/GlossCard';
 import { getPlace } from './state/detour';
+import PlacementPage from './components/PlacementPage';
+import { knownSet, nextClass } from './state/placement';
 import { noteAnswer, openMisses } from './state/mistakes';
 import { today as todayKey } from './state/useProgress';
 
+const PLACE_NEXT = 'study_mats_place_next';
 const STREAK_MILESTONES = [3, 7, 14, 30, 50, 100, 200, 365];
 const isMac = typeof navigator !== 'undefined' && /Mac|iPhone|iPad/.test(navigator.platform || navigator.userAgent);
 
@@ -45,6 +48,7 @@ const PAGES = [
   { id: 'glossary', label: 'Glossary', hint: 'Words from your classes, explained', icon: 'Aa', words: 'dictionary definitions terms' },
   { id: 'plan', label: 'Study plan', hint: 'A goal date and what to do each day', icon: '📅', words: 'schedule goal deadline hours pace calendar' },
   { id: 'mistakes', label: 'Mistakes', hint: 'Questions you got wrong, to redo', icon: '✗', words: 'wrong errors redo notebook missed' },
+  { id: 'placement', label: 'Placement check', hint: 'Skip the classes you already know', icon: '🧭', words: 'skip level test already know start where placement' },
   { id: 'progress', label: 'Progress', hint: 'Streak, study days, subjects', icon: '🔥', words: 'stats calendar streak export' },
   { id: 'exams', label: 'Quizzes & exams', hint: 'Weekly quizzes, midterm, final', icon: '✎', words: 'test midterm final' },
   { id: 'notes', label: 'My notes', hint: 'Everything you have written', icon: '📝', words: 'notebook' },
@@ -74,7 +78,9 @@ export default function App() {
   const pos = seq.findIndex((l) => l.id === active.id);
   const lesson = active;
   const idx = Math.max(0, LESSONS.findIndex((l) => l.id === active.id));
-  const nextUp = LESSONS.find((l) => !state.passed[l.id]) || null;
+  // Classes the placement check found you already know are not "next".
+  const known = useMemo(() => knownSet(state.items), [state.items]);
+  const nextUp = nextClass(state.passed, known);
   // The Start here level, and where it leads after its last class.
   const startInfo = startState(state.passed, state.readings);
   const skipStart = () => actions.toggleReading('start:skip');
@@ -207,7 +213,8 @@ export default function App() {
         children: [
           { id: 'plan', label: 'Study plan', hint: 'A goal date and what to do each day', icon: '📅', words: 'schedule goal deadline hours pace calendar' },
   { id: 'mistakes', label: 'Mistakes', hint: 'Questions you got wrong, to redo', icon: '✗', words: 'wrong errors redo notebook missed' },
-  { id: 'progress', label: 'Progress', hint: 'Streak, study days, subjects' },
+          { id: 'placement', label: 'Placement check', hint: 'Skip the classes you already know' },
+          { id: 'progress', label: 'Progress', hint: 'Streak, study days, subjects' },
           { id: 'exams', label: 'Quizzes & exams', hint: 'Weekly quizzes, midterm, final' },
           { id: 'notes', label: 'My notes', hint: 'Everything you have written' },
         ],
@@ -250,10 +257,32 @@ export default function App() {
     setTimeout(() => document.getElementById('borrow')?.scrollIntoView({ behavior: 'smooth', block: 'start' }), 150);
   };
 
+  // Open the placement check chosen on the welcome screen.
+  useEffect(() => {
+    if (!hasProgram) return;
+    let want = null;
+    try {
+      want = localStorage.getItem(PLACE_NEXT);
+      localStorage.removeItem(PLACE_NEXT);
+    } catch {
+      want = null;
+    }
+    if (want) setView('placement');
+  }, [hasProgram]);
+
   if (status.mode && status.mode !== 'loading' && !hasProgram)
     return (
       <Welcome
-        onDone={(program, sides, startHere = true) => {
+        onDone={(program, sides, startHere = true, place = false) => {
+          // The placement check opens once the program is set (switching
+          // program reloads the page, so the wish is kept in this browser).
+          if (place) {
+            try {
+              localStorage.setItem(PLACE_NEXT, '1');
+            } catch {
+              // fine: it can be taken later from You ▸ Placement check
+            }
+          }
           if (!startHere && !state.readings['start:skip']) actions.toggleReading('start:skip');
           for (const id of sides) actions.toggleReading(`side:${id}@${startWeek}`);
           if (program === PROGRAM_ID) actions.toggleReading(`program:${program}`);
@@ -316,6 +345,13 @@ export default function App() {
           <PlanPage progress={state} plan={plan} onSave={(p) => store.setItem('plan', 'main', p)} onOpenUnit={openUnit} />
         ) : view === 'mistakes' ? (
           <MistakesPage progress={state} actions={actions} onOpenClass={actions.open} />
+        ) : view === 'placement' ? (
+          <PlacementPage
+            progress={state}
+            onSave={(p) => store.setItem('place', PROGRAM_ID, p)}
+            onClear={() => store.setItem('place', PROGRAM_ID, null)}
+            onDone={() => go('today')}
+          />
         ) : view === 'map' ? (
           <IdeaMap progress={state} onOpen={actions.open} />
         ) : view === 'review' ? (
@@ -328,6 +364,7 @@ export default function App() {
             onToggleKey={(key) => actions.toggleReading(key)}
             onSwitch={switchProgram}
             startWeek={startWeek}
+            onPlacement={() => go('placement')}
           />
         ) : view === 'timeline' ? (
           <Timeline progress={state} onOpen={actions.open} />
@@ -380,7 +417,9 @@ export default function App() {
       {recap && ALL_LESSONS.find((l) => l.id === recap.id) && (() => {
         const l = ALL_LESSONS.find((x) => x.id === recap.id);
         const sq = seqOf(l);
-        const nx = sq[sq.findIndex((x) => x.id === l.id) + 1] || afterStart(l);
+        // On the timetable, the next class skips ones you already know.
+        const after = sq.slice(sq.findIndex((x) => x.id === l.id) + 1);
+        const nx = (sq === LESSONS ? after.find((x) => !state.passed[x.id] && !known.has(x.id)) : after[0]) || afterStart(l);
         return (
           <FinishRecap
             lesson={l}

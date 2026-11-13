@@ -3,10 +3,12 @@ import { PROGRAMS, PROGRAM_ID, SIDES, SIDES_LATER, trackLessons, trackClassState
 import BorrowPanel from './BorrowPanel';
 import { useReveal } from '../state/useReveal';
 import SpecializationsPage from './SpecializationsPage';
+import { placementOf } from '../state/placement';
 
 // Your program: the main degree, its specialization tracks, and side topics
 // (short courses outside the field that sit in your timetable like GE classes).
-export default function ProgramPage({ progress, onOpen, onToggle, onToggleKey, onSwitch, startWeek }) {
+export default function ProgramPage({ progress, onOpen, onToggle, onToggleKey, onSwitch, startWeek, onPlacement }) {
+  const placed = placementOf(progress.items);
   const [switching, setSwitching] = useState(null);
   const sides = pickedSides(progress.readings);
   const program = PROGRAMS.find((p) => p.id === PROGRAM_ID);
@@ -57,6 +59,21 @@ export default function ProgramPage({ progress, onOpen, onToggle, onToggleKey, o
                 Cancel
               </button>
             </div>
+          </div>
+        )}
+        {onPlacement && (
+          <div className="place-inline">
+            <span>
+              <strong>🧭 Placement check</strong>
+              <span className="notes-hint">
+                {placed
+                  ? `Taken. ${placed.known?.length || 0} classes you already knew are marked “Knew it” on your roadmap.`
+                  : 'Already know some of this program? A few questions per subject find where it starts to be new, so you can skip ahead. Optional; nothing you have done changes.'}
+              </span>
+            </span>
+            <button type="button" className="btn ghost sm" onClick={onPlacement}>
+              {placed ? 'See or change it' : 'Take it'}
+            </button>
           </div>
         )}
       </section>

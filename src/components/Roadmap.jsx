@@ -1,12 +1,16 @@
 import { CURRICULUM_TERMS, LESSONS, SUBJECTS, PROGRAM, PROGRAMS, PROGRAM_ID, START_LESSONS, START_LEVEL, trackClassState } from '../data/path';
 import { useReveal } from '../state/useReveal';
 import { classMinutes, fmtMinutes } from '../state/plan';
+import { knownSet } from '../state/placement';
 
 const shortName = (p) => p.split('(')[0].trim();
 
 export default function Roadmap({ progress, nextUp, onOpen, status, dueNow = 0, onReview, spec, sideWeeks = {}, onBorrow, start, onSkipStart }) {
   const otherNames = PROGRAMS.filter((p) => p.ready && p.id !== PROGRAM_ID).map((p) => p.short || p.title).join(' or ');
   const done = LESSONS.filter((l) => progress.passed[l.id]).length;
+  // Classes the placement check found you already know: still open, not "next".
+  const known = knownSet(progress.items);
+  const knew = LESSONS.filter((l) => known.has(l.id) && !progress.passed[l.id]).length;
   useReveal([done]);
   return (
     <div className="roadmap">
@@ -18,7 +22,7 @@ export default function Roadmap({ progress, nextUp, onOpen, status, dueNow = 0, 
             <div style={{ width: `${(done / LESSONS.length) * 100}%` }} />
           </div>
           <span>
-            {done} of {LESSONS.length} done
+            {done} of {LESSONS.length} done{knew > 0 && ` · ${knew} you already knew`}
           </span>
           <span className={`save-state ${status}`}>
             {status === 'sqlite' ? (window.__TAURI_INTERNALS__ ? 'Saved on this computer' : 'Progress saved') : status === 'offline' ? 'Saving in this browser only' : 'Loading…'}
@@ -140,18 +144,20 @@ export default function Roadmap({ progress, nextUp, onOpen, status, dueNow = 0, 
                 const n = LESSONS.indexOf(l) + 1;
                 const isDone = !!progress.passed[l.id];
                 const isNext = !start?.leads && nextUp?.id === l.id;
+                const isKnown = !isDone && known.has(l.id);
                 return (
                   <li key={l.id} data-reveal>
                     <button
                       type="button"
-                      className={`class-card subj-${l.track} ${isDone ? 'done' : ''} ${isNext ? 'next' : ''}`}
+                      className={`class-card subj-${l.track} ${isDone ? 'done' : ''} ${isNext ? 'next' : ''} ${isKnown ? 'known' : ''}`}
+                      title={isKnown ? 'Your placement check showed you know this. Open it any time.' : undefined}
                       onClick={() => onOpen(l.id)}
                     >
                       <span className="class-top">
                         <span className="class-day">{l.day}</span>
                         <span className={`subject track-${l.track}`}>{SUBJECTS[l.track] || l.track}</span>
                         <span className="class-mins" title="About how long the whole class takes">{fmtMinutes(classMinutes(l))}</span>
-                        <span className="class-num">{isDone ? '✓' : isNext ? 'next' : `#${n}`}</span>
+                        <span className="class-num">{isDone ? '✓' : isNext ? 'next' : isKnown ? 'knew it' : `#${n}`}</span>
                       </span>
                       <span className="path-title">{l.title}</span>
                       <span className="path-meta">
