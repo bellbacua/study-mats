@@ -52,6 +52,8 @@ export default function ExportPanel({ progress, onPrintWeek }) {
       for (const [id, list] of Object.entries(data.examResults || {}))
         for (const r of list) await post('/api/progress/exam', { examId: id, score: r.score, total: r.total, detail: r.detail });
       for (const [day, v] of Object.entries(data.studyDays || {})) await post('/api/progress/activity', { day, actions: v.actions, minutes: v.minutes });
+      for (const [kind, list] of Object.entries(data.learnerItems || {}))
+        for (const [itemId, v] of Object.entries(list || {})) await post('/api/progress/item', { kind, itemId, data: v });
       setMsg('Restored. Reloading…');
       setTimeout(() => location.reload(), 800);
     } catch (e) {

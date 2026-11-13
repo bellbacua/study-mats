@@ -9,6 +9,7 @@ import {
   noteVersions,
   saveExamResult,
   saveReviewCard,
+  saveLearnerItem,
   logStudyDay,
   updateSettings,
   resetProgress,
@@ -131,6 +132,16 @@ export function route(method, pathname, searchParams, body = {}) {
     if (!body.cardId || !body.lessonId) return reply(400, { error: 'cardId and lessonId are required' });
     if (!/^\d{4}-\d{2}-\d{2}$/.test(String(body.due))) return reply(400, { error: 'due must be YYYY-MM-DD' });
     const result = saveReviewCard(String(body.cardId), String(body.lessonId), Number(body.box) || 0, body.due, Number(body.lapses) || 0);
+    return reply(200, { success: true, result });
+  }
+
+  // A study plan, a missed question, an "explain it back" answer
+  if (pathname === '/api/progress/item' && method === 'POST') {
+    const kind = String(body.kind || '');
+    const itemId = String(body.itemId || '');
+    if (!/^[a-z]{1,20}$/.test(kind) || !itemId || itemId.length > 200) return reply(400, { error: 'kind and itemId are required' });
+    if (body.data != null && JSON.stringify(body.data).length > 100_000) return reply(400, { error: 'item too large' });
+    const result = saveLearnerItem(kind, itemId, body.data ?? null);
     return reply(200, { success: true, result });
   }
 

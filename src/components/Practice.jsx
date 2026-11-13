@@ -45,9 +45,10 @@ export default function Practice({ lesson, passed, onPass, onAttempt, onNext, ne
     if (allChecked && correct / items.length >= PASS && !passed) onPass(score);
   }, [allChecked, correct, items.length, passed, onPass, score]);
 
+  // Only the first try on each question counts for the mistakes notebook.
   const check = () => {
-    set({ checked: true });
-    onAttempt?.(item.id, a.chosen === item.correctIndex);
+    set({ checked: true, tried: true });
+    if (!a.tried) onAttempt?.(item.id, a.chosen === item.correctIndex);
   };
 
   return (

@@ -153,6 +153,7 @@ function ReviewRunner({ progress, actions, onDone }) {
     const ok = k === q.correctIndex;
     if (!card.retry) {
       actions.reviewAnswer(q.id, q.lessonId, grade(card, ok));
+      actions.noteAnswer?.({ key: `q:${q.id}`, lessonId: q.lessonId, from: 'review', right: ok });
       setTally((t) => ({ right: t.right + (ok ? 1 : 0), wrong: t.wrong + (ok ? 0 : 1), missed: ok ? t.missed : [...t.missed, q.lessonId] }));
       // see a missed question once more before the session ends
       if (!ok) setQueue((qs) => [...qs, { ...card, retry: true }]);

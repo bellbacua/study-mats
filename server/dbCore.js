@@ -84,6 +84,14 @@ export function getDb() {
       last_seen TEXT NOT NULL DEFAULT (datetime('now'))
     );
 
+    CREATE TABLE IF NOT EXISTS learner_items (
+      kind TEXT NOT NULL,
+      item_id TEXT NOT NULL,
+      data TEXT NOT NULL,
+      updated_at TEXT NOT NULL DEFAULT (datetime('now')),
+      PRIMARY KEY (kind, item_id)
+    );
+
     CREATE TABLE IF NOT EXISTS note_versions (
       id INTEGER PRIMARY KEY AUTOINCREMENT,
       lesson_id TEXT NOT NULL,
@@ -173,6 +181,17 @@ export function getProgress() {
     reviewCards[row.card_id] = { lessonId: row.lesson_id, box: row.box, due: row.due, seen: row.seen, lapses: row.lapses };
   }
 
+  // Small saved things of a few kinds: the study plan, missed questions,
+  // "explain it back" answers. One JSON value per (kind, id).
+  const learnerItems = {};
+  for (const row of db.prepare('SELECT kind, item_id, data FROM learner_items').all()) {
+    try {
+      (learnerItems[row.kind] ||= {})[row.item_id] = JSON.parse(row.data);
+    } catch {
+      // skip a damaged row
+    }
+  }
+
   const isFresh =
     Object.keys(passedLessons).length === 0 &&
     Object.keys(completedLabs).length === 0 &&
@@ -191,6 +210,7 @@ export function getProgress() {
     examResults,
     studyDays,
     reviewCards,
+    learnerItems,
     isFresh,
   };
 }
@@ -211,6 +231,20 @@ export function saveReviewCard(cardId, lessonId, box, due, lapses) {
     )
     .run(cardId, lessonId, box, due, lapses);
   return { cardId, box, due };
+}
+
+// Save (or, with data null, remove) one learner item.
+export function saveLearnerItem(kind, itemId, data) {
+  const db = getDb();
+  if (data === null || data === undefined) {
+    db.prepare('DELETE FROM learner_items WHERE kind = ? AND item_id = ?').run(kind, itemId);
+    return { kind, itemId, removed: true };
+  }
+  db.prepare(
+    `INSERT INTO learner_items (kind, item_id, data, updated_at) VALUES (?, ?, ?, datetime('now'))
+     ON CONFLICT(kind, item_id) DO UPDATE SET data = excluded.data, updated_at = excluded.updated_at`
+  ).run(kind, itemId, JSON.stringify(data));
+  return { kind, itemId };
 }
 
 export function logStudyDay(day, actions = 1, minutes = 0) {

@@ -22,6 +22,10 @@ import SearchPalette from './components/SearchPalette';
 import ReadingMenu from './components/ReadingMenu';
 import { FinishRecap, StreakToast } from './components/Celebrations';
 import { usePrefs } from './state/prefs';
+import PlanPage from './components/PlanPage';
+import MistakesPage from './components/MistakesPage';
+import IdeaMap from './components/IdeaMap';
+import { noteAnswer, openMisses } from './state/mistakes';
 import { today as todayKey } from './state/useProgress';
 
 const STREAK_MILESTONES = [3, 7, 14, 30, 50, 100, 200, 365];
@@ -34,8 +38,11 @@ const PAGES = [
   { id: 'review', label: 'Review', hint: 'Questions due from earlier classes', icon: '↻', words: 'spaced repetition flashcards recall' },
   { id: 'spec', label: 'Program', hint: 'Your program, tracks and borrowed subjects', icon: '🎓', words: 'tracks specialization borrow switch' },
   { id: 'library', label: 'Library', hint: 'Materials, people, formulas, case files', icon: '📚', words: 'collection album shelves' },
+  { id: 'map', label: 'Idea map', hint: 'How every class connects, and the path to any idea', icon: '🕸', words: 'graph prerequisites path connections tree web' },
   { id: 'timeline', label: 'Timeline', hint: 'Every class in the order it happened', icon: '⏳', words: 'history dates' },
   { id: 'glossary', label: 'Glossary', hint: 'Words from your classes, explained', icon: 'Aa', words: 'dictionary definitions terms' },
+  { id: 'plan', label: 'Study plan', hint: 'A goal date and what to do each day', icon: '📅', words: 'schedule goal deadline hours pace calendar' },
+  { id: 'mistakes', label: 'Mistakes', hint: 'Questions you got wrong, to redo', icon: '✗', words: 'wrong errors redo notebook missed' },
   { id: 'progress', label: 'Progress', hint: 'Streak, study days, subjects', icon: '🔥', words: 'stats calendar streak export' },
   { id: 'exams', label: 'Quizzes & exams', hint: 'Weekly quizzes, midterm, final', icon: '✎', words: 'test midterm final' },
   { id: 'notes', label: 'My notes', hint: 'Everything you have written', icon: '📝', words: 'notebook' },
@@ -51,6 +58,7 @@ export default function App() {
   const [toast, setToast] = useState(null); // streak milestone reached
   const [prefs, setPrefs] = usePrefs();
   const [guideWeek, setGuideWeek] = useState(null);
+  const [opening, setOpening] = useState(null); // { id, tab, part, scroll, n }: open a class at a tab
   // A new page starts at the top, not where the last one was scrolled to.
   const go = (v) => {
     setView(v);
@@ -67,6 +75,8 @@ export default function App() {
   const done = LESSONS.filter((l) => state.passed[l.id]).length;
   const streak = streaks(state.days).current;
   const dueNow = dueCards(state.passed, state.review).length;
+  const plan = state.items?.plan?.main || null;
+  const missCount = useMemo(() => openMisses(state.items || {}).length, [state.items]);
 
   // Roadmap card: a newly opened track slot, or the next class of a chosen track.
   const slots = openSlots(state.passed);
@@ -84,16 +94,27 @@ export default function App() {
   const actions = {
     ...store,
     open: (id) => {
+      setOpening(null);
       store.setActive(id);
       setView('lesson');
       window.scrollTo({ top: 0 });
     },
+    // Open a class at a tab (and a "Learn it" part), e.g. from the study plan.
+    openAt: (id, tab, part = null, scroll = null) => {
+      setOpening({ id, tab, part, scroll, n: Date.now() });
+      store.setActive(id);
+      setView('lesson');
+      window.scrollTo({ top: 0 });
+    },
+    noteAnswer: (a) => noteAnswer(state.items || {}, store.setItem, a),
     // Passing a class for the first time shows the recap card.
     pass: (id, score) => {
       if (!state.passed[id]) setRecap({ id, score });
       store.pass(id, score);
     },
   };
+  // A piece of a class from the study plan: open it at the right tab.
+  const openUnit = (u) => actions.openAt(u.lesson.id, u.kind === 'story' ? 'story' : u.kind === 'part' ? 'learn' : 'practice', u.part ?? null);
   const openLibrary = (shelf, q = '') => {
     setLibFocus({ shelf, q, n: Date.now() });
     go('library');
@@ -149,7 +170,8 @@ export default function App() {
         label: 'Explore',
         children: [
           { id: 'library', label: 'Library', hint: 'Materials, people, formulas, case files' },
-          { id: 'timeline', label: 'Timeline', hint: 'Every class in the order it happened' },
+          { id: 'map', label: 'Idea map', hint: 'How every class connects, and the path to any idea', icon: '🕸', words: 'graph prerequisites path connections tree web' },
+  { id: 'timeline', label: 'Timeline', hint: 'Every class in the order it happened' },
           { id: 'glossary', label: 'Glossary', hint: 'Words from your classes, explained' },
           ...(PROGRAM_ID === 'mate' ? [{ id: 'paths', label: 'Pathways', hint: 'From school to licence to a career' }] : []),
         ],
@@ -158,13 +180,15 @@ export default function App() {
         group: 'you',
         label: 'You',
         children: [
-          { id: 'progress', label: 'Progress', hint: 'Streak, study days, subjects' },
+          { id: 'plan', label: 'Study plan', hint: 'A goal date and what to do each day', icon: '📅', words: 'schedule goal deadline hours pace calendar' },
+  { id: 'mistakes', label: 'Mistakes', hint: 'Questions you got wrong, to redo', icon: '✗', words: 'wrong errors redo notebook missed' },
+  { id: 'progress', label: 'Progress', hint: 'Streak, study days, subjects' },
           { id: 'exams', label: 'Quizzes & exams', hint: 'Weekly quizzes, midterm, final' },
           { id: 'notes', label: 'My notes', hint: 'Everything you have written' },
         ],
       },
     ],
-    [lessonLabel, dueNow],
+    [lessonLabel, dueNow, plan, missCount],
   );
 
   const startWeek = nextUp ? weekNumber(nextUp) : 1;
@@ -251,12 +275,21 @@ export default function App() {
             nextUp={nextUp}
             dueNow={dueNow}
             spec={spec}
+            plan={plan}
+            missCount={missCount}
+            onOpenUnit={openUnit}
             onOpen={actions.open}
             onGo={go}
             onLibrary={() => openLibrary('collection')}
           />
         ) : view === 'roadmap' ? (
           <Roadmap progress={state} nextUp={nextUp} onOpen={actions.open} status={saveMode} dueNow={dueNow} onReview={() => go('review')} spec={spec} sideWeeks={sideWeeks} onBorrow={goBorrow} />
+        ) : view === 'plan' ? (
+          <PlanPage progress={state} plan={plan} onSave={(p) => store.setItem('plan', 'main', p)} onOpenUnit={openUnit} />
+        ) : view === 'mistakes' ? (
+          <MistakesPage progress={state} actions={actions} onOpenClass={actions.open} />
+        ) : view === 'map' ? (
+          <IdeaMap progress={state} onOpen={actions.open} />
         ) : view === 'review' ? (
           <ReviewPage progress={state} actions={actions} />
         ) : view === 'spec' ? (
@@ -291,6 +324,7 @@ export default function App() {
             actions={actions}
             prevLesson={seq[pos - 1]}
             nextLesson={seq[pos + 1]}
+            opening={opening}
           />
         )}
       </main>
@@ -333,6 +367,14 @@ export default function App() {
               setRecap(null);
               openLibrary('collection');
             }}
+            onExplain={
+              state.items?.explain?.[l.id]?.rating
+                ? null
+                : () => {
+                    setRecap(null);
+                    actions.openAt(l.id, 'practice', null, 'explain-back');
+                  }
+            }
           />
         );
       })()}

@@ -38,7 +38,7 @@ function useEscape(onClose) {
 }
 
 // Shown once, right after a class is passed.
-export function FinishRecap({ lesson, score, passed, nextLesson, onNext, onClose, onLibrary }) {
+export function FinishRecap({ lesson, score, passed, nextLesson, onNext, onClose, onLibrary, onExplain }) {
   useEscape(onClose);
   const first = useRef(null);
   useEffect(() => first.current?.focus(), []);
@@ -130,6 +130,11 @@ export function FinishRecap({ lesson, score, passed, nextLesson, onNext, onClose
           <button type="button" className="btn ghost" onClick={onClose}>
             Stay here
           </button>
+          {onExplain && (
+            <button type="button" className="btn ghost" onClick={onExplain} title="Write the idea in your own words, then compare">
+              ✍ Explain it back
+            </button>
+          )}
           {nextLesson && (
             <button ref={first} type="button" className="btn primary" onClick={onNext}>
               Start the next class →

@@ -9,6 +9,8 @@ import { LABS } from '../data/labs';
 import { LEGENDS } from '../data/legends';
 import { DEEP } from '../data/deep';
 import LearnIt, { Predict } from './LearnIt';
+import ExplainBack from './ExplainBack';
+import { partKey, questionKey } from '../state/mistakes';
 
 const SceneView = lazy(() => import('./SceneView'));
 
@@ -77,16 +79,19 @@ const BASE_TABS = [
 
 const LEARN_TAB = { id: 'learn', label: 'Learn it', hint: 'Parts, examples, your turn' };
 
-export default function LessonView({ lesson, index, total, progress, actions, prevLesson, nextLesson }) {
+export default function LessonView({ lesson, index, total, progress, actions, prevLesson, nextLesson, opening }) {
   const deep = DEEP[lesson.id];
   const TABS = deep ? [BASE_TABS[0], BASE_TABS[1], LEARN_TAB, { ...BASE_TABS[2], label: 'Class quiz', hint: 'Pass to finish the class' }, BASE_TABS[3]] : BASE_TABS;
   const [tab, setTab] = useState('story');
   const [step, setStep] = useState(0);
 
+  // Opened from the study plan or the mistakes notebook: start on that tab.
+  const startTab = opening?.id === lesson.id && TABS.some((t) => t.id === opening.tab) ? opening.tab : 'story';
   useEffect(() => {
-    setTab('story');
+    setTab(startTab);
     setStep(0);
-  }, [lesson.id]);
+    if (opening?.id === lesson.id && opening.scroll) setTimeout(() => document.getElementById(opening.scroll)?.scrollIntoView({ behavior: 'smooth', block: 'start' }), 200);
+  }, [lesson.id, opening?.n]); // eslint-disable-line react-hooks/exhaustive-deps
 
   useReveal([lesson.id, tab, step]);
 
@@ -245,17 +250,32 @@ export default function LessonView({ lesson, index, total, progress, actions, pr
           done={(n) => !!progress.readings[`part:${lesson.id}:${n}`]}
           onPartDone={(n) => actions.markPart(lesson.id, n)}
           onFinish={() => go('practice')}
+          onAnswer={(part, k, right) => actions.noteAnswer({ key: partKey(lesson.id, part, k), lessonId: lesson.id, from: 'learn', right })}
+          startPart={opening?.id === lesson.id && opening.part != null ? opening.part : 0}
         />
       )}
 
       {tab === 'practice' && (
-        <Practice
-          lesson={lesson}
-          passed={!!progress.passed[lesson.id]}
-          onPass={(score) => actions.pass(lesson.id, score)}
-          nextLesson={nextLesson}
-          onNext={() => nextLesson && actions.open(nextLesson.id)}
-        />
+        <>
+          <Practice
+            lesson={lesson}
+            passed={!!progress.passed[lesson.id]}
+            onPass={(score) => actions.pass(lesson.id, score)}
+            onAttempt={(id, right) => actions.noteAnswer({ key: questionKey(id), lessonId: lesson.id, from: 'quiz', right })}
+            nextLesson={nextLesson}
+            onNext={() => nextLesson && actions.open(nextLesson.id)}
+          />
+          <div id="explain-back">
+            <ExplainBack
+              key={lesson.id}
+              lesson={lesson}
+              saved={progress.items?.explain?.[lesson.id]}
+              sources={lessonSources(lesson)}
+              onSave={(data) => actions.setItem('explain', lesson.id, data)}
+              onStory={() => go('story')}
+            />
+          </div>
+        </>
       )}
 
       {tab === 'deeper' && (

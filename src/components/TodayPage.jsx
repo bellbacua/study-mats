@@ -6,6 +6,7 @@ import { streaks } from './ProgressPage';
 import { useReveal } from '../state/useReveal';
 import { useWikiPic } from './Pictures';
 import { COLLECTABLES, KINDS, collectionStats, isCollected } from '../state/collection';
+import { fmtMinutes, niceDate, nextStudyDay, planSummary, todaysUnits } from '../state/plan';
 
 const DAY = 86_400_000;
 const MILESTONES = [3, 7, 14, 30, 50, 100, 200, 365];
@@ -34,7 +35,7 @@ function Pic({ url, alt }) {
   return <div className="today-pic">{pic ? <img src={pic.thumb} alt={alt} loading="lazy" /> : <span aria-hidden="true">✦</span>}</div>;
 }
 
-export default function TodayPage({ progress, active, nextUp, dueNow, spec, onOpen, onGo, onLibrary }) {
+export default function TodayPage({ progress, active, nextUp, dueNow, spec, plan, missCount = 0, onOpenUnit, onOpen, onGo, onLibrary }) {
   useReveal([]);
   const now = new Date();
   const { current, longest } = useMemo(() => streaks(progress.days), [progress.days]);
@@ -78,6 +79,8 @@ export default function TodayPage({ progress, active, nextUp, dueNow, spec, onOp
             : `${done} of ${LESSONS.length} classes done${weekNo ? `. You are in week ${weekNo} of ${CURRICULUM_TERMS.length}` : ''}.`}
         </p>
       </header>
+
+      <TodayPlan plan={plan} progress={progress} dueNow={dueNow} missCount={missCount} onOpenUnit={onOpenUnit} onGo={onGo} />
 
       <div className="today-grid">
         {hero ? (
@@ -241,5 +244,93 @@ export default function TodayPage({ progress, active, nextUp, dueNow, spec, onOp
         )}
       </section>
     </div>
+  );
+}
+
+// Today's slice of the study plan, or an invitation to make one.
+function TodayPlan({ plan, progress, dueNow, missCount, onOpenUnit, onGo }) {
+  const units = useMemo(() => (plan ? todaysUnits(plan, progress) : []), [plan, progress]);
+  const sum = useMemo(() => (plan ? planSummary(plan, progress) : null), [plan, progress]);
+  const next = useMemo(() => (plan && units.length === 0 ? nextStudyDay(plan, progress) : null), [plan, progress, units.length]);
+  if (!plan)
+    return (
+      <button type="button" className="today-plan-cta" onClick={() => onGo('plan')} data-reveal>
+        <span className="today-plan-cta-icon" aria-hidden="true">
+          📅
+        </span>
+        <span>
+          <strong>Make a study plan</strong>
+          <span>Pick a goal date and the hours you have. This page then shows exactly what to do each day.</span>
+        </span>
+        <span className="today-card-go">Set it up →</span>
+      </button>
+    );
+  const doneN = units.filter((u) => u.done).length;
+  const allDone = units.length > 0 && doneN === units.length;
+  const minutes = units.reduce((s, u) => s + u.minutes, 0);
+  const reviewMin = Math.ceil(Math.min(dueNow, 20) * 0.5);
+  return (
+    <section className={`today-plan ${allDone ? 'all-done' : ''}`} data-reveal>
+      <div className="today-plan-head">
+        <div>
+          <span className="eyebrow">Today’s plan</span>
+          <h2>
+            {units.length === 0
+              ? 'A rest day'
+              : allDone
+                ? 'Done for today. Well done.'
+                : `${doneN} of ${units.length} done · about ${fmtMinutes(minutes)}`}
+          </h2>
+        </div>
+        <button type="button" className={`pill ${sum.onTrack ? 'ok' : 'warn'} today-plan-pace`} onClick={() => onGo('plan')} title="Open your study plan">
+          {sum.left.length === 0 ? 'Timetable done' : sum.onTrack ? `On track for ${niceDate(plan.goal, { month: 'short', year: 'numeric' })}` : 'Behind your goal'}
+        </button>
+      </div>
+      {units.length > 0 ? (
+        <ol className="today-plan-list">
+          {units.map((u) => (
+            <li key={u.id} className={u.done ? 'done' : ''}>
+              <button type="button" onClick={() => onOpenUnit(u)}>
+                <span className="plan-tick" aria-hidden="true">
+                  {u.done ? '✓' : ''}
+                </span>
+                <span className="plan-unit-text">
+                  <span className={`plan-unit-class track-${u.lesson.track}`}>{u.lesson.code}</span> {u.lesson.title.split(':')[0]}
+                  <em>{u.label}</em>
+                </span>
+                <span className="plan-unit-min">{fmtMinutes(u.minutes)}</span>
+              </button>
+            </li>
+          ))}
+        </ol>
+      ) : (
+        <p className="today-plan-note">
+          No new classes today. {next ? `Next study day: ${niceDate(next.day, { weekday: 'long', day: 'numeric', month: 'short' })}, ${next.units[0]?.lesson.title.split(':')[0]}.` : ''}
+        </p>
+      )}
+      {(dueNow > 0 || missCount > 0) && (
+        <div className="today-plan-extra">
+          {dueNow > 0 && (
+            <button type="button" className="btn ghost sm" onClick={() => onGo('review')}>
+              ↻ Review {dueNow} question{dueNow === 1 ? '' : 's'} · about {reviewMin} min
+            </button>
+          )}
+          {missCount > 0 && (
+            <button type="button" className="btn ghost sm" onClick={() => onGo('mistakes')}>
+              ✗ Redo {missCount} mistake{missCount === 1 ? '' : 's'}
+            </button>
+          )}
+        </div>
+      )}
+      {allDone && sum.left.length > 0 && (
+        <p className="today-plan-note">
+          Want more? The next piece is{' '}
+          <button type="button" className="tl-link-btn" onClick={() => onOpenUnit(sum.left[0])}>
+            {sum.left[0].lesson.title.split(':')[0]}: {sum.left[0].label}
+          </button>
+          . Anything extra moves your finish date earlier.
+        </p>
+      )}
+    </section>
   );
 }

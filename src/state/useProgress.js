@@ -23,6 +23,7 @@ const EMPTY = {
   exams: {},
   days: {},
   review: {},
+  items: {},
 };
 
 const REVIEW_KEY = 'um_mate_review_cards';
@@ -32,6 +33,29 @@ const loadLocalReview = () => {
   } catch {
     return {};
   }
+};
+
+// The study plan, missed questions and "explain it back" answers. The
+// database copy is the main one; this browser keeps a copy too, so nothing is
+// lost if a save does not reach the database.
+const ITEMS_KEY = 'study_mats_items';
+const loadLocalItems = () => {
+  try {
+    return JSON.parse(localStorage.getItem(ITEMS_KEY) || '{}');
+  } catch {
+    return {};
+  }
+};
+const mergeItems = (local, server = {}) => {
+  const out = {};
+  for (const kind of new Set([...Object.keys(local), ...Object.keys(server)])) {
+    const merged = { ...local[kind] };
+    // The newer copy of each item wins (items carry their own "at" time).
+    for (const [id, v] of Object.entries(server[kind] || {})) if (!merged[id] || (v?.at || 0) >= (merged[id]?.at || 0)) merged[id] = v;
+    for (const [id, v] of Object.entries(merged)) if (v == null) delete merged[id];
+    out[kind] = merged;
+  }
+  return out;
 };
 
 export const today = (d = new Date()) =>
@@ -62,6 +86,7 @@ export function useProgress() {
         exams: progress.examResults || {},
         days: progress.studyDays || {},
         review: { ...loadLocalReview(), ...progress.reviewCards },
+        items: mergeItems(loadLocalItems(), progress.learnerItems),
         loaded: true,
       });
     });
@@ -184,6 +209,26 @@ export function useProgress() {
         logActivity();
       },
       [patch, logActivity]
+    ),
+    // Save one item of a kind ('plan', 'miss', 'explain'); null removes it.
+    setItem: useCallback(
+      (kind, id, data) => {
+        const value = data == null ? null : { ...data, at: Date.now() };
+        patch('items', (all) => {
+          const list = { ...all[kind] };
+          if (value) list[id] = value;
+          else delete list[id];
+          const next = { ...all, [kind]: list };
+          try {
+            localStorage.setItem(ITEMS_KEY, JSON.stringify(next));
+          } catch {
+            // the database copy is the main one
+          }
+          return next;
+        });
+        post('/api/progress/item', { kind, itemId: id, data: value });
+      },
+      [patch]
     ),
     logActivity,
     setScratch: useCallback(

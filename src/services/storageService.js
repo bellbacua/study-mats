@@ -171,6 +171,7 @@ export async function initializeProgress() {
         examResults: data.examResults,
         studyDays: data.studyDays,
         reviewCards: data.reviewCards,
+        learnerItems: data.learnerItems,
       },
     };
   } catch (err) {

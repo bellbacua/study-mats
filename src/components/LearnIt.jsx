@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import MathFormula from './MathFormula';
 import Glossed from './Glossed';
 import { shuffled } from '../state/quiz';
@@ -106,9 +106,9 @@ export function isRight(item, raw) {
 const shown = (a) => (a === 'inf' ? '+∞' : a === '-inf' ? '−∞' : a === 'dne' ? 'does not exist' : `${Math.round(a * 1000) / 1000}`.replace('-', '−'));
 
 // ---- the "Learn it" section ----------------------------------------------------
-export default function LearnIt({ lessonId, deep, done, onPartDone, onFinish }) {
-  const [part, setPart] = useState(0);
-  useEffect(() => setPart(0), [lessonId]);
+export default function LearnIt({ lessonId, deep, done, onPartDone, onFinish, onAnswer, startPart = 0 }) {
+  const [part, setPart] = useState(startPart);
+  useEffect(() => setPart(startPart), [lessonId, startPart]);
   const P = deep.parts[part];
   const allDone = deep.parts.every((_, k) => done(k));
 
@@ -123,7 +123,7 @@ export default function LearnIt({ lessonId, deep, done, onPartDone, onFinish }) 
         ))}
       </div>
 
-      <Part key={`${lessonId}-${part}`} p={P} n={part} count={deep.parts.length} done={done(part)} onDone={() => onPartDone(part)} />
+      <Part key={`${lessonId}-${part}`} p={P} n={part} count={deep.parts.length} done={done(part)} onDone={() => onPartDone(part)} onAnswer={onAnswer && ((k, right) => onAnswer(part, k, right))} />
 
       <div className="step-nav part-nav">
         {part > 0 ? (
@@ -147,7 +147,7 @@ export default function LearnIt({ lessonId, deep, done, onPartDone, onFinish }) 
   );
 }
 
-function Part({ p, n, count, done, onDone }) {
+function Part({ p, n, count, done, onDone, onAnswer }) {
   const [right, setRight] = useState({});
   const total = p.practice.length;
   const got = Object.values(right).filter(Boolean).length;
@@ -199,7 +199,7 @@ function Part({ p, n, count, done, onDone }) {
         </p>
       )}
       {p.practice.map((item, k) => (
-        <Problem key={k} item={item} k={k} onRight={() => setRight((r) => ({ ...r, [k]: true }))} />
+        <Problem key={k} item={item} k={k} onRight={() => setRight((r) => ({ ...r, [k]: true }))} onAnswer={onAnswer && ((ok) => onAnswer(k, ok))} />
       ))}
     </article>
   );
@@ -241,9 +241,21 @@ function Worked({ e, k }) {
   );
 }
 
+// Tells the mistakes notebook how the first try on this problem went: a miss
+// goes into the notebook, a first-try right answer marks an old miss fixed.
+function useReport(onAnswer) {
+  const sent = useRef(false);
+  return (right) => {
+    if (!onAnswer || sent.current) return;
+    sent.current = true;
+    onAnswer(right);
+  };
+}
+
 // A practice question answered by picking an option (the first one written is
 // correct; they are shuffled the same way every time).
-function ChoiceProblem({ item, k, onRight }) {
+function ChoiceProblem({ item, k, onRight, onAnswer }) {
+  const report = useReport(onAnswer);
   const mixed = shuffled({ id: item.q, options: item.options, correctIndex: 0 });
   const [pick, setPick] = useState(null);
   const [tries, setTries] = useState(0);
@@ -253,6 +265,7 @@ function ChoiceProblem({ item, k, onRight }) {
     if (right) return;
     setPick(i);
     setTries((t) => t + 1);
+    report(i === mixed.correctIndex);
     if (i === mixed.correctIndex) onRight();
   };
   return (
@@ -295,12 +308,13 @@ function ChoiceProblem({ item, k, onRight }) {
   );
 }
 
-function Problem({ item, k, onRight }) {
-  if (item.options) return <ChoiceProblem item={item} k={k} onRight={onRight} />;
-  return <TypedProblem item={item} k={k} onRight={onRight} />;
+export function Problem({ item, k, onRight, onAnswer }) {
+  if (item.options) return <ChoiceProblem item={item} k={k} onRight={onRight} onAnswer={onAnswer} />;
+  return <TypedProblem item={item} k={k} onRight={onRight} onAnswer={onAnswer} />;
 }
 
-function TypedProblem({ item, k, onRight }) {
+function TypedProblem({ item, k, onRight, onAnswer }) {
+  const report = useReport(onAnswer);
   const [val, setVal] = useState('');
   const [state, setState] = useState(null); // null | 'right' | 'wrong' | 'unread'
   const [tries, setTries] = useState(0);
@@ -311,6 +325,7 @@ function TypedProblem({ item, k, onRight }) {
     if (r === null) return setState('unread');
     setTries((t) => t + 1);
     setState(r ? 'right' : 'wrong');
+    report(r);
     if (r) onRight();
   };
   return (

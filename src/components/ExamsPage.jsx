@@ -108,6 +108,9 @@ function ExamRunner({ exam, timed, onDone, actions }) {
       else weak[q.lessonId] = (weak[q.lessonId] || 0) + 1;
     }
     actions.saveExam(exam.id, score, questions.length, { bySubject, weak, timed });
+    // Answered questions feed the mistakes notebook.
+    for (const q of questions)
+      if (answers[q.id] != null) actions.noteAnswer?.({ key: `q:${q.id}`, lessonId: q.lessonId, from: 'exam', right: answers[q.id] === q.correctIndex });
     setFinished(true);
     window.scrollTo({ top: 0 });
   };
