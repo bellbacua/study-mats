@@ -21,7 +21,8 @@ import { CS_PROG } from './cs_prog';
 import { CS_AI } from './cs_ai';
 import { CS_DISC } from './cs_disc';
 import { START } from './start';
+import { CS_ALGO } from './cs_algo';
 
 // Classes that have been split into parts (the "Learn it" section).
 // The Calculus 1 classes are the pilot.
-export const DEEP = { ...CALC1, ...CALC2, ...NUMBERS, ...ALGEBRA, ...PHYSICS1, ...CHEM1, ...CHEM2, ...MATE1, ...YEAR3A, ...YEAR3B, ...YEAR4A, ...YEAR4B, ...SPEC_METALS, ...SPEC_ELECTRONIC, ...SPEC_ENERGY, ...SIDE_PHILO, ...SIDE_BIO, ...SIDE_COMP, ...SIDE_ECON, ...CS_PROG, ...CS_AI, ...CS_DISC, ...START };
+export const DEEP = { ...CALC1, ...CALC2, ...NUMBERS, ...ALGEBRA, ...PHYSICS1, ...CHEM1, ...CHEM2, ...MATE1, ...YEAR3A, ...YEAR3B, ...YEAR4A, ...YEAR4B, ...SPEC_METALS, ...SPEC_ELECTRONIC, ...SPEC_ENERGY, ...SIDE_PHILO, ...SIDE_BIO, ...SIDE_COMP, ...SIDE_ECON, ...CS_PROG, ...CS_AI, ...CS_DISC, ...START, ...CS_ALGO };
