@@ -15,5 +15,6 @@ import { B02 } from './b02';
 import { B03 } from './b03';
 import { B04 } from './b04';
 import { B05 } from './b05';
+import { B06 } from './b06';
 
-export const HELP = { ...START_HELP, ...B01, ...B02, ...B03, ...B04, ...B05 };
+export const HELP = { ...START_HELP, ...B01, ...B02, ...B03, ...B04, ...B05, ...B06 };
