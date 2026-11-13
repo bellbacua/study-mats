@@ -30,6 +30,7 @@ import { getPlace } from './state/detour';
 import PlacementPage from './components/PlacementPage';
 import { knownSet, nextClass } from './state/placement';
 import { noteAnswer, openMisses } from './state/mistakes';
+import { noteForm } from './state/adaptive';
 import { today as todayKey } from './state/useProgress';
 
 const PLACE_NEXT = 'study_mats_place_next';
@@ -138,6 +139,7 @@ export default function App() {
       actions.openAt(detour.id, detour.tab, null, null, { card: detour.card, step: detour.step });
     },
     noteAnswer: (a) => noteAnswer(state.items || {}, store.setItem, a),
+    noteForm: (e) => noteForm(state.items || {}, store.setItem, e),
     // Passing a class for the first time shows the recap card.
     pass: (id, score) => {
       if (!state.passed[id]) setRecap({ id, score });

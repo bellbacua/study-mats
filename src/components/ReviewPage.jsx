@@ -3,15 +3,18 @@ import { LESSONS, SUBJECTS } from '../data/path';
 import { LADDER, buildSession, dueCards, forecast, grade, strength, todayStr } from '../state/review';
 import { useReveal } from '../state/useReveal';
 import Glossed from './Glossed';
+import { PracticeSetCard, PracticeSetRunner } from './PracticeSet';
 
 const byId = Object.fromEntries(LESSONS.map((l) => [l.id, l]));
 const weekday = (day) => new Date(`${day}T12:00:00`).toLocaleDateString('en-US', { weekday: 'short' });
 
 export default function ReviewPage({ progress, actions }) {
   const [session, setSession] = useState(null);
-  useReveal([session]);
+  const [pset, setPset] = useState(null);
+  useReveal([session, pset]);
 
   if (session) return <ReviewRunner key={session} progress={progress} actions={actions} onDone={() => setSession(null)} />;
+  if (pset) return <PracticeSetRunner key={pset} progress={progress} actions={actions} onDone={() => setPset(null)} />;
 
   const passedCount = Object.keys(progress.passed).length;
   const due = dueCards(progress.passed, progress.review).length;
@@ -19,6 +22,7 @@ export default function ReviewPage({ progress, actions }) {
   const st = strength(progress.passed, progress.review);
   const total = st.new + st.learning + st.known + st.longterm;
   const max = Math.max(1, ...fc.map((f) => f.n));
+  const pcard = <PracticeSetCard progress={progress} onStart={() => (setPset(Date.now()), window.scrollTo({ top: 0 }))} />;
 
   return (
     <div className="exams review-home">
@@ -44,7 +48,9 @@ export default function ReviewPage({ progress, actions }) {
             ))}
           </ol>
         </div>
-      ) : (
+      ) : null}
+      {passedCount === 0 && pcard}
+      {passedCount > 0 && (
         <>
           <section className="review-today" data-reveal>
             <div>
@@ -56,6 +62,7 @@ export default function ReviewPage({ progress, actions }) {
               Start review
             </button>
           </section>
+          {pcard}
 
           <h2 className="section-title" data-reveal>
             The next 7 days

@@ -5,6 +5,7 @@ import { niceDate } from '../state/plan';
 import { useReveal } from '../state/useReveal';
 import Glossed from './Glossed';
 import { Problem } from './LearnIt';
+import { DEEP } from '../data/deep';
 
 const FROM = { learn: 'Learn it', quiz: 'Class quiz', review: 'Review', exam: 'Quiz or exam' };
 const textOf = (m) => (m.q.kind === 'problem' ? m.q.item.q : m.q.item.question);
@@ -200,7 +201,7 @@ function RedoRunner({ keys, progress, actions, onDone }) {
       </div>
       {m.q.kind === 'problem' ? (
         <div className="part redo-part">
-          <Problem key={m.key} item={m.q.item} k={i} onRight={() => {}} onAnswer={answer} />
+          <Problem key={m.key} item={m.q.item} k={i} part={DEEP[m.q.lessonId]?.parts?.[m.q.part]} seed={m.key} onRight={() => {}} onAnswer={answer} />
         </div>
       ) : (
         <ChoiceRedo key={m.key} q={m.q.item} onAnswer={answer} />

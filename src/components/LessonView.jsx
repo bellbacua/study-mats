@@ -16,6 +16,7 @@ import { LABS } from '../data/labs';
 import { LEGENDS } from '../data/legends';
 import { DEEP } from '../data/deep';
 import LearnIt, { Predict } from './LearnIt';
+import { formOf } from '../state/adaptive';
 import ExplainBack from './ExplainBack';
 import { partKey, questionKey } from '../state/mistakes';
 
@@ -304,7 +305,11 @@ export default function LessonView({ lesson, index, total, progress, actions, pr
           done={(n) => !!progress.readings[`part:${lesson.id}:${n}`]}
           onPartDone={(n) => actions.markPart(lesson.id, n)}
           onFinish={() => go('practice')}
-          onAnswer={(part, k, right) => actions.noteAnswer({ key: partKey(lesson.id, part, k), lessonId: lesson.id, from: 'learn', right })}
+          form={formOf(progress.items)}
+          onAnswer={(part, k, right, info) => {
+            actions.noteAnswer({ key: partKey(lesson.id, part, k), lessonId: lesson.id, from: 'learn', right });
+            actions.noteForm({ ok: info?.gotIt ?? right, help: info?.help, lv: info?.lv });
+          }}
           startPart={opening?.id === lesson.id && opening.part != null ? opening.part : 0}
         />
       )}

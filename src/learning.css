@@ -1266,3 +1266,252 @@
   flex: none;
   white-space: nowrap;
 }
+/* ---- practice: faded examples, hint ladder, levels (LearnIt.jsx) ---------- */
+.fade-num {
+  display: inline-grid;
+  place-items: center;
+  width: 26px;
+  height: 26px;
+  margin-right: 8px;
+  border: 1px solid var(--line-strong);
+  border-radius: 999px;
+  font: 600 13px var(--mono);
+  vertical-align: 2px;
+}
+.form-note {
+  margin: 12px 0 0;
+  padding: 10px 14px;
+  border: 1px solid var(--line);
+  border-left: 3px solid var(--blue);
+  border-radius: 8px;
+  background: var(--surface);
+  font-size: 14px;
+  color: var(--muted);
+}
+.form-note.cruising {
+  border-left-color: var(--green);
+}
+.worked.faded {
+  border-style: dashed;
+  border-color: var(--line-strong);
+}
+.worked.faded.ok {
+  border-style: solid;
+  border-color: var(--green);
+}
+.faded-blank {
+  color: var(--blue);
+  font-weight: 600;
+}
+.faded-blank span {
+  display: inline-block;
+  min-width: 60%;
+  padding-bottom: 6px;
+  border-bottom: 2px dashed var(--line-strong);
+}
+.self-check {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  margin-top: 8px;
+}
+.ladder-row {
+  margin-top: 4px;
+}
+.ladder-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+.ladder-count {
+  font: 500 11px var(--mono);
+  color: var(--faint);
+}
+.ladder-open {
+  display: grid;
+  gap: 8px;
+  margin-top: 12px;
+}
+.rung {
+  padding: 10px 14px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--surface-2);
+  animation: rung-in 0.25s var(--ease);
+}
+.rung p {
+  margin: 4px 0 0 !important;
+  font-size: 15px;
+}
+.rung-name {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font: 600 12px var(--sans);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+.rung-dot {
+  display: grid;
+  place-items: center;
+  width: 18px;
+  height: 18px;
+  border-radius: 999px;
+  background: var(--blue);
+  color: var(--on-accent, #08090b);
+  font: 700 11px var(--mono);
+  letter-spacing: 0;
+}
+.rung-example {
+  margin-top: 4px;
+  padding-left: 12px;
+  border-left: 2px solid var(--line-strong);
+}
+.rung-example .worked-steps {
+  margin-bottom: 4px;
+}
+.rung-example .worked-a {
+  margin: 0 !important;
+}
+.option.crossed {
+  opacity: 0.45;
+  text-decoration: line-through;
+  cursor: not-allowed;
+}
+@keyframes rung-in {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .rung {
+    animation: none;
+  }
+}
+@media (max-width: 640px) {
+  .faded-blank span {
+    min-width: 0;
+  }
+}
+
+/* ---- adaptive practice set (PracticeSet.jsx) ------------------------------ */
+.pset-card {
+  margin-top: 12px;
+}
+.pset-card > div {
+  max-width: 640px;
+}
+.pset-title {
+  font-size: 18px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+.pset-from {
+  margin: 12px 0 0;
+}
+.level-meter {
+  display: inline-flex;
+  align-items: flex-end;
+  gap: 3px;
+}
+.lm-bar {
+  width: 6px;
+  border-radius: 2px;
+  background: var(--line-strong);
+}
+.lm-bar:nth-child(1) {
+  height: 8px;
+}
+.lm-bar:nth-child(2) {
+  height: 12px;
+}
+.lm-bar:nth-child(3) {
+  height: 16px;
+}
+.lm-bar.on.lv1 {
+  background: var(--green);
+}
+.lm-bar.on.lv2 {
+  background: var(--gold);
+}
+.lm-bar.on.lv3 {
+  background: var(--red);
+}
+.lm-name {
+  margin-left: 6px;
+  font: 600 12px var(--sans);
+  color: var(--muted);
+}
+.pset-trail {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: 8px;
+  margin: 24px 0;
+  padding: 16px;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+}
+.pst-col {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  font: 600 12px var(--mono);
+  color: var(--muted);
+}
+.pst-track {
+  display: flex;
+  align-items: flex-end;
+  width: 22px;
+  height: 60px;
+}
+.pst-bar {
+  width: 100%;
+  border-radius: 4px 4px 2px 2px;
+  background: var(--line-strong);
+}
+.pst-bar.lv1 {
+  background: var(--green);
+}
+.pst-bar.lv2 {
+  background: var(--gold);
+}
+.pst-bar.lv3 {
+  background: var(--red);
+}
+.pst-bar.miss {
+  opacity: 0.35;
+}
+.pst-bar.help {
+  opacity: 0.65;
+}
+.pst-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  width: 100%;
+  font-size: 12px;
+  color: var(--faint);
+}
+.rung .formula {
+  margin: 4px 0;
+  padding: 6px 12px;
+  background: transparent;
+  border: 0;
+  text-align: left;
+}
+.rung .formula .katex-display {
+  margin: 0;
+  text-align: left;
+}
+.rung .katex-display > .katex { text-align: left; }
+.worked-line {
+  display: block;
+  margin-top: 4px;
+  color: var(--muted);
+}

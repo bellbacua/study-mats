@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 import MathFormula from './MathFormula';
 import Glossed from './Glossed';
 import { shuffled } from '../state/quiz';
+import { crossedOut, exampleValue, firstSteps, levelsFor, nearestExample } from '../state/practiceHelp';
 
 // ---- checking a typed answer -------------------------------------------------
 // Accepts numbers, fractions and simple sums like "1/6", "-2.5", "2e", "sqrt(2)",
@@ -106,11 +107,12 @@ export function isRight(item, raw) {
 const shown = (a) => (a === 'inf' ? '+∞' : a === '-inf' ? '−∞' : a === 'dne' ? 'does not exist' : `${Math.round(a * 1000) / 1000}`.replace('-', '−'));
 
 // ---- the "Learn it" section ----------------------------------------------------
-export default function LearnIt({ lessonId, deep, done, onPartDone, onFinish, onAnswer, startPart = 0 }) {
+export default function LearnIt({ lessonId, deep, done, onPartDone, onFinish, onAnswer, form, startPart = 0 }) {
   const [part, setPart] = useState(startPart);
   useEffect(() => setPart(startPart), [lessonId, startPart]);
   const P = deep.parts[part];
   const allDone = deep.parts.every((_, k) => done(k));
+  const levels = levelsFor(lessonId, deep);
 
   return (
     <section className="learn">
@@ -123,7 +125,18 @@ export default function LearnIt({ lessonId, deep, done, onPartDone, onFinish, on
         ))}
       </div>
 
-      <Part key={`${lessonId}-${part}`} p={P} n={part} count={deep.parts.length} done={done(part)} onDone={() => onPartDone(part)} onAnswer={onAnswer && ((k, right) => onAnswer(part, k, right))} />
+      <Part
+        key={`${lessonId}-${part}`}
+        p={P}
+        n={part}
+        lessonId={lessonId}
+        levels={levels}
+        form={form}
+        count={deep.parts.length}
+        done={done(part)}
+        onDone={() => onPartDone(part)}
+        onAnswer={onAnswer && ((k, right, info) => onAnswer(part, k, right, info))}
+      />
 
       <div className="step-nav part-nav">
         {part > 0 ? (
@@ -147,13 +160,24 @@ export default function LearnIt({ lessonId, deep, done, onPartDone, onFinish, on
   );
 }
 
-function Part({ p, n, count, done, onDone, onAnswer }) {
+const FORM_NOTE = {
+  struggling: 'Taking it gently: the easier problems come first, and the second example leaves only its last step for you.',
+  cruising: 'You are on a roll: the second example is yours to try cold, and the harder problems come first.',
+};
+
+function Part({ p, n, lessonId, levels, form, count, done, onDone, onAnswer }) {
   const [right, setRight] = useState({});
+  // The learner's form when the part opened; it does not reshuffle mid-part.
+  const [mode] = useState(form?.mode || 'steady');
   const total = p.practice.length;
   const got = Object.values(right).filter(Boolean).length;
   useEffect(() => {
     if (!done && got === total) onDone();
   }, [got, total, done, onDone]);
+  const order = p.practice.map((_, k) => k);
+  if (mode === 'struggling') order.sort((a, b) => (levels[`${n}:${a}`] || 2) - (levels[`${n}:${b}`] || 2) || a - b);
+  if (mode === 'cruising') order.sort((a, b) => (levels[`${n}:${b}`] || 2) - (levels[`${n}:${a}`] || 2) || a - b);
+  const [watch, ...fade] = p.examples;
 
   return (
     <article className="part">
@@ -183,26 +207,59 @@ function Part({ p, n, count, done, onDone, onAnswer }) {
         ))}
       </div>
 
-      <h3 className="part-h">Worked examples</h3>
-      <p className="notes-hint">Read the problem and try the next step in your head (or on paper) before you reveal it.</p>
-      {p.examples.map((e, k) => (
-        <Worked key={k} e={e} k={k} />
+      {FORM_NOTE[mode] && <p className={`form-note ${mode}`}>{FORM_NOTE[mode]}</p>}
+
+      <h3 className="part-h">
+        <span className="fade-num">1</span> Watch one solved
+      </h3>
+      <p className="notes-hint">Try the next step in your head (or on paper) before you reveal it.</p>
+      <Worked e={watch} k={0} />
+
+      <h3 className="part-h">
+        <span className="fade-num">2</span> Finish one yourself
+      </h3>
+      {fade.map((e, k) => (
+        <Faded key={k} e={e} k={k + 1} cold={mode === 'cruising'} />
       ))}
 
       <h3 className="part-h">
-        Your turn <span className="notes-hint">· {got} of {total} right</span>
+        <span className="fade-num">3</span> On your own <span className="notes-hint">· {got} of {total} right</span>
       </h3>
       {p.practice.some((it) => !it.options) && (
         <p className="notes-hint">
           {p.practice.some((it) => it.options) ? 'Pick an option, or type the answer where there is a box. ' : 'Type the answer. '}
-          Fractions, π, e and √ work (for example 1/6, pi/4, 2e, sqrt(2)). Use “inf” for infinity and “dne” if it does not exist.
+          Fractions, π, e and √ work (for example 1/6, pi/4, 2e, sqrt(2)). Use “inf” for infinity and “dne” if it does not exist. Stuck? “Hint” gives a
+          little help at a time.
         </p>
       )}
-      {p.practice.map((item, k) => (
-        <Problem key={k} item={item} k={k} onRight={() => setRight((r) => ({ ...r, [k]: true }))} onAnswer={onAnswer && ((ok) => onAnswer(k, ok))} />
+      {order.map((k, i) => (
+        <Problem
+          key={k}
+          item={p.practice[k]}
+          k={i}
+          part={p}
+          seed={`${lessonId}:${n}:${k}`}
+          onRight={() => setRight((r) => ({ ...r, [k]: true }))}
+          onAnswer={onAnswer && ((ok, info) => onAnswer(k, ok, { ...info, lv: levels[`${n}:${k}`] }))}
+        />
       ))}
     </article>
   );
+}
+
+function Steps({ steps }) {
+  return steps.map(([text, tex], i) => (
+    <li key={i}>
+      <span>
+        <Glossed text={text} />
+      </span>
+      {tex && (
+        <div className="formula">
+          <MathFormula tex={tex} />
+        </div>
+      )}
+    </li>
+  ));
 }
 
 function Worked({ e, k }) {
@@ -215,18 +272,7 @@ function Worked({ e, k }) {
       </p>
       <Code text={e.code} />
       <ol className="worked-steps">
-        {e.steps.slice(0, shownSteps).map(([text, tex], i) => (
-          <li key={i}>
-            <span>
-              <Glossed text={text} />
-            </span>
-            {tex && (
-              <div className="formula">
-                <MathFormula tex={tex} />
-              </div>
-            )}
-          </li>
-        ))}
+        <Steps steps={e.steps.slice(0, shownSteps)} />
       </ol>
       {all ? (
         <p className="worked-a">
@@ -241,64 +287,260 @@ function Worked({ e, k }) {
   );
 }
 
-// Tells the mistakes notebook how the first try on this problem went: a miss
-// goes into the notebook, a first-try right answer marks an old miss fixed.
+// The second example with its last step left for the learner (or, when they
+// are cruising, the whole thing). A number answer can be typed and checked;
+// otherwise they work it on paper and compare.
+function Faded({ e, k, cold: wantCold }) {
+  const value = exampleValue(e, parseAnswer);
+  const [cold, setCold] = useState(wantCold && value !== null);
+  const given = cold ? [] : e.steps.slice(0, -1);
+  const [val, setVal] = useState('');
+  const [state, setState] = useState(null); // null | right | wrong | unread
+  const [tries, setTries] = useState(0);
+  const [open, setOpen] = useState(false);
+  const [self, setSelf] = useState(null);
+  const check = () => {
+    const r = isRight({ a: value }, val);
+    if (r === null) return setState('unread');
+    setTries((t) => t + 1);
+    setState(r ? 'right' : 'wrong');
+    if (r) setOpen(true);
+  };
+  const finished = open || state === 'right';
+  return (
+    <div className={`worked faded ${state === 'right' || self === 'yes' ? 'ok' : ''}`}>
+      <p className="worked-q">
+        <strong>Example {k + 1}.</strong> <Glossed text={e.problem} />
+      </p>
+      <Code text={e.code} />
+      <ol className="worked-steps">
+        <Steps steps={finished ? e.steps : given} />
+        {!finished && (
+          <li className="faded-blank">
+            <span>{cold ? 'Your turn: solve it from the start.' : given.length ? 'Your step: finish it from here.' : 'Your turn: solve it.'}</span>
+          </li>
+        )}
+      </ol>
+      {!finished && value !== null && (
+        <div className="problem-row">
+          <input
+            type="text"
+            inputMode="decimal"
+            value={val}
+            placeholder="your answer"
+            onChange={(ev) => (setVal(ev.target.value), setState(null))}
+            onKeyDown={(ev) => ev.key === 'Enter' && val.trim() && check()}
+            aria-label={`Answer to example ${k + 1}`}
+          />
+          <button type="button" className="btn primary sm" disabled={!val.trim()} onClick={check}>
+            Check
+          </button>
+          {cold ? (
+            <button type="button" className="btn ghost sm" onClick={() => setCold(false)}>
+              Show all but the last step
+            </button>
+          ) : (
+            (tries >= 1 || state === 'unread') && (
+              <button type="button" className="btn ghost sm" onClick={() => setOpen(true)}>
+                Show the last step
+              </button>
+            )
+          )}
+        </div>
+      )}
+      {!finished && value === null && (
+        <div className="problem-row">
+          <span className="notes-hint">Work the last step on paper, then compare.</span>
+          <button type="button" className="btn ghost sm" onClick={() => setOpen(true)}>
+            Compare with the last step
+          </button>
+        </div>
+      )}
+      {state === 'unread' && <p className="problem-msg">I could not read that as a number. Leave out the unit, for example 12 or 0.25.</p>}
+      {state === 'wrong' && <p className="problem-msg no">Not yet. Look at the steps above again, or show the last step.</p>}
+      {finished && (
+        <p className="worked-a">
+          {state === 'right' ? '✓ Right. ' : ''}Answer: <strong>{e.answer}</strong>
+        </p>
+      )}
+      {finished && state !== 'right' && value === null && (
+        <div className="self-check">
+          {self ? (
+            <span className="notes-hint">{self === 'yes' ? 'Nice. On to your own problems.' : 'That is what the examples are for. Read the last step once more, then try the problems below.'}</span>
+          ) : (
+            <>
+              <span className="notes-hint">Did your step match?</span>
+              <button type="button" className="btn ghost sm" onClick={() => setSelf('yes')}>
+                Yes
+              </button>
+              <button type="button" className="btn ghost sm" onClick={() => setSelf('no')}>
+                Not quite
+              </button>
+            </>
+          )}
+        </div>
+      )}
+    </div>
+  );
+}
+
+// A written first step with its result filled in, for the full answer when the
+// solution itself is only the result. Only when the "?" is the final result.
+function working(item) {
+  if (!item.steps || typeof item.a !== 'number') return null;
+  const m = /\?([^?/]*)$/.exec(item.steps);
+  if (!m || /^\s*\//.test(m[1])) return null;
+  return item.steps.slice(0, m.index) + shown(item.a) + m[1];
+}
+
+// ---- the hint ladder ----------------------------------------------------------
+const RUNG_ASK = ['Hint', 'Show a solved one like it', 'Show the first steps', 'Show the full answer'];
+const RUNG_NAME = ['Nudge', 'A solved one like it', 'The first steps', 'The full answer'];
+
+// The rungs a problem has (1 nudge, 2 solved example, 3 first steps, 4 answer).
+function rungsFor(item, part) {
+  const r = [];
+  if (item.hint) r.push(1);
+  if (part?.examples?.length) r.push(2);
+  if (item.options || firstSteps(item)) r.push(3);
+  r.push(4);
+  return r;
+}
+
+function Ladder({ item, part, rungs, help, steps, crossed }) {
+  if (!help) return null;
+  const ex = part && nearestExample(part, item);
+  const e = ex != null ? part.examples[ex] : null;
+  return (
+    <div className="ladder-open">
+      {rungs
+        .filter((r) => r <= help && r < 4)
+        .map((r) => (
+          <div key={r} className={`rung rung-${r}`}>
+            <span className="rung-name">
+              <span className="rung-dot">{rungs.indexOf(r) + 1}</span>
+              {RUNG_NAME[r - 1]}
+            </span>
+            {r === 1 && (
+              <p>
+                <Glossed text={item.hint} />
+              </p>
+            )}
+            {r === 2 && e && (
+              <div className="rung-example">
+                <p>
+                  <Glossed text={e.problem} />
+                </p>
+                <ol className="worked-steps">
+                  <Steps steps={e.steps} />
+                </ol>
+                <p className="worked-a">
+                  Answer: <strong>{e.answer}</strong>
+                </p>
+              </div>
+            )}
+            {r === 3 &&
+              (item.options ? (
+                <p>
+                  {crossed.length === 1 ? 'One option is' : `${crossed.length} options are`} crossed out: {crossed.length === 1 ? 'it is' : 'they are'} not the answer.
+                </p>
+              ) : (
+                <p>
+                  <Glossed text={steps} /> <span className="notes-hint">Work out the “?”.</span>
+                </p>
+              ))}
+          </div>
+        ))}
+    </div>
+  );
+}
+
+// Tells the mistakes notebook and the learner's form how the first try went.
+// A right answer after the first steps or the full answer counts as needing
+// help, so it goes into the notebook to redo later.
 function useReport(onAnswer) {
   const sent = useRef(false);
-  return (right) => {
+  return (right, help) => {
     if (!onAnswer || sent.current) return;
     sent.current = true;
-    onAnswer(right);
+    onAnswer(right && help < 3, { help, gotIt: right });
   };
+}
+
+function useLadder(item, part) {
+  const rungs = rungsFor(item, part);
+  const [help, setHelp] = useState(0); // highest rung opened
+  const next = rungs.find((r) => r > help);
+  return { rungs, help, next, more: () => next && setHelp(next), answer: () => setHelp(4) };
+}
+
+// "Hint", then the next rung each time. The full answer shows up once some help
+// has been taken or after two wrong tries.
+function LadderButtons({ L, done, tries }) {
+  if (done || L.help >= 4) return null;
+  const n = L.rungs.indexOf(L.next) + 1;
+  const answerOk = L.help > 0 || tries >= 2;
+  return (
+    <>
+      {L.next !== 4 && (
+        <button type="button" className="btn ghost sm ladder-btn" onClick={L.more}>
+          {L.help === 0 ? 'Hint' : RUNG_ASK[L.next - 1]}
+          <span className="ladder-count">
+            {n} of {L.rungs.length}
+          </span>
+        </button>
+      )}
+      {answerOk && (L.next === 4 || tries >= 2) && (
+        <button type="button" className="btn ghost sm" onClick={L.answer}>
+          Show the full answer
+        </button>
+      )}
+    </>
+  );
 }
 
 // A practice question answered by picking an option (the first one written is
 // correct; they are shuffled the same way every time).
-function ChoiceProblem({ item, k, onRight, onAnswer }) {
+function ChoiceProblem({ item, k, part, seed, onRight, onAnswer }) {
   const report = useReport(onAnswer);
   const mixed = shuffled({ id: item.q, options: item.options, correctIndex: 0 });
+  const L = useLadder(item, part);
+  const crossed = L.help >= 3 ? crossedOut(mixed, seed || item.q) : [];
   const [pick, setPick] = useState(null);
   const [tries, setTries] = useState(0);
-  const [hint, setHint] = useState(false);
   const right = pick === mixed.correctIndex;
+  const showAnswer = right || tries >= 3 || L.help >= 4;
   const choose = (i) => {
     if (right) return;
     setPick(i);
     setTries((t) => t + 1);
-    report(i === mixed.correctIndex);
+    report(i === mixed.correctIndex, L.help);
     if (i === mixed.correctIndex) onRight();
   };
   return (
     <div className={`problem ${right ? 'ok' : ''}`}>
-      <p>
-        <strong>{k + 1}.</strong> <Glossed text={item.q} />
-      </p>
-      <Code text={item.code} />
+      <ProblemHead item={item} k={k} />
       <div className="options problem-options">
         {mixed.options.map((o, i) => (
           <button
             key={i}
             type="button"
-            className={`option ${pick === i ? (i === mixed.correctIndex ? 'right' : 'wrong') : ''}`}
-            disabled={right}
+            className={`option ${pick === i ? (i === mixed.correctIndex ? 'right' : 'wrong') : ''} ${crossed.includes(i) && !right ? 'crossed' : ''}`}
+            disabled={right || crossed.includes(i)}
             onClick={() => choose(i)}
           >
             {o}
           </button>
         ))}
       </div>
-      {!hint && !right && (
-        <button type="button" className="btn ghost sm" onClick={() => setHint(true)}>
-          Hint
-        </button>
+      {!showAnswer && (
+        <div className="problem-row ladder-row">
+          <LadderButtons L={L} done={right} tries={tries} />
+        </div>
       )}
-      {pick !== null && !right && <p className="problem-msg no">Not that one. {tries >= 2 ? 'Read the hint, then try again.' : 'Try again.'}</p>}
-      {hint && !right && (
-        <p className="problem-msg hint">
-          💡 <Glossed text={item.hint} />
-        </p>
-      )}
-      {(right || tries >= 3) && (
+      <Ladder item={item} part={part} rungs={L.rungs} help={right ? 0 : L.help} crossed={crossed} />
+      {pick !== null && !right && <p className="problem-msg no">Not that one. {tries >= 2 ? 'Take a hint, then try again.' : 'Try again.'}</p>}
+      {showAnswer && (
         <p className={`problem-msg ${right ? 'ok' : ''}`}>
           {right ? '✓ Right. ' : `Answer: ${item.options[0]}. `}
           <Glossed text={item.solution} />
@@ -308,68 +550,65 @@ function ChoiceProblem({ item, k, onRight, onAnswer }) {
   );
 }
 
-export function Problem({ item, k, onRight, onAnswer }) {
-  if (item.options) return <ChoiceProblem item={item} k={k} onRight={onRight} onAnswer={onAnswer} />;
-  return <TypedProblem item={item} k={k} onRight={onRight} onAnswer={onAnswer} />;
+function ProblemHead({ item, k }) {
+  return (
+    <>
+      <p>
+        <strong>{k + 1}.</strong> <Glossed text={item.q} />
+      </p>
+      <Code text={item.code} />
+    </>
+  );
 }
 
-function TypedProblem({ item, k, onRight, onAnswer }) {
+export function Problem(props) {
+  if (props.item.options) return <ChoiceProblem {...props} />;
+  return <TypedProblem {...props} />;
+}
+
+function TypedProblem({ item, k, part, onRight, onAnswer }) {
   const report = useReport(onAnswer);
+  const L = useLadder(item, part);
   const [val, setVal] = useState('');
   const [state, setState] = useState(null); // null | 'right' | 'wrong' | 'unread'
   const [tries, setTries] = useState(0);
-  const [hint, setHint] = useState(false);
-  const [sol, setSol] = useState(false);
+  const sol = L.help >= 4;
   const check = () => {
     const r = isRight(item, val);
     if (r === null) return setState('unread');
     setTries((t) => t + 1);
     setState(r ? 'right' : 'wrong');
-    report(r);
+    report(r, L.help);
     if (r) onRight();
   };
+  const isDone = state === 'right';
   return (
-    <div className={`problem ${state === 'right' ? 'ok' : ''}`}>
-      <p>
-        <strong>{k + 1}.</strong> <Glossed text={item.q} />
-      </p>
-      <Code text={item.code} />
+    <div className={`problem ${isDone ? 'ok' : ''}`}>
+      <ProblemHead item={item} k={k} />
       <div className="problem-row">
         <input
           type="text"
           inputMode="decimal"
           value={val}
           placeholder="your answer"
-          disabled={state === 'right'}
-          onChange={(ev) => (setVal(ev.target.value), state !== 'right' && setState(null))}
+          disabled={isDone}
+          onChange={(ev) => (setVal(ev.target.value), !isDone && setState(null))}
           onKeyDown={(ev) => ev.key === 'Enter' && check()}
           aria-label={`Answer to problem ${k + 1}`}
         />
-        <button type="button" className="btn primary sm" disabled={state === 'right' || !val.trim()} onClick={check}>
+        <button type="button" className="btn primary sm" disabled={isDone || !val.trim()} onClick={check}>
           Check
         </button>
-        {!hint && state !== 'right' && (
-          <button type="button" className="btn ghost sm" onClick={() => setHint(true)}>
-            Hint
-          </button>
-        )}
-        {tries >= 2 && !sol && state !== 'right' && (
-          <button type="button" className="btn ghost sm" onClick={() => setSol(true)}>
-            Show the solution
-          </button>
-        )}
+        <LadderButtons L={L} done={isDone} tries={tries} />
       </div>
       {state === 'unread' && <p className="problem-msg">I could not read that as a number. Try something like 0.25, 1/4 or −3.</p>}
-      {state === 'wrong' && <p className="problem-msg no">Not yet. {tries >= 2 ? 'Check your working, or look at the solution.' : 'Try again.'}</p>}
-      {hint && state !== 'right' && (
-        <p className="problem-msg hint">
-          💡 <Glossed text={item.hint} />
-        </p>
-      )}
-      {(state === 'right' || sol) && (
-        <p className={`problem-msg ${state === 'right' ? 'ok' : ''}`}>
-          {state === 'right' ? '✓ Right. ' : `Answer: ${shown(item.a)}. `}
+      {state === 'wrong' && <p className="problem-msg no">Not yet. {tries >= 2 ? 'Check your working, or take the next hint.' : 'Try again.'}</p>}
+      <Ladder item={item} part={part} rungs={L.rungs} help={isDone ? 0 : L.help} steps={firstSteps(item)} />
+      {(isDone || sol) && (
+        <p className={`problem-msg ${isDone ? 'ok' : ''}`}>
+          {isDone ? '✓ Right. ' : `Answer: ${shown(item.a)}. `}
           <Glossed text={item.solution} />
+          {working(item) && <span className="worked-line">Working: {working(item)}</span>}
         </p>
       )}
     </div>
