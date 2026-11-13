@@ -13,7 +13,7 @@ const COL = 76;
 const ROW = 58;
 const PAD_X = 40;
 const PAD_Y = 34;
-const LANE_ORDER = ['math', 'phys', 'chem', 'mate', 'eng', 'prog', 'disc', 'algo', 'sys', 'ai', 'comp', 'philo', 'bio', 'econ'];
+const LANE_ORDER = ['start', 'math', 'phys', 'chem', 'mate', 'eng', 'prog', 'disc', 'algo', 'sys', 'ai', 'comp', 'philo', 'bio', 'econ'];
 
 const BY_ID = Object.fromEntries(ALL_LESSONS.map((l) => [l.id, l]));
 // What each class builds on: the app's own prerequisites plus the links

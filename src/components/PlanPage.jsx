@@ -278,7 +278,7 @@ function PlanView({ progress, plan, onEdit, onSave, onOpenUnit }) {
       )}
       <p className="notes-hint plan-foot" data-reveal>
         Times are estimates: about 20 minutes for a class’s story and animation, the minutes written on each “Learn it” part, and about 10
-        minutes for the quiz. Track classes are not in the plan, since they open as you finish each year.{' '}
+        minutes for the quiz. “Start here” is included unless you skipped it. Track classes are not in the plan, since they open as you finish each year.{' '}
         <RemovePlan onRemove={() => onSave(null)} />
       </p>
     </div>

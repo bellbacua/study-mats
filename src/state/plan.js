@@ -1,4 +1,4 @@
-import { LESSONS, CURRICULUM_TERMS, sideByWeek } from '../data/path';
+import { LESSONS, CURRICULUM_TERMS, START_LESSONS, sideByWeek, startState } from '../data/path';
 import { DEEP } from '../data/deep';
 import { addDays, todayStr } from './review';
 
@@ -20,11 +20,15 @@ export const weekdayOf = (day) => dateOf(day).getDay();
 export const daysBetween = (a, b) => Math.round((dateOf(b) - dateOf(a)) / 86_400_000);
 export const niceDate = (day, opts = { day: 'numeric', month: 'short', year: 'numeric' }) => dateOf(day).toLocaleDateString(undefined, opts);
 
-// The classes the plan covers, in timetable order: your core weeks plus the
-// side topics and borrowed classes you have put into those weeks.
-export function planClasses(readings) {
+// The classes the plan covers, in timetable order: the "Start here" level
+// first (unless you skipped it, or went straight to week 1 without it), then
+// your core weeks with the side topics and borrowed classes you have put into
+// those weeks.
+export function planClasses(readings, passed = {}) {
   const extra = sideByWeek(readings);
-  return CURRICULUM_TERMS.flatMap((t) => [...LESSONS.filter((l) => l.termId === t.id), ...(extra[t.id] || [])]);
+  const st = startState(passed, readings);
+  const start = !st.skipped && (st.leads || st.done > 0) ? START_LESSONS : [];
+  return [...start, ...CURRICULUM_TERMS.flatMap((t) => [...LESSONS.filter((l) => l.termId === t.id), ...(extra[t.id] || [])])];
 }
 
 // A class in the pieces the app can tick off, each with its minutes.
@@ -39,7 +43,7 @@ export function unitsOf(l, progress) {
   return out;
 }
 
-export const allUnits = (progress) => planClasses(progress.readings).flatMap((l) => unitsOf(l, progress));
+export const allUnits = (progress) => planClasses(progress.readings, progress.passed).flatMap((l) => unitsOf(l, progress));
 
 // Minutes you can give to new material on a study day.
 export const dayBudget = (plan) => Math.max(10, Math.round(((plan.hours * 60) / Math.max(1, plan.days.length)) * (1 - REVIEW_SHARE)));
