@@ -10,6 +10,10 @@
 // and points at the same sources as the fact it pictures.
 // Leave an entry null to skip it. Checked by scripts/check-help.mjs.
 import { START_HELP } from './start';
-import { Y1A_HELP } from './y1a';
+import { B01 } from './b01';
+import { B02 } from './b02';
+import { B03 } from './b03';
+import { B04 } from './b04';
+import { B05 } from './b05';
 
-export const HELP = { ...START_HELP, ...Y1A_HELP };
+export const HELP = { ...START_HELP, ...B01, ...B02, ...B03, ...B04, ...B05 };
