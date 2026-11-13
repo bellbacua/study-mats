@@ -25,6 +25,8 @@ import { usePrefs } from './state/prefs';
 import PlanPage from './components/PlanPage';
 import MistakesPage from './components/MistakesPage';
 import IdeaMap from './components/IdeaMap';
+import GlossCard from './components/GlossCard';
+import { getPlace } from './state/detour';
 import { noteAnswer, openMisses } from './state/mistakes';
 import { today as todayKey } from './state/useProgress';
 
@@ -59,6 +61,7 @@ export default function App() {
   const [prefs, setPrefs] = usePrefs();
   const [guideWeek, setGuideWeek] = useState(null);
   const [opening, setOpening] = useState(null); // { id, tab, part, scroll, n }: open a class at a tab
+  const [detour, setDetour] = useState(null); // { id, title, tab, card, step }: where a side trip started
   // A new page starts at the top, not where the last one was scrolled to.
   const go = (v) => {
     setView(v);
@@ -99,16 +102,34 @@ export default function App() {
     ...store,
     open: (id) => {
       setOpening(null);
+      setDetour(null);
       store.setActive(id);
       setView('lesson');
       window.scrollTo({ top: 0 });
     },
     // Open a class at a tab (and a "Learn it" part), e.g. from the study plan.
-    openAt: (id, tab, part = null, scroll = null) => {
-      setOpening({ id, tab, part, scroll, n: Date.now() });
+    openAt: (id, tab, part = null, scroll = null, at = {}) => {
+      setOpening({ id, tab, part, scroll, ...at, n: Date.now() });
+      setDetour(null);
       store.setActive(id);
       setView('lesson');
       window.scrollTo({ top: 0 });
+    },
+    // A side trip to an earlier class ("I'm lost", a glossary word), with a
+    // way back to the same tab, story card and animation step. A trip from a
+    // trip keeps the first starting point.
+    detour: (id) => {
+      const here = getPlace();
+      const from = detour || (here && view === 'lesson' ? { ...here, title: ALL_LESSONS.find((l) => l.id === here.id)?.title } : null);
+      setOpening(null);
+      store.setActive(id);
+      setView('lesson');
+      window.scrollTo({ top: 0 });
+      setDetour(from && from.id !== id ? from : null);
+    },
+    back: () => {
+      if (!detour) return;
+      actions.openAt(detour.id, detour.tab, null, null, { card: detour.card, step: detour.step });
     },
     noteAnswer: (a) => noteAnswer(state.items || {}, store.setItem, a),
     // Passing a class for the first time shows the recap card.
@@ -332,6 +353,7 @@ export default function App() {
             prevLesson={seq[pos - 1]}
             nextLesson={seq[pos + 1] || afterStart(lesson)}
             opening={opening}
+            detour={detour}
           />
         )}
       </main>
@@ -385,6 +407,7 @@ export default function App() {
           />
         );
       })()}
+      <GlossCard currentId={view === 'lesson' ? lesson.id : null} onDetour={(id) => actions.detour(id)} onGlossary={() => go('glossary')} />
       {toast && <StreakToast days={toast} onClose={closeToast} />}
 
       <Ambush progress={state} activeIdx={idx} paused={view === 'exams'} onAnswered={() => actions.logActivity()} />

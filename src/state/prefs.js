@@ -16,7 +16,8 @@ export const TEXT_SIZES = [
 ];
 
 const KEY = 'reading-prefs';
-const DEFAULTS = { theme: 'dark', text: 'm', focus: false };
+// story: 'cards' shows a class's story one card at a time, 'page' all at once.
+const DEFAULTS = { theme: 'dark', text: 'm', focus: false, story: 'cards' };
 
 function load() {
   try {
@@ -45,7 +46,7 @@ export function setPrefs(patch) {
   prefs = { ...prefs, ...patch };
   try {
     // Focus mode is for this sitting only: the app always opens normally.
-    localStorage.setItem(KEY, JSON.stringify({ theme: prefs.theme, text: prefs.text }));
+    localStorage.setItem(KEY, JSON.stringify({ theme: prefs.theme, text: prefs.text, story: prefs.story }));
   } catch {
     /* private window: the choice just isn't remembered */
   }

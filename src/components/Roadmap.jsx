@@ -1,5 +1,6 @@
 import { CURRICULUM_TERMS, LESSONS, SUBJECTS, PROGRAM, PROGRAMS, PROGRAM_ID, START_LESSONS, START_LEVEL, trackClassState } from '../data/path';
 import { useReveal } from '../state/useReveal';
+import { classMinutes, fmtMinutes } from '../state/plan';
 
 const shortName = (p) => p.split('(')[0].trim();
 
@@ -101,6 +102,7 @@ export default function Roadmap({ progress, nextUp, onOpen, status, dueNow = 0, 
                     <span className="class-top">
                       <span className="class-day">{i + 1}</span>
                       <span className="subject track-start">Start here</span>
+                      <span className="class-mins" title="About how long the whole class takes">{fmtMinutes(classMinutes(l))}</span>
                       <span className="class-num">{isDone ? '✓' : isNext ? 'next' : ''}</span>
                     </span>
                     <span className="path-title">{l.title}</span>
@@ -148,6 +150,7 @@ export default function Roadmap({ progress, nextUp, onOpen, status, dueNow = 0, 
                       <span className="class-top">
                         <span className="class-day">{l.day}</span>
                         <span className={`subject track-${l.track}`}>{SUBJECTS[l.track] || l.track}</span>
+                        <span className="class-mins" title="About how long the whole class takes">{fmtMinutes(classMinutes(l))}</span>
                         <span className="class-num">{isDone ? '✓' : isNext ? 'next' : `#${n}`}</span>
                       </span>
                       <span className="path-title">{l.title}</span>
@@ -174,6 +177,7 @@ export default function Roadmap({ progress, nextUp, onOpen, status, dueNow = 0, 
                       <span className="class-top">
                         <span className="class-day">{l.borrowed ? 'Extra' : 'GE'}</span>
                         <span className={`subject track-${l.track}`}>{SUBJECTS[l.track] || l.track}</span>
+                        <span className="class-mins" title="About how long the whole class takes">{fmtMinutes(classMinutes(l))}</span>
                         <span className="class-num">{st.done ? '✓' : l.borrowed ? '' : st.open ? `${l.specIndex + 1}/${l.specCount}` : '🔒'}</span>
                       </span>
                       <span className="path-title">{l.title}</span>

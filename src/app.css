@@ -1385,50 +1385,7 @@ input[type='range'] {
   }
 }
 
-/* ---------- glossary ---------- */
-.gl {
-  position: relative;
-  border-bottom: 1px dotted var(--faint);
-  cursor: help;
-}
-.gl:hover,
-.gl:focus {
-  border-bottom-color: var(--blue);
-  outline: none;
-}
-.gl-pop {
-  position: absolute;
-  left: 50%;
-  bottom: calc(100% + 8px);
-  z-index: 30;
-  width: max-content;
-  max-width: 280px;
-  transform: translate(-50%, 4px);
-  padding: 10px 12px;
-  border-radius: 10px;
-  border: 1px solid var(--line);
-  background: #0a0e13;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.45);
-  font: 400 14px/1.45 var(--sans);
-  color: var(--text);
-  text-align: left;
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity 0.15s, transform 0.15s;
-}
-.gl-pop strong {
-  display: block;
-  font-size: 12px;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-  color: var(--blue);
-  margin-bottom: 3px;
-}
-.gl:hover .gl-pop,
-.gl:focus .gl-pop {
-  opacity: 1;
-  transform: translate(-50%, 0);
-}
+/* ---------- glossary (word styles and the word card: src/help.css) ---------- */
 .search {
   width: 100%;
   max-width: 420px;

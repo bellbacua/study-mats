@@ -6,7 +6,7 @@ import { streaks } from './ProgressPage';
 import { useReveal } from '../state/useReveal';
 import { useWikiPic } from './Pictures';
 import { COLLECTABLES, KINDS, collectionStats, isCollected } from '../state/collection';
-import { fmtMinutes, niceDate, nextStudyDay, planSummary, todaysUnits } from '../state/plan';
+import { classMinutes, fmtMinutes, niceDate, nextStudyDay, planSummary, todaysUnits } from '../state/plan';
 
 const DAY = 86_400_000;
 const MILESTONES = [3, 7, 14, 30, 50, 100, 200, 365];
@@ -104,7 +104,7 @@ export default function TodayPage({ progress, active, nextUp, dueNow, spec, plan
             <p className="today-hero-sub">{hero.subtitle}</p>
             <p className="today-hero-meta">
               {term ? `${term.title} · ${hero.day} · ` : hero.start ? 'Before week 1 · ' : ''}
-              {hero.history?.era?.split('•')[0].trim()} · {shortName(hero.history?.protagonist)}
+              {hero.history?.era?.split('•')[0].trim()} · {shortName(hero.history?.protagonist)} · about {fmtMinutes(classMinutes(hero))}
             </p>
             <ol className="today-steps" aria-label="Your progress in this class">
               {classSteps(hero, progress).map((s) => (

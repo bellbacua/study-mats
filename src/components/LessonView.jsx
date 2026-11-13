@@ -1,6 +1,13 @@
 import { lazy, Suspense, useEffect, useState } from 'react';
 import MathFormula from './MathFormula';
 import Glossed from './Glossed';
+import Cited, { citesOf } from './Cited';
+import StoryCards from './StoryCards';
+import LostHelp from './LostHelp';
+import { HELP } from '../data/help';
+import { usePrefs } from '../state/prefs';
+import { setPlace } from '../state/detour';
+import { classMinutes, storyMinutes, fmtMinutes } from '../state/plan';
 import Pictures from './Pictures';
 import { useReveal } from '../state/useReveal';
 import Practice from './Practice';
@@ -20,26 +27,6 @@ export function lessonSources(lesson) {
   const own = lesson.sources || [];
   const reads = (LESSON_READINGS[lesson.id] || []).filter((r) => r.url && !own.some((o) => o.url === r.url));
   return [...own, ...reads.map((r) => ({ label: `${r.source}: ${r.title}`, url: r.url, note: r.whyRead || '' }))];
-}
-
-// Text with [n] citation marks turned into small links to the Sources list.
-function Cited({ text }) {
-  // "[1]", "[1, 2]" and "[1][2]" all become one superscript group.
-  const bits = String(text).split(/((?:\s?\[\d+(?:,\s*\d+)*\])+)/);
-  return bits.map((b, i) => {
-    if (i % 2 === 0) return <Glossed key={i} text={b} />;
-    const nums = [...b.matchAll(/\d+/g)].map((m) => m[0]);
-    return (
-      <sup key={i} className="cite">
-        {nums.map((n, j) => (
-          <a key={n + j} href={`#src-${n}`}>
-            {j ? ',' : ''}
-            {n}
-          </a>
-        ))}
-      </sup>
-    );
-  });
 }
 
 function Sources({ lesson }) {
@@ -79,21 +66,32 @@ const BASE_TABS = [
 
 const LEARN_TAB = { id: 'learn', label: 'Learn it', hint: 'Parts, examples, your turn' };
 
-export default function LessonView({ lesson, index, total, progress, actions, prevLesson, nextLesson, opening }) {
+export default function LessonView({ lesson, index, total, progress, actions, prevLesson, nextLesson, opening, detour }) {
   const deep = DEEP[lesson.id];
   const TABS = deep ? [BASE_TABS[0], BASE_TABS[1], LEARN_TAB, { ...BASE_TABS[2], label: 'Class quiz', hint: 'Pass to finish the class' }, BASE_TABS[3]] : BASE_TABS;
   const [tab, setTab] = useState('story');
   const [step, setStep] = useState(0);
+  const [card, setCard] = useState(0);
+  const [prefs, setPrefs] = usePrefs();
+  const help = HELP[lesson.id];
+  const cards = prefs.story !== 'page';
 
   // Opened from the study plan or the mistakes notebook: start on that tab.
   const startTab = opening?.id === lesson.id && TABS.some((t) => t.id === opening.tab) ? opening.tab : 'story';
   useEffect(() => {
     setTab(startTab);
-    setStep(0);
+    setStep(opening?.id === lesson.id && opening.step != null ? opening.step : 0);
+    setCard(opening?.id === lesson.id && opening.card != null ? opening.card : 0);
     if (opening?.id === lesson.id && opening.scroll) setTimeout(() => document.getElementById(opening.scroll)?.scrollIntoView({ behavior: 'smooth', block: 'start' }), 200);
   }, [lesson.id, opening?.n]); // eslint-disable-line react-hooks/exhaustive-deps
 
-  useReveal([lesson.id, tab, step]);
+  useReveal([lesson.id, tab, step, card, cards]);
+  // Remembered so a side trip to an earlier class can come back to this spot.
+  useEffect(() => setPlace({ id: lesson.id, tab, card, step }), [lesson.id, tab, card, step]);
+  const toCard = (k) => {
+    setCard(k);
+    document.querySelector('.sc')?.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  };
 
   const go = (t) => {
     setTab(t);
@@ -104,13 +102,49 @@ export default function LessonView({ lesson, index, total, progress, actions, pr
   const steps = lesson.guidedSteps;
   const s = steps[step];
 
+  const ending = (
+    <>
+          <aside className="takeaway">
+            <span className="eyebrow">Why it matters</span>
+            <Pin text={`\n> ${h.takeaway}\n- Why this matters, in my own words: `} />
+            <p>
+              <Glossed text={h.takeaway} />
+            </p>
+          </aside>
+          <div className="short-version">
+            <span className="eyebrow">The short version</span>
+            <span className="importance must">⭐ Must know · this is what the quizzes test</span>
+            <ul>
+              {lesson.overtimeDigest.map((b, i) => (
+                <li key={i}>
+                  <Glossed text={b} /> <Pin text={`\n> ${b}\n- In my own words: `} />
+                </li>
+              ))}
+            </ul>
+          </div>
+    </>
+  );
+
   return (
     <div className="lesson">
+      {detour && detour.id !== lesson.id && (
+        <div className="detour" role="status">
+          <span>
+            You stepped back to fill a gap. Take what you need, then carry on with <strong>{detour.title}</strong>.
+          </span>
+          <button type="button" className="btn primary sm" onClick={actions.back}>
+            ← Back to where I was
+          </button>
+        </div>
+      )}
       <header className="lesson-head">
         <div className="lesson-crumbs">
           <span className={`track track-${lesson.track}`}>{lesson.code}</span>
           <span>
             {lesson.spec || lesson.from ? `${whereLabel(lesson)} · class ${index + 1} of ${total}` : `Week ${lesson.termId?.replace('week-', '')} · ${lesson.day} · class ${index + 1} of ${total}`}
+          </span>
+          <span className="pill time" title={`Story and animation about ${fmtMinutes(storyMinutes(lesson))}; the whole class, with practice, about ${fmtMinutes(classMinutes(lesson))}`}>
+            ⏱ about {fmtMinutes(classMinutes(lesson))}
           </span>
           {progress.passed[lesson.id] && <span className="pill ok">✓ done</span>}
         </div>
@@ -148,40 +182,51 @@ export default function LessonView({ lesson, index, total, progress, actions, pr
           </div>
           <h2 className="hook">{h.hook}</h2>
           <span className="importance good">📖 Good to know · the story behind it. Note who, when and why in one line.</span>
-          <Pictures sources={lessonSources(lesson)} />
-          <div className="narrative">
-            {h.narrative.map((p, i) => (
-              <div key={i} data-reveal>
-                <p>
-                  <Cited text={p} />
-                </p>
-                {LEGENDS[lesson.id]?.[i] && (
-                  <details className="legend-tag">
-                    <summary title="This story may not have happened as told">Legend? What we actually know</summary>
-                    <span>{LEGENDS[lesson.id][i]}</span>
-                  </details>
-                )}
+          {(!cards || card === 0) && <Pictures sources={lessonSources(lesson)} />}
+          {cards ? (
+            <StoryCards
+              lesson={lesson}
+              help={help}
+              card={card}
+              setCard={toCard}
+              legends={LEGENDS[lesson.id]}
+              onDetour={actions.detour}
+              onWhole={() => setPrefs({ story: 'page' })}
+              ending={
+                <>
+                  {ending}
+                  <div className="sc-done">
+                    <button type="button" className="btn primary" onClick={() => go('explore')}>
+                      Now see it move →
+                    </button>
+                  </div>
+                </>
+              }
+            />
+          ) : (
+            <>
+              <button type="button" className="sc-whole page" onClick={() => setPrefs({ story: 'cards' })}>
+                Show one card at a time, with quick checks
+              </button>
+              <div className="narrative">
+                {h.narrative.map((p, i) => (
+                  <div key={i} data-reveal>
+                    <p>
+                      <Cited text={p} />
+                    </p>
+                    {LEGENDS[lesson.id]?.[i] && (
+                      <details className="legend-tag">
+                        <summary title="This story may not have happened as told">Legend? What we actually know</summary>
+                        <span>{LEGENDS[lesson.id][i]}</span>
+                      </details>
+                    )}
+                    <LostHelp key={`${lesson.id}:${i}`} lesson={lesson} text={p} cites={citesOf(p)} entry={help?.p?.[i]} onDetour={actions.detour} />
+                  </div>
+                ))}
               </div>
-            ))}
-          </div>
-          <aside className="takeaway" data-reveal>
-            <span className="eyebrow">Why it matters</span>
-            <Pin text={`\n> ${h.takeaway}\n- Why this matters, in my own words: `} />
-            <p>
-              <Glossed text={h.takeaway} />
-            </p>
-          </aside>
-          <div className="short-version" data-reveal>
-            <span className="eyebrow">The short version</span>
-            <span className="importance must">⭐ Must know · this is what the quizzes test</span>
-            <ul>
-              {lesson.overtimeDigest.map((b, i) => (
-                <li key={i}>
-                  <Glossed text={b} /> <Pin text={`\n> ${b}\n- In my own words: `} />
-                </li>
-              ))}
-            </ul>
-          </div>
+              {ending}
+            </>
+          )}
           <Sources lesson={lesson} />
         </section>
       )}
@@ -224,6 +269,15 @@ export default function LessonView({ lesson, index, total, progress, actions, pr
               <p>
                 <Glossed text={s.explanation} />
               </p>
+              <LostHelp
+                key={`${lesson.id}:step:${step}`}
+                lesson={lesson}
+                text={`${s.title} ${s.explanation}`}
+                cites={citesOf(h.narrative[h.narrative.length - 1] || '')}
+                entry={help?.s?.[step]}
+                onDetour={actions.detour}
+                label="I’m lost on this step"
+              />
               <div className="step-nav">
                 <button type="button" className="btn ghost" disabled={step === 0} onClick={() => setStep(step - 1)}>
                   ← Previous step

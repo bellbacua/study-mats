@@ -1,0 +1,437 @@
+/* In-lesson help: story cards with quick checks, the "I'm lost" panel, the
+   glossary word card, the way back from a side trip and class minutes.
+   Tokens and rules: DESIGN.md. Theme tokens only, so dark, light and sepia
+   all work. */
+
+/* ============================================================ glossary words */
+.gl {
+  position: relative;
+  border-bottom: 1px dotted var(--faint);
+  cursor: pointer;
+  border-radius: 2px;
+  transition: border-color 0.15s, background 0.15s;
+}
+.gl:hover {
+  border-bottom-color: var(--blue);
+  background: color-mix(in srgb, var(--blue) 8%, transparent);
+}
+.gl:focus-visible {
+  outline: 2px solid var(--blue);
+  outline-offset: 2px;
+}
+
+.gloss-card {
+  position: fixed;
+  z-index: 80;
+  width: min(320px, calc(100vw - 24px));
+  padding: 12px 14px 12px;
+  border-radius: 12px;
+  border: 1px solid var(--line-strong);
+  background: var(--float);
+  box-shadow: var(--shadow);
+  font: 400 14px/1.5 var(--sans);
+  color: var(--text);
+  animation: gc-in 0.16s var(--ease);
+}
+@keyframes gc-in {
+  from {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+}
+.gloss-card-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+.gloss-card-head strong {
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--blue);
+}
+.gloss-card p {
+  margin: 6px 0 0;
+}
+.gloss-card-from {
+  color: var(--muted);
+  font-size: 13px;
+}
+.gloss-card-from strong {
+  color: var(--text);
+  font-weight: 600;
+}
+.gloss-card-acts {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 10px;
+}
+@media (max-width: 560px) {
+  /* A sheet along the bottom on a phone, clear of the thumb's way. */
+  .gloss-card {
+    left: 12px !important;
+    right: 12px;
+    top: auto !important;
+    bottom: 12px;
+    width: auto;
+  }
+  .gloss-card-acts .btn {
+    min-height: 40px;
+  }
+}
+
+/* ============================================================ class minutes */
+.pill.time {
+  white-space: nowrap;
+  background: var(--surface-2);
+  color: var(--muted);
+  font-family: var(--mono);
+  font-weight: 500;
+}
+.path-mins {
+  font-family: var(--mono);
+  white-space: nowrap;
+}
+
+/* ============================================================ side trip */
+.detour {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin: 0 0 18px;
+  padding: 10px 14px;
+  border-radius: 12px;
+  border: 1px solid color-mix(in srgb, var(--blue) 40%, var(--line));
+  background: color-mix(in srgb, var(--blue) 8%, var(--surface));
+  font-size: 14px;
+  color: var(--muted);
+  position: sticky;
+  top: 64px;
+  z-index: 20;
+}
+.detour strong {
+  color: var(--text);
+}
+:root[data-focus='on'] .detour {
+  top: 8px;
+}
+
+/* ============================================================ story cards */
+.sc {
+  max-width: 720px;
+  scroll-margin-top: 80px;
+}
+.sc-bar {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin: 4px 0 12px;
+}
+.sc-count {
+  font: 500 12px var(--mono);
+  color: var(--muted);
+}
+.sc-dots {
+  display: flex;
+  gap: 2px;
+}
+.sc-dot {
+  /* a 24px target around a small dot */
+  width: 24px;
+  height: 24px;
+  padding: 0;
+  border: 0;
+  background: none;
+  cursor: pointer;
+  display: grid;
+  place-items: center;
+}
+.sc-dot::after {
+  content: '';
+  width: 8px;
+  height: 8px;
+  border-radius: 999px;
+  background: var(--line-strong);
+  transition: background 0.15s, width 0.2s var(--ease);
+}
+.sc-dot.seen::after {
+  background: color-mix(in srgb, var(--blue) 55%, var(--line-strong));
+}
+.sc-dot.on::after {
+  width: 18px;
+  background: var(--blue);
+}
+.sc-whole {
+  margin-left: auto;
+  border: 0;
+  background: none;
+  padding: 4px 0;
+  color: var(--muted);
+  font: 500 13px var(--sans);
+  text-decoration: underline;
+  text-decoration-color: var(--line-strong);
+  text-underline-offset: 3px;
+  cursor: pointer;
+}
+.sc-whole:hover {
+  color: var(--text);
+}
+.sc-whole.page {
+  display: block;
+  margin: 0 0 14px;
+}
+
+.sc-card {
+  min-height: 280px;
+  padding: 24px 26px 20px;
+  border-radius: 16px;
+  border: 1px solid var(--line);
+  background: var(--surface);
+  animation: sc-in 0.35s var(--ease);
+}
+@keyframes sc-in {
+  from {
+    opacity: 0;
+    transform: translateX(14px);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .sc-card,
+  .gloss-card {
+    animation: none;
+  }
+}
+.sc-text {
+  font-family: var(--serif);
+  font-size: 20px;
+  line-height: 1.65;
+  color: var(--text);
+  margin: 0 0 16px;
+}
+.sc-card .takeaway {
+  margin-top: 0;
+}
+.sc-done {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 16px;
+}
+.sc-nav {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  margin: 14px 0 24px;
+}
+
+/* quick check */
+.qc {
+  margin: 18px 0 14px;
+  padding-top: 14px;
+  border-top: 1px solid var(--line);
+}
+.qc-eyebrow,
+.lost-tag {
+  display: block;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+.qc-q {
+  margin: 6px 0 10px;
+  font-size: 16px;
+  font-weight: 500;
+}
+.qc-opts {
+  display: grid;
+  gap: 8px;
+}
+.qc-opts.self {
+  grid-template-columns: repeat(auto-fit, minmax(140px, max-content));
+}
+.qc-opt {
+  text-align: left;
+  min-height: 40px;
+  padding: 9px 14px;
+  border-radius: 8px;
+  border: 1px solid var(--line-strong);
+  background: var(--surface);
+  color: var(--text);
+  font: 15px/1.4 var(--sans);
+  cursor: pointer;
+  transition: border-color 0.15s, background 0.15s;
+}
+.qc-opt:hover:not(:disabled) {
+  border-color: var(--blue);
+  background: var(--surface-2);
+}
+.qc-opt.right {
+  border-color: var(--green);
+  background: color-mix(in srgb, var(--green) 12%, var(--surface));
+}
+.qc-opt.wrong {
+  border-color: var(--red);
+  background: color-mix(in srgb, var(--red) 10%, var(--surface));
+}
+.qc-opt.dim {
+  opacity: 0.55;
+}
+.qc-opt:disabled {
+  cursor: default;
+}
+.qc-msg {
+  margin: 10px 0 0;
+  font-size: 14px;
+  color: var(--muted);
+}
+.qc-msg.ok {
+  color: var(--green);
+}
+.qc-msg.no {
+  color: var(--red);
+}
+
+/* ============================================================ I'm lost */
+.lost-wrap {
+  margin: 4px 0 18px;
+}
+.lost-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 36px;
+  padding: 6px 12px;
+  border-radius: 999px;
+  border: 1px solid var(--line-strong);
+  background: transparent;
+  color: var(--muted);
+  font: 500 14px var(--sans);
+  cursor: pointer;
+  transition: color 0.15s, border-color 0.15s, background 0.15s;
+}
+.lost-btn:hover {
+  color: var(--text);
+  border-color: var(--blue);
+  background: var(--surface-2);
+}
+.lost {
+  margin: 12px 0 4px;
+  padding: 14px 16px;
+  border-radius: 12px;
+  border: 1px solid var(--line);
+  border-left: 3px solid var(--blue);
+  background: var(--surface-2);
+  font-size: 15px;
+  line-height: 1.55;
+  animation: gc-in 0.2s var(--ease);
+}
+.lost-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.lost-head .eyebrow {
+  color: var(--blue);
+}
+.lost-x {
+  width: 32px;
+  height: 32px;
+  border: 0;
+  border-radius: 8px;
+  background: none;
+  color: var(--muted);
+  font-size: 20px;
+  line-height: 1;
+  cursor: pointer;
+}
+.lost-x:hover {
+  background: var(--surface-3);
+  color: var(--text);
+}
+.lost-plain {
+  margin: 6px 0 10px;
+  font-size: 17px;
+  color: var(--text);
+}
+.lost-like {
+  margin: 0 0 10px;
+  color: var(--text);
+}
+.lost-like .lost-tag {
+  margin-bottom: 2px;
+  color: var(--gold);
+}
+.lost-block {
+  margin-top: 12px;
+  padding-top: 10px;
+  border-top: 1px solid var(--line);
+}
+.lost-words,
+.lost-back {
+  list-style: none;
+  margin: 6px 0 0;
+  padding: 0;
+  display: grid;
+  gap: 8px;
+}
+.lost-words strong,
+.lost-back strong {
+  font-weight: 600;
+  color: var(--text);
+}
+.lost-back li {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+.lost-back li > span {
+  flex: 1 1 260px;
+  color: var(--muted);
+}
+.lost-note {
+  margin: 8px 0 0;
+  font-size: 13px;
+  color: var(--faint);
+}
+.step .lost-wrap {
+  margin: 0 0 14px;
+}
+
+@media (max-width: 560px) {
+  .sc-card {
+    padding: 18px 16px 16px;
+    min-height: 0;
+  }
+  .sc-text {
+    font-size: 18px;
+  }
+  .sc-whole {
+    margin-left: 0;
+    width: 100%;
+    text-align: left;
+  }
+  .sc-nav .btn {
+    flex: 1;
+    min-height: 44px;
+  }
+}
+
+/* minutes on the roadmap's class cards */
+.class-mins {
+  margin-left: auto;
+  font-family: var(--mono);
+  color: var(--faint);
+  white-space: nowrap;
+}
+.class-mins + .class-num {
+  margin-left: 0;
+}

@@ -8,7 +8,7 @@ import { addDays, todayStr } from './review';
 // { goal: 'YYYY-MM-DD', hours: 6, days: [1, 3, 5], start: 'YYYY-MM-DD' }.
 
 export const WEEKDAYS = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
-export const STORY_MIN = 20; // reading the story and playing the animation
+export const STORY_MIN = 20; // used only if a class has no story to measure
 export const QUIZ_MIN = 10;
 export const REVIEW_SHARE = 0.1; // kept free each day for spaced review
 
@@ -31,11 +31,31 @@ export function planClasses(readings, passed = {}) {
   return [...start, ...CURRICULUM_TERMS.flatMap((t) => [...LESSONS.filter((l) => l.termId === t.id), ...(extra[t.id] || [])])];
 }
 
+// Minutes for the story and the animation, measured from the class itself:
+// reading at an unhurried 120 words a minute, a minute for each card's quick
+// check, and two minutes to play and read each animation step. Rounded up to
+// the next 5 minutes so the number doesn't pretend to be exact.
+const words = (s) => String(s || '').split(/\s+/).filter(Boolean).length;
+const storyCache = new Map();
+export function storyMinutes(l) {
+  if (storyCache.has(l.id)) return storyCache.get(l.id);
+  const h = l.history;
+  if (!h?.narrative?.length) return STORY_MIN;
+  const text = [h.hook, ...h.narrative, h.takeaway, ...(l.overtimeDigest || [])].map(words).reduce((a, b) => a + b, 0);
+  const stepText = (l.guidedSteps || []).map((s) => words(s.explanation)).reduce((a, b) => a + b, 0);
+  const raw = (text + stepText) / 120 + h.narrative.length + (l.guidedSteps || []).length * 2;
+  const m = Math.max(10, Math.ceil(raw / 5) * 5);
+  storyCache.set(l.id, m);
+  return m;
+}
+// The whole class, start to finish (story, animation, Learn it parts, quiz).
+export const classMinutes = (l) => unitsOf(l, { passed: {}, labs: {}, readings: {} }).reduce((s, u) => s + u.minutes, 0);
+
 // A class in the pieces the app can tick off, each with its minutes.
 export function unitsOf(l, progress) {
   const passed = !!progress.passed[l.id];
   const deep = DEEP[l.id];
-  const out = [{ id: `${l.id}:story`, lesson: l, kind: 'story', label: 'Story and animation', minutes: STORY_MIN, done: passed || !!progress.labs[l.id] }];
+  const out = [{ id: `${l.id}:story`, lesson: l, kind: 'story', label: 'Story and animation', minutes: storyMinutes(l), done: passed || !!progress.labs[l.id] }];
   (deep?.parts || []).forEach((p, k) =>
     out.push({ id: `${l.id}:part:${k}`, lesson: l, kind: 'part', part: k, label: `Learn it ${k + 1}: ${p.title}`, minutes: p.minutes || 20, done: passed || !!progress.readings[`part:${l.id}:${k}`] }),
   );

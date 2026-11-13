@@ -9,6 +9,7 @@ const PATTERN =
 const server = await createServer({ server: { middlewareMode: true }, appType: 'custom', logLevel: 'silent' });
 const { LESSONS, READINGS } = await server.ssrLoadModule('/src/data/path.js');
 const { LABS } = await server.ssrLoadModule('/src/data/labs.js');
+const { HELP } = await server.ssrLoadModule('/src/data/help/index.js');
 await server.close();
 
 const hits = [];
@@ -21,4 +22,6 @@ const walk = (where, v) => {
 LESSONS.forEach((l) => walk(l.id, l));
 walk('readings', READINGS);
 walk('labs', LABS);
+// "I'm lost" help for Materials and Start here classes (CS classes may use CS words).
+for (const [id, h] of Object.entries(HELP)) if (LESSONS.some((l) => l.id === id) || id.startsWith('start-')) walk(`help.${id}`, h);
 console.log(hits.length ? hits.join('\n') : 'clean');
