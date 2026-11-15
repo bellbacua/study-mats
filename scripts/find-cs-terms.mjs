@@ -19,7 +19,8 @@ const walk = (where, v) => {
   } else if (Array.isArray(v)) v.forEach((x, i) => walk(`${where}[${i}]`, x));
   else if (v && typeof v === 'object') for (const [k, x] of Object.entries(v)) if (k !== 'csBridge') walk(`${where}.${k}`, x);
 };
-LESSONS.forEach((l) => walk(l.id, l));
+// Digital electronics classes (ece-) may use words like bits and logic gates.
+LESSONS.filter((l) => !/^(comp|cs|ai|sec|gfx|ece)-/.test(l.id)).forEach((l) => walk(l.id, l.id.startsWith('ee-') ? JSON.parse(JSON.stringify(l).replace(/Electrical Code/g, 'Electrical Rules').replace(/\bterminals?\b/gi, 'ends')) : l));
 walk('readings', READINGS);
 walk('labs', LABS);
 // "I'm lost" help for Materials and Start here classes (CS classes may use CS words).

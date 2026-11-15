@@ -24,6 +24,7 @@ const ABOUT = {
   sys: 'what happens inside a computer and between computers',
   algo: 'step-by-step methods for sorting, searching and planning',
   ai: 'machines that learn from examples',
+  ee: 'circuits, voltage and current, capacitors, coils, diodes and transistors',
 };
 
 // The subjects of this program, in the order they first appear on the timetable.

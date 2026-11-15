@@ -1,0 +1,501 @@
+// Electronics foundations, part 2: oscillation, alternating current, filters,
+// Maxwell’s equations, radio, and the two great tools of circuit maths
+// (Laplace and Fourier). Story claims are cited as [n] from `sources`.
+import { mk, phet, home, online, desmos } from '../um/make';
+
+const W = (t) => `https://en.wikipedia.org/wiki/${t}`;
+const falstad = (task) => online('Falstad circuit simulator (free, in the browser)', 'https://www.falstad.com/circuit/', task);
+
+export default [
+  mk({
+    id: 'ee-108',
+    code: 'ELEC 108',
+    track: 'ee',
+    after: ['ee-103', 'ee-105', 'math-026'],
+    title: 'RLC Circuits: Ringing and Resonance',
+    subtitle: 'A coil and a capacitor trade energy back and forth, like a spring and a mass',
+    digest: [
+      'A capacitor and a coil together oscillate: energy swings between the capacitor’s electric field and the coil’s magnetic field.',
+      'The natural frequency is f₀ = 1 / (2π√(LC)). Resistance damps the ringing, just as friction damps a spring.',
+      'Driven at f₀, a series RLC circuit has its smallest impedance and largest current: resonance. The quality factor Q = (1/R)√(L/C) says how sharp the peak is.',
+    ],
+    era: '1853 Kelvin predicts the ringing → 1859 Feddersen photographs it → 1890s Lodge tunes radio',
+    who: 'William Thomson (Lord Kelvin) & Berend Wilhelm Feddersen',
+    hook: 'The spark from a Leyden jar looks like one flash. In 1853 a young Glasgow professor claimed it is really a rapid back-and-forth. How could anyone check?',
+    story: [
+      'In 1853 William Thomson, later Lord Kelvin, worked out mathematically what happens when a charged Leyden jar discharges through a coil of wire. If the resistance is small enough, he showed, the current should not simply die away but swing back and forth, reversing many times, like a pendulum [1].',
+      'In 1859 Berend Wilhelm Feddersen in Leipzig photographed a spark in a fast-spinning mirror. The image was smeared out into a row of separate flashes: the spark really did oscillate, just as Thomson had predicted [2].',
+      'In the 1890s Oliver Lodge in Liverpool used matched coils and capacitors to tune a radio receiver to a transmitter, and patented "syntonic" tuning in 1897 [3]. Every radio, phone and Wi-Fi chip still picks its channel with a resonant circuit, and quartz crystals in watches resonate the same way mechanically.',
+    ],
+    takeaway: 'L and C make an electrical pendulum. Its natural frequency is 1/(2π√LC), and resistance sets how quickly the swinging dies.',
+    sources: [
+      ['Wikipedia: RLC circuit', W('RLC_circuit'), 'history: Kelvin 1853, Feddersen 1859'],
+      ['Wikipedia: Berend Wilhelm Feddersen', W('Berend_Wilhelm_Feddersen'), 'rotating-mirror photographs of spark oscillation'],
+      ['Wikipedia: Oliver Lodge', W('Oliver_Lodge'), 'syntonic tuning patent, 1897'],
+      ['Wikipedia: Q factor', W('Q_factor'), 'quality factor of resonators'],
+    ],
+    viz: 'rlc_ring',
+    vizTitle: 'An Electrical Pendulum',
+    vizHow: 'Charge the capacitor and let it go. Watch energy swing between the capacitor and the coil, and see resistance damp the swing. Then drive it and sweep the frequency through resonance.',
+    steps: [
+      ['Energy swaps', 'U = \\tfrac12 C v^2 + \\tfrac12 L i^2 = \\text{constant (if } R = 0)', 'When the capacitor is fully charged the current is zero. As it empties through the coil, the current builds; the coil then keeps it going and charges the capacitor the other way. Just like a mass on a spring (MATH 026).'],
+      ['Natural frequency', '\\omega_0 = \\frac{1}{\\sqrt{LC}} \\qquad f_0 = \\frac{1}{2\\pi\\sqrt{LC}}', 'The circuit obeys L q″ + R q′ + q/C = 0, the same differential equation as m x″ + c x′ + k x = 0. L plays mass, 1/C plays spring stiffness, R plays friction.'],
+      ['Resonance and Q', 'Z_{\\min} = R \\text{ at } f_0 \\qquad Q = \\frac{1}{R}\\sqrt{\\frac{L}{C}} \\qquad \\text{bandwidth} = \\frac{f_0}{Q}', 'At f₀ the coil’s and capacitor’s effects cancel and only R is left, so the current peaks. High Q means a tall, narrow peak: the circuit picks one station and ignores its neighbours.'],
+    ],
+    drills: [
+      ['Resonant frequency of L = 10 mH, C = 1 μF?', ['About 1.59 kHz', 'About 10 kHz', 'About 159 Hz', 'About 100 kHz'], 'f₀ = 1 / (2π√(LC)).', '√(10⁻² × 10⁻⁶) = 10⁻⁴.', '1 / (2π × 10⁻⁴) ≈ 1592 Hz.'],
+      ['If you quadruple C, the resonant frequency…', ['Halves', 'Doubles', 'Quarters', 'Stays the same'], 'f₀ ∝ 1/√C.', '√4 = 2.', 'It halves.'],
+      ['In the spring comparison, the coil’s inductance L plays the part of…', ['The mass', 'The spring stiffness', 'Friction', 'The driving force'], 'Which one resists changes in motion?', 'L resists changes in current.', 'Mass (inertia).'],
+    ],
+    boss: [
+      'Tuning an AM Radio',
+      'An AM radio’s tuning coil is 250 μH. What capacitance tunes it to a station at 1 MHz?',
+      ['About 100 pF', 'About 100 μF', 'About 1 nF', 'About 10 pF'],
+      'Rearrange f₀ = 1/(2π√LC) to C = 1 / ((2πf)² L).',
+      '(2π × 10⁶)² ≈ 3.95 × 10¹³. C = 1 / (3.95 × 10¹³ × 2.5 × 10⁻⁴) ≈ 1.0 × 10⁻¹⁰ F = 100 pF. Turning the tuning knob changes this capacitor.',
+    ],
+    read: [
+      ['wiki', 'RLC circuit', 'Natural frequency, damping, resonance and bandwidth.', 'An RLC circuit consists of a resistor, an inductor and a capacitor. It forms a harmonic oscillator for current and resonates in a manner similar to an LC circuit, with the resistor damping the oscillation.'],
+      ['book', 'phys2', 'Chapter 14, Inductance (sections 14.5–14.6)', 'LC oscillations and the RLC circuit compared with a mass on a spring.', 'Sections 14.5–14.6 show the energy exchange in an LC circuit and derive the damped oscillations of a series RLC circuit, with the mechanical analogy.'],
+    ],
+    labs: [
+      phet('circuit-construction-kit-ac', 'Circuit Construction Kit: AC', 'Build a capacitor and coil in a loop, charge the capacitor, and watch the current swing. Add a resistor and watch it die out.'),
+      falstad('Load Circuits ▸ Basics ▸ LRC circuit. Change the resistance until the ringing just stops (critical damping).'),
+    ],
+    quiz: [
+      ['How did Feddersen show in 1859 that a spark oscillates?', ['He photographed it in a fast-spinning mirror', 'He measured it with a galvanometer', 'He listened to it with a telephone', 'He used an oscilloscope'], 'The image smeared into separate flashes.'],
+      ['Who patented "syntonic" (tuned) radio in 1897?', ['Oliver Lodge', 'Guglielmo Marconi', 'Heinrich Hertz', 'Nikola Tesla'], 'A Liverpool physicist.'],
+    ],
+    gloss: [
+      ['Resonance', 'The large response of a system driven at its natural frequency.', ['resonant']],
+      ['Q factor', 'Quality factor: how sharp a resonance is; high Q means a narrow, tall peak.', ['quality factor']],
+      ['Damping', 'Loss of energy, for example in resistance, that makes oscillations die away.', ['damped']],
+    ],
+    events: [
+      [1853, 'Kelvin predicts oscillating discharge', 'A capacitor discharging through a coil swings back and forth.'],
+      [1859, 'Feddersen photographs the ringing', 'A spinning mirror splits a spark into flashes.'],
+    ],
+  }),
+
+  mk({
+    id: 'ee-109',
+    code: 'ELEC 109',
+    track: 'ee',
+    after: ['ee-108', 'num-009', 'phys-209'],
+    title: 'Phasors and Impedance: Steinmetz’s Shortcut',
+    subtitle: 'Turning sine waves into arrows, and calculus into complex arithmetic',
+    digest: [
+      'A sine wave at a fixed frequency is fully described by its size and its phase. Draw it as an arrow, a phasor, on the complex plane.',
+      'Impedance Z generalises resistance: Z_R = R, Z_L = jωL, Z_C = 1/(jωC). Then V = IZ, just like Ohm’s law, but with complex numbers.',
+      'All the DC methods (series, parallel, nodes, Thévenin) work for AC with impedances. Engineers write j for √−1, because i already means current.',
+    ],
+    era: '1886 Heaviside names impedance → 1893 Kennelly and Steinmetz bring complex numbers to AC',
+    who: 'Charles Proteus Steinmetz',
+    hook: 'In the 1880s, solving an AC circuit meant pages of trigonometry and differential equations. A 4-foot-tall immigrant replaced it with arithmetic.',
+    story: [
+      'Charles Proteus Steinmetz was born in Breslau in 1865 with a hunched back, fled Germany for his socialist writings, and arrived in New York in 1889 nearly penniless [1]. Working for General Electric in Schenectady, he became its leading engineer, nicknamed the "wizard of Schenectady".',
+      'Alternating current was spreading (PHYS 209), but every AC calculation meant solving differential equations full of sines and cosines. At the International Electrical Congress in Chicago in 1893, Steinmetz presented "Complex Quantities and Their Use in Electrical Engineering": represent each sine wave by a complex number, and the calculus turns into the arithmetic of complex numbers (NUM 009) [1][2]. Arthur Kennelly published a similar idea the same year [3].',
+      'The word "impedance" itself had been coined by Oliver Heaviside in 1886 [4]. Combined with Steinmetz’s method, it let engineers treat coils and capacitors like resistors. Power-system and electronics engineers have done AC analysis this way ever since.',
+    ],
+    takeaway: 'At one frequency, every sine wave is an arrow and every part is an impedance. Then AC circuits are solved with Ohm’s law and complex arithmetic.',
+    sources: [
+      ['Wikipedia: Charles Proteus Steinmetz', W('Charles_Proteus_Steinmetz'), 'life; 1893 paper on complex quantities'],
+      ['Wikipedia: Phasor', W('Phasor'), 'phasor method'],
+      ['Wikipedia: Arthur E. Kennelly', W('Arthur_E._Kennelly'), 'complex impedance, 1893'],
+      ['Wikipedia: Electrical impedance', W('Electrical_impedance'), 'Heaviside coined "impedance", 1886'],
+    ],
+    viz: 'phasor_spin',
+    vizTitle: 'Spinning Arrows',
+    vizHow: 'A phasor spins; its shadow on the vertical axis traces the sine wave. Add a coil or capacitor and watch the current arrow fall behind or run ahead of the voltage.',
+    steps: [
+      ['A sine wave is a spinning arrow', 'v(t) = V_m \\cos(\\omega t + \\phi) \\;\\longleftrightarrow\\; \\mathbf{V} = V_m \\angle \\phi', 'Picture an arrow of length V_m turning at ω radians per second. Its shadow on one axis is the sine wave. Since every wave in the circuit spins at the same ω, we only need the arrows’ lengths and angles.'],
+      ['Impedance of each part', 'Z_R = R \\qquad Z_L = j\\omega L \\qquad Z_C = \\frac{1}{j\\omega C} = -\\frac{j}{\\omega C}', 'Multiplying by j turns an arrow 90° anticlockwise. In a coil the voltage leads the current by 90°; in a capacitor it lags by 90°. Coils resist high frequencies more, capacitors less.'],
+      ['Ohm’s law with arrows', '\\mathbf{V} = \\mathbf{I}\\,Z \\qquad |Z| = \\sqrt{R^2 + X^2} \\qquad \\theta = \\tan^{-1}\\frac{X}{R}', 'Series impedances add; parallel ones combine like parallel resistors. The real part is resistance R, the imaginary part is reactance X.'],
+    ],
+    drills: [
+      ['Impedance of a 10 mH coil at ω = 1000 rad/s?', ['j10 Ω', '10 Ω', '−j10 Ω', 'j0.01 Ω'], 'Z_L = jωL.', '1000 × 0.01.', 'j10 Ω.'],
+      ['Impedance of a 100 μF capacitor at ω = 1000 rad/s?', ['−j10 Ω', 'j10 Ω', '−j0.1 Ω', '10 Ω'], 'Z_C = −j / (ωC).', '1 / (1000 × 10⁻⁴) = 10.', '−j10 Ω.'],
+      ['Magnitude of Z = 30 + j40 Ω?', ['50 Ω', '70 Ω', '10 Ω', '1200 Ω'], '|Z| = √(R² + X²).', '√(900 + 1600).', '50 Ω.'],
+    ],
+    boss: [
+      'Motor Current',
+      'A motor winding acts like R = 6 Ω in series with L = 21.2 mH on 230 V, 60 Hz. What current flows, and does it lag or lead the voltage?',
+      ['About 23 A, lagging by about 53°', 'About 38 A, in phase', 'About 23 A, leading by 53°', 'About 10 A, lagging by 90°'],
+      'X_L = 2πfL. Then |Z| and θ = tan⁻¹(X/R).',
+      'X_L = 2π × 60 × 0.0212 ≈ 8 Ω. |Z| = √(36 + 64) = 10 Ω, so I = 23 A. θ = tan⁻¹(8/6) ≈ 53°, current lagging, as in any coil. The power factor is cos 53° = 0.6 (PHYS 209).',
+    ],
+    read: [
+      ['wiki', 'Phasor', 'Phasor arithmetic, with animations of rotating arrows and their projections.', 'A phasor is a complex number representing a sinusoidal function whose amplitude, angular frequency and initial phase are time-invariant. Phasor analysis turns linear differential equations into algebraic ones.'],
+      ['link', 'All About Circuits', 'Lessons in Electric Circuits, Volume II: AC, chapter 2', 'https://www.allaboutcircuits.com/textbook/alternating-current/chpt-2/', 'Free chapter on complex numbers for AC: polar and rectangular forms, and why they work.', 'Chapter 2 introduces vectors and AC waveforms, then complex numbers in polar and rectangular form, and uses them to add AC voltages.'],
+    ],
+    labs: [
+      phet('circuit-construction-kit-ac', 'Circuit Construction Kit: AC', 'Build a coil and resistor in series on an AC source. Put voltage and current on the chart and see which peaks first.'),
+      desmos('Plot y = cos(x) and y = cos(x − 0.9). Then plot the point (cos 0.9, sin 0.9). How does the angle of the point relate to the shift?'),
+    ],
+    quiz: [
+      ['At which 1893 meeting did Steinmetz present complex numbers for AC?', ['The International Electrical Congress in Chicago', 'The Paris Exposition', 'The Royal Society', 'The Solvay Conference'], 'Held with the Chicago World’s Fair.'],
+      ['Who coined the word "impedance" in 1886?', ['Oliver Heaviside', 'Charles Steinmetz', 'James Clerk Maxwell', 'Nikola Tesla'], 'A self-taught English genius.'],
+    ],
+    gloss: [
+      ['Phasor', 'An arrow (complex number) standing for a sine wave’s size and phase.', ['phasors']],
+      ['Impedance', 'The AC version of resistance, a complex number Z = R + jX, in ohms.', ['Z']],
+      ['Reactance', 'The imaginary part of impedance, from coils (+) or capacitors (−).', ['X_L', 'X_C']],
+    ],
+    events: [
+      [1886, 'Heaviside names impedance', 'Opposition to alternating current gets a word.'],
+      [1893, 'Steinmetz’s complex quantities', 'AC calculations become complex arithmetic.'],
+    ],
+  }),
+
+  mk({
+    id: 'ee-110',
+    code: 'ELEC 110',
+    track: 'ee',
+    after: ['ee-109', 'math-008'],
+    title: 'Filters, Decibels and the Bode Plot',
+    subtitle: 'Letting some frequencies through and stopping others',
+    digest: [
+      'A filter passes some frequencies and blocks others. An RC low-pass passes slow signals and blocks fast ones; swap R and C for a high-pass.',
+      'Its cutoff is f_c = 1 / (2πRC). There the output is 1/√2 of the input, about 70.7%, which is −3 dB.',
+      'Gain in decibels: dB = 20 log₁₀(V_out / V_in). A Bode plot draws dB against log frequency; a simple RC filter rolls off at 20 dB per decade.',
+    ],
+    era: '1910s Campbell and Zobel’s wave filters → 1920s the decibel → 1938–40 Bode’s plots',
+    who: 'George Campbell & Hendrik Bode',
+    hook: 'How can one telephone wire carry several conversations at once without them mixing?',
+    story: [
+      'Around 1910 George Campbell at AT&T designed "wave filters" from coils and capacitors, so that one telephone line could carry several conversations on different frequencies, each picked out at the far end. Otto Zobel, also at AT&T, improved the designs in the 1920s [1].',
+      'Engineers needed a way to measure loss along long lines. In the 1920s the Bell System defined a "transmission unit" and, in 1928, renamed it the bel after Alexander Graham Bell. A tenth of a bel, the decibel, became the everyday unit [2]. Because it is a logarithm (MATH 008), gains and losses along a chain simply add.',
+      'In the late 1930s Hendrik Bode at Bell Labs drew a filter’s or amplifier’s gain in decibels against frequency on a logarithmic scale, and showed the curve could be sketched with straight-line pieces [3]. Bode plots are still the first thing an electronics engineer draws for an amplifier, an audio equaliser or a control system.',
+    ],
+    takeaway: 'Impedance depends on frequency, so circuits can sort signals by frequency. Measure the result in decibels and draw it on a Bode plot.',
+    sources: [
+      ['Wikipedia: Electronic filter', W('Electronic_filter'), 'history: Campbell and Zobel'],
+      ['Wikipedia: Decibel', W('Decibel'), 'transmission unit renamed bel, 1928'],
+      ['Wikipedia: Hendrik Wade Bode', W('Hendrik_Wade_Bode'), 'Bode plots'],
+      ['Wikipedia: Low-pass filter', W('Low-pass_filter'), 'RC filter and cutoff frequency'],
+    ],
+    viz: 'lowpass_bode',
+    vizTitle: 'A Low-Pass Filter',
+    vizHow: 'Feed a sine wave into an RC filter and sweep its frequency. The output shrinks above the cutoff, and the Bode plot is drawn point by point.',
+    steps: [
+      ['The voltage divider at AC', '\\frac{\\mathbf{V}_{out}}{\\mathbf{V}_{in}} = \\frac{Z_C}{R + Z_C} = \\frac{1}{1 + j\\omega RC}', 'At low frequency the capacitor’s impedance is huge, so nearly all the input appears across it. At high frequency it is nearly a short circuit, so almost nothing does.'],
+      ['Cutoff frequency', 'f_c = \\frac{1}{2\\pi RC} \\qquad \\left|\\frac{V_{out}}{V_{in}}\\right|_{f_c} = \\frac{1}{\\sqrt2} \\approx 0.707', 'At f_c the real and imaginary parts of the bottom are equal, so the size is 1/√2 and the output lags by 45°. Half the power gets through.'],
+      ['Decibels and the Bode plot', '\\text{gain (dB)} = 20 \\log_{10}\\left|\\frac{V_{out}}{V_{in}}\\right|', '0.707 is −3 dB. Well above f_c the gain falls by 20 dB every time the frequency goes up ten times (a decade). Two filters in a row: add their dB.'],
+    ],
+    drills: [
+      ['Cutoff of R = 1 kΩ, C = 100 nF?', ['About 1.59 kHz', 'About 10 kHz', 'About 159 Hz', 'About 100 Hz'], 'f_c = 1 / (2πRC).', 'RC = 10⁻⁴ s.', '1 / (2π × 10⁻⁴) ≈ 1592 Hz.'],
+      ['A voltage gain of 10 is how many dB?', ['20 dB', '10 dB', '1 dB', '100 dB'], '20 log₁₀(10).', 'log₁₀ 10 = 1.', '20 dB.'],
+      ['One decade above cutoff, an RC low-pass is down by about…', ['20 dB', '3 dB', '6 dB', '40 dB'], 'Roll-off is 20 dB per decade.', 'Plus the −3 dB, roughly.', 'About −20 dB (exactly −20.04 dB).'],
+    ],
+    boss: [
+      'Killing the 60 Hz Hum',
+      'A sensor signal varies slowly (below 5 Hz) but picks up 60 Hz hum from the mains. You use an RC low-pass with f_c = 6 Hz. Roughly how much is the hum reduced?',
+      ['About 20 dB, to about a tenth', 'About 3 dB', 'About 60 dB', 'Not at all'],
+      '60 Hz is one decade above 6 Hz.',
+      'One decade above cutoff the gain is about −20 dB, so the hum drops to about 1/10. For more, put two filters in a row (−40 dB per decade) or use a notch filter tuned to 60 Hz.',
+    ],
+    read: [
+      ['wiki', 'Bode plot', 'How to sketch magnitude and phase plots with straight-line pieces.', 'A Bode plot is a graph of the frequency response of a system: a magnitude plot in decibels and a phase plot, both against frequency on a logarithmic axis.'],
+      ['wiki', 'Decibel', 'Why logarithmic units are used, and power vs voltage ratios.', 'The decibel expresses the ratio of two values of a power or root-power quantity on a logarithmic scale. For voltage ratios the gain in dB is 20 log₁₀ of the ratio.'],
+    ],
+    labs: [
+      falstad('Load Circuits ▸ Passive filters ▸ Low-pass RC. Sweep the input frequency and find where the output is 70.7% of the input.'),
+      online('Szynalski online tone generator', 'https://www.szynalski.com/tone-generator/', 'Play tones from 50 Hz to 15,000 Hz on your phone speaker. Where does the sound get weak? Small speakers are high-pass filters.'),
+    ],
+    quiz: [
+      ['In which year was the Bell System’s transmission unit renamed the bel?', ['1928', '1876', '1947', '1910'], 'After Alexander Graham Bell.'],
+      ['Who drew gain in decibels against log frequency with straight-line sketches?', ['Hendrik Bode', 'George Campbell', 'Harry Nyquist', 'Otto Zobel'], 'A Bell Labs engineer.'],
+    ],
+    gloss: [
+      ['Filter', 'A circuit that passes some frequencies and blocks others.', ['low-pass', 'high-pass', 'band-pass']],
+      ['Cutoff frequency', 'Where a filter’s output falls to 70.7% (−3 dB) of the input.', ['corner frequency', 'f_c']],
+      ['Decibel', 'A logarithmic unit of gain: 20 log₁₀ of a voltage ratio.', ['dB']],
+      ['Bode plot', 'Gain in dB (and phase) against frequency on a log scale.'],
+    ],
+    events: [
+      [1915, 'Campbell’s wave filter', 'One wire carries many telephone calls.', true],
+      [1928, 'The bel', 'Bell System loss unit named after Bell.'],
+    ],
+  }),
+
+  mk({
+    id: 'ee-111',
+    code: 'ELEC 111',
+    track: 'ee',
+    after: ['ee-105', 'math-020', 'math-025'],
+    title: 'Maxwell’s Equations: Light Is Electromagnetism',
+    subtitle: 'Four equations, one missing term, and waves that travel at the speed of light',
+    digest: [
+      'Maxwell’s four equations: charges make electric fields (Gauss), there are no magnetic charges, changing magnetic fields make electric fields (Faraday), and currents and changing electric fields make magnetic fields (Ampère–Maxwell).',
+      'Maxwell added the "displacement current" term. With it, a changing E makes B and a changing B makes E: a self-sustaining wave.',
+      'The wave speed is c = 1/√(μ₀ε₀) ≈ 3.00 × 10⁸ m/s, the speed of light. Wavelength λ = c / f.',
+    ],
+    era: '1861–62 Physical Lines of Force → 1865 Dynamical Theory → 1884 Heaviside’s four equations → 1887 Hertz',
+    who: 'James Clerk Maxwell',
+    hook: 'In 1862 a Scottish physicist worked out how fast his imagined electric waves would travel. The answer was a number everyone already knew.',
+    story: [
+      'James Clerk Maxwell set out to put Faraday’s lines of force (ELEC 102) into mathematics. In "On Physical Lines of Force" (1861–62) he noticed that Ampère’s law broke down for a charging capacitor, where no current crosses the gap. He added a term for a changing electric field, the displacement current [1].',
+      'With it, the equations predicted waves of electric and magnetic field moving through empty space. Their speed came out of two measured electrical constants and matched the measured speed of light. "We can scarcely avoid the inference that light consists in the transverse undulations of the same medium," he wrote [1]. His full theory followed in "A Dynamical Theory of the Electromagnetic Field" in 1865 [2].',
+      'Maxwell wrote some twenty equations. In 1884 Oliver Heaviside used vectors to boil them down to the four we use today [3]. In 1887 Heinrich Hertz in Karlsruhe made and detected these waves with a spark gap and a loop of wire, proving Maxwell right eight years after his death [4].',
+    ],
+    takeaway: 'Electricity, magnetism and light are one thing. Changing fields make each other, and the result is a wave at the speed of light.',
+    sources: [
+      ['Wikipedia: On Physical Lines of Force', W('On_Physical_Lines_of_Force'), 'displacement current; light as electromagnetic'],
+      ['Wikipedia: A Dynamical Theory of the Electromagnetic Field', W('A_Dynamical_Theory_of_the_Electromagnetic_Field'), '1865'],
+      ['Wikipedia: Oliver Heaviside', W('Oliver_Heaviside'), 'vector form of Maxwell’s equations'],
+      ['Wikipedia: Heinrich Hertz', W('Heinrich_Hertz'), 'radio waves, 1886–89'],
+      ['Wikipedia: Maxwell’s equations', W('Maxwell%27s_equations'), 'the four equations'],
+    ],
+    viz: 'em_wave',
+    vizTitle: 'An Electromagnetic Wave',
+    vizHow: 'Watch the electric field (one colour) and magnetic field (the other) rise and fall at right angles while the wave moves. Change the frequency and see the wavelength shrink.',
+    steps: [
+      ['The four equations (in words)', '\\oint \\mathbf{E}\\cdot d\\mathbf{A} = \\frac{Q}{\\varepsilon_0} \\quad \\oint \\mathbf{B}\\cdot d\\mathbf{A} = 0 \\quad \\oint \\mathbf{E}\\cdot d\\boldsymbol{\\ell} = -\\frac{d\\Phi_B}{dt} \\quad \\oint \\mathbf{B}\\cdot d\\boldsymbol{\\ell} = \\mu_0 I + \\mu_0\\varepsilon_0 \\frac{d\\Phi_E}{dt}', '1: field lines start on + charges and end on − charges. 2: magnetic field lines never end. 3: a changing magnetic flux makes a circulating E (Faraday, PHYS 208). 4: a current or a changing electric flux makes a circulating B.'],
+      ['The speed of light', 'c = \\frac{1}{\\sqrt{\\mu_0 \\varepsilon_0}} = \\frac{1}{\\sqrt{(4\\pi\\times10^{-7})(8.854\\times10^{-12})}} \\approx 3.00\\times10^{8}\\ \\text{m/s}', 'Two constants from experiments with coils and capacitors give the speed of light. That is how Maxwell knew light was electromagnetic.'],
+      ['Waves of every size', '\\lambda = \\frac{c}{f} \\qquad E = c\\,B', 'AM radio at 1 MHz: λ = 300 m. FM at 100 MHz: 3 m. Wi-Fi at 2.4 GHz: 12.5 cm. Visible light: about 500 nm. Same equations, different frequency.'],
+    ],
+    drills: [
+      ['Wavelength of a 100 MHz FM signal?', ['3 m', '30 m', '0.3 m', '300 m'], 'λ = c / f.', '3 × 10⁸ / 10⁸.', '3 m.'],
+      ['What did Maxwell add to Ampère’s law?', ['The displacement current, from a changing electric field', 'Magnetic charges', 'The speed of sound', 'Resistance'], 'Think of a charging capacitor.', 'No real current crosses the gap.', 'A term for the changing electric flux.'],
+      ['Who first made and detected radio waves, in 1887?', ['Heinrich Hertz', 'Guglielmo Marconi', 'James Clerk Maxwell', 'Oliver Heaviside'], 'The unit of frequency is named after him.', 'Karlsruhe.', 'Hertz.'],
+    ],
+    boss: [
+      'Microwave Oven Hot Spots',
+      'A microwave oven runs at 2.45 GHz. The standing wave inside has hot spots half a wavelength apart. How far apart are they? (You can check with a plate of cheese and the turntable removed.)',
+      ['About 6 cm', 'About 12 cm', 'About 1 m', 'About 6 mm'],
+      'λ = c / f, then halve it.',
+      'λ = 3 × 10⁸ / 2.45 × 10⁹ ≈ 0.122 m, so hot spots are about 6.1 cm apart. Measuring them and using f gives c, the speed of light, in your kitchen.',
+    ],
+    read: [
+      ['wiki', 'Maxwell’s equations', 'Each equation in words, its history, and how it predicts light.', 'Maxwell’s equations are a set of coupled partial differential equations that, together with the Lorentz force law, form the foundation of classical electromagnetism, optics and electric circuits.'],
+      ['book', 'phys2', 'Chapter 16, Electromagnetic Waves', 'Displacement current, the wave equation and the electromagnetic spectrum.', 'Chapter 16 adds Maxwell’s displacement current, shows that the equations predict waves travelling at c, and surveys the spectrum from radio to gamma rays.'],
+    ],
+    labs: [
+      phet('radio-waves', 'Radio Waves & Electromagnetic Fields', 'Wiggle the electron in the transmitter and watch the field spread out to the receiver.'),
+      home('Take the turntable out of a microwave, put in a plate covered with grated cheese or chocolate, and heat for 15–20 seconds. Measure the distance between melted spots. Double it and multiply by 2.45 × 10⁹.'),
+    ],
+    quiz: [
+      ['Who reduced Maxwell’s many equations to the four vector equations used today?', ['Oliver Heaviside', 'Heinrich Hertz', 'Albert Einstein', 'Michael Faraday'], '1884.'],
+      ['What did Maxwell calculate for the speed of his electromagnetic waves?', ['The measured speed of light', 'The speed of sound', 'Infinite speed', 'Half the speed of light'], 'From two electrical constants.'],
+    ],
+    gloss: [
+      ['Maxwell’s equations', 'Four equations describing how charges and currents create electric and magnetic fields, and how changing fields create each other.'],
+      ['Displacement current', 'Maxwell’s term for a changing electric field, which makes a magnetic field just as a current does.'],
+      ['Electromagnetic wave', 'Linked electric and magnetic fields travelling through space at the speed of light: radio, light, X-rays.', ['electromagnetic waves', 'radio waves']],
+    ],
+    events: [
+      [1862, 'Maxwell: light is electromagnetic', 'His waves travel at the speed of light.'],
+      [1887, 'Hertz makes radio waves', 'Maxwell’s prediction confirmed in Karlsruhe.'],
+    ],
+  }),
+
+  mk({
+    id: 'ee-112',
+    code: 'ELEC 112',
+    track: 'ee',
+    after: ['ee-111', 'ee-108'],
+    title: 'Radio and Antennas: From Hertz to Marconi',
+    subtitle: 'How a wire launches a wave, and why signals fade with distance',
+    digest: [
+      'An antenna turns current into electromagnetic waves (and back). A half-wave dipole, two rods each λ/4 long, is the classic design.',
+      'Spreading over a sphere, power density falls as S = P / (4πr²): double the distance, a quarter of the signal.',
+      'Antennas and cables are matched in impedance (usually 50 Ω or 75 Ω) so the power goes into the wave instead of bouncing back.',
+    ],
+    era: '1887 Hertz → 1895 Marconi in Bologna → 1901 across the Atlantic → today’s phone antennas',
+    who: 'Guglielmo Marconi',
+    hook: 'In 1901 experts said radio waves travel in straight lines, so they could never follow the curve of the Earth across the Atlantic. A 27-year-old tried anyway.',
+    story: [
+      'Heinrich Hertz thought his waves had no practical use [1]. Guglielmo Marconi, a young Italian, disagreed. From 1895 at his family’s estate near Bologna he made longer antennas and connected one side to the ground, and his signals reached first across the garden, then over a hill [2].',
+      'On 12 December 1901 Marconi, at Signal Hill in Newfoundland, heard the Morse letter "S" sent from Poldhu in Cornwall, about 3,500 km away, using an antenna wire held up by a kite [2]. Waves bending around the Earth was a surprise; we now know the ionosphere, a charged layer of the upper atmosphere, reflects some radio waves back down [3]. Marconi shared the 1909 Nobel Prize in Physics with Karl Ferdinand Braun [2].',
+      'Today the antenna inside your phone is a few centimetres of copper pattern, tuned to waves a few times its length. Antenna and transmission-line design is a full UM ECE course (BECE 321) [4].',
+    ],
+    takeaway: 'An antenna sized to the wavelength launches waves efficiently. The signal spreads out and weakens with the square of distance.',
+    sources: [
+      ['Wikipedia: Heinrich Hertz', W('Heinrich_Hertz'), '"of no use whatsoever"'],
+      ['Wikipedia: Guglielmo Marconi', W('Guglielmo_Marconi'), 'Bologna 1895; transatlantic 1901; Nobel 1909'],
+      ['Wikipedia: Ionosphere', W('Ionosphere'), 'reflection of radio waves'],
+      ['Wikipedia: Dipole antenna', W('Dipole_antenna'), 'half-wave dipole'],
+      ['Wikipedia: Inverse-square law', W('Inverse-square_law'), 'spreading over a sphere'],
+    ],
+    viz: 'dipole_antenna',
+    vizTitle: 'A Dipole Antenna',
+    vizHow: 'Current sloshes up and down the antenna and launches rings of field. Move the receiver further away and watch the received power fall with the square of distance.',
+    steps: [
+      ['The half-wave dipole', 'L \\approx \\frac{\\lambda}{2} = \\frac{c}{2f}', 'Two rods fed in the middle. At this length the current resonates on the antenna like a plucked string, so it radiates well. Real ones are about 5% shorter.'],
+      ['Spreading out', 'S = \\frac{P}{4\\pi r^2}', 'S is power per square metre. A 1 kW station gives about 80 μW/m² at 1 km, and a quarter of that at 2 km. Directional antennas (like a TV dish) focus the power and multiply it by their gain.'],
+      ['Matching', '\\Gamma = \\frac{Z_L - Z_0}{Z_L + Z_0}', 'A cable has a characteristic impedance Z₀ (50 Ω for radio, 75 Ω for TV). If the antenna’s impedance Z_L differs, part of the wave reflects back. Γ = 0 means perfectly matched, like maximum power transfer in ELEC 106.'],
+    ],
+    drills: [
+      ['Length of a half-wave dipole for 100 MHz FM?', ['About 1.5 m', 'About 3 m', 'About 15 cm', 'About 150 m'], 'L = λ/2 and λ = c/f.', 'λ = 3 m.', '1.5 m (a little less in practice).'],
+      ['Move twice as far from a transmitter. The power density becomes…', ['A quarter', 'Half', 'The same', 'Double'], 'S ∝ 1 / r².', '2² = 4.', 'A quarter.'],
+      ['A 75 Ω antenna on a 75 Ω cable. Reflection coefficient?', ['0', '1', '−1', '0.5'], 'Γ = (Z_L − Z₀)/(Z_L + Z₀).', '(75 − 75) / 150.', '0: perfectly matched.'],
+    ],
+    boss: [
+      'Wrong Cable',
+      'A 50 Ω radio is connected to a 75 Ω antenna through 50 Ω cable. What fraction of the power is reflected (it is Γ²)?',
+      ['4%', '20%', '50%', '0%'],
+      'Γ = (75 − 50)/(75 + 50).',
+      'Γ = 25/125 = 0.2, so Γ² = 0.04: 4% is reflected and 96% goes out. A small mismatch is often acceptable; a broken cable (Γ near 1) is not.',
+    ],
+    read: [
+      ['wiki', 'Antenna (radio)', 'How antennas radiate, gain and directivity, and common types.', 'An antenna is the interface between radio waves propagating through space and electric currents moving in metal conductors. Its size is related to the wavelength it is designed for.'],
+      ['wiki', 'Guglielmo Marconi', 'Marconi’s experiments, the 1901 transatlantic test and what followed.', 'Marconi developed long-distance radio transmission, and on 12 December 1901 reported receiving signals sent across the Atlantic from Poldhu in Cornwall to Signal Hill in Newfoundland.'],
+    ],
+    labs: [
+      phet('radio-waves', 'Radio Waves & Electromagnetic Fields', 'Set the transmitter to oscillate and watch how the field reaches the receiving antenna. Try the "curve" and "full field" views.'),
+      home('Find an old FM radio with a telescopic antenna. Tune to a weak station and change the antenna length. Is reception best near 75 cm (λ/4 at 100 MHz)?'),
+    ],
+    quiz: [
+      ['Where did Marconi receive the first transatlantic radio signal in 1901?', ['Signal Hill, Newfoundland', 'Bologna, Italy', 'Poldhu, Cornwall', 'New York'], 'Sent from Poldhu in Cornwall.'],
+      ['With whom did Marconi share the 1909 Nobel Prize in Physics?', ['Karl Ferdinand Braun', 'Heinrich Hertz', 'Nikola Tesla', 'Oliver Lodge'], 'Inventor of the cathode-ray tube (ELEC 107).'],
+    ],
+    gloss: [
+      ['Antenna', 'A conductor that turns currents into electromagnetic waves and back.', ['antennas', 'aerial']],
+      ['Dipole', 'An antenna of two rods fed in the middle, usually half a wavelength long.', ['half-wave dipole']],
+      ['Characteristic impedance', 'The ratio of voltage to current for a wave on a cable, such as 50 Ω or 75 Ω.', ['Z₀']],
+    ],
+    events: [
+      [1895, 'Marconi’s first long-range signals', 'Over a hill near Bologna.'],
+      [1901, 'Radio crosses the Atlantic', 'Poldhu to Signal Hill.'],
+    ],
+  }),
+
+  mk({
+    id: 'ee-113',
+    code: 'ELEC 113',
+    track: 'ee',
+    after: ['math-025', 'ee-109'],
+    title: 'The Laplace Transform: Heaviside’s Algebra of Circuits',
+    subtitle: 'Turning differential equations into algebra with s',
+    digest: [
+      'The Laplace transform F(s) = ∫₀^∞ f(t) e^(−st) dt changes a function of time into a function of a new variable s.',
+      'Derivatives become multiplication: f′(t) → sF(s) − f(0). So a circuit’s differential equation becomes an algebra problem.',
+      'In the s-domain a resistor is R, a coil sL and a capacitor 1/(sC). A transfer function H(s) = output / input, and its poles tell how the circuit behaves.',
+    ],
+    era: '1782–1812 Laplace’s integral → 1880s–93 Heaviside’s operators → 1916 Bromwich → 1937 Doetsch',
+    who: 'Oliver Heaviside',
+    hook: '"Shall I refuse my dinner because I do not fully understand the process of digestion?" Heaviside used a method that worked, long before anyone could prove why.',
+    story: [
+      'Pierre-Simon Laplace used integrals of this kind in his work on probability around 1782–1812, but not for circuits [1]. Oliver Heaviside, a self-taught English telegraph engineer, needed to solve the equations for signals on long telegraph cables. In the 1880s and 1890s he simply replaced d/dt with a letter p and did algebra with it, getting the right answers [2].',
+      'Mathematicians were scandalised by these "operational" methods, which lacked proof. Heaviside answered with the line about his dinner [2]. In 1916 Thomas Bromwich showed why the method works, and in the 1920s and 1930s John Carson, Balthasar van der Pol and Gustav Doetsch rebuilt it on Laplace’s integral [1][3].',
+      'Today the Laplace transform is the standard tool for circuits, control systems and signals. UM puts it in Advanced Engineering Mathematics for ECE (BECE 221), and Feedback and Control Systems (BECE 413) runs on it.',
+    ],
+    takeaway: 'The Laplace transform turns calculus into algebra. Circuits in the s-domain are solved like resistor circuits, with sL and 1/(sC).',
+    sources: [
+      ['Wikipedia: Laplace transform', W('Laplace_transform'), 'history: Laplace, Bromwich, Doetsch'],
+      ['Wikipedia: Operational calculus', W('Operational_calculus'), 'Heaviside’s method and the dinner quotation'],
+      ['Wikipedia: Oliver Heaviside', W('Oliver_Heaviside'), 'telegraph engineer, operator methods'],
+    ],
+    viz: 's_plane',
+    vizTitle: 'Poles on the s-Plane',
+    vizHow: 'Drag a pole around the s-plane and watch the circuit’s response in time: left means it dies away, right means it grows, up and down mean it oscillates.',
+    steps: [
+      ['The transform', 'F(s) = \\int_0^{\\infty} f(t)\\,e^{-st}\\,dt \\qquad \\mathcal{L}\\{1\\} = \\frac1s \\qquad \\mathcal{L}\\{e^{-at}\\} = \\frac{1}{s+a}', 'Multiply by a decaying exponential and integrate. A table of pairs does most of the work, so you rarely integrate by hand.'],
+      ['Derivatives become multiplication', '\\mathcal{L}\\{f\\,\'\\} = sF(s) - f(0)', 'So L di/dt becomes sL I(s) (with zero starting current) and the coil is just an impedance sL. A capacitor becomes 1/(sC). Then use Ohm’s law, voltage dividers and nodes as in DC.'],
+      ['Transfer functions and poles', 'H(s) = \\frac{V_{out}(s)}{V_{in}(s)} \\qquad \\text{RC low-pass: } H(s) = \\frac{1}{1 + sRC}', 'A pole is where the bottom is zero: here s = −1/RC. A real negative pole means e^(−t/RC) decay. Complex poles mean ringing (ELEC 108). A pole on the right half means the output grows without limit: the circuit is unstable.'],
+    ],
+    drills: [
+      ['Laplace transform of e^(−3t)?', ['1 / (s + 3)', '1 / (s − 3)', '3 / s', 's + 3'], 'ℒ{e^(−at)} = 1/(s + a).', 'a = 3.', '1/(s + 3).'],
+      ['In the s-domain a 2 H coil is…', ['2s Ω', '2/s Ω', '1/(2s) Ω', '2 Ω'], 'Z_L = sL.', 'L = 2.', '2s.'],
+      ['Pole of H(s) = 1/(1 + 0.01s)?', ['s = −100', 's = 100', 's = −0.01', 's = 0'], 'Set the bottom to zero.', '1 + 0.01s = 0.', 's = −100, so the response decays as e^(−100t).'],
+    ],
+    boss: [
+      'Is It Stable?',
+      'A circuit has H(s) = 1 / (s² + 2s + 5). Find its poles. Will its response die out, and does it ring?',
+      ['s = −1 ± 2j: it dies out and rings at 2 rad/s', 's = 1 ± 2j: it grows', 's = −1 and −5: no ringing', 's = ±√5 j: rings forever'],
+      'Solve s² + 2s + 5 = 0 with the quadratic formula (MATH 006).',
+      's = (−2 ± √(4 − 20))/2 = −1 ± 2j. The real part −1 means a decay like e^(−t); the imaginary part 2 means oscillation at 2 rad/s. Stable, and it rings.',
+    ],
+    read: [
+      ['wiki', 'Laplace transform', 'Definition, the table of common pairs and its use for circuits.', 'The Laplace transform is an integral transform that converts a function of a real variable, usually time, to a function of a complex variable s. It turns linear differential equations into algebraic equations.'],
+      ['book', 'calc3', 'Section on second-order differential equations', 'A refresher on the differential equations the Laplace transform solves.', 'The chapter on second-order differential equations solves equations such as those for springs and RLC circuits by characteristic equations, the same roots that appear as poles.'],
+    ],
+    labs: [
+      online('Wolfram|Alpha', 'https://www.wolframalpha.com/', 'Type "Laplace transform of t*exp(-2t)" and then "inverse Laplace transform of 1/(s^2+2s+5)". Compare with the boss problem.'),
+      falstad('Build an RC low-pass, apply a step input, and check that the output reaches 63% after RC seconds, matching the pole at −1/RC.'),
+    ],
+    quiz: [
+      ['What did Heaviside replace d/dt with?', ['A letter p he did algebra with', 'A table of logarithms', 'A drawing', 'A battery'], 'His operational calculus.'],
+      ['Who first showed rigorously why Heaviside’s method works, in 1916?', ['Thomas Bromwich', 'Pierre-Simon Laplace', 'Joseph Fourier', 'James Clerk Maxwell'], 'A Cambridge mathematician.'],
+    ],
+    gloss: [
+      ['Laplace transform', 'An integral that turns a function of time into a function of s, making differential equations algebraic.'],
+      ['Transfer function', 'Output divided by input in the s-domain, H(s).'],
+      ['Pole', 'A value of s where a transfer function becomes infinite; it sets how the response behaves in time.', ['poles']],
+    ],
+    events: [
+      [1893, 'Heaviside’s operational calculus', 'Derivatives handled as algebra.', true],
+      [1916, 'Bromwich justifies it', 'Heaviside’s method put on firm ground.'],
+    ],
+  }),
+
+  mk({
+    id: 'ee-114',
+    code: 'ELEC 114',
+    track: 'ee',
+    after: ['math-019', 'math-102', 'ee-110'],
+    title: 'Fourier: Every Signal Is a Sum of Sines',
+    subtitle: 'Harmonics, spectra, and how a square wave is built from smooth waves',
+    digest: [
+      'Fourier: any repeating signal is a sum of sine waves at its basic frequency and whole-number multiples of it, the harmonics.',
+      'A square wave = (4/π)[sin ωt + (1/3) sin 3ωt + (1/5) sin 5ωt + …]: only odd harmonics, shrinking as 1/n.',
+      'The spectrum shows how much of each frequency a signal has. Filters (ELEC 110) work on the spectrum: a low-pass trims the high harmonics.',
+    ],
+    era: '1807 Fourier’s heat memoir → 1822 The Analytical Theory of Heat → 1899 Gibbs → 1965 the FFT',
+    who: 'Joseph Fourier',
+    hook: 'In 1807 a governor of an Egyptian expedition told Paris’s top mathematicians that a jagged corner could be built from perfectly smooth waves. They did not believe him.',
+    story: [
+      'Joseph Fourier had served on Napoleon’s expedition to Egypt and was prefect of Isère when, in 1807, he sent the Paris Academy a memoir on how heat flows through solids. His key claim was that any temperature pattern could be written as a sum of sine and cosine waves [1]. Lagrange and Laplace objected that a sum of smooth curves could not make a sharp corner, and publication was held up; his book The Analytical Theory of Heat finally appeared in 1822 [1].',
+      'Fourier was essentially right. In 1848 Henry Wilbraham, and in 1899 Josiah Willard Gibbs, explained the one catch: near a jump the sum overshoots by about 9% however many terms you add, now called the Gibbs phenomenon [2].',
+      'In 1965 James Cooley and John Tukey published the fast Fourier transform, a quick way to compute a spectrum, which made Fourier analysis practical in every phone, radio and audio device [3]. Signals, Spectra and Signal Processing (BECE 313) is built on these ideas.',
+    ],
+    takeaway: 'Any repeating wave is a stack of sines. Seeing a signal as its spectrum, frequency by frequency, is the central idea of signal processing.',
+    sources: [
+      ['Wikipedia: Joseph Fourier', W('Joseph_Fourier'), '1807 memoir; 1822 book'],
+      ['Wikipedia: Gibbs phenomenon', W('Gibbs_phenomenon'), 'Wilbraham 1848, Gibbs 1899'],
+      ['Wikipedia: Cooley–Tukey FFT algorithm', W('Cooley%E2%80%93Tukey_FFT_algorithm'), '1965'],
+      ['Wikipedia: Fourier series', W('Fourier_series'), 'square-wave series'],
+    ],
+    viz: 'fourier_square',
+    vizTitle: 'Building a Square Wave',
+    vizHow: 'Add harmonics one at a time and watch smooth waves stack into a square wave. The bars below show the spectrum.',
+    steps: [
+      ['Fourier series', 'f(t) = a_0 + \\sum_{n=1}^{\\infty} \\bigl(a_n \\cos n\\omega t + b_n \\sin n\\omega t\\bigr)', 'ω is the basic (fundamental) frequency. The coefficients a_n and b_n say how much of each harmonic there is; they are found with integrals (MATH 102).'],
+      ['The square wave', 'f(t) = \\frac{4}{\\pi}\\left(\\sin\\omega t + \\frac{\\sin 3\\omega t}{3} + \\frac{\\sin 5\\omega t}{5} + \\cdots\\right)', 'Only odd harmonics, each smaller in proportion to 1/n. The more you add, the sharper the corners, though about 9% overshoot always stays at the jumps.'],
+      ['The spectrum', '\\text{harmonic } n: \\quad f_n = n f_1 \\qquad \\text{size} = \\frac{4}{n\\pi}', 'Plot the sizes against frequency and you have the spectrum. A 1 kHz square wave has parts at 1, 3, 5, 7 kHz… This is why fast square waves on a circuit board can cause radio interference far above their own frequency.'],
+    ],
+    drills: [
+      ['A 50 Hz square wave has its third harmonic at…', ['150 Hz', '53 Hz', '16.7 Hz', '100 Hz'], 'f_n = n f₁.', '3 × 50.', '150 Hz.'],
+      ['Compared with the fundamental, the 5th harmonic of a square wave is…', ['1/5 as big', '5 times as big', 'The same size', '1/25 as big'], 'Sizes go as 1/n.', 'n = 5.', 'One fifth.'],
+      ['Which harmonics does a square wave contain?', ['Only odd ones', 'Only even ones', 'All of them', 'None'], 'Look at the series.', 'sin ωt, sin 3ωt, sin 5ωt…', 'Only odd.'],
+    ],
+    boss: [
+      'Square Wave Through a Filter',
+      'A 1 kHz square wave goes through an RC low-pass with cutoff 2 kHz. Roughly what happens to the 1 kHz part and to the 9 kHz harmonic?',
+      ['1 kHz passes almost fully (about 0.9); 9 kHz drops to about 0.2 of its size', 'Both pass unchanged', 'Both are removed', '1 kHz is removed, 9 kHz passes'],
+      'Gain = 1/√(1 + (f/f_c)²).',
+      'At 1 kHz: 1/√1.25 ≈ 0.89. At 9 kHz: 1/√(1 + 20.25) ≈ 0.22. The high harmonics are trimmed, so the square wave comes out with rounded corners.',
+    ],
+    read: [
+      ['wiki', 'Fourier series', 'How the coefficients are found, with animations of square and sawtooth waves.', 'A Fourier series is an expansion of a periodic function into a sum of trigonometric functions. The square wave contains only odd harmonics with amplitudes proportional to 1/n.'],
+      ['link', '3Blue1Brown', 'But what is a Fourier series? From heat flow to drawing with circles', 'https://www.3blue1brown.com/lessons/fourier-series', 'A beautifully animated explanation of Fourier series as spinning circles.', 'The lesson starts from Fourier’s heat problem and builds the series from rotating vectors, showing how any closed drawing can be made from circles turning at whole-number speeds.'],
+    ],
+    labs: [
+      phet('fourier-making-waves', 'Fourier: Making Waves', 'Match the target square wave by setting the sizes of the first five harmonics.'),
+      desmos('Plot y = (4/π)(sin x + sin(3x)/3 + sin(5x)/5) and add more terms. Watch the overshoot at the jumps stay about the same.'),
+    ],
+    quiz: [
+      ['Fourier’s idea came from studying…', ['How heat flows through solids', 'Planetary orbits', 'Radio waves', 'Sound in pipes'], 'His 1807 memoir and 1822 book.'],
+      ['Who published the fast Fourier transform in 1965?', ['Cooley and Tukey', 'Gibbs and Wilbraham', 'Nyquist and Shannon', 'Laplace and Lagrange'], 'It made spectra quick to compute.'],
+    ],
+    gloss: [
+      ['Fourier series', 'A sum of sine and cosine waves that adds up to a repeating signal.'],
+      ['Harmonic', 'A wave at a whole-number multiple of the basic frequency.', ['harmonics', 'fundamental']],
+      ['Spectrum', 'How much of each frequency a signal contains.', ['frequency spectrum']],
+    ],
+    events: [
+      [1822, 'Fourier’s Analytical Theory of Heat', 'Any pattern is a sum of waves.'],
+      [1965, 'The fast Fourier transform', 'Cooley and Tukey make spectra fast to compute.'],
+    ],
+  }),
+];

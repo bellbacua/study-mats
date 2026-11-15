@@ -37,11 +37,12 @@ export const SUBJECTS = {
   ai: 'AI',
   sec: 'Systems & Security',
   gfx: 'Graphics',
+  ee: 'Electronics',
   start: 'Start here',
 };
 
 // Course names for every program, so a borrowed class still shows its tags.
-export const UM_COURSES = { ...UM_ONLY, ...PROGRAM_DATA.cs.courses };
+export const UM_COURSES = { ...UM_ONLY, ...PROGRAM_DATA.cs.courses, ...PROGRAM_DATA.mece.courses };
 
 const byId = Object.fromEntries(
   [...CORE_LESSONS, ...ORIGIN_LESSONS, ...PHYSICS_LESSONS, LANGUAGE_LESSON, ...UM_LESSONS].map((l) => [l.id, l])
@@ -56,7 +57,8 @@ const lessonsOf = (prog) =>
       // Programming analogies (csBridge) were written for a CS graduate; the
       // course now assumes no background, so they are dropped here.
       const { csBridge: _cs, ...lesson } = byId[id];
-      const um = prog.id === 'mate' ? lesson.um || prog.tags[id] || [] : prog.tags[id] || [];
+      // MatE (and the combined program) keep each class's own UM codes and add the program's.
+      const um = prog.id === 'mate' ? lesson.um || prog.tags[id] || [] : prog.keepUm ? [...new Set([...(lesson.um || []), ...(prog.tags[id] || [])])] : prog.tags[id] || [];
       return { ...lesson, um, termId: `week-${w + 1}`, day: DAYS[ids.length][d] };
     })
   );
@@ -84,7 +86,10 @@ export const READINGS = { ...LESSON_READINGS, ...ORIGIN_READINGS, ...PHYSICS_REA
 const IN_CORE = new Set(LESSONS.map((l) => l.id));
 const SIDES_HERE = SIDES.filter((t) => !t.classes.length || t.classes.some((c) => !IN_CORE.has(c.id)));
 export { TRACKS, YEAR_ENDS, SIDES_HERE as SIDES, SIDES_LATER };
-const ALL_TRACKS = Object.values(PROGRAM_DATA).flatMap((p) => p.tracks.map((t) => ({ ...t, program: p.id })));
+// A track listed by several programs (the Materials tracks) appears once, as the active program's if it has it.
+const ALL_TRACKS = [PROGRAM, ...Object.values(PROGRAM_DATA).filter((p) => p !== PROGRAM)]
+  .flatMap((p) => p.tracks.map((t) => ({ ...t, program: p.id })))
+  .filter((t, i, all) => all.findIndex((x) => x.id === t.id) === i);
 
 const weekOf = (l) => Number(String(l.termId || '').replace('week-', '')) || 0;
 

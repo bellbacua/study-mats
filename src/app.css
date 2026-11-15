@@ -4857,6 +4857,8 @@ button.prog-program:not(:disabled):hover {
 .track-sys { color: #f2a65a; }
 .subj-sys, .class-card.subj-sys { --subj: #f2a65a; }
 .track-ai { color: #ff8fb1; }
+.track-ee { color: #ffd84a; }
+.subj-ee, .class-card.subj-ee { --subj: #ffd84a; }
 .subj-ai, .class-card.subj-ai { --subj: #ff8fb1; }
 .track-sec { color: #ff9d6b; }
 .subj-sec, .class-card.subj-sec { --subj: #ff9d6b; }

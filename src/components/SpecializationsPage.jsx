@@ -1,4 +1,4 @@
-import { TRACKS, PROGRAM_ID, trackLessons, trackClassState, yearProgress, openSlots, UM_COURSES } from '../data/path';
+import { TRACKS, PROGRAM, PROGRAM_ID, trackLessons, trackClassState, yearProgress, openSlots, UM_COURSES } from '../data/path';
 import { useReveal } from '../state/useReveal';
 
 // Elective tracks. Locked until Year 1 is finished; then pick one. Finishing
@@ -15,7 +15,9 @@ export default function SpecializationsPage({ progress, onOpen, onToggle, embedd
     <div className="spec-page">
       <header className={embedded ? 'prog-section-head' : 'timeline-head'} data-reveal>
         {embedded ? <h2>Specialization tracks</h2> : <h1>Specializations</h1>}
-        {PROGRAM_ID === 'mate' ? (
+        {PROGRAM.trackIntro ? (
+          <p>{PROGRAM.trackIntro}</p>
+        ) : PROGRAM_ID === 'mate' ? (
           <p>
             Materials engineering splits into branches, like any big field. A track adds a short run of deeper classes on top of your timetable, and fills
             the elective slots of your UM program ({['MATE 303', 'MATE 308', 'MATE 405'].map((c) => `${c} ${UM_COURSES[c]}`).join(', ')}).

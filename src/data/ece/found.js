@@ -1,0 +1,575 @@
+// Electronics foundations shared by BS Electronics Engineering and BS
+// Electrical Engineering (years 1-2): charge, fields, capacitors, magnetism,
+// inductors, circuit analysis and measurement. Each class follows its own
+// history from the beginning and builds only on classes before it.
+// Story claims are cited as [n], pointing at each class's `sources`.
+import { mk, phet, home, online } from '../um/make';
+
+const W = (t) => `https://en.wikipedia.org/wiki/${t}`;
+const falstad = (task) => online('Falstad circuit simulator (free, in the browser)', 'https://www.falstad.com/circuit/', task);
+
+export default [
+  mk({
+    id: 'ee-100',
+    code: 'ELEC 100',
+    track: 'ee',
+    title: 'Electric Shock: What Current Does to a Body',
+    subtitle: 'Let-go currents, wet skin, earthing and the safety switch',
+    digest: [
+      'It is current through the body, not voltage alone, that hurts: about 1 mA is felt, about 10–20 mA locks the muscles, and around 50–100 mA across the chest can stop the heart.',
+      'Ohm’s law sets that current: I = V / R_body. Dry skin may be 100 kΩ; wet skin can drop to about 1 kΩ, so the same 230 V outlet becomes deadly.',
+      'Earthing gives fault current an easy path away from you, fuses and breakers stop overloads, and a residual-current device trips when as little as 30 mA leaks to earth.',
+    ],
+    era: '1882 Edison’s Pearl Street → 1897 first US wiring rules → 1940s–60s Dalziel’s shock studies and the ground-fault switch',
+    who: 'Charles Dalziel',
+    hook: 'A 9-volt battery on your tongue tingles. A 230-volt outlet can kill. Is it really the volts that matter?',
+    story: [
+      'When cities first wired up in the 1880s, fires and shocks came with the light. Insurers and engineers in the United States agreed a first set of national wiring rules in 1897, which became the National Electrical Code that is still revised every few years [1]. The Philippines has its own version, the Philippine Electrical Code, kept by the Institute of Integrated Electrical Engineers [2].',
+      'Nobody knew how much current a person could survive until Charles Dalziel, an electrical engineering professor at the University of California, Berkeley, measured it. From the 1940s he passed small currents through volunteers’ hands and found the "let-go" current, the most at which you can still open your hand and release a wire: on average about 16 mA for men and 10.5 mA for women [3]. Above that, the muscles clamp shut on the wire.',
+      'Dalziel then invented the ground-fault circuit interrupter, which compares the current going out on one wire with the current coming back on the other. If a few milliamps are missing, they must be leaking through something, maybe a person, and it cuts the power in a fraction of a second [3]. Its descendant, the residual-current device, is now required in bathrooms and outdoor sockets in many countries [4].',
+    ],
+    takeaway: 'Current through the body does the harm, and resistance decides the current. Keep the path through you long, dry and broken.',
+    sources: [
+      ['Wikipedia: National Electrical Code', W('National_Electrical_Code'), 'first edition 1897'],
+      ['Wikipedia: Institute of Integrated Electrical Engineers of the Philippines', W('Institute_of_Integrated_Electrical_Engineers_of_the_Philippines'), 'publishes the Philippine Electrical Code'],
+      ['Wikipedia: Charles Dalziel', W('Charles_Dalziel'), 'let-go current studies; inventor of the GFCI'],
+      ['Wikipedia: Residual-current device', W('Residual-current_device'), '30 mA trip level for personal protection'],
+      ['Wikipedia: Electrical injury', W('Electrical_injury'), 'effects of current on the body'],
+    ],
+    viz: 'body_current',
+    vizTitle: 'Current Through a Body',
+    vizHow: 'Choose a voltage and how wet the skin is. The current through the body is shown on a scale from "felt" to "heart stops", and you can add an earth wire or a safety switch.',
+    steps: [
+      ['The body as a resistor', 'I = \\frac{V}{R_{\\text{body}}}', 'Inside, the body is salty water and conducts well. Most of the resistance is in the skin. Dry, thick skin may be 100 kΩ; sweaty or wet skin about 1 kΩ.'],
+      ['What each current does', '1\\ \\text{mA felt} \\quad 10\\text{–}20\\ \\text{mA can’t let go} \\quad 50\\text{–}100\\ \\text{mA heart danger}', 'These are rough values for 50–60 Hz current from hand to hand or hand to foot, the kind from a wall outlet. Time matters too: the longer the current flows, the worse.'],
+      ['Three defences', '\\text{earth wire} \\qquad \\text{fuse or breaker} \\qquad \\text{RCD trips at } 30\\ \\text{mA}', 'An earth wire carries fault current away from a metal case. A fuse or breaker protects the wires from overload, not you. A residual-current device watches for current going where it should not and switches off within about 0.03 s.'],
+    ],
+    drills: [
+      ['230 V across wet skin of 1 kΩ. What current flows?', ['230 mA', '23 mA', '2.3 mA', '0.23 mA'], 'I = V / R.', '230 / 1000 A.', '0.23 A = 230 mA, far above the danger level.'],
+      ['The same 230 V across dry skin of 100 kΩ?', ['2.3 mA', '230 mA', '23 mA', '0.023 mA'], 'I = V / R with R = 100,000 Ω.', '230 / 100,000 A.', '0.0023 A = 2.3 mA: felt, but usually not dangerous. Water makes the difference.'],
+      ['What does a residual-current device (RCD) compare?', ['The current going out with the current coming back', 'The voltage with 230 V', 'The temperature of the wire', 'The power used with the meter reading'], 'Where might missing current have gone?', 'Out on the live wire, back on the neutral.', 'If they differ by about 30 mA, current is leaking somewhere, perhaps through a person, and it trips.'],
+    ],
+    boss: [
+      'Wet Hands on a Faulty Fan',
+      'A fan’s metal case has become live at 230 V. A person with wet hands (body path 1.5 kΩ) touches it while standing barefoot on a wet floor. Will a 30 mA RCD trip, and roughly what current would flow without one?',
+      ['Yes: about 150 mA would flow, far more than 30 mA', 'No: 230 V is too low to leak', 'Yes, but only 1.5 mA flows', 'No: RCDs only protect wires'],
+      'Find I = V / R, then compare with 30 mA.',
+      '230 / 1500 ≈ 0.15 A = 150 mA, enough to stop a heart. The RCD sees 150 mA missing from the neutral and trips in about 30 ms. An earth wire on the case would have tripped the breaker before anyone touched it.',
+    ],
+    read: [
+      ['wiki', 'Electrical injury', 'How current affects muscles and the heart, and why time and path matter.', 'The severity of electrical injury depends on the current, its path through the body, its duration and its frequency. Currents of tens of milliamps through the chest can cause ventricular fibrillation.'],
+      ['wiki', 'Residual-current device', 'How the RCD balances live and neutral and why 30 mA was chosen.', 'An RCD disconnects a circuit when it detects that the current is not balanced between the line and neutral conductors, indicating leakage to earth, for example through a person.'],
+    ],
+    labs: [
+      phet('circuit-construction-kit-dc', 'Circuit Construction Kit: DC', 'Build a battery and a resistor of 1 kΩ, then 100 kΩ, and read the current with the ammeter. Which would a person feel?'),
+      home('Find the main breaker panel at home (do not open it). Look for a switch marked RCD, RCCB or ELCB and a "test" button. Ask an adult when it was last tested.'),
+    ],
+    quiz: [
+      ['Who measured "let-go" currents and invented the ground-fault circuit interrupter?', ['Charles Dalziel', 'Thomas Edison', 'Nikola Tesla', 'Georg Ohm'], 'A Berkeley electrical engineering professor.'],
+      ['In what year did the first US national wiring rules appear?', ['1897', '1882', '1931', '1965'], 'They became the National Electrical Code.'],
+    ],
+    gloss: [
+      ['Let-go current', 'The largest current at which a person can still release a gripped wire; about 10–16 mA.'],
+      ['Earthing', 'Connecting metal parts to the ground so fault current flows away safely instead of through a person.', ['grounding', 'earth wire']],
+      ['Residual-current device', 'A switch that cuts power when the current out and the current back differ, meaning some is leaking.', ['RCD', 'GFCI', 'RCCB']],
+    ],
+    events: [
+      [1897, 'First US national wiring rules', 'Later called the National Electrical Code.'],
+      [1961, 'Dalziel’s ground-fault interrupter', 'A switch that trips on a few milliamps of leakage.', true],
+    ],
+  }),
+
+  mk({
+    id: 'ee-101',
+    code: 'ELEC 101',
+    track: 'ee',
+    title: 'Charge and Coulomb’s Law',
+    subtitle: 'Amber, two kinds of electricity, and the force between charges',
+    digest: [
+      'There are two kinds of charge, which Franklin named positive and negative. Likes repel, opposites attract.',
+      'Coulomb’s law: F = k q₁q₂ / r², with k = 8.99 × 10⁹ N·m²/C². Double the distance and the force falls to a quarter.',
+      'Charge comes in lumps of e = 1.602 × 10⁻¹⁹ C, the charge of one proton (+) or electron (−).',
+    ],
+    era: 'c. 600 BC amber → 1600 Gilbert → 1733 du Fay → 1747 Franklin → 1785 Coulomb',
+    who: 'Charles-Augustin de Coulomb',
+    hook: 'Rub amber with fur and it picks up straw. For 2,000 years nobody could say how strongly. Then a French army engineer built a balance out of a thread.',
+    story: [
+      'The Greeks noticed that rubbed amber attracts light things; their word for amber, ēlektron, gave us "electricity". In 1600 William Gilbert, physician to Elizabeth I, showed in De Magnete that many materials behave like amber and coined the Latin "electricus" [1]. In 1733 Charles du Fay found two kinds of this electricity, which he called vitreous (from glass) and resinous (from amber): like kinds repel and unlike kinds attract [2].',
+      'Around 1747 Benjamin Franklin in Philadelphia argued there was one electric "fluid": a body with too much was positive (+), one with too little negative (−) [3]. The names stuck, though we now know it is usually electrons, negative, that move.',
+      'In 1785 Charles-Augustin de Coulomb, a retired French army engineer, hung a needle on a fine silver wire and measured how far charged balls twisted it. His torsion balance showed that the force falls with the square of the distance, the same inverse-square rule as Newton’s gravity [4]. In 1909 Robert Millikan’s oil-drop experiment measured the smallest charge, the charge of one electron [5].',
+    ],
+    takeaway: 'Charges push or pull with a force that grows with both charges and falls with the square of the distance.',
+    sources: [
+      ['Wikipedia: William Gilbert (physicist)', W('William_Gilbert_(physicist)'), 'De Magnete, 1600; "electricus"'],
+      ['Wikipedia: Charles François de Cisternay du Fay', W('Charles_Fran%C3%A7ois_de_Cisternay_du_Fay'), 'two kinds of electricity, 1733'],
+      ['Wikipedia: Benjamin Franklin', W('Benjamin_Franklin'), 'positive and negative, single-fluid theory'],
+      ['Wikipedia: Coulomb’s law', W('Coulomb%27s_law'), 'torsion balance, 1785'],
+      ['Wikipedia: Oil drop experiment', W('Oil_drop_experiment'), 'Millikan, 1909'],
+    ],
+    viz: 'coulomb_force',
+    vizTitle: 'Two Charges',
+    vizHow: 'Drag the charges apart and change their sizes and signs. The force arrows grow and shrink with q₁q₂ / r².',
+    steps: [
+      ['Two kinds of charge', '\\text{like charges repel} \\qquad \\text{unlike charges attract}', 'An atom has positive protons in its nucleus and negative electrons around it. Rubbing moves some electrons from one material to another, leaving one side + and the other −.'],
+      ['Coulomb’s law', 'F = k\\,\\frac{q_1 q_2}{r^2} \\qquad k = 8.99\\times10^{9}\\ \\text{N·m}^2/\\text{C}^2', 'Charge is measured in coulombs (C). If F comes out positive the charges repel; negative means they attract.'],
+      ['Charge comes in lumps', 'q = n\\,e \\qquad e = 1.602\\times10^{-19}\\ \\text{C}', 'One coulomb is about 6.24 × 10¹⁸ electrons. A balloon rubbed on hair carries maybe 10⁻⁷ C: a few hundred billion extra electrons.'],
+    ],
+    drills: [
+      ['Two charges are moved twice as far apart. The force becomes…', ['A quarter as big', 'Half as big', 'Twice as big', 'The same'], 'F ∝ 1/r².', '(2)² = 4.', 'It falls to 1/4.'],
+      ['Force between two 1 μC charges 1 m apart?', ['0.009 N', '9 N', '9 × 10⁹ N', '0.9 N'], 'F = k q₁q₂ / r².', '8.99 × 10⁹ × 10⁻⁶ × 10⁻⁶.', '8.99 × 10⁻³ N ≈ 0.009 N.'],
+      ['Who named the two kinds of charge positive and negative?', ['Benjamin Franklin', 'Charles du Fay', 'William Gilbert', 'Coulomb'], 'An American printer and scientist.', 'One electric fluid: too much or too little.', 'Franklin, around 1747.'],
+    ],
+    boss: [
+      'Dust on a Solar Panel',
+      'A charged dust speck holds 5 × 10⁻¹² C, and a charged patch of panel glass 1 cm away acts like a 2 × 10⁻⁹ C charge of opposite sign. How strong is the pull?',
+      ['About 9 × 10⁻⁷ N', 'About 9 N', 'About 9 × 10⁻¹⁵ N', 'Zero, dust is neutral'],
+      'Use r = 0.01 m, so r² = 10⁻⁴ m².',
+      'F = 8.99 × 10⁹ × 5 × 10⁻¹² × 2 × 10⁻⁹ / 10⁻⁴ ≈ 9 × 10⁻⁷ N. That is about 100 times the weight of a 1 μg speck, which is why static makes dust cling to screens and panels.',
+    ],
+    read: [
+      ['wiki', 'Coulomb’s law', 'The law, its history and the torsion balance.', 'Coulomb’s law states that the magnitude of the electrostatic force between two point charges is proportional to the product of their charges and inversely proportional to the square of the distance between them.'],
+      ['book', 'phys2', 'Chapter 5, Electric Charges and Fields', 'Charge, conductors and insulators, and Coulomb’s law with worked examples.', 'Sections 5.1–5.3 introduce electric charge, charging by friction and induction, and Coulomb’s law for point charges.'],
+    ],
+    labs: [
+      phet('coulombs-law', 'Coulomb’s Law', 'Fix the charges and double the distance. Does the force fall to a half or a quarter?'),
+      home('Rub a balloon on your hair and hold it near small scraps of paper. Then hold it near a thin stream of tap water and watch the stream bend.'),
+    ],
+    quiz: [
+      ['What did Coulomb use to measure electric force in 1785?', ['A torsion balance', 'A Leyden jar', 'A galvanometer', 'An oil-drop chamber'], 'A needle hung on a fine twisting wire.'],
+      ['The word "electricity" comes from the Greek word for…', ['Amber', 'Lightning', 'Iron', 'Spark'], 'ēlektron.'],
+    ],
+    gloss: [
+      ['Electric charge', 'A property of matter that makes it push or pull on other charges; measured in coulombs (C).', ['charge', 'charges']],
+      ['Coulomb’s law', 'F = k q₁q₂ / r²: the force between two point charges.'],
+      ['Elementary charge', 'e = 1.602 × 10⁻¹⁹ C, the charge of one proton.'],
+    ],
+    events: [
+      [1600, 'Gilbert’s De Magnete', 'Many materials behave like rubbed amber.'],
+      [1785, 'Coulomb’s torsion balance', 'Electric force follows an inverse-square law.'],
+    ],
+  }),
+
+  mk({
+    id: 'ee-102',
+    code: 'ELEC 102',
+    track: 'ee',
+    after: ['ee-101', 'phys-005'],
+    title: 'Fields and Voltage: Faraday’s Lines of Force',
+    subtitle: 'How a charge changes the space around it, and what a volt really is',
+    digest: [
+      'The electric field E is the force per coulomb a test charge would feel: E = F / q, in N/C or V/m.',
+      'Voltage (potential difference) is energy per coulomb: V = W / q. One volt gives each coulomb one joule.',
+      'Between two parallel plates the field is uniform: E = V / d. Air breaks down and sparks at about 3 million V/m.',
+    ],
+    era: '1800 Volta’s pile → 1830s–1852 Faraday’s lines of force → 1881 the volt defined',
+    who: 'Michael Faraday & Alessandro Volta',
+    hook: 'How can a charge pull on another one across empty space, with nothing in between?',
+    story: [
+      'Coulomb’s law says how strong the force is, but not how it crosses empty space. Michael Faraday, a bookbinder’s apprentice who became the greatest experimenter of the 19th century, imagined that every charge fills the space around it with "lines of force". Iron filings around a magnet seemed to show them [1]. He wrote about them through the 1830s to 1852; most mathematicians thought the idea crude, because Faraday knew almost no algebra.',
+      'The other half of the story is voltage. In 1800 Alessandro Volta stacked zinc and copper discs with brine-soaked cloth and made the first battery, which pushed charge steadily around a circuit [2]. He spoke of electric "tension". Today we call it potential difference: the energy each coulomb gains or loses between two points.',
+      'In 1881 the first International Electrical Congress in Paris fixed the practical units, naming the volt after Volta and the ampere after Ampère [3]. And James Clerk Maxwell turned Faraday’s lines into mathematics; his field equations (ELEC 111) rest on exactly this picture [1].',
+    ],
+    takeaway: 'A charge creates a field; a field pushes on charges; and the voltage between two points is the energy per coulomb to go from one to the other.',
+    sources: [
+      ['Wikipedia: Line of force', W('Line_of_force'), 'Faraday’s lines of force'],
+      ['Wikipedia: Voltaic pile', W('Voltaic_pile'), 'Volta, 1800'],
+      ['Wikipedia: International Electrical Congress', W('International_Electrical_Congress'), 'Paris 1881: volt, ampere, ohm'],
+      ['Wikipedia: Electric field', W('Electric_field'), 'definition and field of a point charge'],
+      ['Wikipedia: Electrical breakdown', W('Electrical_breakdown'), 'dielectric strength of air ≈ 3 MV/m'],
+    ],
+    viz: 'field_voltage',
+    vizTitle: 'Field Lines and Equipotentials',
+    vizHow: 'Place one or two charges. Field lines show the push on a + test charge; the coloured rings are equipotentials, lines of equal voltage. Drag the test charge and read its voltage.',
+    steps: [
+      ['The field of a point charge', 'E = \\frac{F}{q} = k\\,\\frac{Q}{r^2}', 'The field points away from a + charge and toward a − charge. A test charge q placed there feels F = qE.'],
+      ['Voltage is energy per charge', 'V = \\frac{W}{q} \\qquad 1\\ \\text{V} = 1\\ \\text{J/C}', 'Lifting a stone stores energy in height; pushing a + charge toward another + charge stores energy in "electric height". A 12 V battery gives each coulomb 12 J. An electronvolt (eV) is the energy one electron gains across 1 V: 1.602 × 10⁻¹⁹ J.'],
+      ['Uniform field between plates', 'E = \\frac{V}{d}', 'Two flat plates 1 cm apart at 100 V have E = 10,000 V/m between them, the same everywhere. This is how a capacitor (ELEC 103) and the deflecting plates of an old oscilloscope work.'],
+    ],
+    drills: [
+      ['A 2 μC charge feels 0.01 N. What is the field there?', ['5000 N/C', '0.02 N/C', '200 N/C', '5 × 10⁻⁹ N/C'], 'E = F / q.', '0.01 / (2 × 10⁻⁶).', '5000 N/C.'],
+      ['How much energy does 3 C gain moving through 9 V?', ['27 J', '3 J', '0.33 J', '12 J'], 'W = qV.', '3 × 9.', '27 J.'],
+      ['Plates 2 mm apart at 600 V. Field between them?', ['300,000 V/m', '1200 V/m', '300 V/m', '3 × 10⁹ V/m'], 'E = V / d with d in metres.', '600 / 0.002.', '3 × 10⁵ V/m, a tenth of what makes air spark.'],
+    ],
+    boss: [
+      'Spark Gap in a Switch',
+      'Air sparks when the field reaches about 3 × 10⁶ V/m. What is the smallest air gap that can safely hold off 230 V (peak about 325 V) between switch contacts?',
+      ['About 0.11 mm', 'About 1.1 m', 'About 1 cm', 'About 0.001 mm'],
+      'Rearrange E = V / d to d = V / E, and use the peak voltage.',
+      'd = 325 / 3 × 10⁶ ≈ 1.1 × 10⁻⁴ m = 0.11 mm. Real switches leave several millimetres, because dirt, humidity and sharp edges make sparks easier.',
+    ],
+    read: [
+      ['wiki', 'Electric potential', 'Potential and potential difference, with the gravity comparison.', 'Electric potential is the amount of work needed per unit charge to move a test charge from a reference point to a specific point in an electric field. The difference in potential between two points is the voltage.'],
+      ['book', 'phys2', 'Chapter 7, Electric Potential', 'Voltage, equipotentials and the electronvolt explained step by step.', 'The chapter defines electric potential energy and potential, introduces the electron-volt, and shows how equipotential surfaces are always perpendicular to field lines.'],
+    ],
+    labs: [
+      phet('charges-and-fields', 'Charges and Fields', 'Place a + and a − charge. Turn on the voltage meter and trace an equipotential. Is it ever parallel to a field line?'),
+      home('Put a little pepper on a plate and hold a rubbed comb above it. The specks jump and line up along the field.'),
+    ],
+    quiz: [
+      ['Who imagined "lines of force" filling the space around charges and magnets?', ['Michael Faraday', 'Isaac Newton', 'Alessandro Volta', 'Benjamin Franklin'], 'A bookbinder’s apprentice turned experimenter.'],
+      ['Where were the volt and ampere first defined as practical units, in 1881?', ['The International Electrical Congress in Paris', 'The Royal Society in London', 'Bell Labs', 'Edison’s Menlo Park'], 'The first international electrical congress.'],
+    ],
+    gloss: [
+      ['Electric field', 'The force per coulomb that a charge would feel at a point; measured in N/C or V/m.', ['field lines']],
+      ['Voltage', 'Potential difference: the energy per coulomb between two points; measured in volts (V = J/C).', ['potential difference', 'volt', 'volts']],
+      ['Electronvolt', 'The energy one electron gains across 1 volt: 1.602 × 10⁻¹⁹ J.', ['eV']],
+    ],
+    events: [
+      [1800, 'Volta’s pile', 'The first battery gives a steady current.'],
+      [1881, 'Volt and ampere named', 'The International Electrical Congress in Paris fixes the practical units.'],
+    ],
+  }),
+
+  mk({
+    id: 'ee-103',
+    code: 'ELEC 103',
+    track: 'ee',
+    after: ['ee-102', 'math-016'],
+    title: 'Capacitors: The Leyden Jar and the RC Circuit',
+    subtitle: 'Storing charge on two plates, and the curve that charging always follows',
+    digest: [
+      'A capacitor is two conductors separated by an insulator. It stores charge Q = CV; capacitance is in farads (F).',
+      'For parallel plates C = ε₀εᵣA / d: bigger plates, a thinner gap and a better insulator all store more. Energy stored: U = ½CV².',
+      'Through a resistor, a capacitor charges along v = V(1 − e^(−t/RC)). The time constant τ = RC: after one τ it is 63% full, after 5τ practically full.',
+    ],
+    era: '1745 von Kleist → 1746 Leiden → 1749 Franklin’s "battery" → today’s trillions of chip capacitors',
+    who: 'Ewald von Kleist & Pieter van Musschenbroek',
+    hook: 'In 1746 a Dutch professor touched a jar of water and wrote that he would not do it again for the whole kingdom of France. What had he bottled?',
+    story: [
+      'In October 1745 Ewald Georg von Kleist, a German cleric, charged a nail in a medicine bottle and got a painful shock from it. A few months later Pieter van Musschenbroek at the University of Leiden did the same with a jar of water and wrote of a blow so violent he thought it was all over for him. The "Leyden jar" became a sensation: lecturers sent its shock through lines of hundreds of people holding hands [1].',
+      'Benjamin Franklin worked out that the charge sits on the glass between the inner and outer conductors, not in the water. He linked several jars together and called it a "battery", borrowing the word for a group of cannons [1][2]. The unit of capacitance, the farad, was later named after Michael Faraday, who studied how the insulator between the plates changes how much they hold [3].',
+      'Every electronic board now carries dozens to thousands of capacitors, mostly tiny ceramic chips, used to smooth power, block steady voltages and set timing. The rule for how fast one charges through a resistor, with its time constant RC, sets the timing of blinking lights, camera flashes and the reset of a microchip when you switch it on [4].',
+    ],
+    takeaway: 'A capacitor stores charge in proportion to voltage, and with a resistor it fills and empties on the exponential clock τ = RC.',
+    sources: [
+      ['Wikipedia: Leyden jar', W('Leyden_jar'), 'von Kleist 1745, Musschenbroek 1746, Franklin'],
+      ['Wikipedia: Electric battery (history)', W('History_of_the_battery'), 'Franklin’s use of "battery", 1749'],
+      ['Wikipedia: Farad', W('Farad'), 'named after Faraday'],
+      ['Wikipedia: RC circuit', W('RC_circuit'), 'time constant and charging curve'],
+    ],
+    viz: 'rc_charge',
+    vizTitle: 'Charging a Capacitor',
+    vizHow: 'Close the switch and watch the capacitor voltage rise along its curve. Change R and C: the curve keeps its shape but stretches with τ = RC.',
+    steps: [
+      ['Charge is proportional to voltage', 'Q = C\\,V \\qquad 1\\ \\text{F} = 1\\ \\text{C/V}', 'A farad is huge. Real capacitors are measured in microfarads (μF, 10⁻⁶), nanofarads (nF, 10⁻⁹) and picofarads (pF, 10⁻¹²).'],
+      ['What sets C', 'C = \\frac{\\varepsilon_0\\,\\varepsilon_r\\,A}{d} \\qquad U = \\tfrac12 C V^2', 'ε₀ = 8.85 × 10⁻¹² F/m. The insulator’s relative permittivity εᵣ is about 1 for air, 4–10 for glass, and thousands for the barium titanate in ceramic chip capacitors. That is why materials matter here.'],
+      ['The RC curve', 'v_C(t) = V\\,\\bigl(1 - e^{-t/RC}\\bigr) \\qquad \\tau = RC', 'At first current flows freely; as the capacitor fills, its voltage pushes back and the current dies away. After τ: 63%. After 2τ: 86%. After 5τ: over 99%. Discharging follows v = V e^(−t/RC).'],
+    ],
+    drills: [
+      ['A 100 μF capacitor at 12 V holds how much charge?', ['1.2 mC', '12 C', '0.12 μC', '1.2 C'], 'Q = CV.', '100 × 10⁻⁶ × 12.', '1.2 × 10⁻³ C = 1.2 mC.'],
+      ['Time constant of 10 kΩ with 100 μF?', ['1 s', '0.1 s', '10 s', '1000 s'], 'τ = RC.', '10⁴ × 10⁻⁴.', '1 second.'],
+      ['After one time constant, a charging capacitor is at what fraction of the supply voltage?', ['About 63%', 'About 37%', '50%', '100%'], '1 − e⁻¹.', 'e⁻¹ ≈ 0.37.', '1 − 0.37 = 0.63.'],
+    ],
+    boss: [
+      'Camera Flash',
+      'A camera flash charges a 200 μF capacitor to 300 V through a 5 kΩ resistor. How much energy is stored, and about how long until it is ready (5τ)?',
+      ['9 J, about 5 s', '0.03 J, about 1 ms', '9 J, about 1 s', '60 kJ, about 5 s'],
+      'U = ½CV², τ = RC.',
+      'U = ½ × 200 × 10⁻⁶ × 300² = 9 J. τ = 5000 × 200 × 10⁻⁶ = 1 s, so 5τ ≈ 5 s. The flash then dumps those 9 J in about a millisecond.',
+    ],
+    read: [
+      ['wiki', 'Capacitor', 'Types of capacitor, what limits them, and where they are used.', 'A capacitor is a device that stores electrical energy by accumulating electric charges on two closely spaced surfaces that are insulated from each other. Capacitance is the ratio of the stored charge to the voltage.'],
+      ['book', 'phys2', 'Chapter 8, Capacitance', 'Parallel plates, dielectrics and capacitors in series and parallel.', 'The chapter derives the parallel-plate capacitance, the energy stored in a capacitor, and the effect of a dielectric in increasing capacitance by the factor κ.'],
+    ],
+    labs: [
+      phet('capacitor-lab-basics', 'Capacitor Lab: Basics', 'Halve the plate separation and watch the capacitance. Then double the plate area. Which change does what?'),
+      falstad('Open Circuits ▸ Basics ▸ Capacitor, build a 1 kΩ resistor and 1 mF capacitor on a switch, and check that the voltage reaches 63% after 1 s.'),
+    ],
+    quiz: [
+      ['Where did Musschenbroek work when his jar gave him a terrible shock?', ['The University of Leiden', 'The Royal Institution', 'Harvard', 'Philadelphia'], 'The jar is named after the town.'],
+      ['Who first called a group of linked Leyden jars a "battery"?', ['Benjamin Franklin', 'Alessandro Volta', 'Michael Faraday', 'Ewald von Kleist'], 'He borrowed the word for a group of cannons.'],
+    ],
+    gloss: [
+      ['Capacitor', 'Two conductors separated by an insulator, storing charge Q = CV.', ['capacitors']],
+      ['Capacitance', 'Charge stored per volt; measured in farads (F).', ['farad', 'μF']],
+      ['Time constant', 'τ = RC (or L/R): the time for a change to go 63% of the way.', ['τ']],
+    ],
+    events: [
+      [1745, 'The Leyden jar', 'Von Kleist and then Musschenbroek store electric charge in a jar.'],
+      [1749, 'Franklin’s "battery"', 'Several Leyden jars linked together.'],
+    ],
+  }),
+
+  mk({
+    id: 'ee-104',
+    code: 'ELEC 104',
+    track: 'ee',
+    after: ['ee-102', 'math-011'],
+    title: 'Magnetism From Current: Ørsted’s Compass',
+    subtitle: 'A wire that turns a compass, two wires that pull, and the first motor',
+    digest: [
+      'An electric current makes a magnetic field that circles the wire: B = μ₀I / (2πr), with μ₀ = 4π × 10⁻⁷ T·m/A.',
+      'A coil (solenoid) concentrates it: B = μ₀nI inside, where n is turns per metre. An iron core multiplies it hundreds of times.',
+      'A wire carrying current in a field feels a force F = BIL. This sideways push drives every electric motor and loudspeaker.',
+    ],
+    era: '1820 Ørsted → 1820 Ampère, Biot & Savart → 1821 Faraday’s motor → 1825 Sturgeon’s electromagnet',
+    who: 'Hans Christian Ørsted & André-Marie Ampère',
+    hook: 'In April 1820 a professor in Copenhagen saw a compass needle twitch beside a wire during a lecture. Within a year, electricity and magnetism were one subject.',
+    story: [
+      'For centuries electricity and magnetism were treated as separate things. In April 1820 Hans Christian Ørsted in Copenhagen placed a wire carrying current from a battery near a compass and saw the needle swing to point across the wire. He published in July 1820, and the news crossed Europe within weeks [1].',
+      'In Paris, André-Marie Ampère showed that September that two parallel wires attract when their currents run the same way and repel when opposite. Jean-Baptiste Biot and Félix Savart measured how the field falls with distance from the wire [2]. The ampere is named after Ampère.',
+      'In 1821 Michael Faraday made a wire spin around a magnet in a cup of mercury: the first electric motor [3]. In 1825 William Sturgeon wound a coil around an iron bar and made an electromagnet that lifted many times its own weight, the ancestor of relays, door bells and the lifting magnets in scrapyards [4].',
+    ],
+    takeaway: 'Moving charge makes magnetism. A current in a field feels a sideways force, which is how electricity becomes motion.',
+    sources: [
+      ['Wikipedia: Hans Christian Ørsted', W('Hans_Christian_%C3%98rsted'), 'compass deflection, 1820'],
+      ['Wikipedia: Biot–Savart law', W('Biot%E2%80%93Savart_law'), 'Biot and Savart, 1820'],
+      ['Wikipedia: Electric motor', W('Electric_motor'), 'Faraday’s 1821 homopolar motor'],
+      ['Wikipedia: William Sturgeon', W('William_Sturgeon'), 'electromagnet, 1825'],
+      ['Wikipedia: Ampère’s force law', W('Amp%C3%A8re%27s_force_law'), 'force between parallel wires'],
+    ],
+    viz: 'wire_field',
+    vizTitle: 'The Field Around a Wire',
+    vizHow: 'Set the current and watch compass needles around the wire line up in circles. Switch to the motor view to see the force on a wire in a magnet’s field.',
+    steps: [
+      ['Field around a straight wire', 'B = \\frac{\\mu_0 I}{2\\pi r} \\qquad \\mu_0 = 4\\pi\\times10^{-7}\\ \\text{T·m/A}', 'The field circles the wire. Right-hand rule: thumb along the current, fingers curl the way the field goes. Magnetic field is measured in teslas (T); Earth’s field is about 50 μT.'],
+      ['A coil concentrates the field', 'B = \\mu_0\\,n\\,I \\qquad n = N / \\ell', 'Inside a long coil the circles from every turn add up into a strong, even field. With an iron core the field is hundreds of times stronger, because the iron’s own atomic magnets line up with it.'],
+      ['Force on a current', 'F = B\\,I\\,L\\,\\sin\\theta', 'A wire of length L carrying current I across a field B is pushed sideways. Loop the wire into a coil on an axle and the pushes turn it: a motor.'],
+    ],
+    drills: [
+      ['Field 5 cm from a wire carrying 10 A?', ['40 μT', '4 T', '400 μT', '0.4 μT'], 'B = μ₀I / (2πr).', '(4π × 10⁻⁷ × 10) / (2π × 0.05).', '2 × 10⁻⁷ × 10 / 0.05 = 4 × 10⁻⁵ T = 40 μT, close to Earth’s field.'],
+      ['Force on 0.2 m of wire carrying 5 A across a 0.5 T field?', ['0.5 N', '2 N', '0.02 N', '5 N'], 'F = BIL.', '0.5 × 5 × 0.2.', '0.5 N.'],
+      ['Two parallel wires carry currents in the same direction. They…', ['Attract', 'Repel', 'Feel no force', 'Twist'], 'Ampère, 1820.', 'Same direction: the fields between them cancel.', 'They attract.'],
+    ],
+    boss: [
+      'Designing an Electromagnet',
+      'A solenoid 10 cm long has 500 turns and carries 2 A, with an air core. What is the field inside, and roughly what with an iron core that multiplies it by 500 (before the iron saturates near 2 T)?',
+      ['About 12.6 mT in air; about 2 T with iron (limited by saturation)', 'About 12.6 T in air', 'About 1 μT in air; 0.5 mT with iron', 'Zero; coils make no field inside'],
+      'n = 500 / 0.1 m. B = μ₀nI. Then × 500, but iron cannot exceed about 2 T.',
+      'n = 5000 /m, B = 4π × 10⁻⁷ × 5000 × 2 ≈ 0.0126 T. × 500 would be 6.3 T, but iron saturates around 2 T, so you get about 2 T. Choosing core materials is a materials engineering job.',
+    ],
+    read: [
+      ['wiki', 'Electromagnet', 'How coils and iron cores make strong fields, and where electromagnets are used.', 'An electromagnet is a magnet in which the magnetic field is produced by an electric current. A ferromagnetic core concentrates the field, making it much stronger, until the core saturates.'],
+      ['book', 'phys2', 'Chapter 12, Sources of Magnetic Fields', 'Biot–Savart, the field of a wire and a solenoid, and Ampère’s law.', 'The chapter shows how currents create magnetic fields, derives the field of a long straight wire and of a solenoid, and explains the force between parallel currents.'],
+    ],
+    labs: [
+      phet('magnets-and-electromagnets', 'Magnets and Electromagnets', 'Switch to the electromagnet tab. Double the turns, then double the current. Which doubles the field?'),
+      home('Wrap 30 turns of insulated wire around an iron nail and touch the ends to a 1.5 V battery for a few seconds only. Count how many paper clips it lifts.'),
+    ],
+    quiz: [
+      ['What did Ørsted see in April 1820?', ['A compass needle swing near a wire carrying current', 'A spark between two plates', 'A frog’s leg twitch', 'A wire glow red'], 'Electricity and magnetism are linked.'],
+      ['Who made the first electromagnet with an iron core, in 1825?', ['William Sturgeon', 'Joseph Henry', 'Michael Faraday', 'Ampère'], 'An English shoemaker turned lecturer.'],
+    ],
+    gloss: [
+      ['Magnetic field', 'The region around a magnet or current where magnetic forces act; measured in teslas (T).', ['tesla', 'B field']],
+      ['Solenoid', 'A long coil of wire that makes a strong, even magnetic field inside when current flows.', ['coil']],
+      ['Right-hand rule', 'Thumb along the current, fingers curl in the direction of the magnetic field.'],
+    ],
+    events: [
+      [1820, 'Ørsted’s compass', 'An electric current deflects a magnetic needle.'],
+      [1821, 'Faraday’s motor', 'A current-carrying wire spins around a magnet.'],
+    ],
+  }),
+
+  mk({
+    id: 'ee-105',
+    code: 'ELEC 105',
+    track: 'ee',
+    after: ['phys-208', 'math-101'],
+    title: 'Inductors: Joseph Henry’s Spark',
+    subtitle: 'Why a coil resists change, and why switches spark',
+    digest: [
+      'A coil opposes any change in its own current: v = L di/dt. Inductance L is measured in henrys (H).',
+      'Through a resistor, current in an inductor rises along i = (V/R)(1 − e^(−t/τ)) with τ = L/R, the same shape as the RC curve.',
+      'An inductor stores energy ½LI² in its magnetic field. Break the current suddenly and that energy jumps out as a high voltage: the spark.',
+    ],
+    era: '1831 Faraday’s induction → 1832 Henry’s self-induction → 1834 Lenz → 1893 the henry',
+    who: 'Joseph Henry',
+    hook: 'Disconnect a big coil from a small battery and you can get a shock far bigger than the battery’s voltage. Where does the extra voltage come from?',
+    story: [
+      'Joseph Henry, a teacher at the Albany Academy in New York, built the strongest electromagnets of his day by winding many turns of insulated wire, some lifting over a tonne [1]. In 1832 he noticed that when he broke the circuit of a long coil, a bright spark jumped at the break, much bigger than with a short wire. A coil, he realised, induces a voltage in itself when its own current changes [1]. Faraday found the same effect independently in 1834 [2].',
+      'That same year Emil Lenz in St Petersburg gave the rule for its direction: the induced voltage always opposes the change that causes it [3]. A coil acts like inertia for current: hard to start, hard to stop.',
+      'In 1893 the International Electrical Congress in Chicago named the unit of inductance the henry [1]. The car ignition coil, from about 1910, uses Henry’s spark on purpose: a 12 V battery current is interrupted to make the 20,000 V or so that fires the spark plug [4].',
+    ],
+    takeaway: 'An inductor fights changes in current. It stores energy in its magnetic field and releases it, sometimes violently, when the current is cut.',
+    sources: [
+      ['Wikipedia: Joseph Henry', W('Joseph_Henry'), 'self-inductance, 1832; the henry, 1893'],
+      ['Wikipedia: Inductance', W('Inductance'), 'history: Faraday 1834'],
+      ['Wikipedia: Lenz’s law', W('Lenz%27s_law'), 'Lenz, 1834'],
+      ['Wikipedia: Ignition coil', W('Ignition_coil'), 'Kettering system'],
+    ],
+    viz: 'rl_current',
+    vizTitle: 'Current in a Coil',
+    vizHow: 'Close the switch and watch the current climb slowly. Open it and see the voltage spike. Change L and R to stretch the curve.',
+    steps: [
+      ['A coil resists change', 'v_L = L\\,\\frac{di}{dt}', 'If the current is steady, di/dt = 0 and the ideal coil drops no voltage: it is just wire. Only change makes voltage. 1 H gives 1 V when the current changes by 1 A per second.'],
+      ['The RL curve', 'i(t) = \\frac{V}{R}\\,\\bigl(1 - e^{-t/\\tau}\\bigr) \\qquad \\tau = \\frac{L}{R}', 'Same shape as charging a capacitor, but here it is current that rises. After 5τ the coil is just a wire and the current is V/R.'],
+      ['Energy and the spark', 'U = \\tfrac12 L I^2', 'Open the switch and di/dt becomes huge, so v = L di/dt can reach thousands of volts across the opening contacts. Engineers put a diode across relay coils (a "flyback" diode) to give that energy a safe path.'],
+    ],
+    drills: [
+      ['Current in a 2 H coil rises by 3 A per second. Voltage across it?', ['6 V', '1.5 V', '0.67 V', '0 V'], 'v = L di/dt.', '2 × 3.', '6 V.'],
+      ['Time constant of a 0.5 H coil with 100 Ω?', ['5 ms', '50 s', '0.2 s', '200 s'], 'τ = L / R.', '0.5 / 100.', '0.005 s = 5 ms.'],
+      ['Energy in a 0.1 H coil carrying 4 A?', ['0.8 J', '0.4 J', '1.6 J', '0.2 J'], 'U = ½LI².', '½ × 0.1 × 16.', '0.8 J.'],
+    ],
+    boss: [
+      'Relay Coil Spike',
+      'A 0.2 H relay coil carries 50 mA. A transistor switches it off in 1 μs. Roughly what voltage appears across the coil, and what should you add?',
+      ['About 10,000 V; add a diode across the coil', 'About 0.01 V; nothing', 'About 12 V; a bigger resistor', 'Zero; coils store no energy'],
+      'v ≈ L Δi / Δt.',
+      '0.2 × 0.05 / 10⁻⁶ = 10,000 V, enough to destroy the transistor. A diode across the coil lets the current keep circulating and die away gently.',
+    ],
+    read: [
+      ['wiki', 'Inductor', 'How inductors are built, their cores, and what they are used for.', 'An inductor is a passive component that stores energy in a magnetic field when current flows through it. A changing current induces a voltage that opposes the change, according to Faraday’s and Lenz’s laws.'],
+      ['book', 'phys2', 'Chapter 14, Inductance', 'Self-inductance, RL circuits and energy in a magnetic field.', 'The chapter defines self-inductance, derives the inductance of a solenoid, analyses RL circuits and shows that the energy stored is ½LI².'],
+    ],
+    labs: [
+      phet('faradays-law', 'Faraday’s Law', 'Push the magnet in and out of the coil fast and slow. When is the induced voltage largest?'),
+      falstad('Load Circuits ▸ Basics ▸ Inductor, then open the switch and watch the voltage across the coil. Add a diode across it and compare.'),
+    ],
+    quiz: [
+      ['Who discovered self-inductance in 1832 while working as a teacher in Albany?', ['Joseph Henry', 'Michael Faraday', 'Emil Lenz', 'Nikola Tesla'], 'The unit of inductance is named after him.'],
+      ['Lenz’s law says the induced voltage…', ['Opposes the change that caused it', 'Always doubles the current', 'Points the same way as the field', 'Only appears in iron'], 'Coils act like inertia for current.'],
+    ],
+    gloss: [
+      ['Inductor', 'A coil that opposes changes in its current and stores energy in its magnetic field.', ['inductors', 'coil']],
+      ['Inductance', 'Voltage induced per rate of change of current; measured in henrys (H).', ['henry', 'mH']],
+      ['Flyback diode', 'A diode across a coil that safely absorbs the voltage spike when the current is switched off.'],
+    ],
+    events: [
+      [1832, 'Henry’s self-induction', 'A coil sparks when its own current is broken.'],
+      [1893, 'The henry named', 'Chicago electrical congress names the unit of inductance.'],
+    ],
+  }),
+
+  mk({
+    id: 'ee-106',
+    code: 'ELEC 106',
+    track: 'ee',
+    after: ['phys-207', 'math-007'],
+    title: 'Circuit Analysis: Nodes, Meshes and Thévenin',
+    subtitle: 'Systematic ways to solve any circuit, and how to shrink one to two parts',
+    digest: [
+      'Nodal analysis: pick a reference node, call the other node voltages unknowns, and write Kirchhoff’s current law at each. Mesh analysis does the same with loop currents and the voltage law.',
+      'Superposition: in a linear circuit, the effect of several sources is the sum of each one acting alone (others switched off).',
+      'Thévenin: seen from two terminals, any linear circuit acts like one voltage source V_th in series with one resistor R_th. Maximum power goes to a load equal to R_th.',
+    ],
+    era: '1845 Kirchhoff → 1853 Helmholtz → 1873 Maxwell’s loop currents → 1883 Thévenin → 1926 Norton',
+    who: 'Léon Charles Thévenin',
+    hook: 'A telegraph engineer in 1883 claimed that any tangle of batteries and wires, however big, looks from outside like one battery and one resistor. Was he right?',
+    story: [
+      'Kirchhoff’s two laws of 1845 (PHYS 207) can solve any circuit, but for big networks the equations pile up. In his Treatise on Electricity and Magnetism of 1873, James Clerk Maxwell showed a tidier way: give each loop of the circuit its own circulating current and write one equation per loop, the method now called mesh analysis [1].',
+      'In 1883 Léon Charles Thévenin, an engineer in the French telegraph service, published the theorem that bears his name: a network of sources and resistors, seen from two terminals, behaves exactly like one source in series with one resistor [2]. Hermann von Helmholtz had stated much the same in 1853, so it is sometimes called the Helmholtz–Thévenin theorem [2].',
+      'In 1926 Edward Lawry Norton at Bell Labs wrote the twin result in an internal memo: the same network is also one current source in parallel with one resistor. Hans Ferdinand Mayer at Siemens found it the same year [3]. And Moritz Jacobi, around 1840, had already found that a source delivers the most power when the load equals its internal resistance [4].',
+    ],
+    takeaway: 'Big circuits yield to method: node voltages or loop currents, superposition, and Thévenin’s trick of shrinking everything to one source and one resistor.',
+    sources: [
+      ['Wikipedia: Mesh analysis', W('Mesh_analysis'), 'loop currents; Maxwell 1873'],
+      ['Wikipedia: Thévenin’s theorem', W('Th%C3%A9venin%27s_theorem'), 'Helmholtz 1853, Thévenin 1883'],
+      ['Wikipedia: Norton’s theorem', W('Norton%27s_theorem'), 'Norton and Mayer, 1926'],
+      ['Wikipedia: Maximum power transfer theorem', W('Maximum_power_transfer_theorem'), 'Jacobi’s law'],
+      ['Wikipedia: Nodal analysis', W('Nodal_analysis'), 'node-voltage method'],
+    ],
+    viz: 'thevenin_equiv',
+    vizTitle: 'Shrinking a Circuit',
+    vizHow: 'A battery feeds a resistor network. Watch it collapse into one source and one resistor, then sweep the load resistance and find where the load gets the most power.',
+    steps: [
+      ['Nodal analysis', '\\sum_{\\text{out of node}} \\frac{V_n - V_m}{R} = 0', 'Choose one node as 0 V (ground). At every other node, the currents leaving through each resistor add to zero. N unknown node voltages, N equations: a system like those in MATH 007.'],
+      ['Thévenin equivalent', 'V_{th} = V_{\\text{open circuit}} \\qquad R_{th} = \\frac{V_{oc}}{I_{sc}}', 'V_th is the voltage across the terminals with nothing connected. R_th is the resistance you see looking in with every source switched off (batteries replaced by wires). Norton’s version: I_N = V_th / R_th in parallel with R_th.'],
+      ['Maximum power transfer', 'P_L = \\frac{V_{th}^2 R_L}{(R_{th}+R_L)^2} \\quad \\text{largest when } R_L = R_{th}', 'Then the load gets P = V_th² / (4R_th) and half the power is lost in R_th. Radio antennas and speakers are matched this way; power grids are not, because wasting half is unacceptable.'],
+    ],
+    drills: [
+      ['A 12 V source with two 6 Ω resistors in series; the terminals are across the lower one. V_th?', ['6 V', '12 V', '3 V', '0 V'], 'It is a voltage divider with nothing attached.', '12 × 6 / (6 + 6).', '6 V.'],
+      ['Same circuit: R_th looking in with the source replaced by a wire?', ['3 Ω', '12 Ω', '6 Ω', '0 Ω'], 'The two 6 Ω are then in parallel.', '6 × 6 / (6 + 6).', '3 Ω.'],
+      ['What load takes the most power from V_th = 6 V, R_th = 3 Ω, and how much?', ['3 Ω, 3 W', '0 Ω, 12 W', '6 Ω, 6 W', '3 Ω, 12 W'], 'R_L = R_th, P = V²/(4R).', '36 / 12.', '3 Ω gets 3 W.'],
+    ],
+    boss: [
+      'Sensor Bridge',
+      'A strain-gauge bridge has a 10 V supply and four 1 kΩ arms; one gauge rises to 1.010 kΩ. The output (between the two middle nodes) is about 24.9 mV, and R_th looking into the output is 1 kΩ. What does a 1 kΩ meter read?',
+      ['About 12.4 mV', 'About 24.9 mV', 'About 49.8 mV', 'Zero'],
+      'The meter loads a Thévenin source: V = V_th × R_L / (R_th + R_L).',
+      '24.9 × 1000 / 2000 ≈ 12.4 mV. A low-resistance meter halves the reading, which is why instrument amplifiers (ELEC 117) have very high input resistance.',
+    ],
+    read: [
+      ['wiki', 'Thévenin’s theorem', 'How to find V_th and R_th, with worked circuits.', 'Any linear electrical network containing only voltage sources, current sources and resistances can be replaced at terminals A–B by an equivalent combination of a voltage source in series with a resistance.'],
+      ['link', 'All About Circuits', 'Lessons in Electric Circuits, Volume I: DC, chapter 10', 'https://www.allaboutcircuits.com/textbook/direct-current/chpt-10/', 'A free textbook chapter on network analysis: branch current, mesh, nodal, superposition, Thévenin and Norton.', 'Chapter 10 works through each network analysis method on the same circuits so you can compare them, ending with the maximum power transfer theorem.'],
+    ],
+    labs: [
+      falstad('Build a 12 V source with 6 Ω and 6 Ω in series, add a variable load across the lower one, and find the load that makes the most power.'),
+      phet('circuit-construction-kit-dc', 'Circuit Construction Kit: DC', 'Build a two-battery circuit, then check superposition: remove one battery at a time and add the two currents.'),
+    ],
+    quiz: [
+      ['Where did Léon Charles Thévenin work when he published his theorem in 1883?', ['The French telegraph service', 'Bell Labs', 'Siemens', 'The University of Paris'], 'Long telegraph lines made circuit analysis practical.'],
+      ['Who wrote the current-source twin of Thévenin’s theorem in a 1926 Bell Labs memo?', ['Edward Lawry Norton', 'Harold Black', 'Harry Nyquist', 'Hendrik Bode'], 'Hans Ferdinand Mayer found it the same year.'],
+    ],
+    gloss: [
+      ['Nodal analysis', 'Solving a circuit by writing Kirchhoff’s current law at each node, with node voltages as unknowns.', ['node voltage']],
+      ['Thévenin equivalent', 'One voltage source in series with one resistor that behaves, at two terminals, exactly like a whole linear circuit.', ['Thevenin']],
+      ['Superposition', 'In a linear circuit, the total response is the sum of the responses to each source acting alone.'],
+    ],
+    events: [
+      [1873, 'Maxwell’s loop currents', 'Mesh analysis in the Treatise on Electricity and Magnetism.'],
+      [1883, 'Thévenin’s theorem', 'Any network is one source and one resistor from outside.'],
+    ],
+  }),
+
+  mk({
+    id: 'ee-107',
+    code: 'ELEC 107',
+    track: 'ee',
+    after: ['ee-104', 'phys-207'],
+    title: 'Measuring Electricity: Meters and the Oscilloscope',
+    subtitle: 'Galvanometers, shunts, multipliers and seeing voltage move',
+    digest: [
+      'A moving-coil meter is a small coil in a magnet’s field: current turns it against a spring. Full scale may be only 50 μA.',
+      'Ammeter: a small shunt resistor in parallel carries most of the current; connect in series. Voltmeter: a big resistor in series; connect in parallel.',
+      'Every meter disturbs what it measures (loading). An oscilloscope draws voltage against time, so you can see waves, spikes and timing.',
+    ],
+    era: '1820 Schweigger’s multiplier → 1882 d’Arsonval’s galvanometer → 1897 Braun’s tube → 1923 the AVOmeter',
+    who: 'Jacques-Arsène d’Arsonval & Karl Ferdinand Braun',
+    hook: 'You cannot see a current. So how did anyone ever measure one?',
+    story: [
+      'Months after Ørsted’s discovery, Johann Schweigger in Halle wound wire many times around a compass so each turn added its push to the needle: the "multiplier", the first galvanometer [1]. In 1882 Jacques-Arsène d’Arsonval and Marcel Deprez turned the idea inside out: a light coil turns between the poles of a fixed magnet, held back by a spring, with a pointer on a scale. Almost every needle meter since works this way [1].',
+      'In 1897 Karl Ferdinand Braun in Strasbourg built a cathode-ray tube in which a beam of electrons, steered by a voltage, draws a moving spot on a glowing screen: the start of the oscilloscope, and later of television [2].',
+      'In 1923 Donald Macadie, a British Post Office engineer tired of carrying separate meters, designed one box that measured amps, volts and ohms: the AVOmeter, the first multimeter [3]. Your digital multimeter does the same job with electronics instead of a coil.',
+    ],
+    takeaway: 'Meters are circuits too. Put ammeters in series and voltmeters in parallel, and remember that every meter slightly changes the circuit it measures.',
+    sources: [
+      ['Wikipedia: Galvanometer', W('Galvanometer'), 'Schweigger 1820; d’Arsonval–Deprez 1882'],
+      ['Wikipedia: Karl Ferdinand Braun', W('Karl_Ferdinand_Braun'), 'cathode-ray tube, 1897'],
+      ['Wikipedia: Multimeter', W('Multimeter'), 'Macadie’s AVOmeter, 1923'],
+      ['Wikipedia: Oscilloscope', W('Oscilloscope'), 'what an oscilloscope shows'],
+    ],
+    viz: 'meter_shunt',
+    vizTitle: 'Turning a Galvanometer Into Any Meter',
+    vizHow: 'Start with a 1 mA meter. Add a shunt to make it read amps, or a series resistor to make it read volts, and watch the needle and the loading error.',
+    steps: [
+      ['The moving-coil meter', '\\text{deflection} \\propto I \\qquad I_{fs} \\approx 50\\ \\mu\\text{A to } 1\\ \\text{mA}', 'The force on the coil is F = BIL (ELEC 104), so the needle turns in proportion to the current. It has its own coil resistance R_m, maybe 100 Ω.'],
+      ['Ammeter shunt', 'R_{sh} = \\frac{I_m R_m}{I - I_m}', 'To read up to I, put a small resistor in parallel so that only I_m goes through the meter. The ammeter must go in series with the circuit, and it should have almost zero resistance.'],
+      ['Voltmeter multiplier', 'R_s = \\frac{V}{I_m} - R_m', 'To read up to V, put a big resistor in series. The voltmeter goes in parallel, and it should have very high resistance, or it pulls current and changes the voltage it reads.'],
+    ],
+    drills: [
+      ['A 1 mA, 100 Ω meter must read up to 1 A. Shunt resistance?', ['About 0.1 Ω', '100 Ω', '1 kΩ', '10 Ω'], 'R_sh = I_m R_m / (I − I_m).', '0.001 × 100 / 0.999.', '≈ 0.1 Ω.'],
+      ['The same meter must read up to 10 V. Series resistor?', ['9.9 kΩ', '10 kΩ', '100 Ω', '0.1 Ω'], 'R_s = V / I_m − R_m.', '10 / 0.001 − 100.', '9900 Ω.'],
+      ['How do you connect an ammeter?', ['In series with the part', 'In parallel with the part', 'Across the battery', 'It does not matter'], 'All the current must go through it.', 'A break in the loop.', 'In series.'],
+    ],
+    boss: [
+      'The Meter That Lied',
+      'Two 100 kΩ resistors divide 10 V, so the middle should read 5 V. A cheap analogue voltmeter with 100 kΩ resistance is connected across the lower resistor. What does it read?',
+      ['About 3.3 V', '5 V', '10 V', '0 V'],
+      'The meter is in parallel with the lower 100 kΩ.',
+      'Lower half becomes 100 k ∥ 100 k = 50 kΩ. Reading = 10 × 50 / 150 ≈ 3.3 V. A digital meter with 10 MΩ input reads about 4.98 V. Loading matters.',
+    ],
+    read: [
+      ['wiki', 'Galvanometer', 'From Schweigger’s multiplier to d’Arsonval’s moving coil.', 'A galvanometer is an electromechanical instrument for detecting and measuring electric current. The d’Arsonval/Weston type uses a coil suspended in the field of a permanent magnet.'],
+      ['link', 'All About Circuits', 'Lessons in Electric Circuits, Volume I: DC, chapter 8', 'https://www.allaboutcircuits.com/textbook/direct-current/chpt-8/', 'Free chapter on meters: voltmeter and ammeter design, and the impact of meters on measurements.', 'Chapter 8 builds voltmeters and ammeters from a basic movement, then shows how meter resistance changes the circuit being measured.'],
+    ],
+    labs: [
+      phet('circuit-construction-kit-dc', 'Circuit Construction Kit: DC', 'Put the ammeter in parallel with a bulb by mistake and see what happens to the current.'),
+      online('Academo virtual oscilloscope', 'https://academo.org/demos/virtual-oscilloscope/', 'Change the time per division and volts per division until exactly two cycles of the wave fill the screen.'),
+    ],
+    quiz: [
+      ['Who built the cathode-ray tube that led to the oscilloscope, in 1897?', ['Karl Ferdinand Braun', 'Thomas Edison', 'Joseph Henry', 'Guglielmo Marconi'], 'He later shared a Nobel Prize for radio.'],
+      ['What was the AVOmeter, designed by Donald Macadie in 1923?', ['The first multimeter: amps, volts and ohms in one box', 'A lightning detector', 'A radio receiver', 'An electricity bill meter'], 'A Post Office engineer tired of carrying three meters.'],
+    ],
+    gloss: [
+      ['Galvanometer', 'A sensitive current meter, usually a coil turning in a magnet’s field.', ['moving-coil meter']],
+      ['Shunt', 'A small resistor in parallel with a meter so most of the current bypasses it.'],
+      ['Loading', 'The change a meter causes in the circuit it measures.'],
+      ['Oscilloscope', 'An instrument that draws a voltage against time on a screen.', ['scope']],
+    ],
+    events: [
+      [1882, 'D’Arsonval’s galvanometer', 'A moving coil in a fixed magnet: the needle meter.'],
+      [1897, 'Braun’s cathode-ray tube', 'Voltage steers a glowing spot: the oscilloscope begins.'],
+    ],
+  }),
+];

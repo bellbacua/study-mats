@@ -3,6 +3,8 @@
 // so a class that sits in two programs counts once, in both.
 import * as mate from './mate';
 import * as cs from './cs';
+import * as mece from './mece';
+import * as ece from './ece';
 import { TRACKS as MATE_TRACKS, YEAR_ENDS as MATE_YEARS } from '../tracks/meta';
 import { UM_COURSES } from '../um/make';
 
@@ -45,11 +47,54 @@ export const PROGRAM_DATA = {
     years: cs.YEAR_ENDS,
     soon: cs.SOON,
   },
+  mece: {
+    id: 'mece',
+    title: 'Materials + Electronics (combined)',
+    short: 'Materials + Electronics',
+    school: 'University of Mindanao, BS MatE and BS ECE years 1-2',
+    blurb: 'Ready for the first two years of either UM Materials Engineering or UM Electronics Engineering (and most of Electrical Engineering’s): every Materials class of years 1-2 woven together with circuits, electromagnetics, devices and communications.',
+    ready: true,
+    heading: 'From counting to materials and electronics',
+    intro: (weeks) =>
+      `${weeks} weeks, three classes a week, covering the first two years of both UM’s BS Materials Engineering and BS Electronics Engineering, with a head start on ECE year 3. Math, Chemistry, Physics, Materials and Electronics take turns, each following its own history from the very beginning.`,
+    tagLabel: 'Prepares you for',
+    weeks: mece.WEEKS,
+    stages: mece.STAGES,
+    tags: mece.TAGS,
+    keepUm: true,
+    courses: { ...UM_COURSES, ...mece.COURSES },
+    tracks: MATE_TRACKS,
+    trackIntro: 'Materials engineering splits into branches. A track adds a short run of deeper classes on top of your timetable. Electronic Materials sits right between the two degrees of this program.',
+    years: mece.YEAR_ENDS,
+    soon: {},
+  },
+  ece: {
+    id: 'ece',
+    title: 'BS Electronics Engineering',
+    short: 'Electronics Engineering',
+    school: 'University of Mindanao, years 1-2 plus a year 3 head start',
+    blurb: 'Circuits, electromagnetics, diodes, transistors, op-amps, digital logic, signals and radio, built from counting upward and lined up with the UM ECE program.',
+    ready: true,
+    heading: 'From counting to electronics engineering',
+    intro: (weeks) =>
+      `${weeks} weeks, three classes a week, covering the first two years of UM’s BS Electronics Engineering, with a head start on year 3. Math, Chemistry, Physics, Materials science and Electronics take turns, each in its own historical order, starting from nothing.`,
+    tagLabel: 'Prepares you for',
+    weeks: ece.WEEKS,
+    stages: ece.STAGES,
+    tags: ece.TAGS,
+    courses: { ...UM_COURSES, ...mece.COURSES },
+    tracks: MATE_TRACKS.filter((t) => t.id === 'electronic'),
+    trackIntro: 'A track adds a short run of deeper classes on top of your timetable. Electronic Materials goes inside the semiconductors, capacitors and magnets that electronics is built from.',
+    years: ece.YEAR_ENDS,
+    soon: {},
+  },
 };
 
 // Shown on the Welcome and Program pages, written ones first.
 export const PROGRAMS = [
   PROGRAM_DATA.mate,
+  PROGRAM_DATA.mece,
+  PROGRAM_DATA.ece,
   PROGRAM_DATA.cs,
   { id: 'phys', title: 'BS Physics', blurb: 'Mechanics to quantum physics, built the same way.', ready: false },
   { id: 'cheme', title: 'BS Chemical Engineering', blurb: 'Reactions, processes and plants.', ready: false },

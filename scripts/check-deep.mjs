@@ -28,10 +28,12 @@ const tex = (id, where, t) => {
 };
 const words = (id, where, v) => {
   // The Computing side topic is allowed to talk about computing.
-  if (/^(comp|cs|ai|sec|gfx)-/.test(String(id))) return;
+  if (/^(comp|cs|ai|sec|gfx|ece)-/.test(String(id))) return;
   if (typeof v === 'string') {
     // A few ordinary phrases that happen to contain a flagged word.
-    if (CS.test(v.replace(/genetic code|codons? table|code of ethics/gi, ''))) bad(id, `${where} uses programming wording: "${v.slice(0, 80)}"`);
+    // Electronics classes may say "terminals" (the two ends of a circuit part).
+    const plain = String(id).startsWith('ee-') ? v.replace(/\bterminals?\b/gi, '') : v;
+    if (CS.test(plain.replace(/genetic code|codons? table|code of ethics|electrical code/gi, ''))) bad(id, `${where} uses programming wording: "${v.slice(0, 80)}"`);
     if (/claude/i.test(v)) bad(id, `${where} names the assistant`);
   } else if (Array.isArray(v)) v.forEach((x, i) => words(id, `${where}[${i}]`, x));
   else if (v && typeof v === 'object') for (const [k, x] of Object.entries(v)) words(id, `${where}.${k}`, x);
