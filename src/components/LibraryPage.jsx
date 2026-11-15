@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { lazy, Suspense, useEffect, useMemo, useRef, useState } from 'react';
 import { MATERIALS, FAMILIES, PROPS, PRICE_BANDS, STRENGTH_NOTE, SOURCES as MSRC } from '../data/library/materials';
 import { FAILURES } from '../data/library/failures';
 import { FORMULAS, GROUPS, SOURCES as FSRC } from '../data/library/formulas';
@@ -25,6 +25,10 @@ import { BRIEFS } from '../data/library/briefs';
 import { ELEMENTS } from '../data/library/elements';
 import CollectionShelf from './CollectionShelf';
 import { COLLECTABLES } from '../state/collection';
+const PartsShelf = lazy(() => import('./Electronics').then((m) => ({ default: m.PartsShelf })));
+const CircuitShelf = lazy(() => import('./Electronics').then((m) => ({ default: m.CircuitShelf })));
+import { PARTS } from '../data/library/parts';
+import { CIRCUIT_CASES } from '../data/library/circuitCases';
 
 const SHELVES = [
   { id: 'collection', icon: '📒', label: 'My collection', blurb: `Your album of ${COLLECTABLES.length} people, discoveries and materials. Each one unlocks when you finish a class it appears in.` },
@@ -34,6 +38,8 @@ const SHELVES = [
   { id: 'detective', icon: '🕵️', label: 'Failure detective', blurb: `The ${FAILURES.length} failure files as mysteries. Get the clues one at a time and name the cause.` },
   { id: 'spot', icon: '🧩', label: 'Spot the microstructure', blurb: `A picture game: name ${MICROGRAPHS.length} kinds of microstructure from real microscope photos, eight at a time.` },
   { id: 'estimate', icon: '📏', label: 'Estimate it', blurb: `${ESTIMATES.length} how-big, how-heavy, how-many questions. Guess the size of the number on a powers-of-ten scale.` },
+  { id: 'parts', icon: '🔌', label: 'Electronic parts', blurb: `${PARTS.length} parts you will meet on a breadboard, with 3D models, pin maps and which way round they go. Plus a resistor colour-code reader and quiz.` },
+  { id: 'fixit', icon: '🛠️', label: 'Fix the circuit', blurb: `${CIRCUIT_CASES.length} beginner circuits that do not work. Read the diagram and the clues, name the fault, then see it fixed.` },
   { id: 'formulas', icon: '∑', label: 'Formula sheet', blurb: `${FORMULAS.length} key equations of the course, with their symbols, units and the class that teaches each.` },
   { id: 'people', icon: '👤', label: 'Who’s who', blurb: `${PEOPLE.length} people from the class stories, with the classes they appear in.` },
   { id: 'elements', icon: '⚛️', label: 'Periodic table', blurb: `All ${ELEMENTS.length} elements. Tap one for when and how it was found, its crystal structure, what it is used for and where it is mined.` },
@@ -696,6 +702,11 @@ export default function LibraryPage({ progress, onOpen, onGo, onMark, focus }) {
         />
       )}
       {shelf === 'estimate' && <EstimateShelf {...props} onMark={onMark} />}
+      {(shelf === 'parts' || shelf === 'fixit') && (
+        <Suspense fallback={<p className="lib-hint">Loading…</p>}>
+          {shelf === 'parts' ? <PartsShelf {...props} onMark={onMark} /> : <CircuitShelf {...props} onMark={onMark} />}
+        </Suspense>
+      )}
       {shelf === 'formulas' && <FormulasShelf {...props} />}
       {shelf === 'people' && <PeopleShelf {...props} text={text} />}
       {shelf === 'discoveries' && <DiscoveriesShelf {...props} />}

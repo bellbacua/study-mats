@@ -5,6 +5,7 @@ import { PEOPLE } from '../data/library/people';
 import { MATERIALS } from '../data/library/materials';
 import { DISCOVERIES } from '../data/library/discoveries';
 import { ESTIMATES } from '../data/library/estimates';
+import { PARTS } from '../data/library/parts';
 
 // One search box over everything: classes, glossary words, people, materials,
 // discoveries and the app's pages. Opens with Ctrl+K (⌘K on a Mac) or "/".
@@ -60,12 +61,15 @@ function buildIndex(pages) {
   for (const p of PEOPLE)
     out.push({ group: 'person', id: `person:${p.name}`, title: p.name, sub: `${yearLabel(p.born)}–${p.died == null ? 'living' : yearLabel(p.died)} · ${p.what}`, icon: '👤', act: { shelf: 'people', q: p.name }, extra: '' });
   for (const m of MATERIALS) out.push({ group: 'material', id: `material:${m.id}`, title: m.name, sub: m.note, icon: '🧱', act: { shelf: 'materials', q: m.name }, extra: '' });
+  for (const p of PARTS) out.push({ group: 'material', id: `part:${p.id}`, title: p.name, sub: `Electronic part · ${p.what}`, icon: '🔌', act: { shelf: 'parts', q: p.name }, extra: p.spot });
   for (const d of DISCOVERIES)
     out.push({ group: 'discovery', id: `disc:${d.title}`, title: d.title, sub: `${yearLabel(d.year)} · ${d.who}`, icon: '💡', act: { shelf: 'discoveries', q: d.title }, extra: d.how });
   const GAMES = [
     { shelf: 'spot', title: 'Spot the microstructure', sub: 'Picture game: name real microscope photos', icon: '🧩', extra: 'game quiz micrograph microscope microstructure pearlite martensite grains' },
     { shelf: 'estimate', title: 'Estimate it', sub: 'Guess how big, how heavy, how many', icon: '📏', extra: 'game quiz estimate guess fermi order of magnitude powers of ten' },
     { shelf: 'briefs', title: 'Design challenges', sub: 'Pick the right material for a real job', icon: '🎯', extra: 'game quiz material selection' },
+    { shelf: 'fixit', title: 'Fix the circuit', sub: 'Find the fault in a beginner circuit from clues', icon: '🛠️', extra: 'game quiz circuit electronics fault led resistor debug' },
+    { shelf: 'parts', title: 'Resistor colour code', sub: 'Read resistor bands, or quiz yourself', icon: '🌈', extra: 'game quiz resistor color colour code bands ohms electronics' },
     { shelf: 'detective', title: 'Failure detective', sub: 'Name the cause of a real accident from clues', icon: '🕵️', extra: 'game quiz failure accident' },
   ];
   for (const g of GAMES) out.push({ group: 'game', id: `game:${g.shelf}`, title: g.title, sub: g.sub, icon: g.icon, act: { shelf: g.shelf }, extra: g.extra });

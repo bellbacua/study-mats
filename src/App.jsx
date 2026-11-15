@@ -49,6 +49,7 @@ const PAGES = [
   { id: 'lab', label: 'Circuit lab', hint: 'Build circuits and logic gates on a 3D board', icon: '⚡', words: 'circuit simulator breadboard battery resistor led capacitor logic gates and or not nand adder flip-flop latch electronics arduino' },
   { id: 'timeline', label: 'Timeline', hint: 'Every class in the order it happened', icon: '⏳', words: 'history dates' },
   { id: 'glossary', label: 'Glossary', hint: 'Words from your classes, explained', icon: 'Aa', words: 'dictionary definitions terms' },
+  ...(['mate', 'mece', 'ece'].includes(PROGRAM_ID) ? [{ id: 'paths', label: 'Pathways', hint: 'From school to licence to a career', icon: '🧭', words: 'career jobs licence board exam prc ece' }] : []),
   { id: 'plan', label: 'Study plan', hint: 'A goal date and what to do each day', icon: '📅', words: 'schedule goal deadline hours pace calendar' },
   { id: 'mistakes', label: 'Mistakes', hint: 'Questions you got wrong, to redo', icon: '✗', words: 'wrong errors redo notebook missed' },
   { id: 'placement', label: 'Placement check', hint: 'Skip the classes you already know', icon: '🧭', words: 'skip level test already know start where placement' },
@@ -214,7 +215,7 @@ export default function App() {
           { id: 'map', label: 'Idea map', hint: 'How every class connects, and the path to any idea', icon: '🕸', words: 'graph prerequisites path connections tree web' },
   { id: 'timeline', label: 'Timeline', hint: 'Every class in the order it happened' },
           { id: 'glossary', label: 'Glossary', hint: 'Words from your classes, explained' },
-          ...(PROGRAM_ID === 'mate' ? [{ id: 'paths', label: 'Pathways', hint: 'From school to licence to a career' }] : []),
+          ...(['mate', 'mece', 'ece'].includes(PROGRAM_ID) ? [{ id: 'paths', label: 'Pathways', hint: 'From school to licence to a career' }] : []),
         ],
       },
       {
