@@ -416,7 +416,7 @@ export const batch_growth = {
 // ---------------------------------------------------------------------------
 const pcrLog = (n, E) => n * Math.log10(1 + E);
 export const pcr_cycles = {
-  camera: { kind: '2d', x: [-8, 8], y: [-4.5, 4.5] },
+  camera: { kind: '2d', x: [-8.9, 8.9], y: [-5, 5] }, // a little extra room so edge labels are not cut off
   mission: 'At 90% efficiency, find the first cycle at which one starting copy has become at least a billion (10⁹).',
   goal: (t) => Math.abs(t.E - 0.9) < 0.01 && t.n === 33,
   params: [
@@ -436,7 +436,7 @@ export const pcr_cycles = {
   setup(kit) {
     // one cycle's temperature profile
     const bx = -6.6;
-    const by = 2.4;
+    const by = 1.9;
     const T = (c) => by + ((c - 50) / 50) * 1.8;
     kit.line([[bx, T(95)], [bx + 1.2, T(95)], [bx + 1.5, T(55)], [bx + 2.7, T(55)], [bx + 3.0, T(72)], [bx + 4.2, T(72)]], { color: C.red, width: 3 });
     kit.label('95\\,^\\circ\\text{C separate}', [bx + 0.6, T(95) + 0.35], { size: 11 });

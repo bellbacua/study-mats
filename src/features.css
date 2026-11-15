@@ -111,9 +111,43 @@
   & .verdict.no {
     color: var(--red);
   }
-  /* pale subject inks need more depth on paper */
-  & :is(.track-start, .track-philo, .track-comp, .track-econ, .track-prog, .track-disc, .track-algo, .track-sys, .track-ai) {
-    filter: brightness(0.62) saturate(1.3);
+  /* Pale subject inks get a deeper shade on paper. (A brightness filter used
+     to do this, but it also muddied the badge behind the code.) */
+  & .track-start {
+    color: #4f7f1c;
+  }
+  & .track-philo {
+    color: #a8457a;
+  }
+  & .track-comp {
+    color: #3f5bd0;
+  }
+  & .track-econ {
+    color: #86680f;
+  }
+  & .track-prog {
+    color: #1d78a8;
+  }
+  & .track-disc {
+    color: #6a46c0;
+  }
+  & .track-algo {
+    color: #3d8622;
+  }
+  & .track-sys {
+    color: #a2560f;
+  }
+  & .track-ai {
+    color: #bf3864;
+  }
+  & .track-ee {
+    color: #806a00;
+  }
+  & .track-sec {
+    color: #ad4618;
+  }
+  & .track-gfx {
+    color: #0f7f73;
   }
 }
 

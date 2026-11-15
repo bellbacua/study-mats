@@ -40,6 +40,12 @@ Don't: gradients on cards, more than one accent in a view, pure `#000` canvas, c
 - **Eyebrows:** 12px, 600, uppercase, +0.08em, `--muted`.
 - Body 16px/1.55. Never below 12px.
 
+## Page heads
+- Every page opens with an h1 and a short muted intro. When the h1 is not the page's own name ("From counting to materials engineering"), an eyebrow above it names the page (Roadmap, Timeline, Pathways, Idea map, Study plan). No eyebrow that only repeats the h1.
+- Empty states use `.empty-card`: a bold one-line title, then what to do.
+- Toggles that pick one of a few views: `.seg` (segmented, on = `--surface-2`) or `.chip` pills (on = subject colour, else blue, at 14%). Solid blue is only for primary buttons.
+- Words: a lesson is always a "class" in the UI.
+
 ## Space, radius, borders
 - 4px grid: 4, 8, 12, 16, 24, 32, 48, 96.
 - Radius: 8 buttons and inputs, 12 cards, 16 large panels and the animation stage, 999 chips and pills only.
@@ -51,6 +57,7 @@ Don't: gradients on cards, more than one accent in a view, pure `#000` canvas, c
 - **Cards:** `--surface`, hairline, 12px radius, 16–24px padding. Hover lifts 2px and brightens the border; no shadow.
 - **Chips:** pill, hairline; "on" state tints with the subject colour at ~14%.
 - **Animation stage:** dark radial vignette behind a transparent WebGL canvas; caption bar below, never on top of the drawing.
+  The "Try it" line under the player lights up (gold border) when the story ends; nothing is laid over the drawing except the scene's own callouts.
 - **Floating layers** (tooltip, pop quiz, notes): `#0b0e12`, hairline, one soft shadow `0 20px 60px rgba(0,0,0,.5)`.
 
 ## Motion

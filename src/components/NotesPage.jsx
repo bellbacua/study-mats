@@ -28,8 +28,9 @@ export default function NotesPage({ notes, onOpen }) {
       </header>
 
       {!withNotes.length && (
-        <div className="empty-state" data-reveal>
-          <p>No notes yet. Open any class, click the “‹ Notes” tab on the edge of the screen, and start typing.</p>
+        <div className="empty-card" data-reveal>
+          <strong>No notes yet</strong>
+          <p>Open any class, click the “‹ Notes” tab on the edge of the screen, and start typing. Everything you write shows up here.</p>
         </div>
       )}
 

@@ -102,7 +102,7 @@ export default function TodayPage({ progress, active, nextUp, dueNow, spec, plan
           <section className={`today-hero subj-${hero.track}`} data-reveal>
             <div className="today-hero-top">
               <span className="eyebrow">
-                {heroResume ? 'Pick up where you left off' : hero.start ? `Start here · class ${START_LESSONS.indexOf(hero) + 1} of ${START_LESSONS.length}` : done ? 'Your next class' : 'Start here'}
+                {heroResume ? 'Pick up where you left off' : hero.start ? `Class ${START_LESSONS.indexOf(hero) + 1} of ${START_LESSONS.length}` : done ? 'Your next class' : 'Your first class'}
               </span>
               <span className={`subject track-${hero.track}`}>{SUBJECTS[hero.track] || hero.track}</span>
             </div>

@@ -1,15 +1,30 @@
 import { useMemo, useState } from 'react';
 import { TIMELINE, ERAS, formatYear } from '../data/timeline';
-import { ALL_LESSONS as LESSONS, SUBJECTS, whereLabel } from '../data/path';
+import { ALL_LESSONS as LESSONS, LESSONS as CORE, SUBJECTS, whereLabel } from '../data/path';
 import { useReveal } from '../state/useReveal';
 
-const SUBJECT_KEYS = ['start', 'math', 'chem', 'phys', 'mate', 'philo', 'bio', 'comp', 'econ'];
+// One chip for every subject that has events (Electronics, AI and the CS
+// subjects too, which a fixed list used to leave out of the timeline).
+const SUBJECT_KEYS = ['start', ...Object.keys(SUBJECTS).filter((k) => k !== 'start')].filter((k) => TIMELINE.some((ev) => ev.subject === k));
+
+// The same moment can be told in several classes (Volta's pile turns up in
+// chemistry, physics, materials and electronics). Show it once, linked to the
+// class on your own timetable when there is one.
+const CORE_IDS = new Set(CORE.map((l) => l.id));
+const UNIQUE = [
+  ...TIMELINE.reduce((m, ev) => {
+    const k = `${ev.year}-${ev.title}`;
+    const had = m.get(k);
+    if (!had || (!CORE_IDS.has(had.lesson) && CORE_IDS.has(ev.lesson))) m.set(k, ev);
+    return m;
+  }, new Map()).values(),
+];
 
 export default function Timeline({ progress, onOpen }) {
   const [on, setOn] = useState(() => new Set(SUBJECT_KEYS));
   const byId = useMemo(() => Object.fromEntries(LESSONS.map((l) => [l.id, l])), []);
   const events = useMemo(
-    () => [...TIMELINE].sort((a, b) => a.year - b.year).filter((ev) => on.has(ev.subject)),
+    () => [...UNIQUE].sort((a, b) => a.year - b.year).filter((ev) => on.has(ev.subject)),
     [on]
   );
   useReveal([events.length]);
@@ -27,6 +42,7 @@ export default function Timeline({ progress, onOpen }) {
   return (
     <div className="timeline">
       <header className="timeline-head" data-reveal>
+        <span className="eyebrow">Timeline</span>
         <h1>45,000 years of figuring things out</h1>
         <p>Every story from every class, in order. Tap an event to open the class that tells it.</p>
         <div className="chips">

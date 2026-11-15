@@ -45,7 +45,11 @@ function buildIndex(pages) {
       extra: [l.subtitle, l.history?.protagonist, l.history?.hook].join(' '),
     });
   }
+  const words = new Set();
   for (const g of GLOSSARY) {
+    // a word taught in two classes is listed once, at its first class
+    if (words.has(g.term.toLowerCase())) continue;
+    words.add(g.term.toLowerCase());
     const l = byId[g.lesson];
     out.push({
       group: 'word',

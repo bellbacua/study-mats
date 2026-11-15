@@ -90,7 +90,7 @@ export default function ProgressPage({ progress, nextUp, onOpen, onPrintWeek }) 
 
       {nextUp && (
         <button type="button" className="continue" onClick={() => onOpen(nextUp.id)} data-reveal>
-          <span className="eyebrow">Today&apos;s class · {nextUp.termId.replace('week-', 'Week ')}, {nextUp.day}</span>
+          <span className="eyebrow">{nextUp.start ? 'Your next class · Start here, before week 1' : <>Today&apos;s class · {nextUp.termId?.replace('week-', 'Week ')}, {nextUp.day}</>}</span>
           <strong>{nextUp.title}</strong>
         </button>
       )}

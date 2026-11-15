@@ -410,7 +410,7 @@ const rlI = (t, L, Rr, ton, diode) => {
   return Ion * Math.exp(-(t - ton) / tauOff);
 };
 export const rl_current = {
-  camera: { kind: '2d', x: [-8, 8], y: [-4.5, 4.5] },
+  camera: { kind: '2d', x: [-8.9, 8.9], y: [-5, 5] }, // a little extra room so edge labels are not cut off
   ease: 3,
   mission: 'Find settings where the current never quite reaches its final value before the switch opens.',
   goal: (t) => (t.L / t.R) * 1000 > 120,

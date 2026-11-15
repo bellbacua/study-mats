@@ -78,7 +78,12 @@ export default function App() {
   };
 
   // The open class may be a core class or one from a specialization track.
-  const active = ALL_LESSONS.find((l) => l.id === state.activeLessonId) || LESSONS[0];
+  // The Start here level, and where it leads after its last class.
+  const startInfo = startState(state.passed, state.readings);
+  // A newcomer who has not opened anything yet is pointed at the same first
+  // class as Today (Start here, when it leads), not the default week 1 class.
+  const untouched = state.activeLessonId === 'math-001' && !Object.keys(state.passed).length && !Object.keys(state.readings).some((k) => k.startsWith('part:'));
+  const active = (untouched && startInfo?.leads && startInfo.next) || ALL_LESSONS.find((l) => l.id === state.activeLessonId) || LESSONS[0];
   const seq = seqOf(active);
   const pos = seq.findIndex((l) => l.id === active.id);
   const lesson = active;
@@ -86,8 +91,6 @@ export default function App() {
   // Classes the placement check found you already know are not "next".
   const known = useMemo(() => knownSet(state.items), [state.items]);
   const nextUp = nextClass(state.passed, known);
-  // The Start here level, and where it leads after its last class.
-  const startInfo = startState(state.passed, state.readings);
   const skipStart = () => actions.toggleReading('start:skip');
   const afterStart = (l) => (l?.start ? nextUp : null);
   const done = LESSONS.filter((l) => state.passed[l.id]).length;
@@ -198,7 +201,7 @@ export default function App() {
 
   const saveMode = status.mode === 'sqlite' ? 'sqlite' : status.mode === 'offline' ? 'offline' : 'loading';
 
-  const lessonLabel = lesson.start ? 'Start here' : lesson.side ? 'GE class' : lesson.spec ? 'Track class' : lesson.from ? 'Borrowed class' : `Lesson ${idx + 1}`;
+  const lessonLabel = lesson.start ? 'Start here' : lesson.side ? 'GE class' : lesson.spec ? 'Track class' : lesson.from ? 'Borrowed class' : `Class ${idx + 1}`;
   const navItems = useMemo(
     () => [
       { id: 'today', label: 'Today' },
@@ -394,7 +397,7 @@ export default function App() {
         ) : view === 'exams' ? (
           <ExamsPage progress={state} actions={actions} />
         ) : view === 'progress' ? (
-          <ProgressPage progress={state} nextUp={nextUp} onOpen={actions.open} onPrintWeek={setGuideWeek} />
+          <ProgressPage progress={state} nextUp={startInfo?.leads ? startInfo.next : nextUp} onOpen={actions.open} onPrintWeek={setGuideWeek} />
         ) : (
           <LessonView
             lesson={lesson}

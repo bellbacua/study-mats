@@ -458,7 +458,7 @@ export const slope_tracer = {
 const V = (x) => x * (20 - 2 * x) ** 2;
 
 export const box_optimizer = {
-  camera: { kind: '2d', x: [-8, 8], y: [-4.5, 4.5] },
+  camera: { kind: '2d', x: [-8.9, 8.9], y: [-5, 5] }, // a little extra room so edge labels are not cut off
   mission: 'Find the corner cut that gives the biggest box.',
   goal: (t) => Math.abs(t.x - 10 / 3) < 0.12,
   params: [{ key: 'x', label: 'Corner cut x (cm)', min: 0.5, max: 9.5, step: 0.1, value: 1 }],
@@ -480,7 +480,7 @@ export const box_optimizer = {
     kit.rect(ox, oy, 20 * s, 20 * s, { color: C.grey, opacity: 0.25, strokeColor: C.axis, width: 1.5 });
     const cuts = [0, 1, 2, 3].map(() => kit.rect(0, 0, 0, 0, { color: C.red, opacity: 0.45, strokeColor: C.red, width: 1 }));
     const folds = [0, 1, 2, 3].map(() => kit.line([[0, 0], [0, 0]], { color: C.yellow, dashed: true, width: 1.5, create: false }));
-    kit.label('\\text{sheet, top view}', [ox + 2.5, oy + 5.5], { size: 14, color: '#8b949e' });
+    kit.label('\\text{sheet, top view}', [ox + 2.5, oy - 0.4], { size: 14, color: '#8b949e' });
     // folded box (oblique sketch)
     const front = kit.rect(0, 0, 0, 0, { color: C.blue, opacity: 0.35, strokeColor: C.blue, width: 2 });
     const side = kit.fill([], { color: C.blue, opacity: 0.2 });

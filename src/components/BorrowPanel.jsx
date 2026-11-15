@@ -50,7 +50,7 @@ export default function BorrowPanel({ progress, onToggleKey, onOpen, startWeek }
       {others.length > 1 && (
         <div className="borrow-tabs">
           {others.map((p) => (
-            <button key={p.id} type="button" className={`btn sm ${p.id === progId ? 'primary' : 'ghost'}`} onClick={() => setProgId(p.id)}>
+            <button key={p.id} type="button" className={`chip ${p.id === progId ? 'on' : ''}`} aria-pressed={p.id === progId} onClick={() => setProgId(p.id)}>
               {p.title}
             </button>
           ))}

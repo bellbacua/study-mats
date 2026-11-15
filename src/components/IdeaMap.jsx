@@ -153,7 +153,7 @@ export default function IdeaMap({ progress, onOpen }) {
             {PROGRAM.short || PROGRAM.title}
           </button>
           <button type="button" className={scope === 'all' ? 'on' : ''} onClick={() => setScope('all')}>
-            Both programs
+            All programs
           </button>
         </div>
         <div className="map-search">

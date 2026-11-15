@@ -105,7 +105,7 @@ export const ortho_views = {
     {
       say: 'Now look straight down and trace onto the floor: the top view, showing width and depth. The line across it is where the upright meets the base.',
       set: { view: 'top' },
-      cam: { position: [0.4, 11, 3], target: [0, 0, 0] },
+      cam: { position: [0.45, 13, 3.6], target: [0, 0, 0] },
       ms: 11000,
       notes: [{ text: 'traced on the floor: width and depth', at: [5.2, -1.2, 0], to: [1.0, -2.9, 0.5], color: C.green }],
     },
@@ -130,7 +130,7 @@ export const ortho_views = {
     {
       say: 'From above you look straight down the hole, so it shows as a full circle, with two centre lines crossing at its middle.',
       set: { view: 'top' },
-      cam: { position: [0.4, 11, 3], target: [0, 0, 0] },
+      cam: { position: [0.45, 13, 3.6], target: [0, 0, 0] },
       ms: 9500,
     },
   ],

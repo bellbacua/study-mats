@@ -57,6 +57,7 @@ export default function PathwaysPage({ progress, onOpen }) {
   return (
     <div className="timeline pathways">
       <header className="timeline-head" data-reveal>
+        <span className="eyebrow">Pathways</span>
         <h1>{field.title}</h1>
         <p>The road from today to working life. Pick a path to see the jobs along it, and the classes that lead there.</p>
         <div className="pw-field" role="group" aria-label="Field">

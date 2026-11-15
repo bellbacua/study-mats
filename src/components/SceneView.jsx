@@ -304,11 +304,6 @@ export default function SceneView({ type, mission, beat, onGoal, goalDone }) {
           <div className="scene-canvas" ref={box} />
           {!ready && <div className="scene-loading">Setting up the animation…</div>}
           {def.camera?.kind === '3d' && <div className="scene-hint">drag to rotate · scroll to zoom</div>}
-          {cur === nBeats - 1 && nBeats > 1 && playing < 0 && (def.mission || mission) && (
-            <div className="scene-yourturn">
-              <strong>Your turn.</strong> {def.mission || mission.replace(/^Lab Mission:\s*/i, '')} <span>Use the controls below{stage.current?.handles?.length ? ', or drag the glowing points' : ''}.</span>
-            </div>
-          )}
         </div>
         <div className="scene-bar">
           {/* Every step's text sits invisibly in the same spot, so the bar is always as tall as the longest step and nothing below it jumps. */}
@@ -419,11 +414,14 @@ export default function SceneView({ type, mission, beat, onGoal, goalDone }) {
       </div>
 
       {(def.mission || mission) && (
-        <div className={`mission ${goalDone ? 'done' : ''}`}>
+        // Lights up when the story ends: the learner's turn. (It used to be a
+        // box over the drawing, which covered labels and data.)
+        <div className={`mission ${goalDone ? 'done' : ''} ${!goalDone && cur === nBeats - 1 && nBeats > 1 && playing < 0 ? 'now' : ''}`}>
           <span className="mission-icon">{goalDone ? '✓' : '◎'}</span>
           <span>
             <strong>Try it: </strong>
-            {def.mission || mission.replace(/^Lab Mission:\s*/i, '')}
+            {def.mission || mission.replace(/^Lab Mission:\s*/i, '')}{' '}
+            <span className="mission-how">Use the controls below{stage.current?.handles?.length ? ', or drag the glowing points' : ''}.</span>
           </span>
         </div>
       )}

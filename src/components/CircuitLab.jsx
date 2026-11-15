@@ -99,6 +99,9 @@ export default function CircuitLab({ progress, onOpen, onMark, setItem, startMod
   const mem = useRef({});
   const lastT = useRef(0);
   const saveT = useRef(0);
+  // Challenges count only once the learner has changed the board themselves,
+  // so a saved or freshly loaded example never wins one by itself.
+  const touched = useRef(false);
   const solvedRef = useRef(progress.readings);
   solvedRef.current = progress.readings;
   const markRef = useRef(onMark);
@@ -126,6 +129,7 @@ export default function CircuitLab({ progress, onOpen, onMark, setItem, startMod
   useEffect(() => {
     const b = new Board3D(host.current, mode, {
       onChange: (m) => {
+        touched.current = true;
         setCount(m.parts.length);
         clearTimeout(saveT.current);
         saveT.current = setTimeout(() => {
@@ -154,6 +158,7 @@ export default function CircuitLab({ progress, onOpen, onMark, setItem, startMod
         setFrame(res);
         const dt = Math.max(0, res.time - lastT.current);
         lastT.current = res.time;
+        if (!touched.current) return;
         for (const c of CIRCUIT_CHALLENGES) {
           if (solvedRef.current[`lab:${c.id}`] || c.event) continue;
           const ok = c.check ? c.check(res, model) : c.track(res, model, (mem.current[c.id] ||= {}), dt);
@@ -174,6 +179,7 @@ export default function CircuitLab({ progress, onOpen, onMark, setItem, startMod
     setActive(null);
     mem.current = {};
     lastT.current = 0;
+    touched.current = false;
     return () => {
       clearTimeout(saveT.current);
       b.destroy();
@@ -214,6 +220,8 @@ export default function CircuitLab({ progress, onOpen, onMark, setItem, startMod
     });
     board.current?.select(null);
     board.current?.resetView();
+    touched.current = false;
+    mem.current = {};
     say(`Loaded “${ex.title}”. Ctrl+Z puts your own build back.`);
   };
 
@@ -237,7 +245,6 @@ export default function CircuitLab({ progress, onOpen, onMark, setItem, startMod
   return (
     <div className="lab-page">
       <header className="lab-head">
-        <span className="eyebrow">Explore · Lab</span>
         <h1>Circuit lab</h1>
         <p>Build real circuits on a 3D workbench and watch them run. Nothing can break for real, so try things.</p>
         <div className="lab-modes" role="tablist" aria-label="Bench">
@@ -270,7 +277,7 @@ export default function CircuitLab({ progress, onOpen, onMark, setItem, startMod
         <div className="lab-main">
           <div className="lab-bar">
             <button type="button" className="btn ghost sm" onClick={() => board.current?.undo()} title="Undo (Ctrl+Z)">↶ Undo</button>
-            <button type="button" className="btn ghost sm" onClick={() => board.current?.redo()} title="Redo (Ctrl+Y)">↷</button>
+            <button type="button" className="btn ghost sm" onClick={() => board.current?.redo()} title="Redo (Ctrl+Y)">↷ Redo</button>
             <button type="button" className="btn ghost sm" onClick={() => board.current?.resetView()}>Reset view</button>
             <button type="button" className="btn ghost sm" onClick={() => board.current?.clear()} disabled={!count}>Clear board</button>
             <span className="lab-gap" />

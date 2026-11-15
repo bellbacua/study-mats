@@ -12,7 +12,7 @@ export const EXAMS = [
     id: `quiz-week-${i + 1}`,
     title: `Week ${i + 1} quiz`,
     kind: 'quiz',
-    blurb: t.subtitle,
+    blurb: [...new Set((t.subtitle || '').split(' · '))].join(' · '), // each subject once
     lessons: weekLessons(i + 1),
     count: 8,
     after: i + 1,

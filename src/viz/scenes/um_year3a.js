@@ -319,7 +319,7 @@ function dscState(T, m) {
 }
 
 export const dsc_curve = {
-  camera: { kind: '2d', x: [-8, 8], y: [-4.5, 4.5] },
+  camera: { kind: '2d', x: [-8.9, 8.9], y: [-5, 5] }, // a little extra room so edge labels are not cut off
   mission: 'Put the probe on the bottom of the melting peak of quenched PET.',
   goal: (t) => t.m === 'PET' && Math.abs(t.T - 250) < 3,
   params: [

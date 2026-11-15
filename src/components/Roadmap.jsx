@@ -15,6 +15,7 @@ export default function Roadmap({ progress, nextUp, onOpen, status, dueNow = 0, 
   return (
     <div className="roadmap">
       <header className="roadmap-head">
+        <span className="eyebrow">Roadmap</span>
         <h1>{PROGRAM.heading}</h1>
         <p>{PROGRAM.intro(CURRICULUM_TERMS.length)}</p>
         <div className="roadmap-meter">
@@ -28,8 +29,8 @@ export default function Roadmap({ progress, nextUp, onOpen, status, dueNow = 0, 
             {status === 'sqlite' ? (window.__TAURI_INTERNALS__ ? 'Saved on this computer' : 'Progress saved') : status === 'offline' ? 'Saving in this browser only' : 'Loading…'}
           </span>
           {onBorrow && otherNames && (
-            <button type="button" className="btn ghost sm borrow-cta" onClick={onBorrow}>
-              + Add subjects from {otherNames}
+            <button type="button" className="btn ghost sm borrow-cta" onClick={onBorrow} title={`Borrow classes from ${otherNames}`}>
+              + Add subjects from other programs
             </button>
           )}
         </div>

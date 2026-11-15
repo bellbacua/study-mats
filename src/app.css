@@ -138,6 +138,7 @@ h3 {
 }
 
 .track {
+  white-space: nowrap;
   font-family: var(--mono);
   font-size: 12px;
   font-weight: 600;
@@ -474,7 +475,8 @@ h3 {
 /* ---------- lesson ---------- */
 .lesson-crumbs {
   display: flex;
-  gap: 12px;
+  flex-wrap: wrap;
+  gap: 6px 12px;
   align-items: center;
   color: var(--muted);
   font-size: 14px;
@@ -817,6 +819,19 @@ pre {
 }
 .mission-icon {
   font-size: 18px;
+}
+/* the story has ended: the learner's turn */
+.mission.now {
+  border-style: solid;
+  border-color: color-mix(in srgb, var(--yellow) 55%, transparent);
+  color: var(--text);
+  animation: rise 0.5s ease-out;
+}
+.mission.now strong {
+  color: var(--yellow);
+}
+.mission-how {
+  color: var(--faint);
 }
 
 .scene-panel {
@@ -1254,8 +1269,8 @@ input[type='range'] {
 }
 .chip.on {
   color: var(--text);
-  border-color: var(--subj);
-  background: color-mix(in srgb, var(--subj) 14%, transparent);
+  border-color: var(--subj, var(--blue));
+  background: color-mix(in srgb, var(--subj, var(--blue)) 14%, transparent);
 }
 .subj-math {
   --subj: var(--blue);
@@ -1423,6 +1438,11 @@ input[type='range'] {
   color: var(--muted);
   font-size: 14px;
   margin: 6px 0 8px;
+}
+.gl-sense {
+  margin-top: 10px;
+  padding-top: 2px;
+  border-top: 1px solid var(--line);
 }
 .tl-link-btn {
   background: none;
@@ -5069,3 +5089,24 @@ button.continue:hover::after {
   .gm-frame img, .gm-band, .gm-mark { animation: none; }
 }
 .gm-center { justify-content: center; margin-bottom: 0; }
+
+/* Phones: the two always-there edge buttons (pop quiz, notes) sit over the
+   page, so keep them small and tucked into the edges. */
+@media (max-width: 720px) {
+  .ambush-toggle {
+    left: 8px;
+    bottom: 8px;
+    width: 32px;
+    height: 32px;
+    font-size: 14px;
+    opacity: 0.45;
+  }
+  .notes-handle:not(.is-open) {
+    padding: 8px 3px;
+    font-size: 15px;
+    gap: 4px;
+  }
+  .notes-handle:not(.is-open) span {
+    font-size: 11px;
+  }
+}
