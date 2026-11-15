@@ -91,3 +91,10 @@ Don't: gradients on cards, more than one accent in a view, pure `#000` canvas, c
 - **Each Learn-it part fades its examples:** ① Watch one solved (step reveal), ② Finish one yourself (the second example with its last step blank, typed and checked when the answer is one number; otherwise worked on paper and compared), ③ On your own. A cruising learner gets example 2 cold.
 - **Hint ladder:** “Hint” opens one rung at a time: Nudge → A solved one like it → The first steps (solution with the result as “?”, or half the wrong options crossed out) → The full answer. Rungs stack as `.rung` cards on `--surface-2`. All rungs come from checked text; hand-written first steps live in `src/data/deep/hintSteps.js` and are checked by `node scripts/check-hints.mjs`.
 - **Adapting:** recent first tries are saved as learner item `form/learn`. Struggling = easier problems first; cruising = harder first. The Review page has a 10-problem **practice set** that moves up a level after a clean answer and down after a miss or heavy help (level meter: green/gold/red bars).
+
+## Circuit lab (src/components/CircuitLab.jsx, src/lab/)
+- Explore ▸ Circuit lab. Two benches on one 3D workbench (`Board3D.js`): **Circuit playground** (16 × 10 board) and **Logic sandbox** (22 × 14).
+- All models are our own, built from plain three.js shapes in `parts3d.js`; the solvers are our own too (`circuitSim.js`: nodal analysis with a piecewise-linear LED; `logicSim.js`: nets plus one-gate-at-a-time ticks so latches settle).
+- Look: dark board slab with tin pads, soft shadows, one accent (blue) for selection and hover. Circuit wires are coloured by voltage (blue 0 V → gold at the battery's voltage); current shows as moving pale-gold beads. Logic wires glow gold for 1, slate for 0, red when two outputs clash.
+- Controls: left-drag places (parts between two points; wires follow the pointer with L-bends), right-drag or two fingers turns, scroll zooms. Wires join only where one ends on another or at a pin, never at a plain crossing.
+- Wins are readings `lab:<challenge id>`; builds save as items `lab/circuit` and `lab/logic`.

@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { lazy, Suspense, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { LESSONS, ALL_LESSONS, TRACKS, PROGRAMS, PROGRAM_ID, rememberProgram, seqOf, trackLessons, trackClassState, openSlots, sideByWeek, weekNumber, startState } from './data/path';
 import LessonView from './components/LessonView';
 import Roadmap from './components/Roadmap';
@@ -9,6 +9,7 @@ import Welcome from './components/Welcome';
 import Timeline from './components/Timeline';
 import LibraryPage from './components/LibraryPage';
 import PathwaysPage from './components/PathwaysPage';
+const CircuitLab = lazy(() => import('./components/CircuitLab'));
 import GlossaryPage from './components/GlossaryPage';
 import ExamsPage from './components/ExamsPage';
 import ProgressPage, { streaks } from './components/ProgressPage';
@@ -45,6 +46,7 @@ const PAGES = [
   { id: 'spec', label: 'Program', hint: 'Your program, tracks and borrowed subjects', icon: '🎓', words: 'tracks specialization borrow switch' },
   { id: 'library', label: 'Library', hint: 'Materials, people, formulas, case files', icon: '📚', words: 'collection album shelves' },
   { id: 'map', label: 'Idea map', hint: 'How every class connects, and the path to any idea', icon: '🕸', words: 'graph prerequisites path connections tree web' },
+  { id: 'lab', label: 'Circuit lab', hint: 'Build circuits and logic gates on a 3D board', icon: '⚡', words: 'circuit simulator breadboard battery resistor led capacitor logic gates and or not nand adder flip-flop latch electronics arduino' },
   { id: 'timeline', label: 'Timeline', hint: 'Every class in the order it happened', icon: '⏳', words: 'history dates' },
   { id: 'glossary', label: 'Glossary', hint: 'Words from your classes, explained', icon: 'Aa', words: 'dictionary definitions terms' },
   { id: 'plan', label: 'Study plan', hint: 'A goal date and what to do each day', icon: '📅', words: 'schedule goal deadline hours pace calendar' },
@@ -61,6 +63,7 @@ export default function App() {
   const [view, setView] = useState('today');
   const [searchOpen, setSearchOpen] = useState(false);
   const [libFocus, setLibFocus] = useState(null);
+  const [labMode, setLabMode] = useState('circuit');
   const [recap, setRecap] = useState(null); // { id, score } of a class just passed
   const [toast, setToast] = useState(null); // streak milestone reached
   const [prefs, setPrefs] = usePrefs();
@@ -107,6 +110,10 @@ export default function App() {
 
   const actions = {
     ...store,
+    openLab: (m) => {
+      setLabMode(m);
+      go('lab');
+    },
     open: (id) => {
       setOpening(null);
       setDetour(null);
@@ -203,6 +210,7 @@ export default function App() {
         label: 'Explore',
         children: [
           { id: 'library', label: 'Library', hint: 'Materials, people, formulas, case files' },
+          { id: 'lab', label: 'Circuit lab', hint: 'Build circuits and logic gates on a 3D board' },
           { id: 'map', label: 'Idea map', hint: 'How every class connects, and the path to any idea', icon: '🕸', words: 'graph prerequisites path connections tree web' },
   { id: 'timeline', label: 'Timeline', hint: 'Every class in the order it happened' },
           { id: 'glossary', label: 'Glossary', hint: 'Words from your classes, explained' },
@@ -374,6 +382,10 @@ export default function App() {
           <PathwaysPage progress={state} onOpen={actions.open} />
         ) : view === 'library' ? (
           <LibraryPage progress={state} focus={libFocus} onOpen={actions.open} onGo={go} onMark={(id) => !state.readings[id] && actions.toggleReading(id)} />
+        ) : view === 'lab' ? (
+          <Suspense fallback={<div className="lab-page">Loading the lab…</div>}>
+            <CircuitLab startMode={labMode} progress={state} onOpen={actions.open} onMark={(id) => !state.readings[id] && actions.toggleReading(id)} setItem={store.setItem} />
+          </Suspense>
         ) : view === 'notes' ? (
           <NotesPage notes={state.notes} onOpen={actions.open} />
         ) : view === 'glossary' ? (

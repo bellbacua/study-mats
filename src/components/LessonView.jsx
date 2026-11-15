@@ -1,4 +1,5 @@
 import { lazy, Suspense, useEffect, useState } from 'react';
+import { LAB_FOR } from '../data/lab';
 import MathFormula from './MathFormula';
 import Glossed from './Glossed';
 import Cited, { citesOf } from './Cited';
@@ -245,6 +246,12 @@ export default function LessonView({ lesson, index, total, progress, actions, pr
             />
           </Suspense>
           </Predict>
+          {LAB_FOR[lesson.id] && (
+            <button type="button" className="lab-try" onClick={() => actions.openLab?.(LAB_FOR[lesson.id])}>
+              <strong>⚡ Build it yourself</strong>
+              <span>Open the {LAB_FOR[lesson.id] === 'logic' ? 'logic sandbox' : 'circuit playground'} and wire this up on a 3D workbench.</span>
+            </button>
+          )}
 
           <div className="steps">
             <div className="steps-bar">

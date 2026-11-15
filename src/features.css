@@ -1566,3 +1566,28 @@ button.today-card:hover {
   font-size: 14px;
   font-weight: 600;
 }
+
+/* "Build it yourself" link from a class to the Circuit lab */
+.lab-try {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 2px;
+  width: 100%;
+  margin-top: 12px;
+  padding: 12px 16px;
+  border-radius: 12px;
+  border: 1px solid var(--line);
+  background: var(--surface);
+  color: var(--text);
+  text-align: left;
+  transition: border-color 0.15s, transform 0.15s;
+}
+.lab-try span {
+  color: var(--muted);
+  font-size: 14px;
+}
+.lab-try:hover {
+  border-color: var(--blue);
+  transform: translateY(-2px);
+}
